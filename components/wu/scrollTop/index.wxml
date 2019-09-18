@@ -1,0 +1,7 @@
+<view class="global-scrollTop"
+      hidden="{{!show}}"
+      style="bottom: {{bottom}}; right: {{right}}; z-index: {{zIndex}};"
+      bindtap="_stickEvent">
+  <text class="c-iconfont icon-arrowup"></text>
+</view>
+  

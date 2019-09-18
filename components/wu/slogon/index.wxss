@@ -1,0 +1,59 @@
+.wu-slogon-box{
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5999;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f7f7f7;
+  transition: opacity 0.5s;
+}
+.wu-slogon-box.leave{
+  opacity: 0;
+}
+.wu-slogon-box ._image{
+  width: 100%;
+  height: 100%
+}
+.wu-slogon-box ._time{
+  position: absolute;
+  z-index: 100;
+  top: 40rpx;
+  left: 40rpx;
+  border-radius: 500rpx;
+  padding:10rpx 40rpx;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 26rpx;
+}
+
+.wu-slogon-box ._del{
+  background: rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: saturate(150%) blur(20rpx);
+  backdrop-filter: saturate(150%) blur(20rpx);
+  padding: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.wu-slogon-box ._del ._l>view{
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+.wu-slogon-box ._del ._l>view:first-child{
+  margin-top: 0;
+}
+.wu-slogon-box ._del ._r{
+  border-radius: 300rpx;
+  background-color: white;
+  border: 0;
+  line-height: 2.4;
+  color: #733429;
+  font-size: 32rpx;
+  padding: 0 60rpx;
+}

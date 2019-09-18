@@ -1,0 +1,7 @@
+<view class="global-pendant"
+      animation="{{animationData}}"
+      catchtransitionend="transitionend"
+      style="left: {{left}}; top: {{top}}; z-index: {{zIndex}};">
+  <slot />
+</view>
+  

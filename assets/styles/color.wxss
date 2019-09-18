@@ -1,0 +1,89 @@
+/**
+主色系列
+ */
+.color-primary{color: #57b3ff !important;}
+.color-assistant{color: #008dff !important;}
+.color-minor{color: #d3ebff !important;}
+
+/**
+主色背景系列
+ */
+.color-primary-back{background-color: #57b3ff !important;}
+.color-assistant-back{background-color: #008dff !important;}
+.color-minor-back{background-color: #d3ebff !important;}
+.color-linear{background: linear-gradient(to right, #57b3ff, #008dff);}
+
+/**
+边框颜色
+ */
+.color-primary-border{border-color: #57b3ff !important;}
+.color-assistant-border{border-color: #008dff !important;}
+.color-minor-border{border-color: #d3ebff !important;}
+.color-gray-border{border-color: #f0f0f0 !important;}
+
+
+/**
+after before 颜色
+ */
+.color-primary-after::after, .color-primary-after::before{ border-color: #57b3ff !important; color: #57b3ff !important;background-color: #57b3ff !important;}
+.color-assistant-after::after, .color-assistant-after::before{border-color: #008dff !important; color: #008dff !important;background-color: #008dff !important;}
+.color-minor-after::after, .color-minor-after::before{border-color: #d3ebff !important; color: #d3ebff !important;background-color: #d3ebff !important;}
+
+/**
+辅助颜色
+ */
+.color-gray{color: #f0f0f0 !important;}
+.color-neutral-gray{color: #d8d8d8 !important;}
+.color-light-gray{color: #ebebeb !important;}
+
+.color-green{color: #7ebc2d !important;}
+.color-red{color: #ef5243 !important;}
+
+.color-green-back{background-color: #7ebc2d !important;}
+.color-red-back{background-color: #e54232 !important;}
+.color-gray-back{background-color: #f0f0f0 !important;}
+.color-light-gray-back{background-color: #f7f7f7 !important;}
+
+.c333-color{ color: #333333;}
+.c666-color{ color: #666666;}
+.c999-color{ color: #999999;}
+
+
+
+/**
+button hover
+ */
+.basic-hover{
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+.primary-hover{
+    background-color: #3397ea !important;
+}
+.red-hover{
+  background-color: #ee1f20 !important;
+}
+.assistant-hover{
+    background-color: #008dff !important;
+}
+.minor-hover{
+    background-color: #d3ebff !important;
+}
+
+
+
+/**
+* shadow
+ */
+/*.shadow-default{
+    box-shadow: 0 8rpx 35rpx rgba(0, 0, 0, 0.06);
+}*/
+.shadow-default{
+    box-shadow: 0 0rpx 40rpx rgba(0, 0, 0, 0.08);
+}
+.shadow-primary{
+    box-shadow: 0rpx 20rpx 40rpx rgba(87, 179, 255, 0.8);
+}
+.shadow-primary-shallow{
+    box-shadow: 0rpx 10rpx 30rpx rgba(87, 179, 255, 0.5);
+}
+

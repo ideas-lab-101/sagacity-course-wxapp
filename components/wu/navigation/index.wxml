@@ -1,0 +1,20 @@
+<view class="navigation-box"
+      style="height: {{boxHeight}}; display: {{hide?'none':'block'}};">
+    <view class="_frame"
+          animation="{{animationData}}"
+          catchtransitionend="transitionend"
+          style="{{transparent?'': 'background: '+backgroundColor}}; color: {{color}}; padding-top: {{paddingTop}}; height: {{height}}; line-height: {{height}}; opacity: {{opacity}}; ">
+        <view class="_back {{attachment.length<=0?'_absolute':''}}" catchtap="naviBackEvent">
+            <text class="iconfont icon-fanhui"></text><text wx:if="{{homeFontVisible}}">{{navTitle}}</text>
+        </view>
+        <text class="_title" style="color: {{color}};" wx:if="{{attachment.length<=0}}">{{title}}</text>
+        <view class="_content" wx:else>
+
+            <block wx:for="{{attachment}}">
+                <view wx:if="{{item.type==='icon'}}" class="_v" catchtap="_attachmentEvent" data-index="{{index}}"><text  class="_sin {{item.value}}"></text></view>
+                <view wx:if="{{item.type==='text'}}" class="_v" catchtap="_attachmentEvent" data-index="{{index}}"><text class="_sin _text">{{item.value}}</text></view>
+            </block>
+
+        </view>
+    </view>
+</view>

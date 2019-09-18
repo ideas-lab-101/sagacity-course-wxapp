@@ -1,0 +1,6 @@
+<view class="global-dots">
+  <block wx:for="{{dotsData}}">
+    <text bindtap="_stickEvent" class="{{current === index? 'active' : ''}}" style="background-color: {{current === index? activeColor : ''}}"></text>
+  </block>
+</view>
+  

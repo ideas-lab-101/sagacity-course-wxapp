@@ -1,0 +1,33 @@
+.wux-toptips {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5000;
+}
+.wux-toptips__content {
+  padding: 10rpx;
+  font-size: 28rpx;
+  text-align: center;
+  color: #FFFFFF;
+  word-wrap: break-word;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wux-toptips__content--success {
+  background-color: #733429;
+}
+.wux-toptips__content--info {
+  background-color: #009b4c;
+}
+.wux-toptips__content--warn {
+  background-color: #acce22;
+}
+.wux-toptips__content--cancel {
+  background-color: #000000;
+}
+.wux-toptips__icon {
+  display: inline-block; vertical-align: middle;
+}

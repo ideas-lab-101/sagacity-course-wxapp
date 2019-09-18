@@ -1,0 +1,470 @@
+
+.mine-background{
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+.mine-background>._shadow{
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 40%;
+  left: 0;
+  bottom: 0;
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), white);
+}
+.mine-background image{
+  width: 100%;
+  height: 70vh;
+  filter: blur(2px);
+  transform: scale(1.1, 1.1);
+}
+
+.mine-scroll {
+  height:100vh;
+  position:absolute;
+  width:100%;
+  left:0;
+  top:0;
+  z-index:10;
+}
+
+.mine-hasinfo{
+  min-height: calc(100% - 35vh);
+  padding-top: 35vh;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  position: relative;
+  transition: transform 1s;
+}
+
+.mine-top-box {
+  position: relative;
+  background-color: white;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.08);
+  padding-bottom: 30rpx;
+}
+
+.mine-top-box>._avatar {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  height: 40vh;
+}
+
+.mine-top-box>._avatar::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-top: 360rpx solid transparent;
+  border-left: 2000rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.mine-top-box>._avatar::before {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-top: 480rpx solid transparent;
+  border-right: 700rpx solid rgba(0, 0, 0, 0.1);
+}
+
+.mine-top-box>._avatar ._blurImg {
+  filter: blur(20px);
+  transform: scale(1.1, 1.1);
+}
+
+.showed {
+  position: absolute;
+  z-index: 22;
+  left: 20rpx;
+  top: 50rpx;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #f7f7f7;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6rpx;
+  padding: 20rpx;
+}
+
+.showed .iconfont {
+  font-size: 46rpx;
+  margin-bottom: 5rpx;
+}
+
+.covered{
+  position: absolute;
+  z-index: 22;
+  right: 20rpx;
+  top: 360rpx;
+  display: flex;
+  align-items: center;
+  padding: 10rpx;
+  color: white;
+}
+.covered .iconfont {
+  font-size: 50rpx;
+}
+
+.uerinfo {
+  text-align: center;
+  padding-bottom: 60rpx;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.uerinfo .pcount{
+  position: absolute; z-index: 10; right: 30rpx; top: 30rpx; font-size: 26rpx; color: #999999;
+}
+.uerinfo .pcount text{ font-size: 40rpx; font-style: italic; color: #ff3e02; font-weight: 500; }
+.avatar {
+  position: absolute;
+  top: -90rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.avatar-img {
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 50%;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nickname {
+  margin-top: 120rpx;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 45rpx;
+  font-weight: 500;
+  position: relative;
+}
+.nickname>._edit{
+  font-size: 24rpx; color: #999; display: inline-block; white-space:nowrap; position: absolute; z-index: 10; right: -120rpx; bottom: -4rpx; font-weight: normal; padding: 10rpx 20rpx;
+}
+.nickname>._edit._o{ right: -80rpx;}
+.nickSign{ margin-top: 20rpx; font-size: 24rpx;  color: #999999; }
+/*数据栏*/
+.mine-learn-con {
+  padding: 50rpx 0;
+}
+
+.dataone {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 15rpx 0;
+  flex: 1;
+}
+
+.user-num {
+  font-weight: normal;
+  font-size: 42rpx;
+}
+.user-num.red{
+  color: #ff3e02;
+}
+.user-font{
+  color: #999999;
+  font-size: 22rpx;
+  display: inline-block;
+  margin-top: 6rpx;
+}
+
+/*功能格子*/
+
+.list-item {
+  border-top: 15rpx #f7f7f7 solid;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 96rpx;
+  font-size: 32rpx;
+  padding: 0 30rpx;
+  font-weight: 500;
+}
+
+.item .iconfont {
+  font-size: 40rpx;
+}
+
+.item-text {
+  margin-left: 10rpx;
+}
+
+.item-state {
+  font-size: 22rpx;
+  color: white;
+  background-color: #f75f03;
+  display: inline-block;
+  padding: 4rpx 10rpx;
+  border-radius: 100rpx;
+  line-height: 1;
+}
+
+.shareBtn {
+  text-align: left;
+  border: 0 !important;
+  color: black !important;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.shareBtn::after, .shareBtn:before {
+  border: 0 !important;
+}
+
+.shareBtn .iconfont{
+  font-size: 40rpx;
+}
+.mine-link-box{
+  text-align: right;
+}
+.mine-link{
+  display: inline-block;
+  font-size: 22rpx;
+  padding: 20rpx 20rpx;
+  color: #666666;
+}
+.mine-link .iconfont{ margin-top: -3rpx; display: inline-block; vertical-align: middle;}
+/********************/
+.mine-bottom-t{
+  text-align: center;
+  padding: 10rpx 0 40rpx;
+}
+.mine-bottom-t ._title{
+  font-size: 30rpx; font-weight: 500;
+}
+.mine-bottom-t ._txt{
+  font-size: 22rpx; color: #999999; margin-top: 15rpx; margin-bottom: 5rpx;
+}
+.mine-bottom-t .iconfont{
+  font-size: 28rpx; color: #999999;
+}
+/**************/
+.mine-userRecord{
+  min-height: 80vh;
+  background-color: white;
+  padding-bottom: 70rpx;
+  box-shadow: 0 6rpx 30rpx rgba(0, 0, 0, 0.08);
+}
+.mine-userRecord-t{ padding: 20rpx 10rpx; border-bottom: 1rpx dashed #d6d6d6;}
+.mine-userRecord-t>view{ display: inline-block; font-size: 28rpx; padding: 10rpx 20rpx;}
+.mine-userRecord-t>._l{ position: relative; color: #733429;font-weight: 500;}
+.mine-userRecord-t>._r{  font-weight: 500; }
+.mine-userRecord-t>._r .iconfont{ font-size: 26rpx; vertical-align: middle; display: inline-block; margin-top: -5rpx;}
+.mine-userRecord-b{
+  margin-top: 70rpx;
+}
+.mine-userRecord-single{
+  background-color: #f7f7f7;
+  padding: 20rpx 20rpx 10rpx;
+  font-size: 32rpx;
+  border-bottom: 70rpx solid white;
+  position: relative;
+  transform: all 0.5s ease-out;
+}
+.mine-userRecord-single:last-child{
+  border-bottom: 0;
+}
+
+.mine-userRecord-single.active{
+  background-color: rgba(115, 52, 41, 0.15);
+}
+.mine-userRecord-single ._linkto{
+  margin-left: 140rpx;
+  padding-left: 10rpx;
+}
+.mine-userRecord-single ._name{
+  font-size: 30rpx;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.mine-userRecord-single ._desc{
+  font-size: 24rpx;
+  color: #999;
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  position: relative;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.mine-userRecord-single ._time{
+  position: absolute; right: 10rpx; top: -45rpx; font-size: 22rpx; color: #999;
+}
+.mine-userRecord-single ._oper{
+  padding-left: 140rpx; text-align: right; color: #000; display: flex; align-items: center; flex-direction: row-reverse;overflow: hidden;
+}
+.mine-userRecord-single ._oper ._d{
+  display: flex;
+  align-items: center;
+}
+.mine-userRecord-single ._oper ._d ._s{ padding: 15rpx 36rpx; font-size: 22rpx; display: flex; align-items: center; color: #666;}
+/*.mine-userRecord-single ._oper ._d .shareBtn{ line-height: 1.2; color: #000 !important; padding: 15rpx 40rpx 10rpx; }*/
+.mine-userRecord-single ._oper ._d ._font{
+  margin-left: 15rpx; vertical-align: middle; margin-top: 6rpx;
+}
+.mine-userRecord-single ._oper ._d .iconfont{
+  font-size: 30rpx;
+}
+.mine-userRecord-single ._eye{
+  position: absolute; left: 40rpx; bottom: 27rpx; z-index: 10; font-size: 22rpx;
+}
+.mine-userRecord-single ._eye .iconfont{
+  font-size: 22rpx;
+}
+
+.norecord{
+  color: #999999; text-align: center; font-size: 24rpx;
+}
+.norecord text{ color: black; font-weight: 500; font-size: 26rpx;}
+/**************/
+.share-layer{
+  position: absolute; z-index: 3999; left: 15vw; top: 25%; width: 70vw; background-color: white; border-radius: 20rpx;
+  box-shadow: 0 20rpx 80rpx rgba(0, 0, 0, 0.3);
+}
+.share-layer>._insert{}
+.share-layer image{ width: 100%; height: 40vh; border-radius: 20rpx 20rpx 0 0;}
+.share-layer ._link{display: flex; align-items: center; justify-content: space-around;}
+.share-layer ._link button{ border: 0 !important; font-size: 26rpx; line-height: 1.7; padding-top: 20rpx; padding-bottom: 20rpx;}
+.share-layer ._link button::after,.share-layer ._link button::before{ border: 0 !important;}
+.share-layer ._link button .iconfont{ font-size: 40rpx;}
+.share-layer ._link button:active{background-color: #efefef;}
+
+
+/***************/
+.bs-single{
+  position: absolute; left: 10rpx; top: -40rpx; z-index: 10;
+  display: inline-block;
+  vertical-align: middle;
+}
+.bs-single>._insert{
+  padding-right: 30rpx; display: inline-block;
+}
+.bs-single ._image{
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+  border-left: 6rpx solid #000;
+}
+.bs-single ._image::after{
+  position: absolute; content: ""; z-index: -2; background-image: -webkit-linear-gradient(top, black, #7b7b7b, black);
+  border-radius: 500rpx; width: 90rpx; height: 90rpx; right: -28rpx; top: 15rpx; box-shadow: 8rpx 10rpx 12rpx -8rpx rgba(0, 0, 0, 0.3);
+  transition: right 0.3s;
+}
+.bs-single ._image::before{
+  position: absolute; content: ""; z-index: -1; background-image: -webkit-linear-gradient(top, #733429, #c15745, #733429);
+  border-radius: 500rpx; width: 40rpx; height: 40rpx; right: -8rpx; top: 40rpx;
+  box-shadow: 0 0 4rpx rgba(0, 0, 0, 0.3);
+  transition: right 0.3s;
+}
+
+.bs-single ._image>view{
+  position: relative; padding: 0; display: inline-block;box-shadow: 0 12rpx 16rpx -6rpx rgba(0, 0, 0, 0.2);
+}
+.bs-single ._image>view::after,.bs-single ._image>view::before{
+  position: absolute; content: ""; width: 1rpx; background-color: #eaeaea;
+  height: 100%; left: 0rpx; top: 0; z-index: 1;
+}
+.bs-single ._image>view::before{
+  left: auto; right: 0rpx;
+}
+.bs-single ._image image{
+  width: 120rpx;
+  height: 120rpx;
+  position: relative;
+}
+.bs-single ._image .iconfont{
+  position: absolute; left: 50%; top:50%; transform: translate(-50%,-50%); z-index: 15; color: white; font-size: 32rpx;
+}
+.bs-single ._image.active::after{
+  right: -48rpx;
+}
+.bs-single ._image.active::before{
+  right: -26rpx; box-shadow: none;
+}
+.bs-single ._image.active::after, .bs-single ._image.active::before{
+  -webkit-animation:tryRotate 20s linear forwards infinite;
+  animation:tryRotate 20s linear forwards infinite;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+}
+.bs-single ._image.active::after.paused{
+  -webkit-animation-play-state:paused;
+  animation-play-state:paused;
+}
+@-webkit-keyframes tryRotate{
+  0%{-webkit-transform: rotate(0deg);}
+  100%{-webkit-transform: rotate(360deg);}
+}
+@keyframes tryRotate{
+  0%{-webkit-transform: rotate(0deg);}
+  100%{-webkit-transform: rotate(360deg);}
+}
+
+
+.mine-background-copy{
+  position: relative;
+}
+.mine-background-copy>._shadow{
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 40%;
+  left: 0;
+  bottom: 0;
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), white);
+}
+.mine-background-copy image{
+  width: 100%;
+  height: 70vh;
+}
+
+.mine-top-box-copy{
+  position: absolute;
+  top: 30vh;
+  left: 30rpx;
+  right: 30rpx;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 10rpx 60rpx rgba(0, 0, 0, 0.08);
+}
+.mine-top-box-copy>._insert{
+  padding: 60rpx 40rpx;
+}
+.mine-top-box-copy .header{
+  border-radius: 1000rpx;
+  overflow: hidden;
+  width: 160rpx;
+  height: 160rpx;
+}
+.mine-top-box-copy .nickname{
+  margin-top: 40rpx;
+}
+
+.mine-l-btn{
+  text-align: center;
+  line-height: 2.8;
+  background-color: #007d3c;
+  color: white;
+}

@@ -1,0 +1,28 @@
+<view class="global-play-widget" hidden="{{!show}}"
+      style="z-index: {{zIndex}};">
+  <view class="_insert">
+    <view class="global-play-widget-insert">
+
+      <view class="_img">
+        <image mode="aspectFill" src="{{playerData.coverImgUrl}}"></image>
+      </view>
+
+      <view class="_info">
+        <navigator url="/pages/apply/course/lesson-play/lesson-play?id={{playerData.id}}" hover-class="none">
+          <text>{{playerData.epname}}</text>
+          <view>{{playerData.title}}</view>
+        </navigator>
+      </view>
+
+      <view class="_oper" bindtap="_operationEvent">
+        <text class="iconfont icon-playarrow" wx:if="{{!playerData.play}}"></text>
+        <text class="iconfont icon-pause" wx:else></text>
+      </view>
+
+      <view class="_close" bindtap="_closeEvent">
+          <text class="iconfont icon-close"></text>
+      </view>
+
+    </view>
+  </view>
+</view>

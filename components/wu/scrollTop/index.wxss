@@ -1,0 +1,26 @@
+.global-scrollTop{
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  z-index: 999;
+  display: inline-block;
+  font-size: 14px;
+  color: black;
+  transition: all 0.5s;
+  opacity: 1;
+  width: 70rpx;
+  height: 70rpx;
+  text-align: center;
+  line-height: 70rpx;
+  background-color: #b5b5b5;
+  border-radius: 200px;
+}
+.global-scrollTop.active{
+  opacity: 1;
+}
+.global-scrollTop text{
+  color: white;
+  font-size: 40rpx;
+}
+
+@import "/assets/styles/cloud-icon.wxss";

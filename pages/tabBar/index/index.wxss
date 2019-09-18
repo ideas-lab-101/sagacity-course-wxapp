@@ -1,0 +1,191 @@
+
+.logo-box{
+    padding: 70rpx 20rpx 20rpx;
+}
+.logo{
+    width: 180rpx;
+    height: auto;
+}
+
+.slide-box{
+    padding-top: 40rpx;
+    height: 690rpx;
+}
+swiper-item{ overflow: initial;}
+.slide-item{
+    position: relative;
+    height: 100%;
+}
+.slide-imgBox{
+    text-align: center;
+}
+.slide-item.active .slide-image{
+    transform: scale(1, 1);
+    box-shadow: 0 40px 40px -20px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+.slide-item .slide-image{
+    transform: scale(0.9, 0.9);
+}
+.slide-image{
+    width: 50vw;
+    height: 66.66vw;
+    transition: transform 1s;
+    position: relative;
+}
+.slide-desc{ position: absolute; left: 0; bottom: 0; z-index: 10; width: 100%;}
+.slide-txt{
+    position: relative;
+    width: 100%;
+    z-index: 99;
+}
+.slide-txt ._insert{
+    text-align: center;
+    position: relative;
+    color: black;
+    padding-top: 40rpx;
+}
+.slide-txt ._title{
+    padding: 10rpx 30rpx 30rpx;
+    white-space:nowrap;
+    position: relative;
+}
+.slide-txt ._title::after{
+    position: absolute; content: ""; height: 6rpx; bottom: 4rpx; left: 50%; transform: translateX(-50%); width: 8%; border-radius: 30px; background-color: black;
+}
+.slide-txt ._intro{
+    text-align: left;
+    line-height: 1.8;
+    padding: 10rpx 50rpx 10rpx;
+    height: 76rpx;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 20rpx;
+}
+.slide-txt ._link{
+    margin-top: 30rpx;
+}
+.slide-container{ position: relative;}
+.swiper-dots{
+    position: absolute;
+    right: 10rpx;
+    bottom: 120rpx;
+    z-index: 99;
+    color: white;
+}
+
+.section-box{
+    padding-top: 70rpx;
+}
+.section-title{
+    text-align: left;
+    padding: 20rpx 20rpx 20rpx 30rpx;
+    position: relative;
+    z-index: 1;
+}
+.section-title[data-title]::after{
+    content: attr(data-title);position: absolute; left: 20%; top: 0%;z-index: -1;font-size: 50rpx;color: #d1d1d1; width: 50%; height: 100%;
+}
+.section-title text._title{
+    position: relative;
+    z-index: 1;
+    font-size: 34rpx;
+    display: inline-block;
+}
+/*.section-title text._title::after{*/
+    /*content: "";position: absolute; right: -50rpx; bottom: 0; z-index: -2; background-color: #733429; width: 30rpx; height: 30rpx; border-radius: 200rpx; opacity: 0.3;*/
+/*}*/
+/*.section-title text._title::before{*/
+    /*content: "";position: absolute; right: -25rpx; bottom: -15rpx; z-index: -2;background-color: #acce22;width: 15rpx; height: 15rpx; border-radius: 200rpx; opacity: 0.75;*/
+/*}*/
+.section-title .more{ font-size: 30rpx; position: relative; background-color:rgba(115, 52, 41, 0.15); color: black; border-radius: 100rpx;}
+
+.section-content{
+    padding: 30rpx 0 0;
+}
+.book-page-scroll{
+    white-space: nowrap;
+}
+.book-page-single{
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    width: 40vw;
+    height: 214rpx;
+}
+.book-page-single ._shadow{
+    border-radius: 8rpx;
+    overflow: hidden;
+}
+.book-page-single image{
+    height: 120rpx;
+}
+.book-page-single ._insert{
+    padding: 20rpx 20rpx;
+}
+.book-page-single ._date{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: left;
+    color: white;
+}
+.book-page-single ._date text{
+    position: absolute;
+    bottom: 5rpx;
+    left: 5%;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.book-page-single ._type{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: inline-block;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+.book-page-single ._type text.iconfont{font-size: 40rpx;}
+.book-page-single ._txt{
+    margin-top: 20rpx;
+    display: block;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    text-align: left;
+    white-space: normal;
+}
+.book-page-single ._time{
+    position: absolute;
+    left: 12rpx;
+    top: 8rpx;
+    display: inline-block;
+    font-size: 22rpx;
+    z-index: 10;
+    color: white;
+}
+.floatSwiper-box{
+    width: 100%;
+    height: 360rpx;
+}
+.floatSwiper-item {background-color: white;width: 50vw;}
+.floatSwiper-item ._insert{ margin: 0 20rpx 15rpx; background-color: #f4f4f4; border-radius: 10rpx; overflow: hidden;}
+.floatSwiper-item ._header{ text-align: center; position: relative;}
+.floatSwiper-item ._header image{ display: inline-block; width: 100%; height: 180rpx;}
+.floatSwiper-item ._name{ text-align: center; margin-top: 20rpx;overflow: hidden; display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp: 2;
+    height: 80rpx; padding: 0 10rpx;}
+.floatSwiper-item ._info{ position: absolute; width: 100%; bottom: 0; left: 0; z-index: 33; display: flex; justify-content: space-between; color: white; font-size: 22rpx;
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.45)); padding: 15rpx 0 6rpx;}
+.floatSwiper-item ._info text:first-child{margin-left: 10rpx;}
+.floatSwiper-item ._info text:last-child{margin-right: 10rpx;}
+

@@ -1,0 +1,8 @@
+<view class="global-widget" hidden="{{!show}}"
+      style="bottom: {{bottom}}; right: {{right}}; z-index: {{zIndex}};"
+      catchtap="_stickEvent">
+  <image src="./images/bounce.gif" mode="widthFix"></image>
+</view>
+
+
+  

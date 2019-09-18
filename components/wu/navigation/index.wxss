@@ -1,0 +1,83 @@
+.navigation-box{
+  height: 130rpx;
+  position: relative;
+  z-index: 999;
+}
+.navigation-box ._frame{
+  height: 90rpx;
+  padding-top: 40rpx;
+  line-height: 1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.navigation-box ._back{
+  padding: 0 30rpx;
+  display: flex;
+  justify-content: center;
+}
+.navigation-box ._back._absolute{
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+.navigation-box ._back text{
+  display: inline-block; vertical-align: middle;
+}
+.navigation-box ._back text.iconfont{
+  font-size: 36rpx; margin-right: 4rpx;
+}
+.navigation-box ._back:active{
+  background: rgba(0, 0, 0, 0.08) ;
+}
+.navigation-box ._title{
+  flex: 1;
+  color: black;
+  margin: 0 180rpx;
+  font-size: 34rpx;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.navigation-box ._content{
+  flex: 1;
+  color: black;
+  font-size: 34rpx;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+.navigation-box ._content ._v{
+  padding: 0 25rpx;
+  text-align: center;
+  margin-right: 40rpx;
+}
+.navigation-box ._content ._sin.iconfont{
+  font-size: 40rpx;
+}
+.navigation-box ._content ._v:active{
+  background: rgba(0, 0, 0, 0.08) ;
+}
+.navigation-box ._content ._sin._text{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+@import "/assets/styles/cloud-icon.wxss";

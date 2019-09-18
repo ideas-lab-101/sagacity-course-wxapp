@@ -1,0 +1,14 @@
+<view class="loading-container" catchtouchmove="true" hidden="{{!visible}}">
+    <view class='loading-box'>
+        <view class="point">
+            <view class="point-single {{transformsCSS?'transformsCSS':''}}"
+                  wx:for="{{animate}}"
+                  wx:key="{{index}}"
+                  data-index="{{index}}"
+                  bindanimationend="animationendEvent"
+                  style="background: {{item.backColor? item.backColor:''}};"></view>
+        </view>
+        <text class="text" style="color: {{color}}">{{title}}</text>
+    </view>
+    <view class="loading-shadow" style="background: {{shadowBackColor}}"></view>
+</view>

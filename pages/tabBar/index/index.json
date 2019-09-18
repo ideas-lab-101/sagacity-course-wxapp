@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "晓得Le",
+  "disableSwipeBack": true,
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+  }
+}

@@ -1,0 +1,21 @@
+.global-dots{
+  position: relative;
+  display: inline-block;
+  padding: 0 20rpx;
+}
+.global-dots text{
+  display: inline-block;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.15);
+  width: 16rpx;
+  height: 14rpx;
+  transform: skewX(155deg);
+  margin-right: 15rpx;
+  transition: all 0.3s;
+}
+.global-dots text.active{
+  /*width: 30rpx;*/
+}
+.global-dots text:last-child{
+  margin-right: 0;
+}

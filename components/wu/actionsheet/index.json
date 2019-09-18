@@ -1,0 +1,7 @@
+{
+    "component": true,
+    "usingComponents": {
+        "wu-animation-group": "../animation-group/index",
+        "wu-backdrop": "../backdrop/index"
+    }
+}

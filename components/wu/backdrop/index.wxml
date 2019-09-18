@@ -1,0 +1,7 @@
+<wu-animation-group wux-class="{{ transparent ? 'wux-backdrop--transparent' : 'wux-backdrop' }}"
+                    class="wux-class"
+                    in="{{ in }}"
+                    class-names="wux-animate--fadeIn"
+                    bind:click="onClick">
+    <view class="wux-backdrop-insert" style="background: rgba(0, 0, 0, {{opacity}});"></view>
+</wu-animation-group>
