@@ -1,0 +1,12 @@
+var fiterTime = function (time) {
+  var max = parseInt(time / 60)
+  return _prefixTime(max) + ':' + _prefixTime(parseInt(time % 60))
+}
+
+var _prefixTime = function (num) {
+    return num < 10 ? '0' + num.toString() : num
+}
+
+module.exports = {
+  fiterTime: fiterTime
+}

@@ -1,0 +1,28 @@
+<wu-toast id="wu-toast" />
+<wu-loading id="wu-loading" />
+
+
+<wu-navigation title="{{nav.title}}" backgroundColor="{{nav.backgroundColor}}" animation="{{nav.animation}}" />
+<view class="rl-container">
+
+    <view class="rl-single flex" hover-class="event-hover-class-view" wx:for="{{recordList}}" wx:key="{{index}}" bindtap="linktoEvent" data-index="{{index}}">
+
+        <text class="_count _num01" wx:if="{{index===0}}">{{index+1}}</text>
+        <text class="_count _num02" wx:elif="{{index===1}}">{{index+1}}</text>
+        <text class="_count _num03" wx:elif="{{index===2}}">{{index+1}}</text>
+        <text class="_count" wx:else>{{index+1}}</text>
+        <view class="_con flex">
+            <image mode="aspectFill" src="{{item.avatar_url}}" class="_header"></image>
+            <text class="_name">{{item.Caption}}</text>
+        </view>
+        <view class="_like flex">
+            <text class="_n">{{item.likeCount}}</text>
+            <text>个赞</text>
+        </view>
+        <view class="_eye">
+            <view wx:if="{{item.mode === 1}}"><text class="iconfont icon-biyan"></text> 背诵</view>
+            <view wx:else><text class="iconfont icon-yanjing"></text> 朗诵</view>
+        </view>
+    </view>
+
+</view>

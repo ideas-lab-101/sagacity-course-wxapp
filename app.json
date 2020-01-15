@@ -1,10 +1,10 @@
 {
-  "pages":[
+  "pages": [
     "pages/tabBar/index/index",
     "pages/tabBar/find/find",
     "pages/tabBar/mine/mine"
   ],
-  "window":{
+  "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "晓得Le",
@@ -17,23 +17,16 @@
     "selectedColor": "#733429",
     "backgroundColor": "#f7f7f7",
     "borderStyle": "white",
-    "custom": true,
     "list": [
       {
         "pagePath": "pages/tabBar/index/index",
-        "text": "主页",
+        "text": "发现",
         "iconPath": "/assets/images/home_blank.png",
         "selectedIconPath": "/assets/images/home_fill.png"
       },
       {
         "pagePath": "pages/tabBar/find/find",
-        "text": "发现",
-        "iconPath": "/assets/images/list_blank.png",
-        "selectedIconPath": "/assets/images/list_fill.png"
-      },
-      {
-        "pagePath": "pages/tabBar/find/find",
-        "text": "自由",
+        "text": "学习",
         "iconPath": "/assets/images/list_blank.png",
         "selectedIconPath": "/assets/images/list_fill.png"
       },
@@ -46,6 +39,58 @@
     ]
   },
   "subPackages": [
+    {
+      "root": "pages/apply/course/",
+      "pages": [
+        "lesson-list/lesson-list",
+        "lesson-page/lesson-page",
+        "lesson-play/lesson-play",
+        "lesson-videoPlay/lesson-videoPlay",
+        "record/record",
+        "record-list/record-list",
+        "catalog/catalog",
+        "background-sound-list/background-sound-list",
+        "topic/topic",
+        "album/album"
+      ]
+    },
+    {
+      "root": "pages/apply/mine",
+      "pages": [
+        "my-collect/my-collect",
+        "my-course/my-course",
+        "my-ticket/my-ticket",
+        "my-record/my-record",
+        "my-teams/my-teams",
+        "my-message/my-message",
+        "my-set/my-set",
+        "record-play/record-play",
+        "user-page/user-page",
+        "create-profile/create-profile",
+        "verify-tel/verify-tel"
+      ]
+    },
+    {
+      "root": "pages/apply/teams",
+      "pages": [
+        "team-records/team-records",
+        "team-play/team-play",
+        "user-team/user-team",
+        "team-set/team-set",
+        "team-members/team-members"
+      ]
+    },
+    {
+      "root": "pages/common/",
+      "pages": [
+        "search/search",
+        "web/web",
+        "comment/comment",
+        "cover/cover",
+        "accredit/accredit",
+        "documents/documents"
+      ]
+    }
   ],
   "requiredBackgroundModes": [
     "audio"
@@ -54,10 +99,9 @@
   "resizable": true,
   "usingComponents": {
     "wu-navigation": "/components/wu/navigation/index",
-    "wu-loading": "/components/wu/loading/index",
-    "wu-toast": "/components/wu/toast/index",
     "wu-backdrop": "/components/wu/backdrop/index",
     "wu-animation-group": "/components/wu/animation-group/index"
   },
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
 }

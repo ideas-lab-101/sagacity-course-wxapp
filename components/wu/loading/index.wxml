@@ -1,14 +1,8 @@
-<view class="loading-container" catchtouchmove="true" hidden="{{!visible}}">
-    <view class='loading-box'>
-        <view class="point">
-            <view class="point-single {{transformsCSS?'transformsCSS':''}}"
-                  wx:for="{{animate}}"
-                  wx:key="{{index}}"
-                  data-index="{{index}}"
-                  bindanimationend="animationendEvent"
-                  style="background: {{item.backColor? item.backColor:''}};"></view>
-        </view>
-        <text class="text" style="color: {{color}}">{{title}}</text>
+<view class="loading-container" wx:if="{{ in }}">
+    <view class="loading-items">
+        <text class="_item c01"></text>
+        <text class="_item c02"></text>
+        <text class="_item c03"></text>
     </view>
-    <view class="loading-shadow" style="background: {{shadowBackColor}}"></view>
+    <view class="loading-txt">{{title}}</view>
 </view>

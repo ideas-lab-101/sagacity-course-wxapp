@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "backgroundColor": "#f0f0f0",
+  "navigationBarBackgroundColor": "#FFF",
+  "navigationBarTextStyle": "black",
+  "disableScroll": false,
+  "usingComponents": {
+    "share": "/components/pages/share/index"
+  }
+}

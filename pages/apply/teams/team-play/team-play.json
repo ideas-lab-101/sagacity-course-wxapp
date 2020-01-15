@@ -1,0 +1,9 @@
+{
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#f7f7f7",
+  "navigationBarTextStyle": "black",
+  "disableScroll": true,
+  "usingComponents": {
+    "audio-play": "/components/pages/audio-play/index"
+  }
+}

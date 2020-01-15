@@ -1,0 +1,13 @@
+
+var translateCN = function (blnEnd) {
+    if (blnEnd == 0) {
+        return '连载'
+    }else if (blnEnd == 1) {
+        return '完结'
+    }else {
+        return ''
+    }
+}
+module.exports = {
+    translateCN: translateCN
+}

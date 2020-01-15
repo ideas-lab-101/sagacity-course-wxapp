@@ -1,0 +1,47 @@
+var filterText = function (obj){
+    if (!obj) {
+        return '尚未选择背景音'
+    }
+    return [{
+        name: 'span',
+        attrs: {
+            class: '',
+            style: ''
+        },
+        children: [{
+            type: 'text',
+            text: '背景音：'
+        }]
+    },{
+        name: 'span',
+        attrs: {
+            class: '',
+            style: 'color: #ff3e02;'
+        },
+        children: [{
+            type: 'text',
+            text: obj.Title
+        }]
+    }]
+}
+
+var countTime = function (time) {
+    if(time >= 580) {
+        return 590 - time
+    }else if(time > 0 && time < 580){
+        var minute = parseInt(time/60)
+        var second = time - minute*60
+        return _prefixTime(minute) + ':' + _prefixTime(second)
+    }else {
+        return ''
+    }
+}
+
+var _prefixTime = function (num) {
+    return num < 10 ? '0'+num : num
+}
+
+module.exports = {
+    filterText: filterText,
+    countTime: countTime
+}

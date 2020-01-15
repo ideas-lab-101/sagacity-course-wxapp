@@ -1,0 +1,31 @@
+
+var resolveTime = function (time) {
+    var exp = getRegExp('-', 'g')
+    var temp = time.replace(exp, '/')
+    var d = getDate(temp)
+    return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'
+}
+
+
+var changeURL = function (id, type, format) {
+    if (type == 'course') {
+        return '/pages/apply/course/lesson-page/lesson-page?id='+id
+    }else if (type == 'ld' && format == 'audio') {
+        return '/pages/apply/course/lesson-play/lesson-play?id='+id
+    }else if (type == 'ld' && format == 'video') {
+        return '/pages/apply/course/lesson-videoPlay/lesson-videoPlay?id='+id
+    } else if (type == 'user') {
+        return '/pages/apply/course/master-detail/master-detail?id=' + id
+    }else if (type == 'record') {
+        return '/pages/apply/mine/record-play/record-play?id=' + id
+    }else if (type == 'wu') {
+        return '/pages/apply/mine/user-page/user-page?id=' + id
+    }else {
+        return ''
+    }
+}
+
+module.exports = {
+    resolveTime: resolveTime,
+    changeURL: changeURL
+}

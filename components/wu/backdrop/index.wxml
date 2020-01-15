@@ -1,7 +1,8 @@
-<wu-animation-group wux-class="{{ transparent ? 'wux-backdrop--transparent' : 'wux-backdrop' }}"
-                    class="wux-class"
+<wu-animation-group wux-class="{{ classes.wrap }}"
                     in="{{ in }}"
-                    class-names="wux-animate--fadeIn"
-                    bind:click="onClick">
-    <view class="wux-backdrop-insert" style="background: rgba(0, 0, 0, {{opacity}});"></view>
+                    classNames="{{ classNames }}"
+                    disableScroll
+                    bind:click="onClick"
+                    wrapStyle="z-index: {{ zIndex }}; background: rgba(0, 0, 0, {{opacity}}); ">
+    <view class="_insert" catchtouchmove="noop"></view>
 </wu-animation-group>

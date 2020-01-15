@@ -1,0 +1,31 @@
+page{
+    background-color: #f7f7f7;
+}
+
+.set-single{
+    border-bottom: 1rpx solid #eee;
+    padding: 30rpx;
+    background-color: white;
+}
+
+.set-single ._r, .set-link ._r{
+    color: #999999;
+}
+
+
+.set-link{
+    border: 0 !important;
+    margin: 0;
+    line-height: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 30rpx;
+    background-color: white !important;
+    color: black !important;
+    font-size: 32rpx;
+}
+
+.set-title{
+    padding: 40rpx 30rpx 20rpx; font-size: 28rpx; color: #999999; margin-top: 40rpx;
+}

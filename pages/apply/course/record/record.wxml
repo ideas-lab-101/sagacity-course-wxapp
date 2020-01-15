@@ -1,0 +1,121 @@
+<wu-toast id="wu-toast" />
+<wu-loading id="wu-loading" />
+<wu-marked-words id="wu-marked-words" words="{{markedWords.data}}" version="{{markedWords.version}}" bindmarkDownFree="markDownFreeEvent"/>
+<import src="/components/wxParse/wxParse.wxml" />
+<wxs src="./record.wxs" module="moduleRecord" />
+
+<wu-navigation title="{{courseData.DataName}}" model="{{nav.mode}}" transparent="{{nav.transparent}}" animation="{{nav.animation}}" />
+
+<view class="record-container">
+    <view class="record-box" style="padding-top: {{deviceStatusBarHeight+45}}px;">
+
+        <!--选择背景音部分-->
+        <view class="flex between record-backmusic-box">
+            <view class="flex _info" wx:if="{{backgroundSoundItem}}">
+
+
+                <view class="bs-single">
+                        <view class="_image {{!tryParams.isPlay || tryParams.id !== item.MusicID?'':'active'}}">
+                            <view><image src="{{backgroundSoundItem.CoverURL}}" mode="aspectFill"/></view>
+                        </view>
+                        <view class="_name">{{backgroundSoundItem.Title}}</view>
+                </view>
+
+            </view>
+            <view class="flex _info" wx:else>
+                <text class="_noFont">点击右侧选背景音</text>
+            </view>
+            <view class="_title {{markedWords.data[0].show?'MarkDown':''}}" id="MarkDown01">
+                <view class="_r" hover-class="event-hover-class-view" catchtap="getBackSoundListEvent"><text class="iconfont icon-music"></text> 选择背景音</view>
+            </view>
+        </view>
+
+        <!--选择背景音部分-->
+        <view class="record-swiper-box">
+            <view class="record-swiper-b">
+                <scroll-view scroll-y class="record-swiper" wx:if="{{mode === '0'}}">
+                    <view class="record-swiper-shade-up"></view>
+                    <view wx:if="{{courseData.Prompt.length>0}}">
+                        <view class="record-swiper-single-b">
+                            <view wx:for="{{courseData.Prompt}}" wx:key="{{index}}" class="record-swiper-single">{{item.Content}}</view>
+                        </view>
+                        <view class="record-swiper-single-s"></view>
+                    </view>
+                    <view wx:else class="record-swiper-single-n">暂无字幕</view>
+                    <view class="record-swiper-shade-down"></view>
+                </scroll-view>
+                <view wx:else class="record-swiper-modeB"><text>背诵</text></view>
+            </view>
+        </view>
+
+        <!--文字提醒-->
+        <view class="record-swiper-notice">录制时面向手机，调高音量效果更佳。最大录制时长为<text class="color-danger">10</text>分钟。</view>
+
+        <!--录音部分-->
+        <view class="record-btn-box" wx:if="{{!recordSettingOpened || recordSetting}}">
+            <!--倒数部分-->
+            <view class="record-reciprocal" wx:if="{{reciprocal.visible}}">
+                <text wx:for="{{reciprocal.count}}" wx:key="{{index}}"></text>
+            </view>
+            <!--录音计时器部分-->
+            <view class="record-time" wx:if="{{recordStart && !reciprocal.visible}}">
+                <view class="_time">{{moduleRecord.countTime(recordTime)}}</view>
+            </view>
+            <!--录音按钮部分-->
+            <view wx:if="{{!recordStart}}" class="record-btn">
+                <view bindtap="startRecord" class="_transcribe"><text class="iconfont icon-luyin"></text></view>
+                <view class="wave"></view>
+            </view>
+            <view wx:else class="record-btn01-b">
+                <view class="record-btn01 cancel active" bindtap="cancelRecord">放弃</view>
+                <view class="record-btn01 start" bindtap="endRecord"><text class="_end"></text></view>
+                <view class="record-btn02 {{recordStart?'active':''}}">
+                    <view wx:if="{{!isPause}}" class="record-btn01 pause" bindtap="pauseRecord">暂停</view>
+                    <view wx:else class="record-btn01 pause" bindtap="resumeRecord">继续</view>
+                </view>
+            </view>
+        </view>
+
+
+        <view class="recordTake" wx:else>
+            <button open-type="openSetting" type="primary" plain class="_setingTake" bindopensetting="opensettingEvent">微信授权录音</button>
+        </view>
+
+
+    </view>
+
+</view>
+
+<!--提交录制数据-->
+<wu-backdrop id="wu-backdrop" bind:click="" />
+<wu-animation-group wux-class="record-over" in="{{ recordin }}" class-names="wux-animate--slideInUp">
+    <view class="_insert">
+        <view class="record-over-tip">如对录制效果不满意，可点击重录按钮；或在作品管理中删除。</view>
+        <view class="record-over-list">
+            <view class="_con">
+                <text>{{courseData.LessonName}}</text>
+                <text class="_shi" bindtap="recordPlayEvent" wx:if="{{!tryParams.isPlay || tryParams.id !== 'tryListenID'}}"><text class="iconfont icon-bofang1"></text> 试听</text>
+                <text class="_shi" wx:else bindtap="recordPlayEvent"><text class="iconfont icon-weibiaoti519"></text> 暂停</text>
+            </view>
+            <view class="_back">
+                <rich-text nodes="{{moduleRecord.filterText(backgroundSoundItem)}}"></rich-text>
+            </view>
+        </view>
+        <view class="_btn">
+            <text class="_sub" catchtap="submitEvent">上传到个人作品集</text>
+            <text class="_ret" catchtap="resetEvent">重录</text>
+        </view>
+    </view>
+</wu-animation-group>
+
+
+<!--上传加载loading-->
+<view class="loadingPlayer" wx:if="{{progressParams.visible}}">
+    <view class="_insert">
+        <view class="_title">正在上传录音...请稍等</view>
+        <view class="_total">
+            <text style="left: {{progressParams.value}}%">{{progressParams.value}}%</text>
+            <view style="width:{{progressParams.value}}%"></view>
+        </view>
+    </view>
+</view>

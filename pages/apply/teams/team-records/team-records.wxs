@@ -1,0 +1,75 @@
+
+var resolveTime = function (time) {
+    if(!time) {
+      return ''
+    }
+    var exp = getRegExp('-', 'g')
+    var temp = time.replace(exp, '/')
+    var d = getDate(temp)
+    var hours = d.getHours()<10?'0'+d.getHours():d.getHours()
+    var minutes = d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()
+    return {
+        date: getDateNodes(d.getFullYear(), (d.getMonth()+1), d.getDate()),
+        time: hours + ':' + minutes
+    }
+}
+
+var getDateNodes = function (year, month, date) {
+  return [
+      {
+        name: 'span',
+        attrs: {
+          class: 'data-single-date-m'
+        },
+        children: [{
+          type: 'text',
+          text: month + '月' + date + '日 '
+        }]
+      },
+      {
+        name: 'span',
+        attrs: {
+          class: 'data-single-date-y'
+        },
+        children: [{
+          type: 'text',
+          text: year.toString()
+        }]
+      }
+    ]
+}
+
+var sectionTime = function (time) {
+  var exp = getRegExp('-', 'g')
+  var temp = time.replace(exp, '/')
+  var d = getDate(temp)
+}
+
+var isTimeSection = function (time) {
+  var exp = getRegExp('-', 'g')
+  var temp = time.replace(exp, '/')
+  var d = getDate(temp)
+}
+
+var equalDate = function (oldDate, newDate) {
+    if(!oldDate) {
+        return false
+    }
+    var exp = getRegExp(' ', 'g');
+    var od = oldDate.split(exp)
+    var nd = newDate.split(exp)
+    var o = getDate(od[0].replace(exp, '/')).toLocaleDateString()
+    var n = getDate(nd[0].replace(exp, '/')).toLocaleDateString()
+    if(o == n) {
+      return true
+    }else {
+      return false
+    }
+}
+
+
+module.exports = {
+  resolveTime: resolveTime,
+  sectionTime: sectionTime,
+  equalDate: equalDate
+}

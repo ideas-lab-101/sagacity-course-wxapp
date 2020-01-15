@@ -1,3 +1,106 @@
-<view>
-    1
+<wu-scroll-top right="50px" id="wu-scrollTop"/>
+<wu-slogon id="wu-slogon" sliders="{{globalSlogon.urls}}" version="{{globalSlogon.version}}"/>
+<wxs src="./index.wxs" module="moduleIndex" />
+
+<view class="index-background">
+
+    <view class="logo-box" style="padding-top: {{statusBarHeight+10}}px;">
+        <image src="https://sagacity-course-000019.tcb.qcloud.la/system/logo.png?sign=be4728f963782c5f1631ed25968716c3&t=1536819163&date=20180919" mode="widthFix" class="logo"></image>
+    </view>
+
+    <view class="slide-container">
+        <swiper class="slide-box"
+                circular="{{true}}"
+                current="{{slideCurrent}}"
+                previous-margin="80px"
+                next-margin="80px"
+                bindchange="slideChangeEvent">
+            <block wx:for="{{swiper}}" wx:key="data_id">
+                <swiper-item>
+                    <view class="slide-item {{index===slideCurrent? 'active':''}}"
+                          catchtap="goLinksEvent"
+                          data-type="{{item.data_type}}"
+                          data-id="{{item.data_id}}">
+                        <view class="slide-imgBox">
+                            <image src="{{item.cover_url}}" mode="aspectFill" lazy-load class="slide-image"></image>
+                        </view>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+        <div class="slide-desc">
+            <view class="slide-txt" hidden="{{index!==slideCurrent}}" wx:for="{{swiper}}" wx:key="*this">
+                <view class="_insert">
+                    <text class="_title">{{item.data_name}}</text>
+                    <view class="_intro font-12 color-666">{{item.desc}}</view>
+                </view>
+            </view>
+        </div>
+    </view>
 </view>
+
+<view class="index-background">
+
+    <view class="section-box" wx:if="{{historyVisible}}">
+        <view class="section-title"><text class="_title">历史记录</text></view>
+
+        <scroll-view class="section-content flex book-page-scroll" scroll-x>
+            <view wx:if="{{selectionData.length > 0}}">
+                <block wx:for="{{selectionData}}" wx:key="CourseID">
+                    <navigator class="book-page-single" url="{{moduleIndex.changeURL(item.DataType, item.DataID, item.frame)}}">
+                        <view class="_insert">
+                            <view class="relative _shadow">
+                                <image mode="aspectFill" src="{{item.CoverURL}}" lazy-load></image>
+                                <view class="_date font-10"><text>{{item.DataName}}</text></view>
+                                <view class="_type" wx:if="{{item.DataType==='audio'}}"><text class="iconfont icon-yinpin"></text></view>
+                                <view class="_type" wx:elif="{{item.DataType==='video'}}"><text class="iconfont icon-shipin"></text></view>
+                                <view class="_type" wx:else></view>
+                                <view class="_time">{{moduleIndex.formatTime(item.frame)}}</view>
+                            </view>
+                            <text class="font-12 _txt">{{moduleIndex.resolveTime(item.AddTime)}}</text>
+                        </view>
+                    </navigator>
+                </block>
+            </view>
+            <text wx:else class="p-15 color-999 font-14">还没有记录，快去看看喜欢的内容吧！</text>
+        </scroll-view>
+
+    </view>
+
+
+    <view class="section-box">
+        <view class="section-title flex between">
+            <text class="_title">精选课程</text>
+            <navigator class="p-15 pt-5 pb-5 more"
+                       url="/pages/apply/course/catalog/catalog"
+                       hover-class="event-hover-class"><text class="iconfont icon-shu"></text> 资源库</navigator>
+        </view>
+        <view class="section-content flex top wrap">
+
+            <block wx:for="{{courseList}}" wx:key="course_id">
+                <view class="floatSwiper-item"
+                      hover-class="navigator-hover-class"
+                      catchtap="goLessonPage"
+                      data-id="{{item.course_id}}">
+                    <view class="_insert">
+                        <view class="_header">
+                            <image src="{{item.cover_url}}" lazy-load mode="aspectFill"/>
+                            <view class="_info">
+                                <text>{{item.lesson_count}}课时</text>
+                                <text>{{item.view_count}}次浏览</text>
+                            </view>
+                        </view>
+                        <view class="_name font-14">{{item.course_name}}</view>
+                    </view>
+                </view>
+            </block>
+
+        </view>
+    </view>
+
+</view>
+
+<!--播发插件-->
+<wu-play-widget id="wu-play-widget" />
+<!--登录插件-->
+<wu-login id="wu-login" />

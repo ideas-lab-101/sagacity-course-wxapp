@@ -1,0 +1,67 @@
+page {
+  background-color: #ffffff;
+  font-size: 32rpx;
+}
+.rl-container{
+  padding: 30rpx 0;
+}
+.rl-single{
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #e4e4e4;
+}
+
+.rl-single ._count{
+  display: inline-block;
+  padding: 10rpx 40rpx 10rpx 20rpx;
+  font-size: 40rpx;
+  font-style: italic;
+  color: #666666;
+}
+
+.rl-single ._count._num01{
+  font-weight: bold;
+  color: red;
+  font-size: 55rpx;
+}
+.rl-single ._count._num02{
+  font-weight: bold;
+  color: #733429;
+  font-size: 55rpx;
+}
+.rl-single ._count._num03{
+  font-weight: bold;
+  color: #009b4c;
+  font-size: 55rpx;
+}
+
+.rl-single ._con{
+  flex: 1;
+}
+
+.rl-single ._con ._header{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 200rpx;
+}
+.rl-single ._con ._name{
+  margin-left: 20rpx;
+}
+.rl-single ._eye{
+  background-color: rgba(115, 52, 41, 0.15);
+  display: inline-block;
+  padding: 10rpx 30rpx;
+  font-size: 24rpx;
+  border-radius: 100rpx;
+}
+.rl-single ._eye .iconfont{
+  font-size: 26rpx;
+}
+.rl-single ._like{
+  display: inline-block;
+  padding: 10rpx 30rpx;
+  font-size: 26rpx;
+}
+.rl-single ._like ._n{
+  font-size: 34rpx;
+  font-weight: 500;
+}

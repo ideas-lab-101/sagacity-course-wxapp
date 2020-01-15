@@ -1,0 +1,134 @@
+page{
+    background-color: #f7f7f7;
+}
+
+/*******course*******/
+.data-single {
+    text-align: left;
+}
+.data-single>._insert{
+    padding: 0rpx 20rpx 40rpx 80rpx;
+    position: relative;
+}
+.data-single-del{
+    padding: 20rpx;
+    background-color: white;
+    position: relative;
+}
+.data-single>._insert::after{
+    content: "";
+    position: absolute;
+    width: 1rpx;
+    height: 100%;
+    background-color: #733429;
+    left: 40rpx;
+    top: 0;
+    opacity: 0.3;
+}
+.data-single>._insert::before{
+    content: "";
+    position: absolute;
+    width: 12rpx;
+    height: 12rpx;
+    border-radius: 100rpx;
+    background-color: #733429;
+    left: 35rpx;
+    top: 12rpx;
+}
+
+.data-single-date-box{
+    height: 160rpx; position: relative;
+}
+.data-single-date{
+    padding: 60rpx 20rpx 0; font-size: 34rpx; font-weight: 500; height: 100rpx;
+    display: inline-block; position: relative; left: 0; right: 0;
+}
+.data-single-date-sticky-box{
+    height: 160rpx; position: relative; z-index: 20; padding: 0 20rpx;
+}
+.data-single-date-sticky{
+    padding: 60rpx 20rpx 0; font-size: 34rpx; font-weight: 500; height: 100rpx;
+    position: fixed; left: 0; right: 0; top: 0; z-index: 20; background-color: #f7f7f7;
+}
+.data-single-date-sticky.rel{
+    position: relative; top: 0 !important; left: -20rpx; right: 0;
+}
+.data-single-date-sticky ._filter{
+    position: absolute; right: 30rpx; top: 50rpx; font-size: 26rpx; font-weight: normal; padding: 20rpx 40rpx;
+}
+.data-single-date-sticky ._filter view, .data-single-date-sticky ._filter text{ display: inline-block; position: relative; }
+.data-single-date-sticky ._filter view::after, .data-single-date-sticky ._filter view::before{
+    content: ""; position: absolute; left: -30rpx; bottom: 8rpx; width: 4rpx; height: 22rpx; border-radius: 100rpx; background-color: #000000;
+    transform: skewX(-20deg);
+}
+.data-single-date-sticky ._filter view::before{ left: auto; right: -30rpx;}
+.data-single-date-sticky ._filter text::after, .data-single-date-sticky ._filter text::before{
+    content: ""; position: absolute; left: -50rpx; bottom: 12rpx; width: 4rpx; height: 12rpx; border-radius: 100rpx; background-color: #733429;
+    transform: skewX(-20deg);
+}
+.data-single-date-sticky ._filter text::before{ left: auto; right: -50rpx;}
+
+.data-single-date-sticky.rel ._filter{
+    right: -10rpx;
+}
+.data-single-date-m{
+    font-size: 40rpx; display: inline-block; vertical-align: middle;
+}
+.data-single-date-y{
+    font-size: 28rpx; margin-left: 20rpx; display: inline-block; color: #999999; vertical-align: bottom;
+}
+
+.data-single-time{
+    font-size: 24rpx;
+    color: #733429;
+    padding-bottom: 10rpx;
+}
+.data-single-time>text{ height: 40rpx; line-height: 40rpx;}
+.data-single-time ._k{
+    display: flex; align-items: center; font-size: 22rpx;
+}
+.data-single-time ._k .iconfont{ font-size: 28rpx; margin-top: 4rpx;}
+.data-single-del{ position: relative; }
+.data-single-del.mine{ border-right: 6rpx solid #733429; background-color:rgba(115, 52, 41, 0.1); position: relative;}
+.data-single-del.mine::after{ content: ""; position: absolute; width: 100%; height: 100%; left: 0; top: 0; z-index: -1; background-color: white;}
+.data-single-del.mine ._name{ color: #733429;}
+.data-single-del.mine ._cname, .data-single-del.mine ._num{ color: #666;}
+.data-single-del ._name{
+    font-size: 30rpx; margin-top: 20rpx;
+}
+.data-single-del ._cname{
+    margin-top: 10rpx;
+    font-size: 24rpx;
+}
+.data-single-del ._num{
+    margin-top: 15rpx;
+    font-size: 20rpx;
+    text-align: left;
+}
+.data-single-del ._num text{ margin-right: 60rpx;}
+.data-single-del ._star{
+    position: absolute; right: 25rpx; top: 15rpx; z-index: 10; color: #ff3e02; text-shadow: 0 10rpx 25rpx rgba(255, 62, 2, 0.3);
+}
+.data-single-del ._star .iconfont{ font-size: 45rpx; }
+.tr-info image{
+    width: 36rpx; height: 36rpx; border-radius: 100rpx;
+}
+.tr-info text{
+    margin-left: 10rpx; font-size: 24rpx;
+}
+.tr-oper{
+    position: absolute; right: 10rpx; top: 0; bottom: 0; display: flex; justify-content: center; align-items: center; color: #ddd;
+}
+.tr-oper ._k{
+    display: inline-block; padding: 20rpx;
+}
+.tr-oper ._k text{ display: inline-block; vertical-align: middle;}
+.tr-oper .iconfont{
+    font-size: 34rpx;
+}
+.tr-oper ._p{
+    color: black;
+}
+
+.nodate{ text-align: center; padding: 0 20rpx; font-size: 24rpx; color: #999;}
+.nomore{ text-align: center; padding: 20rpx; font-size: 24rpx; color: #999;}

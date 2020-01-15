@@ -1,0 +1,179 @@
+/**index.wxss**/
+page{
+  background-color: white;
+}
+
+.sticky-classify{
+  position: relative;
+  width: 100%;
+  z-index: 99;
+  height: 40px;
+  margin-top: 20rpx;
+}
+.sticky-classify-insert{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  display: flex;
+  justify-content:space-between;
+
+}
+
+.sticky-tab-box{
+  background-color: #FFFFFF;
+  flex:1;
+  text-align: left;
+  width: calc(100% - 50px);
+}
+
+.sticky-img{
+  display: block;
+  width: 100vw;
+  height: auto;
+}
+
+.sticky-del{
+  position: relative;
+  top: 35px;
+  display: block;
+  color: black;
+  text-align: left;
+  width: 100%;
+  height: calc(100vh - 35px);
+}
+
+.sticky-tab-single-box{
+  text-align: left;
+  vertical-align: top;
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: flex-end;
+  white-space:nowrap;
+}
+.sticky-tab-single{
+  display: inline-block; vertical-align: top; padding: 0 30rpx; order:0; position: relative; color: #000; font-size: 28rpx;
+}
+.sticky-tab-single::after{
+  content: "/";
+  color: #abaaaa;
+  font-size: 10px;
+  position: absolute;
+  right: 0rpx;
+  top: 0;
+}
+.sticky-tab-single:last-child::after{
+  content: "";
+}
+.sticky-tab-single.active{
+  color: #733429;
+  position: relative;
+  font-size: 34rpx;
+  padding: 0 60rpx;
+}
+.sticky-tab-single::before{
+  content: ""; position: absolute; left: 50%; margin: 0 auto; bottom: 0; width: 0; height: 6rpx; border-radius: 10rpx; background-color: #733429; transition: all 0.2s ease-out;
+}
+.sticky-tab-single.active::before{
+  width: 30%; left: 35%;
+}
+
+.search-icon{
+  line-height: 70rpx;
+  height: 30rpx;
+  width: 30rpx;
+  display: inline-block;
+  font-size: 40rpx;
+}
+.store-content-title{ text-align: center; font-size: 20px; padding-bottom: 20px; padding-top: 20px;}
+
+/*
+* book
+*/
+.index-book-box{
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  width: 25vw;
+  margin-left: 4vw;
+  margin-right: 4vw;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  position: relative;
+}
+.index-book-box::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6rpx;
+  width: 100%;
+  height: 14rpx;
+  border-radius: 100rpx 0 0 100rpx;
+  background-color: white;
+  border: 1rpx solid #e6e6e6;
+  box-sizing: border-box;
+  z-index: 10;
+  box-shadow: 0 0 6rpx rgba(0, 0, 0, 0.1) inset;
+}
+
+.index-book-box ._book{
+  padding: 0;border: 0; outline: none;
+  margin: 0;
+  width: 25vw;
+  line-height: 0;
+  border-radius: 0 0 0 10rpx;
+  box-shadow: 0 18px 20px -16px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.index-book-box ._book::after{
+  width: 4px;
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0px;
+  height: 100%;
+  z-index: 10;
+  background-image: linear-gradient(
+          to right,
+          rgba(255,255,255, 0) 0%,
+          rgba(255,255,255, 0.3) 50%,
+          rgba(255,255,255, 0) 100%)
+}
+.index-book-box ._book::before{
+  width: 6%;
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  z-index: 6;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 0 20rpx;
+}
+.index-book-box ._book image{
+  padding: 0; border: 0; outline: none;
+  margin: 0;
+  width: 100%;
+  height: 33.33vw;
+  line-height: 0;
+  overflow: inherit;
+}
+.index-book-box ._name{
+  margin-top: 30rpx;
+  display: block;
+  font-size: 24rpx;
+  height: 70rpx;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+
+}
+.index-book-box ._intro{
+  display: block;
+  line-height: 1;
+  color: #dbdbdb;
+  font-size: 12px;
+}

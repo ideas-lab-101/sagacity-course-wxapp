@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "",
+  "backgroundColor": "#f0f0f0",
+  "navigationBarBackgroundColor": "#FFF",
+  "navigationBarTextStyle": "black",
+  "disableScroll": false,
+  "usingComponents": {
+    "wu-play-widget": "/components/wu/playWidget/index",
+    "share": "/components/pages/share/index"
+  }
+}

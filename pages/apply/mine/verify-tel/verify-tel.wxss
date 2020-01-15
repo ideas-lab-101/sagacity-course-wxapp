@@ -1,0 +1,35 @@
+page{
+    background-color: #f7f7f7;
+}
+
+.vt-code{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.vt-code wux-input{
+    flex: 1;
+}
+.vt-code text{
+    width: 200rpx; display: inline-block; text-align: center; font-size: 30rpx; background-color: #eee; height: 70rpx; line-height: 70rpx;
+}
+.vt-btn{
+    text-align: center; padding: 25rpx; border-radius: 6rpx; border: 0 !important; background-color: #fa9606 !important; color: white !important;
+    line-height: 1.4;
+}
+.vt-btn.sel{
+    background-color: #34ac10 !important;
+}
+.vt-c{
+    display: block;
+}
+.vt-single{
+    margin-bottom: 30rpx;
+}
+.vt-single:last-child{
+    margin-bottom: 0;
+}
+
+.vt-j{
+    padding: 40rpx 20rpx 0;
+}

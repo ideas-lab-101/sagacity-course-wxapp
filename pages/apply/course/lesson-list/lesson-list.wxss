@@ -1,0 +1,136 @@
+/* pages/lesson-list/lesson-list.wxss */
+.data-single {
+  text-align: left;
+  padding-bottom: 30rpx;
+  padding-top: 30rpx;
+  border-bottom: 1rpx solid #ebeaea;
+}
+.data-single:last-child{ border-bottom: 0;}
+.data-single ._content{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 33.33vw;
+  color: black;
+  font-size: 28rpx;
+  padding-right: 20rpx;
+  padding-left: 10rpx;
+  position: relative;
+}
+.data-single ._content .content_title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 34rpx;
+  margin-top: 10rpx;
+}
+.data-single ._content .content_desc{
+  margin-top: 20rpx;
+  font-size: 22rpx;
+  line-height: 1.7;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp: 3;
+  overflow:hidden;
+  color: #666;
+}
+.data-single ._content .content_m{
+  display: flex;
+  justify-content: space-between;
+  font-size: 20rpx;
+  color: #999;
+}
+
+.content-nodata{
+  text-align: center;
+  font-size: 22rpx;
+  color: #999;
+  padding: 20rpx;
+  background-color: #fbfbfb;
+}
+
+/*
+* book
+*/
+.index-book-box{
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  width: 25vw;
+  margin-left: 4vw;
+  margin-right: 4vw;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  position: relative;
+}
+.index-book-box::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6rpx;
+  width: 100%;
+  height: 14rpx;
+  border-radius: 100rpx 0 0 100rpx;
+  background-color: white;
+  border: 1rpx solid #e6e6e6;
+  box-sizing: border-box;
+  z-index: 10;
+  box-shadow: 0 0 6rpx rgba(0, 0, 0, 0.1) inset;
+}
+
+.index-book-box ._book{
+  line-height: 0;
+  background-color: rgba(0,0,0, 0.1);
+  border-radius: 0 0 0 10rpx;
+  box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.index-book-box ._book::after{
+  width: 4px;
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0px;
+  height: 100%;
+  z-index: 10;
+  background-image: linear-gradient(
+          to right,
+          rgba(255,255,255, 0) 0%,
+          rgba(255,255,255, 0.4) 50%,
+          rgba(255,255,255, 0) 100%)
+}
+.index-book-box ._book::before{
+  width: 6%;
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  z-index: 6;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 0 20rpx;
+}
+.index-book-box ._book image{
+  width: 25vw;
+  height: 33.33vw;
+  line-height: 0;
+}
+.index-book-box ._name{
+  margin-top: 30rpx;
+  display: block;
+  font-size: 24rpx;
+  height: 70rpx;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+
+}
+.index-book-box ._intro{
+  display: block;
+  line-height: 1;
+  color: #dbdbdb;
+  font-size: 12px;
+}

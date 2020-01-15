@@ -1,3 +1,6 @@
+.wux-backdrop {
+  background: rgba(0,0,0,.4)
+}
 .wux-backdrop,
 .wux-backdrop--transparent {
   position: fixed;
@@ -5,18 +8,8 @@
   top: 0;
   right: 0;
   left: 0;
-  bottom: 0;
+  bottom: 0
 }
-
-.wux-backdrop-insert{
-  width: 100%;
-  height: 100%;
-}
-
-.wux-backdrop .wux-backdrop-insert{
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.wux-backdrop--transparent .wux-backdrop-insert{
-  background: transparent !important;
+.wux-backdrop--transparent {
+  background: 0 0
 }

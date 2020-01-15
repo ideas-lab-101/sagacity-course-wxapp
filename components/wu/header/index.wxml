@@ -1,0 +1,10 @@
+<view class="header-container">
+    <image wx:if="{{src}}" lazy-load
+           class="_images"
+           mode="aspectFill" src="{{src}}"
+           style="{{wrapStyle}}"
+           binderror="__imageError"></image>
+    <view wx:else class="_text" style="{{wrapStyle}}">
+        {{wrapText}}
+    </view>
+</view>

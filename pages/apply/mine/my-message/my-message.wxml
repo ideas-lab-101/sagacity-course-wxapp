@@ -1,0 +1,35 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wxs src="./my-message.wxs" module="moduleMyMessage" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="未读消息"></wu-navigation>
+
+  <view class="message-con">
+
+    <view wx:if="{{msg.list.length>0}}">
+
+      <view wx:for="{{msg.list}}">
+
+        <view wx:if="{{item.DataType === 'record'}}" class="message-single" bindtap="cancelReadEvent" data-index="{{index}}">
+
+            <view class="_content">{{item.Content}}</view>
+            <view class="_info flex between">
+              <view>
+                <image src="{{item.avatar_url}}" mode="aspectFill" lazy-load class="_image"></image>
+                <text>{{item.Caption}}</text>
+              </view>
+              <text class="_time">{{moduleMyMessage.resolveTime(item.AddTime)}}</text>
+            </view>
+
+        </view>
+
+      </view>
+
+      <view class="nomore" wx:if="{{pager.lastPage}}">额，数据到底了</view>
+    </view>
+    <view wx:else class="nodate">额，您暂时还没有未读消息</view>
+
+  </view>
+
+</view>

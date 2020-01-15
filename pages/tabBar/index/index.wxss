@@ -1,6 +1,11 @@
-
+.index-background{
+    background: url('https://sagacity-course-000019.tcb.qcloud.la/system/nav_bg.jpeg?sign=bf06e616a6978a65e20bec6a8b5ff9ac&t=1537258809') no-repeat center top;
+    background-size: 100% auto;
+}
 .logo-box{
     padding: 70rpx 20rpx 20rpx;
+    background:url('https://sagacity-course-000019.tcb.qcloud.la/system/logo_bg.png?sign=0cea607b69408e67736996c54a0628ea&t=1536819184&date=20180918') no-repeat 60rpx 90%;
+    background-size: 40% auto;
 }
 .logo{
     width: 180rpx;
@@ -67,13 +72,6 @@ swiper-item{ overflow: initial;}
     margin-top: 30rpx;
 }
 .slide-container{ position: relative;}
-.swiper-dots{
-    position: absolute;
-    right: 10rpx;
-    bottom: 120rpx;
-    z-index: 99;
-    color: white;
-}
 
 .section-box{
     padding-top: 70rpx;

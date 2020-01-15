@@ -1,15 +1,15 @@
 /**
  * 表单验证
- * 
+ *
  * @param {Object} rules 验证字段的规则
  * @param {Object} messages 验证字段的提示信息
- * 
+ *
  */
 class WxValidate {
 	constructor(rules = {}, messages = {}) {
 		Object.assign(this, {
-			rules, 
-			messages, 
+			rules,
+			messages,
 		})
 		this.__init()
 	}
@@ -88,7 +88,7 @@ class WxValidate {
 			 * 验证手机格式
 			 */
 			tel(value) {
-				return that.optional(value) || /^1[34578]\d{9}$/.test(value)
+				return that.optional(value) || /^1[3456789]\d{9}$/.test(value)
 			},
 			/**
 			 * 验证URL格式
@@ -275,7 +275,7 @@ class WxValidate {
 	defaultMessage(param, rule) {
 		let message = this.customMessage(param, rule) || this.defaults.messages[rule.method]
 		let type = typeof message
-		
+
 		if (type === 'undefined') {
 			message = `Warning: No message defined for ${rule.method}.`
 		} else if (type === 'function') {
@@ -295,9 +295,9 @@ class WxValidate {
 		let msg = this.defaultMessage(param, rule)
 
 		this.errorList.push({
-			param: param, 
-			msg: msg, 
-			value: value, 
+			param: param,
+			msg: msg,
+			value: value,
 		})
 	}
 
@@ -323,14 +323,14 @@ class WxValidate {
 			if (this.isValidMethod(method)) {
 
 				// 缓存规则的属性及值
-				const rule = { 
-					method: method, 
-					parameters: rules[method] 
+				const rule = {
+					method: method,
+					parameters: rules[method]
 				}
 
 				// 调用验证方法
 				const result = this.methods[method](value, rule.parameters)
-				
+
 				// 若result返回值为dependency-mismatch，则说明该字段的值为空或非必填字段
 				if (result === 'dependency-mismatch') {
 					continue
@@ -353,12 +353,12 @@ class WxValidate {
 	 */
 	setView(param) {
 		this.form[param] = {
-			$name: param, 
-			$valid: true, 
-			$invalid: false, 
-			$error: {}, 
-			$success: {}, 
-			$viewValue: ``, 
+			$name: param,
+			$valid: true,
+			$invalid: false,
+			$error: {},
+			$success: {},
+			$viewValue: ``,
 		}
 	}
 

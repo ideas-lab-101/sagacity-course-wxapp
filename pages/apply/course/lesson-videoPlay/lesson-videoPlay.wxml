@@ -1,0 +1,84 @@
+<!--play.wxml-->
+<import src="/components/wxParse/wxParse.wxml" />
+<wu-loading id="wu-loading"></wu-loading>
+<wu-toast id="wu-toast"></wu-toast>
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="{{info.data.DataName}}" backgroundColor="#000" color="white"></wu-navigation>
+
+  <view class="play-video" id="play-video">
+      <video src="{{resource.DataURL}}"   controls="{{videoControls}}"
+             show-center-play-btn="{{videoShowCenterPlayBtn}}"
+             autoplay="{{videoAutoplay}}"
+             class="play-video-style"
+             id="video-player"
+             data-id="{{info.data.DataID}}"
+             bindplay="videoPlayEvent"
+             bindended="videoEndEvent"
+             binderror="videoErrEvent">
+            <cover-view class="play-video-control" wx:if="{{!videoControls}}">
+              <cover-image class="_img" src="/assets/images/play.png" catchtap="tipEvent"/>
+            </cover-view>
+      </video>
+  </view>
+
+  <scroll-view scroll-y style="height: {{scrollHeight}}"  bindscrolltolower="lessonScollTolowerEvent">
+
+    <view class="relative">
+      <view class="play-operration">
+        <view class="_opera" hover-class="event-hover-class-view"  bindtap="openDraftEvent"><text class="iconfont icon-info"></text> 介绍</view>
+        <view>
+          <view class="collect _opera" hover-class="event-hover-class-view" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text> 收藏</view>
+          <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text> 已收藏</view>
+          <button plain class="event-hover-class share _opera" open-type="share"><text class="iconfont icon-chakantiezifenxiang"></text> 分享</button>
+        </view>
+      </view>
+
+      <view class="play-video-lessonName">{{info.data.LessonName}} <image src="{{info.data.CoverURL}}" mode="aspectFill"  bindtap="turnBackPageEvent"></image></view>
+      <view class="play-video-dataName">{{info.data.DataName}}</view>
+
+      <view class="play-section">
+        <view class="play-section-title"><text>目录</text></view>
+        <!--目录-->
+        <view class="catalog-single {{!info.is_enroll && lesson.openState === 0?'desabled':''}}" wx:for="{{lesson.list}}" wx:key="{{i}}" wx:for-index="i" wx:for-item="lesson">
+          <text class="_title">{{lesson.LessonName}} <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.openState===0) || (!info.is_enroll && lesson.openState === 0))}}"></text></text>
+          <view class="_list {{(item.DataID===info.data.DataID) && ((!info.is_enroll && lesson.openState===1) || info.is_enroll)?'active':''}}"
+                wx:for="{{lesson.LessonData}}"
+                bindtap="changeVideoEvent"
+                data-openState="{{lesson.openState}}"
+                data-id="{{item.DataID}}">
+            <view class="__dataName">
+              <text class="iconfont icon-htmal5icon46" hidden="{{!(!info.is_enroll && lesson.openState === 0)}}"></text>
+              <text class="iconfont icon-bofang font-12" hidden="{{item.DataID===info.data.DataID? false:true}}"></text> {{item.DataName}}
+            </view>
+            <view class="__dataType">
+              <text class="iconfont icon-yinpin" wx:if="{{item.DataType === 'audio'}}"></text>
+              <text class="iconfont icon-shipin" wx:elif="{{item.DataType === 'video'}}"></text>
+              <text wx:else></text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </scroll-view>
+
+</view>
+
+
+<wu-backdrop id="wu-backdrop" bind:click="closeDraftEvent" />
+<wu-animation-group wux-class="draft-frame" in="{{ in }}" class-names="wux-animate--slideInUp">
+  <view class="_insert" catchtap="true">
+    <view class="draft-frame-fixTitle flex between">
+      <text class="_l">介绍</text>
+      <text catchtap="closeDraftEvent" class="_r event-hover-class"><text class="iconfont icon-guanbi font-18"></text></text>
+    </view>
+    <scroll-view scroll-y style="height:  600rpx;">
+      <!--详情-->
+      <view class="draft-frame-s">
+        <template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+      </view>
+    </scroll-view>
+  </view>
+</wu-animation-group>

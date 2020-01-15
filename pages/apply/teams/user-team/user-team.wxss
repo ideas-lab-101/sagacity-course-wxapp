@@ -1,0 +1,112 @@
+page{
+    background-color: #f7f7f7;
+}
+.container{
+    padding: 60rpx 40rpx; height: calc(100% - 60px);
+}
+.ut-container{
+    padding: 40rpx; background-color: white; box-shadow:0 8rpx 50rpx rgba(0, 0, 0, 0.04); height: calc(100% - 40px);
+}
+
+.ut-userinfo{
+     display: flex; align-items: center; flex-direction: column;
+}
+.ut-userinfo image{
+    width: 100rpx; height: 100rpx; border-radius: 500rpx;
+}
+
+.ut-userinfo ._name{
+    font-size: 38rpx; font-weight: 500; margin-top: 40rpx; color: black; position: relative;
+}
+.ut-userinfo ._name ._f{
+    position: absolute; right: -90rpx; bottom: 6rpx;
+}
+
+.ut-teamname{
+    margin-top: 160rpx; display: flex; align-items: center; font-weight: 500; font-size: 45rpx; justify-content: center;
+}
+.ut-teamname .iconfont{ font-size: 60rpx;}
+.ut-teamdesc{
+    font-size: 28rpx; margin-top: 40rpx; text-align: center;
+}
+.ut-teammembers{
+    margin-top: 80rpx; align-items: center; display: flex; flex-direction: column;
+}
+.ut-teammembers>._title{ font-size: 24rpx; display: inline-block; margin-bottom: 20rpx;}
+.ut-teammembers-d{
+    display: flex;
+    align-items: center;
+}
+.ut-teammembers-d image{
+    width: 60rpx; height: 60rpx; border-radius: 100rpx;
+}
+.ut-teammembers-d>text{
+    margin-left: 20rpx; font-size: 28rpx;
+}
+.ut-link{
+     margin-top: 60rpx;
+}
+.ut-link view{
+    background-color: #733429; color: white; padding: 20rpx; text-align: center; font-size: 34rpx; margin-bottom: 20rpx; border-radius: 6rpx;
+}
+.ut-link ._l{
+    background-color: #f7f7f7 !important; color: black !important; border: 0!important; text-align: center; font-size: 34rpx;border-radius: 6rpx;
+}
+
+.ut-team-other{
+    padding: 40rpx 0; margin-top: 60rpx;
+}
+
+.ut-team-rz{ font-size: 22rpx; color: #999999; display: flex; align-items: center; justify-content: center;}
+.ut-team-rz .iconfont{ font-size: 30rpx; margin-right:10rpx;}
+
+/****************/
+.attestation-layer{
+    position: fixed;
+    z-index: 1100;
+    width: 100%;
+    top: 26%;
+}
+.attestation-layer>._insert{
+    background-color: white;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    padding: 40rpx;
+}
+.attestation-layer ._link text{
+    flex: 1;
+    padding: 20rpx 0;
+    text-align: center;
+}
+.attestation-layer  ._input{
+    font-size: 30rpx;
+    padding: 15rpx 0;
+}
+.attestation-layer  ._s{
+    border-bottom: 1rpx solid rgba(0, 0, 0, 0.2);
+}
+.attestation-layer  ._pro{
+    display: flex; align-items: center;
+}
+.attestation-layer  ._pro ._input{ flex: 1; }
+.attestation-layer  ._pro .iconfont{ color: #999999;}
+
+.profile-layer{
+    position: fixed;
+    z-index: 1200;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: white;
+}
+.profile-single{
+    border-bottom: 1rpx solid #eee; padding: 30rpx; display: flex; align-items: center;
+    font-size: 30rpx;
+}
+.profile-single ._n{ color: #999999; font-size: 26rpx; margin-left: 60rpx;}
+.profile-single.active{ background-color: #eee; }
+.profile-layer ._oper view{ display: flex; align-items: center; padding: 0 30rpx;}
+.profile-layer ._oper text{ padding: 0 10rpx; height: 90rpx; line-height: 90rpx; display: inline-block; color: #999999;}
+.profile-layer ._oper text:last-child{ color: #45a714; }
+.profile-layer ._oper .iconfont{ padding: 0;}

@@ -1,0 +1,110 @@
+<wu-toast id="wu-toast" />
+<wu-loading id="wu-loading" />
+
+
+<wu-navigation title="{{nav.title}}"
+            transparent="{{nav.transparent}}"
+            model="{{nav.model}}"
+            animation="{{nav.animation}}" />
+
+<view class="rep-container" hidden="{{!loadData}}">
+
+    <view class="rep-container-info" wx:if="{{result}}" catchtouchmove="{{false}}">
+
+
+        <view class="rep-del-img" bindtap="recordPlayEvent">
+            <view class="_image {{tryParams.isPlay?'active':''}}"><image src="{{userData.avatar_url}}" mode="aspectFill"></image></view>
+            <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay}}"></text>
+            <text class="iconfont icon-weibiaoti519" wx:else></text>
+        </view>
+
+        <view class="rep-del-font">
+            <view class="_caption">{{userData.Label || userData.Caption}}</view>
+            <view class="_name">{{recordData.Name}}</view>
+            <view class="_desc">{{recordData.Desc}}</view>
+        </view>
+
+        <view class="rep-del-eye">
+            <view wx:if="{{recordData.mode === 1}}"><text class="iconfont icon-biyan"></text> 背诵</view>
+            <view wx:else><text class="iconfont icon-yanjing"></text> 朗诵</view>
+        </view>
+
+        <view class="rep-del-slider">
+            <audio-play id="audioPlay"
+                        bind:audioEventPlay="audioEventPlay"
+                        bind:audioEventPause="audioEventPause"
+                        bind:audioEventStop="audioEventStop"
+                        bind:audioEventEnd="audioEventEnd"
+                        bind:audioEventDestroy="audioEventDestroy"
+                        bind:audioEventError="audioEventError"></audio-play>
+        </view>
+        <!--<view class="rep-del-slider" catchtouchmove="{{false}}">
+            <text>{{slider.current}}</text>
+            <slider bindchange="sliderChangeEvent"
+                    min="0" max="100"
+                    backgroundColor="#e9e9e9"
+                    block-size="14"
+                    block-color="#000000"
+                    activeColor="#000000"
+                    disabled="{{slider.disabled}}"
+                    value="{{slider.value}}"/>
+            <text>{{slider.duration}}</text>
+        </view>-->
+
+
+        <view class="rep-fix-bottom">
+            <view class="rep-replay-l">
+                <view class="_l" wx:if="{{recordData.likeCount > 0}}">
+                    <view  wx:for="{{likes}}" class="_image" wx:key="{{index}}"><image src="{{item.avatar_url}}" mode="aspectFill"></image></view>
+                    <view class="_num">{{recordData.likeCount}}次赞</view>
+                </view>
+            </view>
+            <view class="rep-in flex around">
+                <view wx:if="{{!is_like}}" catchtap="likeEvent" class="flex"><text class="iconfont icon-zan"></text> <text class="_ff"></text></view>
+                <view wx:else class="color-danger flex"><text class="iconfont icon-liked"></text> <text class="_ff"></text></view>
+                <view wx:if="{{recordData.blnMark === 0}}" catchtap="markEvent"><text class="iconfont icon-shoucang6"></text></view>
+                <view wx:else catchtap="markEvent" class="color-danger"><text class="iconfont icon-collect-on"></text></view>
+                <rich-text nodes="{{common.filterText(recordData.viewCount)}}"></rich-text>
+            </view>
+        </view>
+    </view>
+
+    <view class="rep-no" wx:else>
+        <view class="rep-top">
+           <view class="rep-top-header">
+                <view><image src="https://sagacity-course-000019.tcb.qcloud.la/system/sagacity_course.png?sign=f0a80cd2027f5e0a96b65f1148ffba0d&t=1536822613" mode="aspectFill"></image></view>
+            </view>
+            <view class="_desc">此作品已经失效了！</view>
+        </view>
+        <view class="_font">
+            <image src="https://sagacity-course-000019.tcb.qcloud.la/system/logo.png?sign=be4728f963782c5f1631ed25968716c3&t=1536819163" mode="widthFix" class="login-logo"></image>
+        </view>
+    </view>
+
+</view>
+
+
+<wxs module="common">
+    var filterText = function (val){
+        if (!val || val == 0) {
+            return '你抢到沙发了！'
+        }
+        if (val >= 9999) {
+            val = '9999+'
+        }
+        return [{
+            name: 'span',
+            attrs: {
+            class: '',
+            style: 'font-size: 14px;'
+            },
+            children: [{
+            type: 'text',
+            text: val+'次观看'
+            }]
+        }]
+    }
+    module.exports = {
+        filterText: filterText
+    }
+</wxs>

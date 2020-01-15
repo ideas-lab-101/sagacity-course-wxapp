@@ -1,0 +1,37 @@
+page{
+    background-color: #f7f7f7;
+}
+
+.message-single{
+    position: relative;
+    margin: 20rpx 40rpx;
+    background-color: white;
+    border-radius: 10rpx;
+    padding: 40rpx;
+}
+
+.message-single>._content{
+    line-height: 1.8;
+    font-size: 30rpx;
+}
+.message-single>._info{
+    position: relative;
+    margin-top: 20rpx;
+}
+.message-single>._info ._time{
+    font-size: 24rpx;
+    color: #999999;
+}
+.message-single>._info>view{
+    display: flex; align-items: center;
+}
+.message-single>._info ._image{
+    width: 50rpx;
+    height: 50rpx;
+    border-radius: 200rpx;
+    margin-right: 10rpx;
+}
+
+
+.nodate{ text-align: center; padding: 50rpx 30rpx; font-size: 24rpx; color: #999;}
+.nomore{ text-align: center; padding: 20rpx; font-size: 24rpx; color: #999;}

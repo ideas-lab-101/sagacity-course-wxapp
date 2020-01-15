@@ -1,0 +1,33 @@
+<!--play.wxml-->
+<wu-loading id="wu-loading"></wu-loading>
+<wu-toast id="wu-toast"></wu-toast>
+<import src="/components/wxParse/wxParse.wxml" />
+
+
+<view wx:if="{{webViewUrl}}">
+    <web-view src="{{webViewUrl}}"></web-view>
+</view>
+
+<view class="container" wx:else>
+
+    <wu-navigation id="wu-navigation" title="{{nav.title}}"
+                   transparent="{{nav.transparent}}"
+                   model="{{nav.model}}"
+                   animation="{{nav.animation}}">
+    </wu-navigation>
+
+    <view class="doc-box">
+        <!--详情-->
+        <template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+    </view>
+
+    <view class="doc-fixed">
+        <button class="_s" open-type="share" plain>
+            <text class="iconfont icon-chakantiezifenxiang"></text>
+            <text>分享</text>
+        </button>
+    </view>
+</view>
+
+
+

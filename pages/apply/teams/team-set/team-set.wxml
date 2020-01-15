@@ -1,0 +1,55 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wu-toast id="wu-toast"></wu-toast>
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="{{nav.title}}"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}">
+  </wu-navigation>
+
+  <view>
+
+    <view class="set-single flex between" hover-class="event-hover-class-view" bindtap="openAttestationEvent">
+      <text>我在本组的昵称</text>
+      <view class="_r">
+        <text>{{attestation.temp}}</text>
+        <text class="iconfont icon-zuo"></text>
+      </view>
+    </view>
+    <view class="set-single flex between" wx:if="{{blnAuth === 1}}">
+      <text>关联档案</text>
+      <view class="_r">
+        <text>{{attestation.profileName}}</text>
+      </view>
+    </view>
+
+    <!--<view class="set-single flex between" hover-class="event-hover-class-view" bindtap="openStatisticalEvent" wx:if="{{isCreator === 'true'}}">
+      <text>组数据管理</text>
+    </view>-->
+
+    <view class="set-link">
+      <view class="set-exit" catchtap="exitEvent">退出小组</view>
+    </view>
+
+
+  </view>
+
+</view>
+
+
+<!--设置昵称-->
+<wu-backdrop id="wu-backdrop" bind:click="closeAttestationEvent" />
+<wu-animation-group wux-class="attestation-layer" in="{{ in }}" class-names="wux-animate--fadeInDown">
+  <view class="_insert">
+    <text class="font-12 color-999">修改我在本组的昵称</text>
+    <view class="mt-15">
+      <input placeholder="李白晚辈" class="_input" focus="{{attestation.focus}}" bindinput="attestationSubEvent" bindconfirm="attestationSubEvent" value="{{attestation.inp}}"/>
+    </view>
+    <view class="mt-15 _link flex around">
+      <text catchtap="closeAttestationEvent" hover-class="event-hover-class-view">取消</text>
+      <text catchtap="subAttestationEvent" class="color-Primary" hover-class="event-hover-class-view">修改</text>
+    </view>
+  </view>
+</wu-animation-group>

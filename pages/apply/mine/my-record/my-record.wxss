@@ -1,0 +1,254 @@
+page{
+    background-color: white;
+}
+.MarkDown{ position: relative; z-index: 9999 !important;}
+.nodate{ text-align: center; padding: 50rpx 30rpx; font-size: 24rpx; color: #999;}
+.nomore{ text-align: center; padding: 20rpx; font-size: 24rpx; color: #999;}
+
+.mine-userRecord-tip{
+    padding: 20rpx 30rpx;
+    background-color: rgba(115, 52, 41, 0.1);
+    font-size: 28rpx;
+    color: #733429;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mine-userRecord-tip .iconfont{ margin-left: 40rpx;}
+
+.mine-userRecord-box{
+    padding: 70rpx 40rpx 40rpx;
+}
+.mine-userRecord-single{
+    margin-bottom: 120rpx;
+    background-color: #f7f7f7;
+    font-size: 32rpx;
+    position: relative;
+    box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+.mine-userRecord-single:last-child{
+    margin-bottom: 40rpx;
+}
+.mine-userRecord-single.active{
+    background-color: rgba(115, 52, 41, 0.15);
+}
+.mine-userRecord-single.public{
+    background-color: rgba(115, 52, 41, 0.15);
+}
+.mine-userRecord-single>._insert{
+    position: relative; z-index: 10; padding: 30rpx 20rpx 20rpx;
+}
+.mine-userRecord-single>._panel{
+    background-color: white; padding-top: 10rpx;
+}
+.mine-userRecord-single ._linkto{
+    margin-left: 140rpx;
+    padding-left: 10rpx;
+}
+.mine-userRecord-single ._name{
+    font-size: 30rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.mine-userRecord-single ._desc{
+    font-size: 22rpx;
+    color: #999;
+    display: flex;
+    align-items: center;
+    margin-top: 10rpx;
+    position: relative;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.mine-userRecord-count{font-size: 22rpx;color: #999; padding: 15rpx 40rpx;}
+.mine-userRecord-count ._s{ vertical-align: middle; display: inline-block; margin-right: 40rpx;}
+.mine-userRecord-count ._s:last-child{ margin-right: 0;}
+
+
+.mine-userRecord-single ._time{
+    position: absolute; right: 0; top: -45rpx; font-size: 22rpx; color: #999;
+}
+
+/*光盘*/
+.mine-userRecord-single-crile{
+    position: absolute; left: 10rpx; top: -40rpx; z-index: 10; border-radius: 400rpx; overflow: hidden;
+    box-shadow: 0 8rpx 15rpx rgba(0, 0, 0, 0.1);
+}
+.mine-userRecord-single-crile ._image{
+    width: 140rpx; height: 140rpx; border-radius: 400rpx; overflow: hidden;
+}
+.mine-userRecord-single-crile ._image.active{
+    -webkit-animation:tryRotate 20s linear forwards infinite;
+    animation:tryRotate 20s linear forwards infinite;
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+}
+.mine-userRecord-single-crile ._image.active.paused{
+    -webkit-animation-play-state:paused;
+    animation-play-state:paused;
+}
+@-webkit-keyframes tryRotate{
+    0%{-webkit-transform: rotate(0deg);}
+    100%{-webkit-transform: rotate(360deg);}
+}
+@keyframes tryRotate{
+    0%{-webkit-transform: rotate(0deg);}
+    100%{-webkit-transform: rotate(360deg);}
+}
+
+.mine-userRecord-single-crile::after,.mine-userRecord-single-crile::before{
+    display: inline-block; content: "";
+    width: 40rpx; height: 40rpx; background-color: #f7f7f7; border-radius: 50rpx;
+    position: absolute; z-index: 10; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%);
+}
+.mine-userRecord-single-crile::after{
+    border: 1rpx solid white;
+}
+.mine-userRecord-single-crile::before{
+    width: 57rpx; height: 57rpx; background-color: rgba(0, 0, 0, 0.3);
+}
+.mine-userRecord-single-crile .iconfont{
+    position: absolute; z-index: 20; left: 51%; top: 50%; transform: translateX(-50%) translateY(-50%);
+    font-size: 24rpx;
+}
+
+/***************/
+.bs-single{
+    position: absolute; left: 10rpx; top: -40rpx; z-index: 10;
+    display: inline-block;
+    vertical-align: middle;
+}
+.bs-single>._insert{
+    padding-right: 30rpx; display: inline-block;
+}
+.bs-single ._image{
+    display: inline-block;
+    position: relative;
+    z-index: 10;
+    border-left: 6rpx solid #000;
+}
+.bs-single ._image::after{
+    position: absolute; content: ""; z-index: -2; background-image: -webkit-linear-gradient(top, black, #7b7b7b, black);
+    border-radius: 500rpx; width: 90rpx; height: 90rpx; right: -28rpx; top: 15rpx; box-shadow: 8rpx 10rpx 12rpx -8rpx rgba(0, 0, 0, 0.3);
+    transition: right 0.3s;
+}
+.bs-single ._image::before{
+    position: absolute; content: ""; z-index: -1; background-image: -webkit-linear-gradient(top, #733429, #c15745, #733429);
+    border-radius: 500rpx; width: 40rpx; height: 40rpx; right: -8rpx; top: 40rpx;
+    box-shadow: 0 0 4rpx rgba(0, 0, 0, 0.3);
+    transition: right 0.3s;
+}
+
+.bs-single ._image>view{
+    position: relative; padding: 0; display: inline-block; box-shadow: 0 12rpx 16rpx -6rpx rgba(0, 0, 0, 0.2);
+}
+.bs-single ._image>view::after,.bs-single ._image>view::before{
+    position: absolute; content: ""; width: 1rpx; background-color: #eaeaea;
+    height: 100%; left: 0rpx; top: 0; z-index: 1;
+}
+.bs-single ._image>view::before{
+    left: auto; right: 0rpx;
+}
+.bs-single ._image image{
+    width: 120rpx;
+    height: 120rpx;
+    position: relative;
+}
+.bs-single ._image .iconfont{
+    position: absolute; left: 50%; top:50%; transform: translate(-50%,-50%); z-index: 15; color: white; font-size: 32rpx;
+}
+.bs-single ._image.active::after{
+    right: -48rpx;
+}
+.bs-single ._image.active::before{
+    right: -26rpx; box-shadow: none;
+}
+.bs-single ._image.active::after, .bs-single ._image.active::before{
+    -webkit-animation:tryRotate01 20s linear forwards infinite;
+    animation:tryRotate01 20s linear forwards infinite;
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+}
+.bs-single ._image.active::after.paused{
+    -webkit-animation-play-state:paused;
+    animation-play-state:paused;
+}
+@-webkit-keyframes tryRotate01{
+    0%{-webkit-transform: rotate(0deg);}
+    100%{-webkit-transform: rotate(360deg);}
+}
+@keyframes tryRotate01{
+    0%{-webkit-transform: rotate(0deg);}
+    100%{-webkit-transform: rotate(360deg);}
+}
+/*光盘*/
+
+
+.mine-userRecord-single>._panel ._oper{
+ color: #000; overflow: hidden;
+}
+.mine-userRecord-single>._panel ._oper ._d{
+    display: flex; align-items: center; background-color: white; justify-content: space-between;
+}
+.mine-userRecord-single>._panel ._oper ._d ._s{ padding: 20rpx 36rpx; font-size: 24rpx; display: flex; align-items: center; color: #666;}
+.mine-userRecord-single>._panel ._oper ._d .iconfont{
+    font-size: 30rpx;
+}
+
+.mr-evaluating{
+    font-size: 28rpx; color: #733429; padding: 10rpx 20rpx; display: flex; justify-content: flex-end;
+}
+.mr-evaluating ._l{}
+.mr-evaluating ._l ._k{
+    color: #999; font-size: 24rpx;
+}
+.mr-evaluating ._l ._k._c{
+    color: #733429;
+}
+
+/******share*******/
+.share-layer{
+    position: fixed; z-index: 3999; left: 15vw; top: 25%; width: 70vw; background-color: white; border-radius: 20rpx;
+    box-shadow: 0 20rpx 80rpx rgba(0, 0, 0, 0.3);
+}
+.share-layer>._insert{}
+.share-layer image{ width: 100%; height: 40vh; border-radius: 20rpx 20rpx 0 0;}
+.share-layer ._link{display: flex; align-items: center; justify-content: space-around;}
+.share-layer ._link button{ border: 0 !important; font-size: 26rpx; line-height: 1.7; padding-top: 20rpx; padding-bottom: 20rpx;}
+.share-layer ._link button::after,.share-layer ._link button::before{ border: 0 !important;}
+.share-layer ._link button .iconfont{ font-size: 40rpx;}
+.share-layer ._link button:active{background-color: #efefef;}
+
+/******AccountsIn********/
+.account-layer{
+    position: fixed;
+    width: 80vw;
+    left: 10vw;
+    top: 30%;
+    z-index: 4999;
+    background-color: white;
+    box-shadow: 0 10rpx 80rpx rgba(0, 0, 0, 0.08);
+}
+.account-backdrop{
+    z-index: 4888;
+}
+.account-layer>._insert{
+}
+.account-layer ._title{
+    background-color: #68b92e; padding: 60rpx 30rpx; color: white; font-size: 30rpx;
+}
+.account-layer ._title text{ font-size: 38rpx; }
+.account-layer ._d{ padding: 40rpx 0;}
+.account-layer ._s{
+    padding: 20rpx 40rpx 20rpx 80rpx; font-size: 30rpx; display: flex; align-items: center;
+}
+.account-layer ._s text{ position: relative;}
+.account-layer ._s text::after{
+    content: ""; position: absolute; left: -28rpx; top: 12rpx; width: 12rpx; height: 12rpx; border-radius: 100rpx; background-color: #999;
+}
+.account-layer ._link{
+    padding: 20rpx 40rpx 40rpx; display: flex; align-items: center;
+}
+.account-layer ._link text{ flex: 1; background-color: #007e3c; color: white; padding: 20rpx; text-align: center;}

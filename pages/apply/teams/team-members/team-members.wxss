@@ -1,0 +1,30 @@
+page{
+    background-color: white;
+}
+.tm-title{
+    font-size: 24rpx;
+    padding: 40rpx;
+}
+
+.tm-single{
+    padding: 30rpx 40rpx;
+    border-bottom: 1rpx solid #eee;
+    font-size: 30rpx;
+}
+.tm-single ._l image{
+    width: 70rpx; height: 70rpx; border-radius: 100rpx;
+}
+.tm-single ._l>view{
+    margin-left: 20rpx
+}
+.tm-single ._l ._profile{
+    margin-top: 10rpx; color: #999999; font-size: 26rpx;
+}
+
+.tm-single ._r{
+    font-size: 30rpx;
+}
+
+.tm-single ._r .iconfont{
+    margin-left: 40rpx; font-size: 28rpx;
+}

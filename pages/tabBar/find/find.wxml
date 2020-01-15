@@ -1,3 +1,126 @@
-<view>
-  2
+<wu-loading id="wu-loading" title="加载中..."/>
+<wxs src="./find.wxs" module="moduleFind" />
+
+<view class="findBack" style="padding-top: {{statusBarHeight + 10}}px;">
+  <!-- 新课程 -->
+  <view class="newCourse-box" wx:if="{{courseList.length>0}}">
+      <view class="_title">近期更新</view>
+      <swiper autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}">
+        <block wx:for="{{courseList}}" wx:key="{{index}}">
+          <swiper-item>
+            <view class="newCourse-con flex between" bindtap="goPageEvent" data-id="{{item.CourseID}}">
+              <view class="newCourse-font">
+                <view class="_t">{{item.CourseName}}</view>
+                <view class="_d">{{item.Desc}}</view>
+              </view>
+              <view class="index-book-box" hover-class="none">
+                <view class="_book"><image src="{{item.CoverURL}}" lazy-load mode="aspectFill"></image></view>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+  </view>
+
+  <!-- tab -->
+  <view class="tab-box flex between">
+    <view class="tab-single-l">
+      <view class="tab-single-s">
+        <view class="tab-single {{tab.current === 0? 'active':''}}" bindtap="tabEvent" data-index="0">
+          <text class="iconfont icon-dongtai"></text>
+          <text>动态</text>
+        </view>
+        <view class="tab-single {{tab.current === 1? 'active':''}}" bindtap="tabEvent" data-index="1">
+          <text class="iconfont icon-hot"></text>
+          <text>HOT</text>
+        </view>
+        <view class="tab-single" bindtap="goStoreEvent">
+          <text class="iconfont icon-shu"></text>
+          <text>资源库</text>
+        </view>
+      </view>
+    </view>
+    <view class="tab-search" bindtap="goSearchEvent">
+      <text class="iconfont icon-chaxun"></text><text>搜索课程</text>
+    </view>
+  </view>
+
+  <!-- 关注 -->
+  <view wx:if="{{tab.current===0}}">
+
+    <!--<view class="watch-time"><text>今天</text><text>Today</text></view>-->
+    <view class="watch-box">
+
+      <block wx:if="{{record.list.length>0}}">
+        <view class="watch-single" wx:for="{{record.list}}" wx:key="*this">
+          <view class="data-single">
+
+            <view class="watch-info-a" catchtap="goUserEvent" data-id="{{item.UserID}}">
+              <image lazy-load src="{{item.avatar_url}}" mode="aspectFill"/>
+              <text class="_cap ml-10 mr-10">{{item.Caption}}</text>
+              <text>录制了</text>
+            </view>
+            <view class="watch-info-b" catchtap="goRecordEvent" data-id="{{item.RecordID}}">
+              <!--pic-->
+              <view class="bs-single">
+                <view class="_insert">
+                  <view class="_image">
+                    <view><image src="{{item.CoverURL}}" lazy-load mode="aspectFill"/></view>
+                  </view>
+                </view>
+              </view>
+              <!--info-->
+              <view class="watch-info-f">
+                <view class="_n color-Primary">{{item.Name}}</view>
+                <view class="_d color-999">{{item.Desc}}</view>
+                <view class="_k flex">
+                  <view><text class="_count">{{moduleFind.filterText(item.viewCount)}}</text><text>次观看</text></view>
+                  <view><text class="_count">{{moduleFind.filterText(item.likeCount)}}</text><text>个赞</text></view>
+                </view>
+              </view>
+            </view>
+
+            <view class="watch-info-k flex">
+              <view><text class="_count">{{moduleFind.resolveTime(item.AddTime)}}</text></view>
+              <view catchtap="goCommentEvent" data-id="{{item.RecordID}}" class="_comment" hover-class="event-hover-class-view">
+                <text class="iconfont icon-liuyan"></text>
+                <text class="_count ml-5">{{moduleFind.filterText(item.commentCount)}}</text>
+                <text class="ml-20">我说说</text>
+              </view>
+            </view>
+
+          </view>
+        </view>
+      </block>
+      <view wx:else class="watch-single-nodata">太懒了，都没人把作品分享出来</view>
+      <view wx:if="{{record.lastPage}}" class="watch-single-nodata">额，数据到底了</view>
+
+    </view>
+
+  </view>
+
+  <!-- hot -->
+  <view wx:else class="hot-box">
+
+    <view class="hot-listSingle" wx:for="{{hot.list}}" wx:key="course_id" bindtap="goDetailEvent" data-index="{{index}}">
+      <view class="clear hot-listSingle-h">
+        <view class="_img">
+          <image src="{{item.cover_url}}" mode="aspectFill" lazy-load></image>
+        </view>
+        <view class="_del">
+          <text class="_name">{{item.data_name}}</text>
+          <view class="_desc">{{item.course_name}}</view>
+          <view class="_count flex">
+            <view>{{moduleFind.filterText(item.view_count)}}次观看</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{hot.lastPage}}" class="watch-single-nodata">额，数据到底了</view>
+  </view>
+
 </view>
+
+
+<!--播放挂件-->
+<wu-play-widget id="wu-play-widget" />

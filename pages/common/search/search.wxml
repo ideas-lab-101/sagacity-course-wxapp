@@ -1,0 +1,72 @@
+<view class="">
+  <wu-navigation id="wu-navigation" title="搜索"></wu-navigation>
+
+  <view class="search-from">
+    <view class="from-input">
+      <icon class="search-icon" size="15" type="search" />
+      <input class="search-input" value="{{key}}" placeholder="课程或导师关键字" type="text" confirm-type="search" focus="true" bindinput="search_tip" bindconfirm="search" />
+    </view>
+    <text class="cancel-btn color-danger" bindtap="cancel">取消</text>
+  </view>
+  <view class="search-hot" wx:if="{{!is_search}}">
+    <view class="hot-main" wx:if="{{hot_tag.length > 0}}">
+      <view class="hot-title">
+        <text>热门搜索</text>
+      </view>
+      <view class="hot-list">
+        <view hover-class="view-hover-class-tg" class="hot-list-item" wx:for="{{hot_tag}}" wx:key="{{item}}" bindtap="tag_search" data-name="{{item.Name}}"><text decode="true">{{item.Name}}</text></view>
+      </view>
+    </view>
+  </view>
+  <view class="my-list" wx:if="{{my_search_arr.length > 0 && !is_search}}">
+    <view class="my-list-title">
+      <text>搜索记录</text>
+    </view>
+    <view wx:for="{{my_search_arr}}" wx:key="{{item}}">
+      <view class="my-list-item" >
+        <view class="my-list-name" bindtap="tag_search" data-name="{{item}}">{{item}}</view>
+        <view class="my-list-icon">
+          <icon class="my-list-icon-i" size="15" type="clear" bindtap="clear_my_search" data-name="{{item}}" />
+        </view>
+      </view>
+      <view class="border-b-s"></view>
+    </view>
+  </view>
+  <view class="search-data" wx:if="{{is_search}}">
+    <view class="view-bg data-info-main" wx:if="{{course_list.length}}">
+      <view class="data-info text-12">相关课程</view>
+      <scroll-view scroll-x="true">
+        <view class="data-list">
+          <navigator url="/pages/apply/course/lesson-page/lesson-page?id={{item.ID}}" class="so-data-item" wx:for="{{course_list}}" wx:key="{{item}}">
+            <image class="so-data-img" mode="aspectFill" src="{{item.Cover}}"></image>
+            <view class="sd-data-title"><text class="sd-data-title-text">{{item.Title}}</text></view>
+          </navigator>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="search-data" wx:if="{{is_search}}">
+      <view class="view-bg data-info-main" wx:if="{{data_list.length}}">
+        <view class="data-info text-12">相关章节</view>
+        <scroll-view scroll-x="true">
+          <view class="data-list">
+            <view catchtap="goLesson" data-index="{{index}}" class="so-data-item" wx:for="{{data_list}}" wx:key="{{item}}">
+              <image class="so-data-img" mode="aspectFill" src="{{item.Cover}}"></image>
+              <view class="sd-data-title"><text class="sd-data-title-text">{{item.Title}}</text></view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    <view class="view-bg data-info-main" wx:if="{{teacher_list.length}}">
+      <view class="data-info text-12">相关导师</view>
+      <scroll-view scroll-x="true">
+        <view class="data-list">
+          <navigator url="/pages/apply/mine/user-page/user-page?id={{item.ID}}"  class="so-data-item" wx:for="{{teacher_list}}" wx:key="{{item}}">
+            <image class="so-data-img" mode="aspectFill" src="{{item.Cover}}"></image>
+            <view class="sd-data-title"><text class="sd-data-title-text">{{item.Title}}</text></view>
+          </navigator>
+        </view>
+      </scroll-view>
+    </view>
+  </view>  
+</view>

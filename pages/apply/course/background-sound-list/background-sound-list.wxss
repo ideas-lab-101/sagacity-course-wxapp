@@ -1,0 +1,169 @@
+page {
+  font-size: 32rpx;
+}
+.bs-tab{
+  display: flex; flex-wrap: wrap;
+}
+.bs-tab-box{}
+.bs-tab-single-box{
+  white-space:nowrap;
+  padding: 30rpx 0;
+}
+.bs-tab-single-box text{
+  display: inline-block;
+  vertical-align: middle;
+  padding: 13rpx 30rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+.bs-tab-single-box text.active{
+  color: #733429; position: relative;
+}
+.bs-tab-single-box text.active::after{
+  content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: -6rpx; height: 6rpx; width: 30%; background-color: #733429; border-radius: 100rpx;
+}
+
+
+.bs-con{
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.bs-con .nodata{
+  font-size: 24rpx; color: #999999; text-align: center; flex: 1; padding-top: 40rpx;
+}
+/***************/
+.bs-single{
+  position: relative;
+  margin: 20rpx 50rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+.bs-single:nth-child(2n){
+  margin-left: 100rpx;
+}
+.bs-single>._insert{
+  padding: 25rpx 25rpx; display: inline-block; position: relative;
+}
+.bs-single ._image{
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+  border-left: 12rpx solid #000;
+}
+.bs-single ._image::after{
+  position: absolute; content: ""; z-index: -2; background-image: -webkit-linear-gradient(top, black, #7b7b7b, black);
+  border-radius: 500rpx; width: 150rpx; height: 150rpx; right: -40rpx; top: 15rpx; box-shadow: 28rpx 26rpx 22rpx -25rpx rgba(0, 0, 0, 0.2);
+  transition: right 0.5s;
+}
+.bs-single ._image::before{
+  position: absolute; content: ""; z-index: -1; background-image: -webkit-linear-gradient(top, #733429, #c15745, #733429);
+  border-radius: 500rpx; width: 75rpx; height: 75rpx; right: -12rpx; top: 52.5rpx;
+  box-shadow: 0 0 4rpx rgba(0, 0, 0, 0.3);
+  transition: right 0.5s;
+}
+
+.bs-single ._image>view{
+  position: relative; padding: 0; display: inline-block; box-shadow: 0 16rpx 20rpx -8rpx rgba(0, 0, 0, 0.2);
+}
+.bs-single ._image>view::after,.bs-single ._image>view::before{
+  position: absolute; content: ""; width: 1rpx; background-color: #eaeaea;
+  height: 100%; left: 0rpx; top: 0; z-index: 1;
+}
+.bs-single ._image>view::before{
+  left: auto; right: 0rpx;
+}
+.bs-single ._image image{
+  width: 180rpx;
+  height: 180rpx;
+  position: relative;
+}
+
+.bs-single ._image.active::after{
+  right: -60rpx;
+}
+.bs-single ._image.active::before{
+  right: -28rpx; box-shadow: none;
+}
+.bs-single ._image.active::after, .bs-single ._image.active::before{
+  -webkit-animation:tryRotate 20s linear forwards infinite;
+  animation:tryRotate 20s linear forwards infinite;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+}
+.bs-single ._image.active::after.paused{
+  -webkit-animation-play-state:paused;
+  animation-play-state:paused;
+}
+@-webkit-keyframes tryRotate{
+  0%{-webkit-transform: rotate(0deg);}
+  100%{-webkit-transform: rotate(360deg);}
+}
+@keyframes tryRotate{
+  0%{-webkit-transform: rotate(0deg);}
+  100%{-webkit-transform: rotate(360deg);}
+}
+
+.bs-single ._name{
+  margin-top: 20rpx; font-size: 26rpx;
+  width: 190rpx;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.bs-single ._like{
+  margin-top: 5rpx; font-size: 22rpx; color: #666;
+}
+.bs-single ._try{
+  position: absolute;
+  z-index: 10;
+  left: 25rpx;
+  top: 25rpx;
+  right: 25rpx;
+  height: 80rpx;
+  background: -webkit-linear-gradient( top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  text-align: right;
+}
+.bs-single ._insert.active ._try{
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.bs-single ._try text{
+  color: white;
+  font-size: 24rpx;
+  display: inline-block;
+  padding: 10rpx 30rpx;
+  border-radius: 20rpx;
+}
+.bs-single.active>._insert{
+  background-color: #eae1df;
+}
+
+.bs-single.active ._name,.bs-single.active ._like{
+  background-color: #eae1df;
+}
+
+.bs-single ._recommend{
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  display: none;
+}
+.bs-single ._recommend::after{
+  content: ""; position: absolute; z-index: 1;
+  right: 0;
+  top: 0;
+  width:0;
+  height:0;
+  border-left: 40rpx solid transparent;
+  border-bottom: 40rpx solid #733429;
+}
+.bs-single.active ._recommend{ display: inline-block; }
+.bs-single ._recommend text{
+  display: inline-block;
+  font-size: 18rpx;
+  color: white;
+  position: relative;
+  z-index: 10;
+}

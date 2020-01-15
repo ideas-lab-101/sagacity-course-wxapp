@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "",
+  "backgroundColor": "#f0f0f0",
+  "navigationBarBackgroundColor": "#FFF",
+  "navigationBarTextStyle": "black",
+  "disableSwipeBack": true,
+  "disableScroll": false,
+  "usingComponents": {
+    "wu-switch": "/components/wu/switch/index",
+    "wu-marked-words": "/components/wu/marked-words/index",
+    "share": "/components/pages/share/index",
+    "teams-task": "/components/pages/teams-task/index"
+  }
+}

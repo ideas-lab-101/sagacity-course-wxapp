@@ -1,8 +1,9 @@
 {
-    "navigationBarTitleText": "个人中心",
     "disableSwipeBack": true,
     "enablePullDownRefresh": false,
     "disableScroll": true,
     "usingComponents": {
+        "wu-pendant": "/components/wu/pendant/index",
+        "share": "/components/pages/share/index"
     }
 }

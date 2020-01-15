@@ -8,7 +8,7 @@ Component({
             type: String,
             value: ''
         },
-        backgroundColor: { // fold模式下 不能设置backgroundColor
+        backgroundColor: { // fold模式下 不能设置backgroundColor    可以设置渐变色: -webkit-linear-gradient(left, #ffd96a, #ffc857);
             type: String,
             value: 'white'
         },
@@ -26,96 +26,116 @@ Component({
 
         navTitle: {
             type: String,
-            value: '首页',
+            value: 'HOME',
             observer: function(newVal, oldVal, changedPath) {
-                this.navTitleTemp = true
+                this.navTitleSet = true
             }
         },
-
-        attachment: { // 此项为 在回退箭头后面添加 事件图标 和 文字显示       设置了此项  title 会无效
-            type: Array,
-            value: [
-              // {
-              //     type: 'icon',
-              //     value:'iconfont icon-pause',
-              //     tapBack: null
-              //   },
-              // {
-              //     type: 'text',
-              //     value:'在回退箭头后面添加'
-              //   }
-            ]                           // { type: icon text, value: '', tapBack: }
-        },
-        backURLType: {
-            type: String,
-            value: 'navigate' // navigate or switch
+        openSlot: {
+            type: Boolean,
+            value: false
         },
         backURL: {
             type: String,
             value: ''
         },
-        animation: {
-            type: Object,
-            value: {
-                duration: 1000,
-                timingFunction: "linear",
-                delay: 0
-            },
-            observer: function(newVal, oldVal, changedPath) {
-                this._animationChange(newVal, oldVal)
-            }
-        }
     },
     data: {
         hide: false,
-        animationData: {},
-        opacity: 0,
+        opacity: 1,
+        titleOpacity: 1,
         boxHeight: '',
         height: '45px',
-        paddingTop: '20px',
-        homeFontVisible: true
+        paddingTop: 20,
+        homeFontVisible: true,
+        animationData: {}
     },
+    lifetimes: {
+        created: function () {
+            /**
+             * 系统参数
+             */
+            try {
+                var clientRect = wx.getMenuButtonBoundingClientRect() // 胶囊参数
+                var system = wx.getSystemInfoSync()
+                this.statusBarHeight = system.statusBarHeight
+                this.screenWidth = system.screenWidth
+                this.screenHeight = system.screenHeight
 
-    created: function () {
-        try {
-            var res = wx.getSystemInfoSync()
-            this.statusBarHeight = res.statusBarHeight
-            this.screenHeight = res.screenHeight
-        } catch (e) {
-            console.error(e)
+                this.clientRect = clientRect
+            } catch (e) {}
+
+            this.animation = wx.createAnimation({
+                duration: 500,
+                timingFunction: 'ease-out',
+                delay: 0
+            })
+        },
+
+        attached: function () {
+            this.setData({
+                titleWidth: this.screenWidth - (this.screenWidth - this.clientRect.right + this.clientRect.width)*2
+            })
+            /**
+             * 初始化相关参数
+             */
+            this._initBasicParams()
+        },
+
+        detached: function(){
         }
-        this.animation = wx.createAnimation({
-            duration: this.data.animation.duration,
-            timingFunction: this.data.animation.timingFunction,
-            delay: this.data.animation.delay
-        })
     },
 
-    attached: function () {
-        this._initBasicParams()
-        this._createAnimation()
+    pageLifetimes: {
+        show: function () {},
+        hide: function () {},
+        resize: function () {},
     },
-
-    detached: function(){
-        this.setData({
-            animationData: {}
-        })
-    },
-
     oldVal: 0,
 
     methods: {
 
-        /*
-        ** 外部调用方法
+        /**
+         * 外部调用方法 页面滚动到距离顶部300px 的距离  那么navigation就收起  反之则显示
+         * @param newVal
+         * @returns {boolean}
          */
         scrollTop: function (newVal) {
-            if (newVal >= this.screenHeight*0.5 && !this.hide && newVal > this.oldVal && !this.transition) {
-                this.animation.translateY('-100%').step({
-                    duration: 500,
-                    timingFunction: 'ease-out'
+            const interval = 300
+            if(this.data.model !== 'fold') {
+                return false
+            }
+
+            if(newVal > interval) {
+                this.setData({
+                  transparent: false,
+                  opacity: 1,
+                  titleOpacity: 1
                 })
+            }else if(newVal <= 1) {
+                  this.setData({
+                    transparent: true,
+                    opacity: 1,
+                    titleOpacity: 0
+                  })
+            } else {
+                this.setData({
+                  transparent: false,
+                  opacity: newVal/interval,
+                  titleOpacity: 1
+                })
+            }
+        },
+
+        /**
+         * 此方法可以设置 navigation 进入的时候是显得的  稍微向下滚动  就隐藏nav
+         * @param newVal
+         */
+        scrollTopTranslateY: function (newVal) {
+            if (newVal >= this.screenHeight*0.5 && !this.hide && newVal > this.oldVal && !this.transition) {
+                this.animation.translateY('-100%').step()
                 this.transition = true
+
                 clearTimeout(this.timeFn)
                 this.timeFn = setTimeout(() => {
                     this.hide = true
@@ -129,11 +149,9 @@ Component({
                     this.record = newVal
                 }
                 if (Math.abs(newVal - this.record) > 80) {
-                    this.animation.translateY(0).step({
-                        duration: 500,
-                        timingFunction: 'ease-out'
-                    })
+                    this.animation.translateY(0).step()
                     this.transition = true
+
                     clearTimeout(this.timeFn)
                     this.timeFn = setTimeout(() => {
                         this.hide = false
@@ -147,21 +165,30 @@ Component({
             this.oldVal = newVal
         },
 
-        // 内部调用事件
+        /**
+         * 返回链接
+         * @param e
+         */
         naviBackEvent: function (e) {
+            const { backURL } = this.data
+
             if (getCurrentPages().length === 1) {
                 wx.reLaunch({
                     url: '/pages/tabBar/index/index'
                 })
-            }else if(this.data.backURL){
-                if(this.data.backURLType === 'navigate') {
-                  wx.reLaunch({
-                    url: this.data.backURL
-                  })
+            }else if(backURL && getCurrentPages().length > 1){
+                const index = getCurrentPages().findIndex(item => {
+                    return item.route === backURL
+                })
+
+                if(index !== -1) {
+                    wx.navigateBack({
+                        delta: getCurrentPages().length - index - 1
+                    })
                 }else {
-                  wx.switchTab({
-                    url: this.data.backURL
-                  })
+                    wx.navigateTo({
+                        url: `/${backURL}`
+                    })
                 }
             }else {
                 wx.navigateBack({
@@ -170,55 +197,55 @@ Component({
             }
         },
 
-        // 内部方法
-
-        _initBasicParams: function () {
-            // 判断是否采取内容置顶模式
-            let temp = ''
-            if (this.data.model === 'extrude') {
-                temp = parseInt(this.data.height) + this.statusBarHeight + 'px'
-            }else {
-                temp = '0px'
-            }
-            // 判断是否显示 首页
-            var homeFont = true
-            if (getCurrentPages().length !== 1 && !this.navTitleTemp) {
-                homeFont = false
-            }
-            this.setData({
-                paddingTop: this.statusBarHeight + 'px',
-                boxHeight: temp,
-                homeFontVisible: homeFont
-            })
-        },
-
-        _createAnimation: function () {
-            if (!this.hasAnimation) {
-                this.setData({
-                    opacity: 1
-                })
-                return
-            }
-            let timeFn = {}
-            this.animation.opacity(1).step(this.data.animation)
-            clearTimeout(timeFn)
-            timeFn = setTimeout(() => {
-                this.setData({
-                    animationData: this.animation.export()
-                })
-            }, 10)
-        },
-
-        transitionend: function (e) {
+        /**
+         * 判断动画完成后才执行相关操作
+         * @param e
+         * @private
+         */
+        _transitionend: function (e) {
             this.transition = false
         },
 
-        // 内部值改变触发事件
-        _animationChange: function (newVal, oldVal) {
-            if (newVal) {
-                this.hasAnimation = true
+        /**
+         * 初始化滚动参数 设置模式   高度  间距
+         * @private
+         */
+        _initBasicParams: function () {
+            const { model, height } = this.data
+
+            // 判断是否采取内容置顶模式
+            let temp = ''
+            let titleOpacityTemp = 1
+            if (model === 'extrude') {
+                temp = (parseInt(height) + this.statusBarHeight) + 'px'
+                titleOpacityTemp = 1
+            }else {
+                temp = `0px`
+                titleOpacityTemp = 0
             }
+
+            // 判断是否显示 首页
+            let homeFont = true
+            if (getCurrentPages().length !== 1 && !this.navTitleSet) {
+                homeFont = false
+            }
+
+            this.setData({
+                paddingTop: this.statusBarHeight,
+                boxHeight: temp,
+                homeFontVisible: homeFont,
+                opacity: 1,
+                titleOpacity: titleOpacityTemp
+            })
         },
+
+        /**
+         * 内部值改变触发事件 监听颜色值
+         * @param newVal
+         * @param oldVal
+         * @returns {boolean}
+         * @private
+         */
         _colorChange: function (newVal, oldVal) {
             if (newVal !== 'white' && newVal !== 'black') {
                 console.error('Color-参数错误,只能是white or black')
@@ -226,12 +253,6 @@ Component({
             }else {
                 return true
             }
-        },
-
-        _attachmentEvent: function (e) {
-            const index = e.currentTarget.dataset.index
-            const obj = this.properties.attachment[index]
-            obj.tapBack && typeof obj.tapBack === 'Function' && obj.tapBack()
         }
     }
 })

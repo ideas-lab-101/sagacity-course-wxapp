@@ -1,14 +1,14 @@
 /**
 主色系列
  */
-.color-primary{color: #57b3ff !important;}
+.color-primary{color: #733429 !important;}
 .color-assistant{color: #008dff !important;}
 .color-minor{color: #d3ebff !important;}
 
 /**
 主色背景系列
  */
-.color-primary-back{background-color: #57b3ff !important;}
+.color-primary-back{background-color: #733429 !important;}
 .color-assistant-back{background-color: #008dff !important;}
 .color-minor-back{background-color: #d3ebff !important;}
 .color-linear{background: linear-gradient(to right, #57b3ff, #008dff);}
@@ -16,7 +16,7 @@
 /**
 边框颜色
  */
-.color-primary-border{border-color: #57b3ff !important;}
+.color-primary-border{border-color: #733429 !important;}
 .color-assistant-border{border-color: #008dff !important;}
 .color-minor-border{border-color: #d3ebff !important;}
 .color-gray-border{border-color: #f0f0f0 !important;}
@@ -25,15 +25,15 @@
 /**
 after before 颜色
  */
-.color-primary-after::after, .color-primary-after::before{ border-color: #57b3ff !important; color: #57b3ff !important;background-color: #57b3ff !important;}
+.color-primary-after::after, .color-primary-after::before{ border-color: #733429 !important; color: #733429 !important;background-color: #733429 !important;}
 .color-assistant-after::after, .color-assistant-after::before{border-color: #008dff !important; color: #008dff !important;background-color: #008dff !important;}
 .color-minor-after::after, .color-minor-after::before{border-color: #d3ebff !important; color: #d3ebff !important;background-color: #d3ebff !important;}
 
 /**
 辅助颜色
  */
-.color-gray{color: #f0f0f0 !important;}
-.color-neutral-gray{color: #d8d8d8 !important;}
+.color-gray{color: #bebdc2 !important;}
+.color-neutral-gray{color: #88898d !important;}
 .color-light-gray{color: #ebebeb !important;}
 
 .color-green{color: #7ebc2d !important;}
@@ -44,11 +44,11 @@ after before 颜色
 .color-gray-back{background-color: #f0f0f0 !important;}
 .color-light-gray-back{background-color: #f7f7f7 !important;}
 
-.c333-color{ color: #333333;}
-.c666-color{ color: #666666;}
-.c999-color{ color: #999999;}
-
-
+.color-333{color: #333333;}
+.color-666{color: #666666;}
+.color-999{color: #999999;}
+.color-eee{color: #eeeeee;}
+.color-c0{color: #c0c0c0;}
 
 /**
 button hover

@@ -1,0 +1,156 @@
+page{
+  background-color: #f7f7f7;
+}
+.search-from {
+  display: flex;
+}
+
+.from-input {
+  flex: 1;
+  background: #fff;
+  margin: 15rpx 0 15rpx 20rpx;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  padding: 0 20rpx;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.search-icon {
+  line-height: 60rpx;
+  height: 30rpx;
+}
+
+.search-input {
+  text-align: left;
+  padding-left: 15rpx;
+  height: 70rpx;
+  width: 100%;
+}
+
+.cancel-btn {
+  font-size: 28rpx;
+  line-height: 100rpx;
+  width: 100rpx;
+  text-align: center;
+}
+
+.search-hot {
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.hot-main {
+  padding: 20rpx 20rpx 0 20rpx;
+}
+
+.hot-title {
+  font-size: 30rpx;
+  margin-top: 10rpx;
+  padding-left: 10rpx;
+}
+
+.hot-list {
+  margin-top: 30rpx;
+}
+
+.hot-list-item {
+  font-size: 28rpx;
+  padding: 15rpx 30rpx;
+  background: #f7f7f7;
+  margin: 0 20rpx 20rpx 0;
+  display: inline-block;
+  border-radius: 10rpx;
+  color: #333;
+}
+
+.data-info-main {
+  padding-bottom: 20rpx;
+}
+
+.data-info {
+  padding: 20rpx;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.data-list {
+  margin: 0;
+  display: flex;
+  padding: 0 20rpx;
+}
+
+.so-data-item {
+  width: 300rpx;
+  height: 200rpx;
+  margin: 0 20rpx 0 0rpx;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.so-data-img {
+  width: 300rpx;
+  height: 200rpx;
+  border-radius: 10rpx;
+}
+
+.sd-data-title {
+  width: 300rpx;
+  height: 200rpx;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sd-data-title-text {
+  color: #fff;
+  margin: 0 16rpx;
+}
+
+.my-list {
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.my-list-title {
+  font-size: 28rpx;
+  padding: 20rpx 20rpx 0 20rpx;
+}
+
+.my-list-item {
+  font-size: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 0 20rpx;
+}
+
+.my-list-name {
+  flex-grow: 1;
+  line-height: 80rpx;
+  color: #666;
+}
+
+.my-list-icon {
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.my-list-icon-i {
+  height: 30rpx;
+  line-height: 30rpx;
+  margin: 0;
+  padding: 0;
+}

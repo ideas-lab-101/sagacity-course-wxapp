@@ -1,0 +1,26 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wxs src="./my-course.wxs" module="moduleMyCourse" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="我的资源库"></wu-navigation>
+
+  <view wx:if="{{courseList.length>0}}">
+    <block wx:for="{{courseList}}" wx:key="{{index}}">
+      <navigator url="/pages/apply/course/lesson-page/lesson-page?id={{item.CourseID}}" class="mycourse-single" hover-class="event-hover-class">
+        <text class="_time">{{moduleMyCourse.resolveTime(item.AddDate)}}</text>
+        <view class="_content clear">
+          <view class="_img">
+            <image src="{{item.CoverURL}}" mode="aspectFill" lazy-load></image>
+          </view>
+          <view class="mycourse-single-s">
+            <text class="_name">{{item.CourseName}}</text>
+            <view class="_desc">{{item.Desc}}</view>
+          </view>
+        </view>
+      </navigator>
+    </block>
+    <view class="nomore" wx:if="{{pager.lastPage}}">额，数据到底了</view>
+  </view>
+  <view wx:else class="nodata">还没有加入课程哦，快去看看吧^_^</view>
+</view>

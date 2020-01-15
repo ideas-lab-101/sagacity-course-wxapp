@@ -1,6 +1,9 @@
 page{
   background-color: white;
 }
+.findBack{
+  background: url('https://sagacity-course-000019.tcb.qcloud.la/system/nav_bg.jpeg?sign=bf06e616a6978a65e20bec6a8b5ff9ac&t=1537258809') no-repeat center top; background-size: 100% auto;
+}
 /*
 * 新课程
 */

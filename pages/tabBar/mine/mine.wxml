@@ -1,3 +1,168 @@
-<view>
-  3
+<wu-loading id="wu-loading"></wu-loading>
+<wu-toast id="wu-toast"></wu-toast>
+<wxs src="./mine.wxs" module="moduleMine" />
+
+<view capture-bind:touchstart="frameTouchStart" capture-bind:touchend="frameTouchEnd" wx:if="{{isLogin}}">
+
+  <view class="mine-background">
+    <image src="{{moduleMine.changeURL(userInfo.ZoneBgURL, userInfo.avatar_url)}}" mode="aspectFill"></image>
+    <view class="_shadow"></view>
+  </view>
+
+  <scroll-view scroll-y class="mine-scroll"
+               scroll-with-animation
+               bindscroll="pointFixScrollEvent"
+               bindscrolltolower="scrolltolowerEvent"
+               scroll-top="{{scroll.scrollTop}}">
+
+
+    <view class="mine-hasinfo">
+
+        <!-- 扫描登录 -->
+        <view class="showed" bindtap="getCodeEvent" wx:if="{{userInfo.intState===1}}">
+          <text class="iconfont icon-saomiao"></text>
+          <text class="font-10">登录网页版</text>
+        </view>
+
+        <!-- 编辑个人封面 -->
+        <view class="covered" bindtap="editCoverEvent" wx:if="{{userInfo.intState===1}}">
+          <text class="iconfont icon-xiangji"></text>
+        </view>
+
+        <!-- 基础信息 -->
+        <view class="relative mine-top-box">
+
+          <view class="uerinfo">
+            <navigator class="avatar" url="/pages/apply/mine/user-page/user-page?id={{userInfo.UserID}}">
+              <image src="{{userInfo.avatar_url}}" class="avatar-img"></image>
+            </navigator>
+            <view class="nickname">
+              <text>{{userInfo.Caption}}</text>
+              <view class="_edit _o" bindtap="profileEvent" wx:if="{{userInfo.intState===1}}"><text class="iconfont icon-bianji"></text></view>
+              <view class="_edit" bindtap="profileEvent" wx:else>[完善资料]</view>
+            </view>
+            <!--<view class="pcount"><text>{{userInfo.pCount}}</text> 积分</view>-->
+          </view>
+
+          <view class="userdata flex around">
+            <navigator class="dataone" url="/pages/apply/mine/my-course/my-course">
+              <text class="user-num">{{userInfo.eCount}}</text>
+              <text class="user-font">资源库</text>
+            </navigator>
+            <navigator class="dataone" url="/pages/apply/mine/my-collect/my-collect">
+              <text class="user-num">{{userInfo.fCount}}</text>
+              <text class="user-font">收藏</text>
+            </navigator>
+            <navigator class="dataone" bindtap="getTicketEvent">
+              <text class="user-num">{{userInfo.sCount}}</text>
+              <text class="user-font">课程券</text>
+            </navigator>
+            <navigator class="dataone" url="/pages/apply/mine/my-message/my-message">
+              <text class="user-num {{userInfo.msgCount>0?'red':''}}">{{userInfo.msgCount}}</text>
+              <text class="user-font">未读消息</text>
+            </navigator>
+          </view>
+
+          <view class="mine-learn-con flex around">
+            <view class="item" hover-class="event-hover-class-view" bindtap="interestEvent">
+              <text class='iconfont icon-xuexi'></text>
+              <view class="item-text">学习小组</view>
+            </view>
+            <button class="event-hover-class shareBtn" open-type="share" plain id="appShare">
+              <text class='iconfont icon-chakantiezifenxiang'></text>
+              <view class="item-text">分享应用</view>
+            </button>
+          </view>
+
+        </view>
+
+        <view class="mine-link-box">
+          <view class="mine-link" hover-class="event-hover-class-view" bindtap="goToGuidesEvent">
+            <text class='iconfont icon-setting'></text> 个人设置
+          </view>
+        </view>
+
+        <view>
+          <view class="mine-bottom-t" bindtap="scrollRecordEvent">
+            <text class="_title">我的作品</text>
+            <view class="_txt">上滑打开个人作品集</view>
+            <text class="iconfont icon-you"></text>
+          </view>
+        </view>
+
+        <view class="mine-userRecord">
+
+            <view class="flex between mine-userRecord-t">
+              <view class="_l">我公开的作品</view>
+              <view class="_r" hover-class="event-hover-class-view" bindtap="goMineAllRecordEvent">作品管理 <text class="iconfont icon-zuo"></text></view>
+            </view>
+            <block wx:if="{{record.list.length>0}}">
+              <view class="mine-userRecord-b">
+                <view wx:for="{{record.list}}" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.RecordID?'active':''}}" wx:key="{{item.RecordID}}">
+
+                  <navigator url="/pages/apply/mine/record-play/record-play?id={{item.RecordID}}" class="_linkto">
+                    <view class="_name">{{item.Name}}</view>
+                    <view class="_desc">{{item.Desc}}</view>
+                  </navigator>
+
+                  <view class="bs-single" bindtap="tryListenEvent" data-index="{{index}}">
+                    <view class="_insert">
+                      <view class="_image {{tryParams.isPlay && tryParams.id === item.RecordID?'active':''}}">
+                        <view><image src="{{item.CoverURL}}" mode="aspectFill" lazy-load/></view>
+                        <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.RecordID}}"></text>
+                        <text class="iconfont icon-weibiaoti519" wx:else></text>
+                      </view>
+                    </view>
+                  </view>
+                  <text class="_time">{{moduleMine.resolveTime(item.AddTime)}}</text>
+                  <view class="_oper">
+                    <view class="_d">
+                      <view class="_s"><text class="_font">{{item.viewCount}}次浏览</text></view>
+                      <view class="_s"><text class="iconfont icon-zan"></text><text class="_font">{{item.likeCount}}</text></view>
+                      <view class="shareBtn _s" hover-class="event-hover-class-view" bindtap="singleShareEvent" data-index="{{index}}"><text class="iconfont icon-chakantiezifenxiang"></text></view>
+                    </view>
+                  </view>
+                  <view class="_eye">
+                      <view wx:if="{{item.mode === 1}}"><text class="iconfont icon-biyan"></text> 背诵</view>
+                      <view wx:else><text class="iconfont icon-yanjing"></text> 朗诵</view>
+                  </view>
+                </view>
+
+                <view wx:if="{{record.lastPage}}" class="norecord">额，数据到底了</view>
+              </view>
+            </block>
+          <view wx:else class="norecord pt-15">还没有发布作品哟，快去 <text>作品管理</text> 点击发布</view>
+
+        </view>
+
+    </view>
+
+  </scroll-view>
 </view>
+
+
+<view wx:else>
+  <view class="mine-background-copy">
+    <image src="https://sagacity-course-000019.tcb.qcloud.la/system/logon.jpg?sign=8bbcc44e0ff086916de822f8997fe22d&t=1568174607" mode="widthFix"></image>
+    <view class="_shadow"></view>
+  </view>
+
+  <!-- 基础信息 -->
+  <view class="relative mine-top-box-copy">
+    <view class="_insert">
+      <view class="uerinfo">
+        <view class="header"><open-data type="userAvatarUrl"></open-data></view>
+        <view class="nickname">
+          <open-data type="userNickName"></open-data>
+        </view>
+      </view>
+
+      <view class="mine-l-btn" catchtap="goLogin">点击登录</view>
+    </view>
+  </view>
+</view>
+
+
+<!--分享组件-->
+<share id="share"></share>
+

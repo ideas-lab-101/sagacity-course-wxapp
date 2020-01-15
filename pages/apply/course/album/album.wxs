@@ -1,0 +1,61 @@
+
+var filterPrice = function (val) {
+    if (val === 0) {
+        return '0.00'
+    }
+    return val
+}
+
+var filterIdentifying = function (is_enroll, openState, type) {
+
+}
+
+var filterText = function (val){
+    if (!val || val == 0) {
+        return ''
+    }
+    return [{
+        name: 'span',
+        attrs: {
+            class: '',
+            style: ''
+        },
+        children: [{
+            type: 'text',
+            text: '¥' + val
+        }]
+    }]
+}
+
+var filterComment = function(val) {
+    if (!val || val == 0) {
+        return '暂无留言'
+    }
+    if (val > 9999) {
+        return '9999+'
+    }
+    return val
+}
+
+var changeURL = function (zone, url) {
+  if (zone) {
+    return zone + '?imageView2/1/w/600'
+  }
+  return url
+}
+
+var cutStr = function (str) {
+    if(!str) {
+        return ''
+    }
+  return str.substring(0, 70)
+}
+
+module.exports = {
+    filterPrice: filterPrice,
+    filterIdentifying: filterIdentifying,
+    filterText: filterText,
+    filterComment: filterComment,
+    changeURL: changeURL,
+    cutStr: cutStr
+}

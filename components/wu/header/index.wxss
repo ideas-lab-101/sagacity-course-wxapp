@@ -1,0 +1,27 @@
+
+.header-container{
+  position: relative;
+  display: inline-block;
+}
+
+.header-container ._images{
+  border-radius: 1000rpx;
+  overflow: hidden;
+  width: 70rpx;
+  height: 70rpx;
+  vertical-align: middle;
+}
+.header-container ._text{
+  border-radius: 1000rpx;
+  overflow: hidden;
+  width: 70rpx;
+  height: 70rpx;
+  background-color: #e4e4e4;
+  writing-mode: lr-tb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space:nowrap;
+  font-size: 24rpx;
+  color: #8f8f8f;
+}

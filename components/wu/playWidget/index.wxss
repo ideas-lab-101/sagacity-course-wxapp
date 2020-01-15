@@ -1,3 +1,5 @@
+@import "/assets/styles/cloud-icon.wxss";
+
 .global-play-widget{
   position: relative;
   width: 100%;
@@ -64,4 +66,3 @@
 }
 .global-play-widget-insert>._oper .iconfont{ font-size: 45rpx;}
 
-@import "/assets/styles/cloud-icon.wxss";

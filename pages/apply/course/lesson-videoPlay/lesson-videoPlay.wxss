@@ -1,0 +1,38 @@
+@import '/components/wxParse/wxParse.wxss';
+
+.play-video{ padding: 0; margin: 0; line-height: 0;}
+.play-video-style, .play-video-screenshot{ width: 100%; height: calc(2.75 * 100vw / 4); background: black; line-height: 0;}
+.play-video-control{ position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 99; display: flex; align-items: center; justify-content: center;}
+.play-video-control ._img{ width: 155rpx; height: 155rpx; position: relative; z-index: 99;}
+
+.play-video-lessonName{ padding: 20rpx 150rpx 20rpx 30rpx; font-size: 36rpx; position: relative;}
+.play-video-lessonName image{ position: absolute; z-index: 10; right: 30rpx; top: 20rpx; width: 100rpx; height: 120rpx; box-shadow: 0 5rpx 25rpx rgba(0, 0, 0, 0.2);}
+.play-video-dataName{ padding: 10rpx 150rpx 10rpx 30rpx; font-size: 28rpx; line-height: 2; color: #999;}
+
+.play-section-title{ text-align: left; position: relative; z-index: 11; padding: 20rpx 65rpx 20rpx;}
+.play-section-title text{position: relative;}
+.play-section-title text::after{position: absolute; content: ""; left: -30rpx; top: 10%; height: 80%; width: 8rpx; background-color: #733429;}
+/* tab content */
+.catalog-single{ text-align: left; counter-increment: section; }
+.catalog-single.desabled{ color: #ababab; }
+.catalog-single>._title{ padding: 25rpx 40rpx 25rpx 70rpx; display: block; font-size: 28rpx; color: #999999; background-color: #f1f1f1; position: relative; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;}
+.catalog-single>._title::after{ content: counter(section) ; position: absolute; font-size: 32rpx; z-index: 1; left: 30rpx;  top: 50%; transform: translateY(-50%);color: #999; font-family: Arial;}
+.catalog-single>._title text{ color: #733429; font-size: 38rpx; margin-top: -4rpx; vertical-align: middle; display: inline-block;}
+.catalog-single>._list{ position: relative;  font-size: 28rpx;}
+.catalog-single>._list .__dataName{overflow: hidden; text-overflow:ellipsis; white-space: nowrap; padding: 25rpx 100rpx 25rpx 70rpx; }
+.catalog-single>._list .__dataType{ position: absolute; right: 20rpx; top: 50%; transform: translateY(-50%);}
+.catalog-single>._list.active .__dataName{ color:#733429; }
+
+.play-operration{ display: flex; justify-content: space-between; padding: 0 20rpx; position: relative;}
+.play-operration ._opera{ padding: 20rpx 30rpx; font-size: 28rpx; color: black;}
+.play-operration .collect{ display: inline-block; vertical-align: middle;}
+.play-operration .collect.collected{ color: #ff3e02;}
+.play-operration .share{ display: inline-block; vertical-align: middle; border: 0!important; line-height: 1.2;}
+
+.draft-frame{ position: fixed; left: 0; right: 0;  bottom: 0; z-index: 2000; width: 100%;}
+.draft-frame>._insert{ background-color: white; border-radius: 10px 10px 0 0; box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.15);}
+.draft-frame-s{ padding: 20rpx 40rpx; font-size: 40rpx;}
+.draft-frame-fixTitle{ padding-left: 70rpx; text-align: left; font-size: 30rpx;}
+.draft-frame-fixTitle text._l{position: relative; }
+.draft-frame-fixTitle text._l::after{position: absolute; content: ""; left: -30rpx; top: 10%; height: 80%; width: 8rpx; background-color: #733429;}
+.draft-frame-fixTitle text._r{ display: inline-block; padding: 20rpx;}

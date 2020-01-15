@@ -14,32 +14,19 @@ const getCtx = (selector, ctx = getCurrentPages()[getCurrentPages().length - 1])
 }
 
 const $wuBackdrop = (selector = '#wu-backdrop', ctx) => getCtx(selector, ctx)
-
-const $wuActionSheet = (selector = '#wu-actionsheet', ctx) => getCtx(selector, ctx)
-const $wuWidget = (selector = '#wu-widget', ctx) => getCtx(selector, ctx)
-const $wuPlayWidget = (selector = '#wu-play-widget', ctx) => getCtx(selector, ctx)
-const $wuLoading = (selector = '#wu-loading', ctx) => getCtx(selector, ctx)
 const $wuNavigation = (selector = '#wu-navigation', ctx) => getCtx(selector, ctx)
+const $wuPlayWidget = (selector = '#wu-play-widget', ctx) => getCtx(selector, ctx)
 const $wuScrollTop = (selector = '#wu-scrollTop', ctx) => getCtx(selector, ctx)
-const $wuPendant = (selector = '#wu-pendant', ctx) => getCtx(selector, ctx)
-const $wuToast = (selector = '#wu-toast', ctx) => getCtx(selector, ctx)
-const $wuToptips = (selector = '#wu-toptips', ctx) => getCtx(selector, ctx)
-const $wuMarkedwords = (selector = '#wu-marked-words', ctx) => getCtx(selector, ctx)
 const $wuSlogon = (selector = '#wu-slogon', ctx) => getCtx(selector, ctx)
-const $wuMarkedWords = (selector = '#wu-marked-words', ctx) => getCtx(selector, ctx)
+const $wuLoading = (selector = '#wu-loading', ctx) => getCtx(selector, ctx)
+const $wuPendant = (selector = '#wu-pendant', ctx) => getCtx(selector, ctx)
 
 export {
     $wuBackdrop,
-    $wuActionSheet,
-    $wuWidget,
-    $wuPlayWidget,
-    $wuLoading,
     $wuNavigation,
+    $wuPlayWidget,
     $wuScrollTop,
-    $wuPendant,
-    $wuToast,
-    $wuToptips,
-    $wuMarkedwords,
     $wuSlogon,
-    $wuMarkedWords
+    $wuLoading,
+    $wuPendant
 }

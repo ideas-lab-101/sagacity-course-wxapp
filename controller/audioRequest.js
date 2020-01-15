@@ -1,5 +1,5 @@
-const { LessonDataInfo, GetLessonList } = require('../pages/request/coursePort')
-const { addUserHistory } = require('../pages/request/userPort')
+const { LessonDataInfo, GetLessonList } = require('../request/coursePort')
+const { addUserHistory } = require('../request/userPort')
 const { $wuPlayWidget } = require('../components/wu/index')
 
 const audioRequest = function (dataID, loopState, frame, audioBack, successBack) {

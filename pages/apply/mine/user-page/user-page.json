@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTextStyle": "black",
+  "onReachBottomDistance": 50,
+  "disableScroll": true,
+  "usingComponents": {
+  }
+}

@@ -1,0 +1,36 @@
+
+.cover-box ._con image{
+    width: 100%;
+    height: auto;
+}
+
+.cover-box ._link{
+    height: 140rpx;
+    position: relative;
+}
+
+.cover-box ._link>view{
+    height: 100rpx;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: white;
+    padding: 20rpx 60rpx;
+}
+.cover-box ._link button{
+    font-size: 34rpx;
+    border: 0 !important;
+    background-image: -webkit-linear-gradient(0deg, #009b4c, #acce22);
+    line-height: 2.8;
+    color: white;
+    border-radius: 500rpx;
+    box-shadow: 0 6rpx 30rpx rgba(0, 155, 76, 0.5);
+}
+
+.cover-box ._link button._setting{
+    background-image: none;
+    color: #ff3e02;
+    box-shadow: none;
+}

@@ -1,0 +1,41 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wxs src="./my-collect.wxs" module="moduleMyCollect" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="我的收藏"></wu-navigation>
+
+  <view class="collect-type">
+    <view class="_insert">
+      <block wx:for="{{favorType}}" wx:key="{{index}}">
+        <text catchtap="changeTypeEvent" class="{{current===index?'active':''}}" data-code="{{item.ObjectCode}}" data-index="{{index}}">{{item.ObjectName}}</text>
+      </block>
+    </view>
+  </view>
+
+  <view class="collect-con">
+
+    <view wx:if="{{favors.list.length>0}}">
+      <navigator url="{{moduleMyCollect.changeURL(item.DataID, item.DataType, item.Format)}}" class="collect-listSingle" wx:for="{{favors.list}}" wx:key="{{item.DataID}}">
+        <view class="clear collect-listSingle-h">
+          <view class="_img">
+            <image src="{{item.CoverURL}}" mode="aspectFill" lazy-load></image>
+          </view>
+          <view class="_del">
+            <text class="_name">{{item.Name}}</text>
+            <view class="_desc">{{item.Desc}}</view>
+          </view>
+        </view>
+        <view class="flex between mt-10" catchtap="true">
+          <text class="_time">{{moduleMyCollect.resolveTime(item.AddTime)}}</text>
+          <view class="pl-15 pt-10 pr-15 pb-10 color-999" hover-class="event-hover-class-view" bindtap="cancelCollectEvent" data-id="{{item.DataID}}" data-index="{{index}}" data-type="{{item.DataType}}">
+            <text class="iconfont icon-del"></text>
+          </view>
+        </view>
+      </navigator>
+      <view class="nomore" wx:if="{{pager.lastPage}}">额，数据到底了</view>
+    </view>
+    <view wx:else class="nodate">额，此目录没有数据哟</view>
+
+  </view>
+</view>

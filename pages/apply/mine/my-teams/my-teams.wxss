@@ -1,0 +1,160 @@
+page{
+    background-color: #f7f7f7;
+}
+.my-swiper{
+    width: 100%; height: 100%;
+}
+
+.mg-right-box{
+    padding: 40rpx; margin: 30rpx 12rpx 30rpx 20rpx; background-color: white; box-shadow:0 8rpx 20rpx rgba(0, 0, 0, 0.05);
+    height: calc(100% - 80px); position: relative; border: 1rpx solid rgba(0, 0, 0, 0.08);
+}
+.mg-right-box.auth{
+    border-color: rgba(115, 52, 41, 0.5); box-shadow:0 8rpx 20rpx rgba(115, 52, 41, 0.3);
+}
+.mg-right-num{
+    position: absolute; left: 0; top: 0; z-index: 10;
+}
+.mg-right-num::after{
+    content: ""; position: absolute; left: 0; top: 0; z-index: 1;
+    width: 0; height: 0; border-right: 60rpx solid transparent; border-top: 60rpx solid rgba(0, 0, 0, 0.1);
+}
+.mg-right-num text{ position: absolute; z-index: 10; left: 10rpx; top: 6rpx; font-size: 28rpx; color: #666; }
+
+.mg-right-box>._sign{
+    position: absolute; left: 55rpx; top: 15rpx; font-size: 20rpx; color: #999999; z-index: 10;
+}
+.mg-right-box>._set{
+    position: absolute; right: 0; top: 0; font-size: 20rpx; color: #999999; z-index: 10; padding: 15rpx;
+}
+.mg-right-box>._title{
+    font-weight: 500; font-size: 46rpx; margin-top: 20rpx; display: flex; align-items: center; justify-content: center;
+}
+.mg-right-box>._title .iconfont{ margin-left: 10rpx; font-size: 38rpx; color: #999999;}
+.mg-right-box>._desc{
+    font-size: 24rpx; margin-top: 20rpx; line-height: 1.6;
+}
+.mg-right-box>._link{
+    margin-top: 60rpx; text-align: right; display: flex; justify-content: space-between; align-items: center;
+}
+.mg-right-author{
+    display: flex; align-items: center; font-size: 24rpx;
+}
+.mg-right-author image{
+    width: 40rpx; height: 40rpx; border-radius: 100rpx;
+}
+.mg-right-author text{
+    margin-left: 10rpx;
+}
+
+.mg-right-link ._k{ border:0 !important; margin:0; font-size:28rpx; color: black !important;  padding: 10rpx 30rpx; line-height: normal; background-color: #f7f7f7 !important; border-radius: 200rpx; }
+.mg-right-resource{
+    margin-top: 70rpx;
+}
+.mg-right-resource>._t{ font-size: 26rpx; font-weight: 500;}
+.mg-right-resource>._c{}
+
+.mg-right-resource-del{
+    white-space:nowrap; width: 100%; display: flex; height: 300rpx;
+}
+.mg-right-resource-n{
+    font-size: 20rpx; color: #999999; padding-top: 40rpx;
+}
+.mg-right-members>._c image{ width: 60rpx; height: 60rpx; border-radius: 100rpx;}
+.mg-right-members>._c .iconfont{ font-size: 26rpx;}
+.mg-right-members-n{
+    font-size: 20rpx; color: #999999;
+}
+
+.mg-right-resource-l{
+    margin-top: 70rpx; font-size: 34rpx; font-weight: 500; text-align: center;
+}
+.mg-right-resource-l text{ text-decoration: underline; display: inline-block; padding: 10rpx; }
+
+/*
+* book
+*/
+.index-book-box{
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 20vw;
+    margin-right: 65rpx;
+    margin-top: 10rpx;
+    position: relative;
+}
+.index-book-box:last-child{
+    margin-right: 0;
+}
+.index-book-box::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -6rpx;
+    width: 100%;
+    height: 14rpx;
+    border-radius: 100rpx 0 0 100rpx;
+    background-color: white;
+    border: 1rpx solid #e6e6e6;
+    box-sizing: border-box;
+    z-index: 10;
+    box-shadow: 0 0 6rpx rgba(0, 0, 0, 0.1) inset;
+}
+
+.index-book-box ._book{
+    padding: 0;border: 0; outline: none;
+    margin: 0;
+    width: 20vw;
+    line-height: 0;
+    border-radius: 0 0 0 10rpx;
+    box-shadow: 0 18px 20px -16px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.index-book-box ._book::after{
+    width: 4px;
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 0;
+    height: 100%;
+    z-index: 10;
+    background-image: linear-gradient(
+            to right,
+            rgba(255,255,255, 0) 0%,
+            rgba(255,255,255, 0.3) 50%,
+            rgba(255,255,255, 0) 100%)
+}
+.index-book-box ._book::before{
+    width: 6%;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 6;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 0 20rpx;
+}
+.index-book-box ._book image{
+    padding: 0; border: 0; outline: none;
+    margin: 0;
+    width: 100%;
+    height: 26.67vw;
+    line-height: 0;
+    overflow: inherit;
+}
+.index-book-box ._name{
+    margin-top: 30rpx;
+    display: block;
+    font-size: 22rpx;
+    height: 54rpx;
+    white-space:normal;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+}
+
+.nodate{ text-align: center; padding: 120rpx 30rpx; font-size: 26rpx;  width: 100%;}
+

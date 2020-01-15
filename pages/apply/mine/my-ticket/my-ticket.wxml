@@ -1,0 +1,9 @@
+<wu-loading id="wu-loading" title="加载中..."/>
+<wxs src="./my-ticket.wxs" module="moduleMyTicket" />
+
+<view class="container">
+
+    <wu-navigation id="wu-navigation" title="我的课程券"></wu-navigation>
+
+    <view>111</view>
+</view>

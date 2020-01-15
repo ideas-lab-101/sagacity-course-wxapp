@@ -1,0 +1,18 @@
+@import '/components/wxParse/wxParse.wxss';
+
+page{
+  background-color: white;
+}
+.id-con{}
+.id-fixed{
+  position: fixed; z-index: 1000;
+  right: 30rpx; bottom: 30rpx;
+}
+.id-fixed ._s{
+  display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24rpx;
+  border-radius: 500rpx; background-color: rgba(0, 0, 0, 0.15); color: black;
+  width: 100rpx; height: 100rpx; line-height: normal; border: 0 !important; padding: 0;
+}
+.id-fixed ._s:active{
+  background-color: rgba(0, 0, 0, 0.25);
+}

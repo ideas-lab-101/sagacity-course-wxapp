@@ -1,0 +1,203 @@
+<!--play.wxml-->
+<import src="/components/wxParse/wxParse.wxml" />
+<wu-loading id="wu-loading"></wu-loading>
+<wu-toptips id="wu-toptips"></wu-toptips>
+<wu-toast id="wu-toast"></wu-toast>
+<wu-actionsheet id="wu-actionsheet"></wu-actionsheet>
+
+<view class="container">
+
+    <wu-navigation id="wu-navigation" title="{{nav.title}}"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}"></wu-navigation>
+
+    <view class="play-coverUrl-blur {{systemSeries==='android'?'android':''}}"
+          style="background: url({{info.data.CoverURL}}?imageView2/1/w/300/h/400) no-repeat top center; background-size: 120% 100%;">
+    </view>
+
+
+    <view class="play-audio">
+
+        <view class="play-cover">
+
+                   <!--词 进度切换-->
+                    <swiper current="{{captionCurrent}}" bindchange="captionChangeEvent" class="play-cover-swiper">
+                        <!--进度-->
+                        <swiper-item>
+                            <view class="play-cover-progress" bindtap="turnBackPageEvent">
+                                <view class="play-canvas-box">
+                                    <template is="progress" data="{{progress: progress}}"/>
+                                </view>
+                                <image src="{{info.data.CoverURL}}" mode="aspectFill" class="play-coverUrl"></image>
+                            </view>
+                        </swiper-item>
+                        <!--词-->
+                        <swiper-item>
+                            <view class="play-words-progress">
+                                <words-progress frame="{{audioParams.currentTime}}" overall="{{info.data.Prompt}}"></words-progress>
+                            </view>
+                        </swiper-item>
+                    </swiper>
+
+                    <!--当前课本信息显示-->
+                  <!--<view class="play-lessontitle">
+                      <view>{{info.data.DataName}}</view>
+                      <text>{{info.data.LessonName}}</text>
+                  </view>-->
+
+            </view>
+
+        <view class="play-record" wx:if="{{info.data.blnInteract === 1}}">
+              <view class="recordUser flex" catchtap="goRecordListEvent">
+                  <image src="{{item.avatar_url}}" mode="aspectFill" class="user-image" wx:for="{{info.recordList}}" wx:key="{{index}}"></image>
+                  <rich-text class="recordlist _opera" nodes="{{common.filterText(info.data.rCount)}}"></rich-text>
+              </view>
+              <view class="record _opera" bindtap="recordEvent">
+                  <view class="record_s">
+                      <text class="iconfont icon-luyin"></text>
+                  </view>
+                  <view class="wave"></view>
+              </view>
+        </view>
+
+        <view class="play-operration">
+          <text class="time _opera">{{audioParams.sliderStart}} / {{timeTotal}}</text>
+          <view class="_opera _panel flex">
+              <text class="mr-5">字幕</text>
+              <wu-switch name="positive" slot="footer" size="small" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
+          </view>
+          <view class="collect _opera" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text></view>
+          <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text></view>
+          <button plain class="share _opera" hover-class="none" open-type="share"><text class="iconfont icon-chakantiezifenxiang"></text></button>
+        </view>
+
+        <view class="play-console">
+            <view class="_uniterm _panel" bindtap="openCatalogEvent"><text class="iconfont icon-list"></text></view>
+            <view class="_uniterm {{hasPrev?'':'nofocus'}}" bindtap="audioPrevEvent"><text class="iconfont icon-prev"></text></view>
+              <view class="_uniterm _play" bindtap="audioPlayEvent">
+                <text class="iconfont icon-bofang1" wx:if="{{!audioParams.isPlay}}"></text>
+                <text class="iconfont icon-weibiaoti519" wx:else></text>
+              </view>
+              <view class="_uniterm {{hasNext?'':'nofocus'}}" bindtap="audioNextEvent"><text class="iconfont icon-next"></text></view>
+            <view class="_uniterm" wx:if="{{state==='order'}}" bindtap="audioLoopEvent"><text class="iconfont icon-shunxubofang"></text></view>
+            <view class="_uniterm" wx:else bindtap="audioLoopEvent"><text class="iconfont icon-loop"></text></view>
+
+            <view class="_progress" hidden="{{!sliderProgressVisible}}">
+                <slider bindchange="sliderChangeEvent"
+                    min="0" max="100"
+                    backgroundColor="#e9e9e9"
+                    block-size="12"
+                    block-color="#000000"
+                    activeColor="#000000"
+                    value="{{audioParams.sliderValue}}"/>
+            </view>
+
+      </view>
+
+    </view>
+
+</view>
+
+
+
+
+<wu-backdrop id="wu-backdrop-catalog" bind:click="closeCatalogEvent" opacity="0" />
+<wu-animation-group wux-class="catalog-frame" in="{{ catalogin }}" class-names="wux-animate--slideInUp">
+    <view class="_insert {{systemSeries==='android'?'android':''}}">
+        <view class="play-section">
+            <view class="play-section-title"><text>目录</text></view>
+            <scroll-view scroll-y style="height: 60vh;" bindscrolltolower="lessonScollTolowerEvent">
+            <!--目录-->
+            <view class="catalog-single {{!info.is_enroll && lesson.openState === 0?'desabled':''}}" wx:for="{{lesson.list}}" wx:for-index="i" wx:for-item="lesson" wx:key="{{i}}">
+                <text class="_title">{{lesson.LessonName}} <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.openState===0) || (!info.is_enroll && lesson.openState === 0))}}"></text></text>
+                <view class="_list {{(item.DataID===info.data.DataID) && ((!info.is_enroll && lesson.openState===1) || info.is_enroll)?'active':''}}"
+                      wx:for="{{lesson.LessonData}}"
+                      wx:key="{{index}}"
+                      bindtap="changeAudioEvent"
+                      data-openState="{{lesson.openState}}"
+                      data-id="{{item.DataID}}">
+                    <view class="__dataName">
+                        <text class="iconfont icon-htmal5icon46" hidden="{{!(!info.is_enroll && lesson.openState === 0)}}"></text>
+                        <text class="iconfont icon-bofang font-14" hidden="{{item.DataID===info.data.DataID? false:true}}"></text> {{item.DataName}}
+                    </view>
+                    <view class="__dataType">
+                        <text class="iconfont icon-yinpin _indicate" wx:if="{{item.DataType === 'audio'}}"></text>
+                        <text class="iconfont icon-shipin _indicate" wx:elif="{{item.DataType === 'video'}}"></text>
+                        <text wx:else class="_indicate"></text>
+                    </view>
+                </view>
+            </view>
+            </scroll-view>
+        </view>
+    </view>
+</wu-animation-group>
+
+
+<template name="progress">
+    <view class="progress-wrap">
+        <view class="right-part">
+            <view class="right" style="{{common.progressRotate(progress, '#733429').right}}"></view>
+        </view>
+        <view class="left-part">
+            <view class="left" style="{{common.progressRotate(progress, '#733429').left}}"></view>
+        </view>
+    </view>
+    <view class="progress-wrap opacity">
+        <view class="right-part">
+            <view class="right" style="{{common.progressRotate(progress, 'rgba(115, 52, 41, 0.25)').right}}"></view>
+        </view>
+        <view class="left-part">
+            <view class="left" style="{{common.progressRotate(progress, 'rgba(115, 52, 41, 0.25)').left}}"></view>
+        </view>
+    </view>
+</template>
+
+<wxs module="common">
+    var progressRotate = function (percentage, color){
+        var p = (percentage * 100);
+        var deg = p * 3.6;
+        if(p > 100 || p < 0) {
+            p = 100;
+        }
+        var left = 0,
+            right = 0;
+        if(deg <= 180){
+            right = "transform:rotate("+(deg-180)+"deg);"
+            left = "background: none;"
+        }else{
+            right = "transform:none;"
+            left = "background:"+color+"; transform:rotate("+(deg-360)+"deg);"
+        }
+        return {
+            left: left,
+            right: right
+        }
+    }
+
+    var filterText = function (val){
+        if (!val || val == 0) {
+            return '没人创作,去抢沙发吧'
+        }
+        if (val >= 99) {
+            val = '99+'
+        }
+        return [{
+                name: 'span',
+                attrs: {
+                    class: '',
+                    style: 'font-size: 14px;'
+                },
+                children: [{
+                    type: 'text',
+                    text: val+'件作品,去看看'
+                }]
+            }]
+    }
+
+
+    module.exports = {
+        progressRotate: progressRotate,
+        filterText: filterText
+    }
+</wxs>

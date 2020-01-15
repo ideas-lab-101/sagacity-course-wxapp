@@ -1,0 +1,54 @@
+<wu-loading id="wu-loading"></wu-loading>
+<wu-toast id="wu-toast" />
+
+<view>
+
+  <wu-navigation id="wu-navigation" title="{{nav.title}}"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}">
+  </wu-navigation>
+
+  <view class="ei-box">
+    <form bindsubmit="formSubmit">
+
+      <wux-cell-group title="完善个人信息,多端数据同步">
+        <wux-cell hover-class="none" title="昵称" wux-class="ei-group">
+          <view class="ei-val-box">
+            <wux-input placeholder="填写昵称" placeholder-style="color:#b4b4b4;" controlled value="{{form.name}}" name="name"
+                       bind:change="setValueEvent" data-name="form.name"/>
+          </view>
+        </wux-cell>
+        <wux-cell hover-class="none" title="登录手机号">
+          <view class="ei-val-box">
+            <wux-input class="def" placeholder="点击右侧验证手机号" placeholder-style="color:#b4b4b4;" type="number" controlled disabled value="{{form.tel}}" name="tel"
+                       bind:change="setValueEvent" data-name="form.tel"/>
+            <text class="ei-val" catchtap="goVerifyTelEvent">验证手机号</text>
+          </view>
+        </wux-cell>
+        <wux-cell hover-class="none" title="邮箱地址" bindtap="changeSexEvent">
+          <view class="ei-val-box">
+            <wux-input placeholder="填写正确的邮箱地址" placeholder-style="color:#b4b4b4;" controlled value="{{form.email}}" name="email"
+                       bind:change="setValueEvent" data-name="form.email"/>
+          </view>
+        </wux-cell>
+        <wux-cell hover-class="none" title="个性签名" bindtap="changeSexEvent">
+          <view class="ei-val-box">
+            <wux-input placeholder="填写个性签名" placeholder-style="color:#b4b4b4;" controlled value="{{form.sign}}" name="sign"
+                       bind:change="setValueEvent" data-name="form.sign"/>
+          </view>
+        </wux-cell>
+      </wux-cell-group>
+      <!--添加联系人-->
+      <view class="enroll-fix">
+        <button plain class="primary-tap-active-color enroll-btn" form-type="submit">保存</button>
+      </view>
+
+    </form>
+  </view>
+</view>
+
+
+
+
+

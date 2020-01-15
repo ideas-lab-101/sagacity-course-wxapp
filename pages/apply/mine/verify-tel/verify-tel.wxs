@@ -1,0 +1,10 @@
+var jointStr = function (region, address) {
+  var exp = getRegExp('/', 'g')
+  var regionStr = region.replace(exp, '')
+  return regionStr + address
+}
+
+
+module.exports = {
+  jointStr: jointStr
+}

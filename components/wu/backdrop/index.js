@@ -1,17 +1,36 @@
-import baseBehavior from '../helpers/baseBehavior'
+import baseComponent from '../helpers/baseComponent'
 
-Component({
-    behaviors: [baseBehavior],
-    externalClasses: ['wux-class'],
+baseComponent({
     properties: {
+        prefixCls: {
+            type: String,
+            value: 'wux-backdrop',
+        },
         transparent: {
             type: Boolean,
             value: false,
+        },
+        zIndex: {
+            type: Number,
+            value: 1000,
+        },
+        classNames: {
+            type: null,
+            value: 'wux-animate--fadeIn',
         },
         opacity: {
             type: Number,
             value: 0.4
         }
+    },
+    computed: {
+        classes: ['prefixCls, transparent', function(prefixCls, transparent) {
+            const wrap = transparent ? `${prefixCls}--transparent` : prefixCls
+
+            return {
+                wrap,
+            }
+        }],
     },
     methods: {
         /**
@@ -25,7 +44,7 @@ Component({
             this.backdropHolds = this.backdropHolds + 1
 
             if (this.backdropHolds === 1) {
-                this.$$setData({ in: true })
+                this.setData({ in: true })
             }
         },
         /**
@@ -33,7 +52,7 @@ Component({
          */
         release() {
             if (this.backdropHolds === 1) {
-                this.$$setData({ in: false })
+                this.setData({ in: false })
             }
             this.backdropHolds = Math.max(0, this.backdropHolds - 1)
         },
@@ -43,5 +62,9 @@ Component({
         onClick() {
             this.triggerEvent('click')
         },
+
+        noop() {
+            return false
+        }
     },
 })

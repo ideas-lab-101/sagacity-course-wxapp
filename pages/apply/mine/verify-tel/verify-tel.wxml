@@ -1,0 +1,44 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wux-toast id="wux-toast" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="{{nav.title}}"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}">
+  </wu-navigation>
+
+
+    <view class="vt-box">
+      <form bindsubmit="formSubmit">
+
+          <vew class="vt-c">
+              <wux-cell-group title="选择填写手机号或者微信手机号">
+                  <wux-cell hover-class="none">
+                      <view class="ei-val-box">
+                          <wux-input placeholder="手机号码" placeholder-style="color:#b4b4b4;" controlled value="{{form.tel}}" type="number" name="tel" bind:change="setValueEvent" data-name="form.tel"/>
+                      </view>
+                  </wux-cell>
+                  <wux-cell hover-class="none">
+                      <view class="vt-code">
+                          <wux-input class="def" placeholder="输入短信验证码" placeholder-style="color:#b4b4b4;" type="number" controlled type="number" value="{{form.identityCode}}"
+                                     name="identityCode"  bind:change="setValueEvent" data-name="form.identityCode"/>
+                          <text catchtap="getCodeEvent" wx:if="{{countDown.visible}}">点击获取</text>
+                          <text class="c999-color" wx:else>{{countDown.count}}秒</text>
+                      </view>
+                  </wux-cell>
+              </wux-cell-group>
+          </vew>
+
+          <view class="vt-j">
+              <view class="vt-single">
+                <button plain class="primary-tap-active-color vt-btn" form-type="submit">验证输入的手机号</button>
+              </view>
+              <view class="vt-single">
+                <button plain class="primary-tap-active-color vt-btn sel" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取微信手机号码</button>
+              </view>
+          </view>
+      </form>
+    </view>
+</view>

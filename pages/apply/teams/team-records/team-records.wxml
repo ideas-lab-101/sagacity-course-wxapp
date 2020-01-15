@@ -1,0 +1,73 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wu-toast id="wu-toast"></wu-toast>
+<wu-actionsheet id="wu-actionsheet"></wu-actionsheet>
+<wxs src="./team-records.wxs" module="moduleTeamRecords" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="{{nav.title}}({{record.totalRow}})"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}">
+  </wu-navigation>
+
+  <view class="tr-container">
+
+      <!--顶部显示日期-->
+      <view class="data-single-date-sticky-box">
+          <view class="data-single-date-sticky {{scrollDirection==='up'?'rel':''}}" style="top:{{navigationRect}}px;">
+              <rich-text nodes="{{moduleTeamRecords.resolveTime(scrollCurrentTime).date}}"></rich-text>
+              <view class="_filter flex" wx:if="{{!optionsUserId}}" catchtap="filterRecordEvent" hover-class="event-hover-class-view">
+                  <view><text>筛选作品</text></view>
+              </view>
+          </view>
+      </view>
+
+      <view wx:if="{{record.list.length>0}}">
+
+          <view class="data-single" wx:for="{{record.list}}" wx:key="{{index}}">
+
+              <!--区域日期-->
+              <view wx:if="{{index !==0 && !moduleTeamRecords.equalDate(record.list[index-1].AddTime, item.AddTime)}}"
+                    class="data-single-date-box">
+                <rich-text nodes="{{moduleTeamRecords.resolveTime(item.AddTime).date}}"
+                           class="data-single-date"  id="data-nodes{{index}}"></rich-text>
+              </view>
+
+              <view class="_insert">
+                  <view class="data-single-time flex between">
+                      <text class="color-999 font-12">{{moduleTeamRecords.resolveTime(item.AddTime).time}}</text>
+                      <text class="_k event-hover-class color-999" wx:if="{{userID===item.UserID}}" bindtap="delEvent" data-id="{{item.SubmitID}}" data-index="{{index}}">
+                          <text class="iconfont icon-del"></text><text>移除我的作品</text>
+                      </text>
+                  </view>
+                  <view class="data-single-del {{creatorID===item.UserID?'mine':''}}" hover-class="event-hover-class-view" catchtap="goRecordPageEvent" data-index="{{index}}">
+                      <view class="tr-oper">
+                          <text class="_k"><text class="iconfont icon-yinpin"></text></text>
+                      </view>
+                      <view class="flex">
+                          <view class="tr-info flex color-333"><image src="{{item.avatar_url}}" lazy-load mode="aspectFill"></image><text>{{item.Label || userData.Caption}}</text></view>
+                      </view>
+                      <view class="_name">{{item.DataName}}</view>
+                      <view class="_cname color-999">{{item.CourseName}}</view>
+                      <view class="_num color-999">
+                            <text>{{item.likeCount}}个赞</text>
+                            <text>{{item.viewCount}}次浏览</text>
+                      </view>
+                      <view class="_star" wx:if="{{item.blnMark}}">
+                          <text class="iconfont icon-collect-on"></text>
+                      </view>
+                  </view>
+              </view>
+
+          </view>
+          <view class="nomore" wx:if="{{record.lastPage}}">额，数据到底了</view>
+
+      </view>
+      <view wx:else class="nodate">额，暂时没有作品</view>
+
+  </view>
+
+</view>
+
+

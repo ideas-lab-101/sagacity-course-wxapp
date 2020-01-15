@@ -1,0 +1,76 @@
+@import "/assets/styles/cloud-icon.wxss";
+.event-hover-class-view {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.teams-layer{
+  position: fixed;
+  z-index: 1100;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.teams-layer>._insert{
+  background-color: white;
+}
+.teams-layer ._title{
+  margin: 0 40rpx; font-size: 26rpx; color: #999999;  border-bottom: 1rpx dashed rgba(0, 0, 0, 0.1); height: 80rpx; line-height: 3.5;
+}
+.teams-layer ._title text{
+  color: black; font-size: 30rpx; display: inline-block; margin: 0 10rpx;
+}
+.teams-layer ._single{
+  padding: 25rpx 20rpx 25rpx 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.teams-layer ._single.active{
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.teams-layer ._single .iconfont{ color: #999999; font-size: 28rpx; }
+
+.teams-swiper{
+  width: 100%;
+  height: 60vh;
+}
+
+.teams-layer-scroll{
+  height: calc(100% - 41px); position: relative; z-index: 10;
+}
+.noDate{ text-align: center; padding: 50rpx 30rpx; font-size: 24rpx; color: #999;}
+
+.teams-taskSingle{
+  padding: 25rpx 0; margin: 0 20rpx 0 40rpx; border-bottom: 1rpx solid #eee;
+}
+.teams-taskSingle>._info{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.teams-taskSingle>._info>view{
+  display: flex; align-items: flex-start; flex-direction: column; flex: 1;
+}
+.teams-taskSingle>._time{
+  color: #999999; font-size: 22rpx; margin-top: 15rpx; display: inline-block;
+}
+.teams-taskSingle>._info ._toTime{
+  font-size: 22rpx; color: #733429;
+}
+.teams-taskSingle>._info ._name{
+  flex: 1; margin-bottom: 20rpx; font-size: 30rpx;
+}
+.teams-taskSingle>._info ._content{
+  flex: 1; font-size: 28rpx;
+}
+.teams-taskSingle>._info ._content label{ color: #999999; font-size: 22rpx; }
+.teams-direction{ position: absolute; z-index: 110; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.03);
+    height: 100%; display: flex; justify-content: center; align-items: center; color: rgba(0, 0, 0, 0.35);
+    padding: 0 4rpx;
+}
+.teams-direction .iconfont{
+    font-size: 28rpx;
+}

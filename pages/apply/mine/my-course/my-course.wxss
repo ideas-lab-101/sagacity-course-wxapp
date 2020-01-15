@@ -1,0 +1,50 @@
+page{
+    background-color: #f7f7f7;
+}
+.nodata{
+    text-align: center; color: #999; font-size: 28rpx; padding: 50rpx 30rpx;
+}
+.nomore{ text-align: center; padding: 20rpx; font-size: 24rpx; color: #999;}
+.mycourse-single{
+    position: relative;
+    margin-bottom: 20rpx;
+    padding-top: 40rpx;
+}
+.mycourse-single:last-child{
+    margin-bottom: 0;
+}
+.mycourse-single ._time{ position: absolute; right: 50rpx; bottom: -22rpx; background-color: #e2e1e1; border-radius: 100rpx; display: inline-block;
+padding: 6rpx 25rpx; font-size: 26rpx;}
+.mycourse-single>._content{
+    margin: 0 30rpx;
+    background-color: white;
+}
+
+.mycourse-single ._img{
+    float: left;
+    width: 200rpx;
+    height: 260rpx;
+}
+.mycourse-single ._img image{
+    width: 100%; height: 100%;
+}
+
+.mycourse-single-s{
+    padding-left: 240rpx;
+    padding-top: 10rpx; padding-right: 20rpx; padding-bottom: 10rpx;
+}
+
+.mycourse-single-s ._name{
+   font-size: 35rpx;
+}
+
+.mycourse-single-s ._desc{
+   margin-top: 20rpx;
+    font-size: 24rpx;
+    line-height: 1.6;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp: 3;
+    color: #666;
+}

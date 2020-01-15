@@ -1,0 +1,36 @@
+<wu-loading id="wu-loading" title="加载中..." />
+<wu-toast id="wu-toast"></wu-toast>
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="{{nav.title}}({{member.totalRow}})"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}">
+  </wu-navigation>
+
+  <view>
+
+    <view wx:for="{{member.list}}" wx:key="{{index}}" class="tm-single flex between" hover-class="event-hover-class-view" catchtap="goTeamRecordEvent" data-index="{{index}}">
+      <view class="_l flex">
+        <image src="{{item.avatar_url}}" lazy-load mode="aspectFill"/>
+        <view>
+          <text>{{item.Label || item.Caption}}</text>
+          <view class="_profile flex" wx:if="{{item.ProfileID !== 0}}">
+            <text>关联档案：</text>
+            <text>{{item.ProfileName}}</text>
+          </view>
+        </view>
+
+      </view>
+      <view class="_r flex">
+        <text class="font-12 color-999 mr-10">作品数</text>
+        <text>{{item.rCount}}</text>
+        <text class="iconfont icon-zuo color-999"></text>
+      </view>
+    </view>
+
+  </view>
+
+</view>
+

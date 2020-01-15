@@ -1,0 +1,113 @@
+<wu-loading id="wu-loading"></wu-loading>
+<wu-toast id="wu-toast"></wu-toast>
+<wxs src="./user-page.wxs" module="moduleUserPage" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" model="fold" transparent="true"></wu-navigation>
+
+  <view class="master-backimg">
+    <image src="{{moduleUserPage.changeURL(info.data.ZoneBgURL, info.data.avatar_url)}}" mode="aspectFill"></image>
+  </view>
+  <scroll-view scroll-y class="master-scroll" bindscrolltolower="scrolltolowerEvent">
+
+    <view class="master-scroll-box">
+
+      <view class="master-info">
+        <image class="_img" src="{{info.data.avatar_url}}" mode="aspectFill"></image>
+        <text class="_name">{{info.data.Caption}}</text>
+        <text class="_txt">{{info.data.SignText || ''}}</text>
+
+        <view class="master-watch">
+          <view class="master-opera">
+            <button plain open-type="share" class="share">
+              <text class="iconfont icon-chakantiezifenxiang"></text><text>分享</text>
+            </button>
+          </view>
+          <view class="_j">
+            <view wx:if="{{!info.is_favor}}" bindtap="collectEvent" class="_watch">
+              <text class="iconfont icon-guanzhu"></text>
+              <text>关注</text>
+            </view>
+            <view wx:else bindtap="collectEvent" class="_watch active">
+              <text class="iconfont icon-guanzhu1"></text>
+              <text>取关</text>
+            </view>
+          </view>
+        </view>
+
+      </view>
+
+      <view class="master-courses">
+
+        <view class="_title" wx:if="{{info.data.RoleID === 2}}">
+          <text class="{{current === 0 ?'active':''}}" catchtap="detailChangeEvent" data-index="0">TA的作品</text>
+          <text class="{{current === 1 ?'active':''}}" catchtap="detailChangeEvent" data-index="1">TA的课程</text>
+        </view>
+        <view class="_title _s" wx:if="{{info.data.RoleID === 3}}">
+          <text class="active">TA的作品</text>
+        </view>
+
+        <view wx:if="{{current===0}}">
+
+          <view wx:if="{{record.list.length>0}}">
+            <navigator class="data-single"
+                       hover-class="event-hover-class"
+                       wx:for="{{record.list}}"
+                       wx:key="{{index}}"
+                       url="/pages/apply/mine/record-play/record-play?id={{item.RecordID}}">
+
+              <text class="_time">{{moduleUserPage.resolveTime(item.AddTime)}}</text>
+              <view class="_name">{{item.Name}}</view>
+              <view class="bs-single">
+                <view class="_insert">
+                  <view class="_image">
+                    <view><image src="{{item.CoverURL}}" mode="aspectFill" lazy-load/></view>
+                  </view>
+                </view>
+              </view>
+            </navigator>
+
+            <view class="nomore" wx:if="{{record.lastPage}}">额，数据到底了</view>
+          </view>
+          <view wx:else class="nodate">额，还没有数据哟</view>
+        </view>
+
+
+        <view wx:if="{{current===1}}">
+          <view wx:if="{{course.list.length>0}}">
+            <navigator class="data-single-c flex top"
+                       hover-class="event-hover-class"
+                       wx:for="{{course.list}}"
+                       url="/pages/apply/course/lesson-page/lesson-page?id={{item.CourseID}}">
+
+              <view class="index-book-box" hover-class="none">
+                <view class="_book"><image src="{{item.CoverURL}}" lazy-load mode="aspectFill"></image></view>
+              </view>
+              <view class="_content" data-index="{{index}}">
+                <view>
+                  <view class="content_title">{{item.CourseName}}</view>
+                  <view class="content_desc">{{item.Desc}}</view>
+                </view>
+                <view class="content_m">
+                  <text>
+                    <text>{{item.lCount}}课时</text>
+                    <text class="ml-15">{{item.viewCount}}次浏览</text>
+                  </text>
+                  <text>{{moduleUserPage.translateCN(item.blnEnd)}}</text>
+                </view>
+              </view>
+            </navigator>
+            <view class="nomore" wx:if="{{record.lastPage}}">额，数据到底了</view>
+          </view>
+          <view wx:else class="nodate">额，还没有数据哟</view>
+        </view>
+
+      </view>
+
+    </view>
+
+  </scroll-view>
+
+</view>
+  

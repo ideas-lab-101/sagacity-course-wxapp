@@ -1,0 +1,143 @@
+<wxs src="./lesson-page.wxs" module="moduleLessPage" />
+<import src="/components/wxParse/wxParse.wxml" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="{{nav.title}}"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"
+                 animation="{{nav.animation}}">
+  </wu-navigation>
+
+  <view class="lesson-top-box">
+
+    <view class="lesson-top {{coverShow?'move':''}}" bindtransitionend="coverShowEndEvent">
+      <!--书本-->
+      <view class="lesson-book">
+        <view class="index-book-box">
+          <view class="_book">
+            <image src="{{info.course_info.cover_url}}" mode="aspectFill"></image>
+          </view>
+        </view>
+      </view>
+
+      <view class="lesson-link font-14">
+          <!--收藏-->
+          <view bindtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="event-hover-class-view">
+            <text class="iconfont icon-guanzhu"></text>
+          </view>
+          <view bindtap="collectEvent" class="lesson-link-opt lesson-link-collected" hover-class="event-hover-class-view" wx:else>
+            <text class="iconfont icon-guanzhu1"></text>
+          </view>
+          <!--收藏-->
+          <view class="lesson-link-opt lesson-link-comment" hover-class="event-hover-class-view" bindtap="discussEvent">
+            <text class="iconfont icon-liuyan"></text>
+          </view>
+          <!--分享-->
+          <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="event-hover-class-view">
+            <text class="iconfont icon-chakantiezifenxiang"></text>
+          </view>
+      </view>
+
+    </view>
+
+    <view class="lesson-name">{{info.course_info.course_name}}</view>
+
+    <view class="lesson-desc color-999">
+        {{moduleLessPage.cutStr(info.course_info.course_desc)}}<rich-text nodes="{{detailLinkText}}" catchtap="goDetails" class="_r event-hover-class" catchtap="getCourseDetailEvent"></rich-text>
+    </view>
+    <!--书本信息-->
+    <view class="lesson-info">
+      <!--<rich-text class="_price italic-font" nodes="{{moduleLessPage.filterText(info.course_info.price)}}"></rich-text>-->
+      <navigator class="lesson-info-teacher flex" hover-class="navigator-hover-class" url="/pages/apply/mine/user-page/user-page?id={{info.owner_info.user_id}}">
+        <image src="{{info.owner_info.avatar_url}}" mode="aspectFill"></image>
+        <view class="ml-10 _font"><text>{{info.owner_info.caption}}</text></view>
+      </navigator>
+      <!--加入-->
+      <view class="lesson-action">
+        <view class="lesson-action-dingyue lesson-action-opt" bindtap="subscribeEvent" wx:if="{{!info.is_enroll}}">
+          <text class="iconfont icon-iconjia"></text>
+          <text>加入</text>
+        </view>
+        <view class="lesson-action-dingyued lesson-action-opt" wx:else>
+          <text>已加入</text>
+        </view>
+      </view>
+      <!--加入-->
+    </view>
+
+  </view>
+
+
+  <!--目录-->
+  <view class="lesson-intro-totalRow"><view><text>共 {{content.totalRow}} 章节</text></view></view>
+  <view class="lesson-intro">
+      <view class="catalog-single {{!info.is_enroll && lesson.open_state === 0?'desabled':''}}"
+            wx:for="{{content.list}}"
+            wx:key="lesson_id"
+            wx:for-index="i"
+            wx:for-item="lesson">
+        <view class="_title">
+          <text>{{lesson.lesson_name}}</text>
+          <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.open_state===0) || (!info.is_enroll && lesson.open_state === 0))}}"></text>
+        </view>
+        <view class="_list"
+              wx:for="{{lesson.lesson_data}}"
+              wx:key="*this"
+              bindtap="skipPlayerEvent"
+              data-open="{{!info.is_enroll && lesson.open_state === 0}}"
+              data-id="{{item.data_id}}"
+              data-type="{{item.format}}">
+            <view><text class="iconfont icon-htmal5icon46" hidden="{{!(!info.is_enroll && lesson.open_state === 0)}}"></text> {{item.data_name}}</view>
+            <text class="iconfont icon-yinpin _indicate" wx:if="{{item.format === 'audio'}}"></text>
+            <text class="iconfont icon-shipin _indicate" wx:elif="{{item.format === 'video'}}"></text>
+            <text wx:else class="_indicate"></text>
+        </view>
+      </view>
+  </view>
+
+</view>
+
+
+<!--播放挂件-->
+<wu-play-widget id="wu-play-widget"></wu-play-widget>
+
+<!--加入-->
+<wu-backdrop id="wu-backdrop" bind:click="closePayLayerEvent" />
+<wu-animation-group wux-class="pay-layer" in="{{ in }}" class-names="wux-animate--slideInUp">
+  <view class="pay-layer-box">
+    <view class="pay-layer-content">
+      <view class="_insert">
+        <view class="relative">
+          <image src="{{info.course_info.cover_url}}" mode="aspectFill" class="_img"></image>
+          <view class="_name">{{info.course_info.course_name}}</view>
+          <view class="_price italic-font" wx:if="{{info.course_info.price!==0}}"><text class="font-14">¥</text> {{moduleLessPage.filterPrice(info.course_info.price)}}</view>
+          <view class="_desc color-666">{{info.course_info.course_desc}}</view>
+        </view>
+        <view class="_link">
+          <button class="pay-button {{!info.is_enroll?'':'desabled'}}" catchtap="payEvent">{{payBtnTxt}}</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</wu-animation-group>
+
+<!--分享组件-->
+<share id="share"/>
+
+
+<!--展示课程详细内容-->
+<wu-backdrop id="wu-backdrop-parse" bind:click="closeParseEvent" />
+<wu-animation-group wux-class="parse-layer" in="{{ parseIn }}" class-names="wux-animate--fadeInUp">
+    <view class="_insert">
+        <view class="parse-layer-fixTitle flex between">
+            <text class="_l">详细介绍</text>
+            <text catchtap="closeParseEvent" class="_r event-hover-class"><text class="iconfont icon-guanbi font-18"></text></text>
+        </view>
+        <scroll-view scroll-y class="parse-layer-scroll">
+            <view class="manuscript-box">
+                <template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+            </view>
+        </scroll-view>
+    </view>
+</wu-animation-group>

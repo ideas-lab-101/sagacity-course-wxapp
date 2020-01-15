@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "精选课程",
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTextStyle": "black",
+  "onReachBottomDistance": 50,
+  "usingComponents": {
+    "wu-play-widget": "/components/wu/playWidget/index"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#f7f7f7",
+  "navigationBarTextStyle": "black",
+  "disableScroll": true,
+  "usingComponents": {
+    "wu-switch": "/components/wu/switch/index",
+    "wu-marked-words": "/components/wu/marked-words/index",
+    "words-progress": "/components/pages/words-progress/index"
+  }
+}

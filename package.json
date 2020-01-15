@@ -1,0 +1,23 @@
+{
+  "name": "sagacity_course-3.0.0",
+  "version": "3.0.0",
+  "description": "asgacity",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ideas-lab-101/sagacity-course-wxapp.git"
+  },
+  "author": "WU",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ideas-lab-101/sagacity-course-wxapp/issues"
+  },
+  "homepage": "https://github.com/ideas-lab-101/sagacity-course-wxapp#readme",
+  "dependencies": {
+    "miniprogram-computed": "^2.1.1",
+    "wux-weapp": "^3.8.5"
+  }
+}

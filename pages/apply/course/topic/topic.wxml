@@ -1,0 +1,22 @@
+<wu-loading id="wu-loading"></wu-loading>
+<import src="/components/wxParse/wxParse.wxml" />
+
+<view>
+	<wu-navigation id="wu-navigation" title="{{nav.title}}"
+				   transparent="{{nav.transparent}}"
+				   model="{{nav.model}}"
+				   animation="{{nav.animation}}">
+	</wu-navigation>
+
+	<view class="id-con clear">
+		<template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+	</view>
+
+</view>
+
+<view class="id-fixed">
+	<button class="_s" open-type="share" plain>
+		<text class="iconfont icon-chakantiezifenxiang"></text>
+		<text>分享</text>
+	</button>
+</view>

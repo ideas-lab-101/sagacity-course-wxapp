@@ -1,0 +1,39 @@
+<!--pages/lesson-list/index.wxml-->
+<wu-loading id="wu-loading"></wu-loading>
+<wxs src="./lesson-list.wxs" module="moduleLessonList" />
+
+<view class="container">
+
+  <wu-navigation id="wu-navigation" title="精选课程"></wu-navigation>
+
+  <navigator class="data-single flex top"
+             hover-class="event-hover-class"
+             wx:for="{{lessons}}"
+             url="/pages/apply/course/lesson-page/lesson-page?id={{item.CourseID}}">
+
+    <view class="index-book-box" hover-class="none">
+      <view class="_book"><image src="{{item.CoverURL}}" lazy-load mode="aspectFill"></image></view>
+    </view>
+
+    <view class="_content" data-index="{{index}}">
+      <view>
+        <view class="content_title">{{item.CourseName}}</view>
+        <text class="content_desc">{{item.Desc}}</text>
+      </view>
+      <view class="content_m">
+          <text>
+            <text>{{item.lCount}}课时</text>
+            <text class="ml-15">{{item.viewCount}}次浏览</text>
+          </text>
+          <text>{{moduleLessonList.translateCN(item.blnEnd)}}</text>
+      </view>
+    </view>
+
+  </navigator>
+
+  <view class="content-nodata" hidden="{{pager.lastPage}}">没有更多数据了</view>
+
+  <wu-play-widget id="wu-play-widget"></wu-play-widget>
+
+</view>
+  

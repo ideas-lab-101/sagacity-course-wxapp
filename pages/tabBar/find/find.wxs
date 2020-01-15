@@ -1,4 +1,7 @@
 var resolveTime = function (time, full) {
+  if (!time) {
+    return ''
+  }
   var exp = getRegExp('-', 'g')
   var temp = time.replace(exp, '/')
   var d = getDate(temp)

@@ -1,13 +1,13 @@
 
 const Environment = 'development'
 
-const version = '2.2.6'
+const version = '3.0.0'
 
 /**
  * 数据服务器
  * @type {string}
  */
-const host = Environment === 'development'? "http://m.dev.cdqidi.cn" : "https://m.cdqidi.cn"
+const host = Environment === 'development'? "http://dev.linestorm.ltd" : "http://xiaode.ideas-lab.cn"
 
 /**
  * 上传文件服务器

@@ -1,0 +1,50 @@
+<wxs src="../../../wxs/date.wxs" module="moduleMyDate" />
+<wu-toast id="wu-toast" />
+
+<wu-backdrop id="wu-backdrop" bind:click="hide" />
+<wu-animation-group wux-class="teams-layer" in="{{ teamsIn }}" class-names="wux-animate--fadeInUp">
+    <view class="_insert">
+        <swiper current="{{current}}" bindchange="taskChange" class="teams-swiper">
+            <swiper-item>
+                <view class="_title">第一步,请选择作品提交的学习组：</view>
+                <scroll-view scroll-y class="teams-layer-scroll">
+                    <view wx:if="{{teamsList.length>0}}">
+                        <view wx:for="{{teamsList}}" wx:key="{{index}}" class="_single {{teamCurrent===index?'active':''}}" hover-class="event-hover-class-view"
+                              bindtap="joinTeamEvent"
+                              data-id="{{item.TeamID}}"
+                              data-index="{{index}}"
+                              data-name="{{item.TeamName}}"
+                              data-auth="{{item.blnAuth}}">
+                            <text>{{item.TeamName}}</text>
+                            <text class="iconfont icon-zuo" wx:if="{{item.blnAuth}}"></text>
+                        </view>
+                    </view>
+                    <view wx:else class="noDate">您还没加入任何学习小组!</view>
+                </scroll-view>
+            </swiper-item>
+            <swiper-item wx:if="{{isTaskCurrent}}">
+                <view class="_title">第二步,请选择<text>{{teamsList[teamCurrent].TeamName}}</text>下的作业列表：</view>
+                <view class="teams-direction"><text class=" iconfont icon-fenzucopy"></text></view>
+                <scroll-view scroll-y class="teams-layer-scroll">
+                    <view wx:if="{{taskList.length>0}}">
+                        <view wx:for="{{taskList}}" wx:key="{{index}}" class="teams-taskSingle" hover-class="event-hover-class-view"
+                              catchtap="joinTaskEvent"
+                              data-id="{{item.TaskID}}"
+                              data-time="{{item.ValidTime}}"
+                              data-name="{{item.Content}}">
+                            <view class="_info">
+                                <view>
+                                    <text class="_name" wx:if="{{item.Datas}}">{{item.Datas}}</text>
+                                    <view class="_content"><label>作业说明：</label>{{item.Content}}</view>
+                                </view>
+                                <text class="_toTime">{{item.ValidTime}}</text>
+                            </view>
+                            <text class="_time">发布时间：{{moduleMyDate.getTimeDate(item.AddTime)}}</text>
+                        </view>
+                    </view>
+                    <view wx:else class="noDate">该小组下没有任何的任务!</view>
+                </scroll-view>
+            </swiper-item>
+        </swiper>
+    </view>
+</wu-animation-group>
