@@ -7,9 +7,7 @@
   "disableScroll": true,
   "usingComponents": {
     "wu-toptips": "/components/wu/toptips/index",
-    "wu-switch": "/components/wu/switch/index",
-    "wu-marked-words": "/components/wu/marked-words/index",
-    "words-progress": "/components/pages/words-progress/index",
-    "wu-actionsheet": "/components/wu/actionsheet/index"
+    "wux-switch": "wux-weapp/switch/index",
+    "words-progress": "/components/pages/words-progress/index"
   }
 }

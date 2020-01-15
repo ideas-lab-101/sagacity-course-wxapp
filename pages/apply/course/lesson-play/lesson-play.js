@@ -1,6 +1,6 @@
 const App = getApp()
-const { userFavor, addUserPoint } = require('../../../../request/userPort')
-const { audioRequest, getLessonList } = require('../../../../controller/audioRequest')
+import { userFavor, addUserPoint } from '../../../../request/userPort'
+const { audioRequest, getPageLessonList } = require('../../../../controller/audioRequest')
 const WxParse = require('../../../../components/wxParse/wxParse')
 const { $wuBackdrop, $wuToast, $wuActionSheet } = require('../../../../components/wu/index')
 
@@ -17,7 +17,7 @@ Page({
         },
         info: {},
         lesson: {
-            pageNumber: 1,
+          pageNumber: 1,
           lastPage: true,
           list: []
         },
@@ -295,7 +295,7 @@ Page({
 
     _getLessonList() {
         this.isLoading = true
-        return getLessonList({
+        return getPageLessonList({
           courseID: this.data.info.data.CourseID,
           page: this.data.lesson.pageNumber
         }).then(res => {

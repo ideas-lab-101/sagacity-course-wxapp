@@ -1,9 +1,6 @@
-<!--play.wxml-->
 <import src="/components/wxParse/wxParse.wxml" />
-<wu-loading id="wu-loading"></wu-loading>
 <wu-toptips id="wu-toptips"></wu-toptips>
-<wu-toast id="wu-toast"></wu-toast>
-<wu-actionsheet id="wu-actionsheet"></wu-actionsheet>
+<!--<wu-actionsheet id="wu-actionsheet"></wu-actionsheet>-->
 
 <view class="container">
 
@@ -65,7 +62,7 @@
           <text class="time _opera">{{audioParams.sliderStart}} / {{timeTotal}}</text>
           <view class="_opera _panel flex">
               <text class="mr-5">字幕</text>
-              <wu-switch name="positive" slot="footer" size="small" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
+              <wux-switch name="positive" slot="footer" size="small" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
           </view>
           <view class="collect _opera" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text></view>
           <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text></view>

@@ -32,20 +32,26 @@ Page({
          * 请求数据
          **/
         this.__initAppLaunch()
+        this.PageOnload = true
     },
 
     onShow: function () {
         /**
        * 请求历史数据
        **/
-        if(App.user.ckLogin()) {
+        if(App.user.ckLogin() && !this.PageOnload) {
           this.getHistoryData()
         }
         $wuPlayWidget().show(App.globalData.audio.getPlayer())
     },
 
     onHide: function() {
+        this.PageOnload = false
         $wuPlayWidget().detached()
+    },
+
+    onUnload: function() {
+        this.PageOnload = false
     },
 
     onPullDownRefresh: function() {
@@ -67,6 +73,7 @@ Page({
     },
 
     __init() {
+        this.getHistoryData()
 
         index()
             .then((res) => {

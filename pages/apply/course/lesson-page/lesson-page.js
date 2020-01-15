@@ -132,9 +132,9 @@ Page({
               /**
                * 存储已经被加入的课程
                */
-            if (res.data.is_enroll) {
+            /*if (res.data.is_enroll) {
               App.enroll.add(this.optionsId)
-            }
+            }*/
           })
     },
     /**
@@ -187,10 +187,8 @@ Page({
                 url: '/pages/common/accredit/accredit'
             })
         }else {
-          $wuBackdrop().retain()
-            this.setData({
-                in: true
-            })
+            $wuBackdrop().retain()
+            this.setData({ in: true })
         }
     },
 
@@ -267,7 +265,7 @@ Page({
         })
             .then((res) => {
 
-                App.enroll.add(this.optionsId) // 存储已经被加入的课程
+                //App.enroll.add(this.optionsId) // 存储已经被加入的课程
 
                 this.closePayLayerEvent() // 关闭加入层
                 this.setData({

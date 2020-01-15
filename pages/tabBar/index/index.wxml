@@ -46,18 +46,18 @@
 
         <scroll-view class="section-content flex book-page-scroll" scroll-x>
             <view wx:if="{{selectionData.length > 0}}">
-                <block wx:for="{{selectionData}}" wx:key="CourseID">
-                    <navigator class="book-page-single" url="{{moduleIndex.changeURL(item.DataType, item.DataID, item.frame)}}">
+                <block wx:for="{{selectionData}}" wx:key="data_id">
+                    <navigator class="book-page-single" url="{{moduleIndex.changeURL(item.format, item.data_id, item.frame)}}">
                         <view class="_insert">
                             <view class="relative _shadow">
-                                <image mode="aspectFill" src="{{item.CoverURL}}" lazy-load></image>
-                                <view class="_date font-10"><text>{{item.DataName}}</text></view>
-                                <view class="_type" wx:if="{{item.DataType==='audio'}}"><text class="iconfont icon-yinpin"></text></view>
-                                <view class="_type" wx:elif="{{item.DataType==='video'}}"><text class="iconfont icon-shipin"></text></view>
+                                <image mode="aspectFill" src="{{item.cover_url}}" lazy-load></image>
+                                <view class="_date font-10"><text>{{item.data_name}}</text></view>
+                                <view class="_type" wx:if="{{item.format==='audio'}}"><text class="iconfont icon-yinpin"></text></view>
+                                <view class="_type" wx:elif="{{item.format==='video'}}"><text class="iconfont icon-shipin"></text></view>
                                 <view class="_type" wx:else></view>
                                 <view class="_time">{{moduleIndex.formatTime(item.frame)}}</view>
                             </view>
-                            <text class="font-12 _txt">{{moduleIndex.resolveTime(item.AddTime)}}</text>
+                            <text class="font-12 _txt">{{moduleIndex.resolveTime(item.add_time)}}</text>
                         </view>
                     </navigator>
                 </block>
