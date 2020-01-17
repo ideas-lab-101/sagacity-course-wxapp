@@ -7,7 +7,10 @@ module.exports = Behavior({
             currentTime: 0,
             sliderStart: '00:00',
             sliderEnd: '00:00'
-        }
+        },
+        timeTotal: '00:00',
+        state: 'order', // order or loop
+        audioBack: null
     },
     methods: {
 
@@ -20,7 +23,7 @@ module.exports = Behavior({
                 isEnroll: info.is_enroll
             }
 
-            const audioBack = {
+            this.data.audioBack = {
                 canplayFn: this._canplayBack,
                 playFn: this._playBack,
                 pauseFn: this._pauseBack,
@@ -31,7 +34,7 @@ module.exports = Behavior({
                 seekingFn: this._seeking,
                 seekedFn: this._seeked
             }
-            getApp().backgroundAudioManager.create(options, audioBack, formatInfo)
+            getApp().backgroundAudioManager.create(options, this.data.audioBack, formatInfo)
         },
 
         /**
@@ -46,6 +49,17 @@ module.exports = Behavior({
             } else {
                 getApp().backgroundAudioManager.pause()
             }
+        },
+
+        /**
+         * 单循环和顺序播放切换
+         */
+        loopStateChange(newState) {
+            getApp().backgroundAudioManager.setLoopState(newState)
+        },
+
+        pauseBackgroundAudio() {
+            getApp().backgroundAudioManager.pause()
         },
 
         /**
@@ -100,6 +114,7 @@ module.exports = Behavior({
             const sliderVal =  currentTime*100 / duration
 
             this.setData({
+                'audioParams.isPlay': true,
                 'audioParams.currentTime': currentTime,
                 timeTotal: end,
                 'audioParams.sliderValue': sliderVal,

@@ -1,6 +1,6 @@
-const { $wuToast, $wuBackdrop } = require('../../../../components/wu/index')
-const {  GetLessonInfo } = require('../../../../request/coursePort')
-const {  uploadRecordFile, submitRecordFile, recordCancel } = require('../../../../request/recordPort')
+import { $wuBackdrop } from '../../../../components/wu/index'
+import {  GetLessonInfo } from '../../../../request/coursePort'
+import {  uploadRecordFile, submitRecordFile, recordCancel } from '../../../../request/recordPort'
 import recordManager from './recordManager'
 import AudioManager from '../../../../controller/audioManager'
 const App = getApp()
@@ -17,7 +17,7 @@ Page({
           }
         },
         systemSeries: App.globalData.systemSeries,
-        deviceStatusBarHeight: App.globalData.deviceStatusBarHeight,
+        statusBarHeight: App.globalData.equipment.statusBarHeight,
         markedWords: {
             data: [
               {

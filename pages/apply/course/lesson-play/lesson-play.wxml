@@ -1,7 +1,8 @@
 <wxs src="./lesson-play.wxs" module="moduleLessPlay" />
 <import src="/components/wxParse/wxParse.wxml" />
+<wux-actionsheet id="wux-actionsheet"></wux-actionsheet>
 <wu-toptips id="wu-toptips"></wu-toptips>
-<!--<wu-actionsheet id="wu-actionsheet"></wu-actionsheet>-->
+
 
 <view class="container">
 
@@ -71,12 +72,12 @@
 
         <view class="play-console">
             <view class="_uniterm _panel" bindtap="openCatalogEvent"><text class="iconfont icon-list"></text></view>
-            <view class="_uniterm {{hasPrev?'':'nofocus'}}" bindtap="audioPrevEvent"><text class="iconfont icon-prev"></text></view>
+            <view class="_uniterm {{hasPrev?'':'noFocus'}}" bindtap="audioPrevEvent"><text class="iconfont icon-prev"></text></view>
             <view class="_uniterm _play" bindtap="audioPlayEvent">
                 <text class="iconfont icon-bofang1" wx:if="{{!audioParams.isPlay}}"></text>
                 <text class="iconfont icon-weibiaoti519" wx:else></text>
             </view>
-            <view class="_uniterm {{hasNext?'':'nofocus'}}" bindtap="audioNextEvent"><text class="iconfont icon-next"></text></view>
+            <view class="_uniterm {{hasNext?'':'noFocus'}}" bindtap="audioNextEvent"><text class="iconfont icon-next"></text></view>
             <view class="_uniterm" wx:if="{{state==='order'}}" bindtap="audioLoopEvent"><text class="iconfont icon-shunxubofang"></text></view>
             <view class="_uniterm" wx:else bindtap="audioLoopEvent"><text class="iconfont icon-loop"></text></view>
 
@@ -89,6 +90,7 @@
                     activeColor="#000000"
                     value="{{audioParams.sliderValue}}"/>
             </view>
+
       </view>
 
     </view>
@@ -98,19 +100,22 @@
 
 
 
-<wu-backdrop id="wu-backdrop-catalog" bind:click="closeCatalogEvent" opacity="0" />
-<wu-animation-group wux-class="catalog-frame" in="{{ catalogin }}" class-names="wux-animate--slideInUp">
+<wu-backdrop id="wu-backdrop-catalog" bind:click="closeCatalogEvent" opacity="0" zIndex="1900"/>
+<wu-animation-group wux-class="catalog-frame" in="{{ catalogIn }}" class-names="wux-animate--slideInUp">
     <view class="_insert {{systemSeries==='android'?'android':''}}">
         <view class="play-section">
             <view class="play-section-title"><text>目录</text></view>
-            <scroll-view scroll-y style="height: 60vh;" bindscrolltolower="lessonScollTolowerEvent">
+            <scroll-view scroll-y style="height: 60vh;" bindscrolltolower="lessonScrollToLowerEvent">
             <!--目录-->
             <view class="catalog-single {{!info.is_enroll && lesson.open_state === 0?'desabled':''}}"
-                  wx:for="{{lesson.list}}"
+                  wx:for="{{content.list}}"
                   wx:for-index="i"
                   wx:for-item="lesson"
                   wx:key="lesson_id">
-                <text class="_title">{{lesson.LessonName}} <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.open_state===0) || (!info.is_enroll && lesson.open_state === 0))}}"></text></text>
+                <view class="_title">
+                    <text>{{lesson.lesson_name}}</text>
+                    <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.open_state===0) || (!info.is_enroll && lesson.open_state === 0))}}"></text>
+                </view>
                 <view class="_list {{(item.data_id===info.lesson_data.data_id) && ((!info.is_enroll && lesson.open_state===1) || info.is_enroll)?'active':''}}"
                       wx:for="{{lesson.lesson_data}}"
                       wx:key="data_id"

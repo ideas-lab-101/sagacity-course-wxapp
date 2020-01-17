@@ -1,13 +1,16 @@
 <wu-toast id="wu-toast" />
-<wu-loading id="wu-loading" />
 <wu-marked-words id="wu-marked-words" words="{{markedWords.data}}" version="{{markedWords.version}}" bindmarkDownFree="markDownFreeEvent"/>
 <import src="/components/wxParse/wxParse.wxml" />
 <wxs src="./record.wxs" module="moduleRecord" />
 
-<wu-navigation title="{{courseData.DataName}}" model="{{nav.mode}}" transparent="{{nav.transparent}}" animation="{{nav.animation}}" />
+<wu-navigation
+    title="{{courseData.DataName}}"
+    model="{{nav.mode}}"
+    transparent="{{nav.transparent}}"
+    animation="{{nav.animation}}" />
 
 <view class="record-container">
-    <view class="record-box" style="padding-top: {{deviceStatusBarHeight+45}}px;">
+    <view class="record-box" style="padding-top: {{statusBarHeight+45}}px;">
 
         <!--选择背景音部分-->
         <view class="flex between record-backmusic-box">

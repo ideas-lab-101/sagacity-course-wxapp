@@ -2,9 +2,10 @@ const App = getApp()
 
 const WxParse = require('../../../../components/wxParse/wxParse')
 import { $wuBackdrop } from '../../../../components/wu/index'
-import { $wuxActionSheet  } from 'wux-weapp/index'
+import { $wuxActionSheet  } from 'wux-weapp'
 const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
 const BackgroundAudioPlayBehavior = require('./BackgroundAudioPlayBehavior')
+const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 
 const { lessonDataInfo, getLessonList } = require('../../../../request/coursePort')
 import { userFavor, addUserPoint } from '../../../../request/userPort'
@@ -13,7 +14,7 @@ const Toast = require('../../../../viewMethod/toast')
 const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
-    behaviors: [AppLaunchBehavior, BackgroundAudioPlayBehavior],
+    behaviors: [AppLaunchBehavior, BackgroundAudioPlayBehavior, PageReachBottomBehavior],
     data: {
         nav: {
             title: "",
@@ -25,29 +26,20 @@ Page({
             }
         },
         statusBarHeight: App.globalData.equipment.statusBarHeight,
-        info: null,
-
-        lesson: {
-          pageNumber: 1,
-          lastPage: true,
-          list: []
-        },
         hasPrev: false,
         hasNext: false,
-        timeTotal: '00:00',
-        state: 'order', // order or loop,
-
         captionCurrent: 0, // 字幕swiper 序列号
         sliderProgressVisible: false,  // 设置是否显示歌词拖动进度
-
         progress: 0,
         controlFix: false,
-        systemSeries: App.globalData.systemSeries
+        systemSeries: App.globalData.systemSeries,
+        /**
+         * data
+         */
+        info: null
     },
 
     onLoad: function (options) {
-        this.isLoadPass = true
-
         this.optionsId = options.id
         this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
 
@@ -58,20 +50,9 @@ Page({
     },
 
     onShow: function () {
-        //this.__init(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
-        /*if(App.accreditLogin) { // 重新加载数据
-            App.accreditLogin = false
-            this.__init(this.optionsId, this.optionsFrame)
-        }
-        if (!this.isLoadPass) { // 没进入onload 再次进入页面时调用
-            if (!this.data.info.is_enroll && App.enroll.has(this.data.info.data.CourseID)){
-              this.__init(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
-            }
-        }*/
     },
 
     onHide: function () {
-        this.isLoadPass = false
     },
 
     onUnload: function () {
@@ -117,7 +98,6 @@ Page({
             .catch((ret) => {
                 console.error('请求音乐播放源出错!')
             })
-
     },
 
     /**
@@ -232,16 +212,15 @@ Page({
      */
     audioLoopEvent: function () {
         const { state } = this.data
-        let txt = ''
+        let txt = '顺序播放'
+        let newState = 'order'
+
         if (state === 'order') {
-            this.setData({ state: 'loop' })
-            App.audio.setLoopState('loop')
+            newState = 'loop'
             txt = '单曲循环'
-        }else {
-            this.setData({ state: 'order' })
-            App.audio.setLoopState('order')
-            txt = '顺序播放'
         }
+        this.setData({ state: newState })
+        this.loopStateChange(newState)
         Toast.text({ text: txt })
     },
 
@@ -272,40 +251,39 @@ Page({
    * @param e
    */
     openCatalogEvent: function (e) {
-        if(this.data.lesson.list.length <= 0) {
-          this._getLessonList().then(res => {
-            $wuBackdrop('#wu-backdrop-catalog', this).retain()
-            this.setData({ catalogin: true })
-          })
+        if(this.data.content.list.length <= 0) {
+
+          this._getLessonList()
+              .then(res => {
+                $wuBackdrop('#wu-backdrop-catalog', this).retain()
+                this.setData({ catalogIn: true })
+              })
           return false
         }
+
         $wuBackdrop('#wu-backdrop-catalog', this).retain()
-        this.setData({ catalogin: true })
+        this.setData({ catalogIn: true })
     },
 
     closeCatalogEvent: function (e) {
         $wuBackdrop('#wu-backdrop-catalog', this).release()
-        this.setData({ catalogin: false})
+        this.setData({ catalogIn: false})
     },
 
     _getLessonList() {
-        this.isLoading = true
-        /*return getPageLessonList({
-          course_id: this.data.info.lesson_data.course_id,
-          page: this.data.lesson.pageNumber
-        }).then(res => {
-          this.isLoading = false
-          this.setData({ 'lesson.list': this.data.lesson.list.concat(res.data.list),  'lesson.lastPage': res.data.lastPage})
-          return true
-        })*/
+        const courseID = this.data.info.lesson_data.course_id
+
+        return this.__getTurnPageDataList({
+            isPageShow: true,
+            interfaceFn: getLessonList,
+            params: {
+                course_id: courseID
+            }
+        })
     },
 
-    lessonScollTolowerEvent() {
-        if(this.data.lesson.lastPage || this.isLoading) {
-            return false
-        }
-        this.data.lesson.pageNumber++
-        this._getLessonList()
+    lessonScrollToLowerEvent() {
+        this.__ReachBottom()
     },
 
   /**
@@ -324,9 +302,9 @@ Page({
 
     recordEvent: function (e) {
         if (!App.user.ckLogin()) {
-          wx.navigateTo({
-            url: '/pages/common/accredit/accredit'
-          })
+              wx.navigateTo({
+                url: '/pages/common/accredit/accredit'
+            })
             return false
         }
         if (!this.data.info.is_enroll) {
@@ -337,20 +315,16 @@ Page({
         const self = this
         $wuxActionSheet().showSheet({
             titleText: '请选择录制模式',
-            buttons: [{
-                text: '朗诵(显示字幕)'
-                },
-                {
-                text: '背诵(不显示字幕)'
-                },
-            ],
+            theme: 'wx',
+            buttons: [{ text: '朗诵(显示字幕)'}, { text: '背诵(不显示字幕)'}],
             buttonClicked(index, item) {
                 let readMode = 0
                 if(index === 1) {
                   readMode = 1
                 }
 
-                //App.backgroundAudioManager.pause()
+                self.pauseBackgroundAudio()
+
                 setTimeout(() => {
                   wx.navigateTo({
                     url: `/pages/apply/course/record/record?id=${self.data.info.lesson_data.data_id}&mode=${readMode}` // readMode 背诵还是朗诵

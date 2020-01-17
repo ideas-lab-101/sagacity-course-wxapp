@@ -38,10 +38,31 @@ class BackgroundAudioManager {
         this.AudioPlayer = new BackgroundAudio()
     }
 
+    get playerOptions() {
+        const Player = this.AudioPlayer.getPlayer
+        return Object.assign({}, Player, this.options)
+    }
+
     create(options, pageAudioBack, info) {
+        /**
+         * 最后页面的渲染
+         * @type {boolean|*}
+         */
+        const page = this._isResetPage()
+        if (page) {
+            this.pageAudioBack = page.data.audioBack
+        }else {
+            this.pageAudioBack = null
+        }
+        /**
+         * 判断是同一首进入 就吧渲染播放
+         */
+        if (this.options && this.options.id === options.id ) {
+            return false
+        }
         this.info = Object.assign({}, this.info, info)
         this.options = options
-        this.pageAudioBack = pageAudioBack
+        this.loopState = options.loopState
 
         if (!info.isEnroll && info.openState === 0) {
             return false
@@ -61,9 +82,23 @@ class BackgroundAudioManager {
         this.AudioPlayer.seek(position)
     }
 
+    setLoopState(state) {
+        this.loopState = state
+    }
+
     prevPlay() {
         const id = this.info.prevID
         if (id === 0) {
+            return false
+        }
+
+        /**
+         * 最后页面的渲染
+         * @type {boolean|*}
+         */
+        const page = this._isResetPage()
+        if (page) {
+            page.__init(id, 0)
             return false
         }
         this.loadNewDataEvent(id)
@@ -79,6 +114,15 @@ class BackgroundAudioManager {
     nextPlay() {
         const id = this.info.nextID
         if (id === 0) {
+            return false
+        }
+        /**
+         * 最后页面的渲染
+         * @type {boolean|*}
+         */
+        const page = this._isResetPage()
+        if (page) {
+            page.__init(id, 0)
             return false
         }
         this.loadNewDataEvent(id)
@@ -112,11 +156,10 @@ class BackgroundAudioManager {
                     prevID: data.pre_data_id,
                     isEnroll: data.is_enroll
                 }
-                const loopState = this.options.loopState
 
                 this.options = {
                     id: data.data_id,
-                    loopState,
+                    loopState: this.options.loopState,
                     src: data.lesson_data.data_url,
                     title: data.lesson_data.data_name,
                     epname:  data.lesson_data.lesson_name,
@@ -148,13 +191,11 @@ class BackgroundAudioManager {
         this.pageAudioBack && this.pageAudioBack.pauseFn && this.pageAudioBack.pauseFn()
     }
     _endBack(start) {
-        setTimeout(() => {
-            if (this.options.loopState === 'order') {
-                this.nextPlay() // 自动播放下一首
-            }else {
-                this.singleLoop() // 单曲循环播放
-            }
-        }, 200)
+        if (this.loopState === 'order') {
+            this.nextPlay() // 自动播放下一首
+        }else {
+            this.singleLoop() // 单曲循环播放
+        }
 
         postHistoryEvent(this.options.id, 0) // 存储历史记录
         this.pageAudioBack && this.pageAudioBack.endFn && this.pageAudioBack.endFn()

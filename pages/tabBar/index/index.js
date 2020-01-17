@@ -1,5 +1,4 @@
 const App = getApp()
-import { $wuPlayWidget } from '../../../components/wu/index'
 import { $wuLogin } from '../../../components/pages/index'
 import { index } from '../../../request/mainPort'
 import { getUserHistory } from '../../../request/userPort'
@@ -45,12 +44,10 @@ Page({
         if(App.user.ckLogin() && !this.PageOnload) {
           this.getHistoryData()
         }
-        //$wuPlayWidget().show(App.globalData.audio.getPlayer())
     },
 
     onHide: function() {
         this.PageOnload = false
-        //$wuPlayWidget().detached()
     },
 
     onUnload: function() {

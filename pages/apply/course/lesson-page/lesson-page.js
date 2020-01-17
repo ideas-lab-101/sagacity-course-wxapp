@@ -1,5 +1,5 @@
 const App = getApp()
-import { $wuPlayWidget, $wuNavigation, $wuBackdrop } from '../../../../components/wu/index'
+import { $wuNavigation, $wuBackdrop } from '../../../../components/wu/index'
 import { $share } from '../../../../components/pages/index'
 import { getCourseInfo, getLessonList, getCourseContent } from '../../../../request/coursePort'
 import { userEnroll, userFavor, addUserPoint } from '../../../../request/userPort'
@@ -49,8 +49,6 @@ Page({
     },
 
     onShow: function () {
-        //$wuPlayWidget().show(App.globalData.audio.getPlayer())
-
         if(App.accreditLogin) { // 重新加载数据
             App.accreditLogin = false
             this.initLessonData()
@@ -64,7 +62,6 @@ Page({
     },
 
     onHide: function() {
-       // $wuPlayWidget().detached()
         this.isLoadPass = false
     },
 

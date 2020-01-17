@@ -3,7 +3,7 @@
     <view class="wp-move" style="transform: translateY(-{{translateY}}px)" bindtransitionend="transitionendEvent">
         <view wx:if="{{overall.length > 0}}">
           <view class="wp-single {{current===index?'active':''}}" wx:for="{{overall}}" wx:key="*this">
-            <view>{{item.Content}}</view>
+            <view class="content">{{item.content}}</view>
           </view>
         </view>
         <view wx:else class="wp-nodata">暂无字幕</view>

@@ -4,7 +4,7 @@ Component({
         overall: {
             type: Array,
             value: [
-              // {time_line: "00:00:10--00:00:16", Content: "天气凉了，树叶黄了。"}
+              // {time_line: "00:00:10--00:00:16", content: "天气凉了，树叶黄了。"}
             ],
             observer: function(newVal, oldVal, changedPath) {
               setTimeout(()=> {

@@ -20,7 +20,7 @@
   transition: all 0.4s;
   text-align: center;
 }
-.wp-single>view{
+.wp-single>.content{
   padding: 5rpx 30rpx;
 }
 .wp-single.active{

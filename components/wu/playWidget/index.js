@@ -1,10 +1,7 @@
 import baseBehavior from '../helpers/baseBehavior'
-const App = getApp()
 
 Component({
-
     behaviors: [baseBehavior],
-
     properties: {
         zIndex: {
             type: Number,
@@ -26,8 +23,19 @@ Component({
             coverImgUrl: ''
         }
     },
-
-    detached: function () {
+    lifetimes: {
+        attached: function() {
+        },
+        detached: function() {
+        },
+    },
+    pageLifetimes: {
+        show: function() {
+            this.show(getApp().backgroundAudioManager.playerOptions)
+        },
+        hide: function() {
+            this.detached()
+        }
     },
     methods: {
 
@@ -35,9 +43,6 @@ Component({
          * 显示
          */
         show(player) {
-            // if(App.playWidgetController) {
-            //     return false
-            // }
             if (player.play || player.pause) {
                 this.setData({
                     show: true,

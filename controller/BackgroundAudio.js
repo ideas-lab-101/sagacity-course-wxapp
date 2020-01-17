@@ -76,9 +76,12 @@ class audio {
         console.log('背景音开始播放')
         this.backgroundAudioManager.src = this.player.src
         this.player.play = true
-        setTimeout(() => {
-            this.backgroundAudioManager.seek(Number(this.player.frame))
-        }, 100)
+
+        if (Number(this.player.frame) > 0) {
+            setTimeout(() => {
+                this.backgroundAudioManager.seek(Number(this.player.frame))
+            }, 100)
+        }
 
         this.backgroundAudioManager.title = this.player.title
         this.backgroundAudioManager.epname = this.player.epname
@@ -113,11 +116,11 @@ class audio {
     seek(position) {
         const buffered = this.backgroundAudioManager.buffered
         let offset = parseInt(position)
+
         if (buffered < position) {
             offset = buffered
         }
-        const startTime = this._prefixTime(parseInt(offset/60)) + ':' + this._prefixTime(parseInt(offset%60))
-        this.start = startTime
+        this.start = this._prefixTime(parseInt(offset/60)) + ':' + this._prefixTime(parseInt(offset%60))
         this.backgroundAudioManager.seek(offset)
     }
     /**
