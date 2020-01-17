@@ -1,6 +1,6 @@
 const { getMusicList} = require('../../../../request/recordPort')
 const { GetEnumDetail } = require('../../../../request/systemPort')
-import AudioManager from '../../../../controller/audioManager'
+import AudioManager from '../../../../controller/AudioManager'
 const App = getApp()
 
 Page({

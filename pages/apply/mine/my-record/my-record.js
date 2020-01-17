@@ -4,7 +4,7 @@ const { $share, $teamsTask } = require('../../../../components/pages/index')
 const { getRecordList } = require('../../../request/userPort')
 const { getTeamList, addTeamRecord, getTeamTask } = require('../../../request/teamPort')
 const { setPublic, delRecord } = require('../../../request/recordPort')
-import AudioManager from '../../../../controller/audioManager'
+import AudioManager from '../../../../controller/AudioManager'
 
 Page({
     data: {

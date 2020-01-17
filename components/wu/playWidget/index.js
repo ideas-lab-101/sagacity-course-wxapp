@@ -76,13 +76,13 @@ Component({
         // 内置事件
         _operationEvent(e) {
             if (this.data.playerData.play) {
-                getApp().audio.pause()
+                getApp().backgroundAudioManager.pause()
                 this.setData({
                     'playerData.play': false,
                     'playerData.pause': true
                 })
             }else {
-                getApp().audio.play()
+                getApp().backgroundAudioManager.play()
                 this.setData({
                     'playerData.play': true,
                     'playerData.pause': false

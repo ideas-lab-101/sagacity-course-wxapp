@@ -1,6 +1,6 @@
 import baseBehavior from '../../wu/helpers/baseBehavior'
 import mergeOptionsToData from '../../wu/helpers/mergeOptionsToData'
-import AudioManager from '../../../controller/audioManager'
+import AudioManager from '../../../controller/AudioManager'
 const App = getApp()
 
 

@@ -3,7 +3,7 @@ const { $wuBackdrop } = require('../../../components/wu/index')
 const { $share } = require('../../../components/pages/index')
 const { ScanLogin } = require('../../../request/systemPort')
 const { GetAccountInfo, getRecordList, addUserPoint, updateZoneBg } = require('../../../request/userPort')
-import AudioManager from '../../../controller/audioManager'
+import AudioManager from '../../../controller/AudioManager'
 
 Page({
     data: {

@@ -2,7 +2,7 @@ import { $wuBackdrop } from '../../../../components/wu/index'
 import {  GetLessonInfo } from '../../../../request/coursePort'
 import {  uploadRecordFile, submitRecordFile, recordCancel } from '../../../../request/recordPort'
 import recordManager from './recordManager'
-import AudioManager from '../../../../controller/audioManager'
+import AudioManager from '../../../../controller/AudioManager'
 const App = getApp()
 
 Page({

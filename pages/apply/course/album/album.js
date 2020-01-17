@@ -1,4 +1,4 @@
-import AudioManager from "../../../../controller/audioManager";
+import AudioManager from "../../../../controller/AudioManager";
 const { $wuPlayWidget, $wuNavigation, $wuBackdrop, $wuToast } = require('../../../../components/wu/index')
 const { $share } = require('../../../../components/pages/index')
 const App = getApp()

@@ -66,11 +66,12 @@ module.exports = Behavior({
          **  audio监听回调方法
          **/
         _canplayBack: function (duration) {
+            console.log('Audio canplay')
             this.duration = duration
         },
 
         _playBack: function (id) {
-            console.log('play')
+            console.log('Audio play')
             this.setData({
                 'audioParams.isPlay': true,
                 sliderProgressVisible: true
@@ -78,14 +79,16 @@ module.exports = Behavior({
         },
 
         _pauseBack: function () {
-            console.log('pause')
-            this.setData({
-                'audioParams.isPlay': false
-            })
+            console.log('Audio pause')
+            setTimeout(() => {
+                this.setData({
+                    'audioParams.isPlay': false
+                })
+            }, 100)
         },
 
         _stopBack: function () {
-            console.log('stop')
+            console.log('Audio stop')
             this.setData({
                 'audioParams.isPlay': false,
                 progress: 0,
@@ -94,7 +97,7 @@ module.exports = Behavior({
         },
 
         _endBack: function (start) {
-            console.log('end')
+            console.log('Audio end')
             this.duration = 0
             this.setData({
                 'audioParams.isPlay': false,
