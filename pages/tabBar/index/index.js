@@ -32,6 +32,9 @@ Page({
          * 请求数据
          **/
         this.__initAppLaunch()
+            .then(() => {
+                this.__init()
+            })
         this.PageOnload = true
     },
 
@@ -42,12 +45,12 @@ Page({
         if(App.user.ckLogin() && !this.PageOnload) {
           this.getHistoryData()
         }
-        $wuPlayWidget().show(App.globalData.audio.getPlayer())
+        //$wuPlayWidget().show(App.globalData.audio.getPlayer())
     },
 
     onHide: function() {
         this.PageOnload = false
-        $wuPlayWidget().detached()
+        //$wuPlayWidget().detached()
     },
 
     onUnload: function() {

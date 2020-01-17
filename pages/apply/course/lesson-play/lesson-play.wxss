@@ -42,13 +42,13 @@
     border-radius: 1000rpx; overflow: hidden; background-color: #f7f7f7;
     box-shadow: 0 40rpx 80rpx rgba(0, 0, 0, 0.2);
 }
-.play-lessontitle{ text-align: left; font-size: 36rpx; position: absolute; top: 150rpx; left: 8%; width: 84%; }
-.play-lessontitle>view{ margin-bottom: 20rpx; font-weight: 500;}
-.play-lessontitle>text{ font-size: 26rpx; color: #333; }
+.play-lesson-title{ text-align: left; font-size: 36rpx; position: absolute; top: 150rpx; left: 7vw; width: 86vw; }
+.play-lesson-title>view{ margin-bottom: 20rpx; font-weight: 500;}
+.play-lesson-title>text{ font-size: 26rpx; color: #333; }
 .play-canvas-con{ width: 100%; height: 100%; display: flex; align-items: center;}
 
+/*play-record*/
 .play-record{ position: relative;}
-
 .play-record .record{ position: absolute;  right: 20rpx; top: -130rpx; border: 0!important; border-radius: 200rpx; width: 140rpx; height: 140rpx;}
 .play-record .record .record_s{
     border: 0!important; border-radius: 200rpx;
@@ -78,23 +78,30 @@
     0%{transform: scale(1); opacity:1;}
     100%{transform: scale(1.6); opacity:0;}
 }
-
 .play-record .record:active{
     transform: scale(0.8);
 }
-.play-record .record .iconfont{ font-size: 90rpx;}
-.play-record .recordlist{ margin-left: 20rpx; font-size: 28rpx; color: #733429;}
-.play-record .recordUser{position: absolute; z-index: 10; left: 30rpx; top: -85rpx; font-size: 28rpx; color: #733429;}
-.play-record .recordUser .user-image{ width: 65rpx; height: 65rpx; border-radius: 200rpx; position: relative; margin-left: -10rpx;
+.play-record .record .iconfont{
+    font-size: 90rpx;
+}
+.play-record .recordlist{
+    margin-left: 20rpx; font-size: 28rpx; color: #733429;
+}
+.play-record .recordUser{
+    position: absolute; z-index: 10; left: 30rpx; top: -85rpx; font-size: 28rpx; color: #733429;
+}
+.play-record .recordUser .user-image{
+    width: 65rpx; height: 65rpx; border-radius: 200rpx; position: relative; margin-left: -10rpx;
     box-shadow: 0 8rpx 15rpx rgba(0, 0, 0, 0.1);
 }
 
+/*play-operration*/
 .play-operration{ display: flex; justify-content: space-between; align-items: center; padding: 0 10rpx; height: 10vh; position: relative; background-color: white;}
 .play-operration ._opera{ padding: 14rpx 22rpx; font-size: 28rpx; color: black; text-align: center;}
 .play-operration ._opera .iconfont{ font-size: 42rpx;}
 .play-operration .collect{}
 .play-operration .collect.collected{ color: #ff3e02;}
-.play-operration .share{ border: 0!important; line-height: 1.2; margin: 0;}
+.play-operration .share{ border: 0!important; line-height: 1.2; margin: 0; width: auto; }
 .play-operration .time{  border: 0!important; line-height: 1.2; font-family: -apple-system-font, "Helvetica Neue", sans-serif; width: 180rpx; white-space:nowrap}
 .play-operration .time .iconfont,.play-operration ._panel .iconfont{
     font-size: 32rpx;
@@ -145,7 +152,7 @@
 .draft-frame>._insert.android{
     background: rgba(255, 255, 255, 0.9);
 }
-.draft-frame-s{ padding: 20rpx 40rpx; font-size: 44rpx; line-height: 1.4;}
+/*.draft-frame-s{ padding: 20rpx 40rpx; font-size: 44rpx; line-height: 1.4;}
 .draft-frame-fixTitle{ padding-left: 70rpx; text-align: left; font-size: 30rpx;}
 .draft-frame-fixTitle text._l{position: relative; color: #666;}
 .draft-frame-fixTitle text._l::after{position: absolute; content: ""; left: -30rpx; top: 10%; height: 80%; width: 8rpx; background-color: #ed1e54;}
@@ -155,7 +162,7 @@
 .draft-frame-slider>text{ color: #666666; font-size: 28rpx; font-family: -apple-system-font, "Helvetica Neue", sans-serif;}
 .draft-frame-slider ._controler{padding: 15rpx 25rpx 15rpx 30rpx; color: black;}
 .draft-frame-slider ._controler .iconfont{ font-size: 40rpx;}
-.draft-frame-slider ._play{ padding: 15rpx 25rpx; color: #000;}
+.draft-frame-slider ._play{ padding: 15rpx 25rpx; color: #000;}*/
 /*progress*/
 .progress-wrap{position: relative; width: 200px;height:200px;border-radius: 50%;background: none;text-align: center;}
 .progress-wrap .right-part{width:200px;height: 200px;position: absolute;clip:rect(0px,auto,auto,100px)}

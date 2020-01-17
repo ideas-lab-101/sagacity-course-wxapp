@@ -30,9 +30,9 @@ Page({
       /**
        * 初始化被选中的背景音
        **/
-        if (App.globalData.bachgroundSound){
+        if (App.globalData.backgroundSound){
             this.setData({
-                listCheckedId: App.globalData.bachgroundSound.MusicID
+                listCheckedId: App.globalData.backgroundSound.MusicID
             })
         }
         this._initBackSoundTypeData()
@@ -92,7 +92,7 @@ Page({
             'nav.title': item?item.Title:'选择背景音',
             'nav.navTitle': item?'确定':''
         })
-        App.globalData.bachgroundSound = item
+        App.globalData.backgroundSound = item
     },
 
     tryListenEvent: function (e) {

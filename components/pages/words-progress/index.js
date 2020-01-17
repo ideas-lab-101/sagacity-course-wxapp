@@ -4,7 +4,7 @@ Component({
         overall: {
             type: Array,
             value: [
-              // {TimeLine: "00:00:10--00:00:16", Content: "天气凉了，树叶黄了。"}
+              // {time_line: "00:00:10--00:00:16", Content: "天气凉了，树叶黄了。"}
             ],
             observer: function(newVal, oldVal, changedPath) {
               setTimeout(()=> {
@@ -76,7 +76,7 @@ Component({
             return 0
           }
           const exp = new RegExp('--', 'g')
-          let temp = this.data.overall[0].TimeLine.split(exp)
+          let temp = this.data.overall[0].time_line.split(exp)
           return this._fiterTime(temp[0])
         },
 
@@ -85,7 +85,7 @@ Component({
             return 0
           }
           const exp = new RegExp('--', 'g')
-          let temp = this.data.overall[this.data.overall.length-1].TimeLine.split(exp)
+          let temp = this.data.overall[this.data.overall.length-1].time_line.split(exp)
           return this._fiterTime(temp[1])
         },
 
@@ -156,7 +156,7 @@ Component({
         _computeCurrent(time){
             const exp = new RegExp('--', 'g')
             return this.properties.overall.findIndex( item => {
-                let temp = item.TimeLine.split(exp)
+                let temp = item.time_line.split(exp)
                 let begin = this._fiterTime(temp[0])
                 let end = this._fiterTime(temp[1])
                 return this._compareTime(time, begin, end)

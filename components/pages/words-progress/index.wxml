@@ -2,7 +2,7 @@
 <view class="wp-container {{record?'record':''}}" id="wp-container">
     <view class="wp-move" style="transform: translateY(-{{translateY}}px)" bindtransitionend="transitionendEvent">
         <view wx:if="{{overall.length > 0}}">
-          <view class="wp-single {{current===index?'active':''}}" wx:for="{{overall}}" wx:key="{{index}}">
+          <view class="wp-single {{current===index?'active':''}}" wx:for="{{overall}}" wx:key="*this">
             <view>{{item.Content}}</view>
           </view>
         </view>

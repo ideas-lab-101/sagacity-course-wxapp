@@ -12,6 +12,7 @@ let Dialog = {
     wx.showModal({
       title: options.title || '',
       content: options.content,
+      cancelText: options.cancelText || '取消',
       confirmColor: isPresetColor('calm'),
       confirmText: options.confirmText || '确定',
       success: res => {

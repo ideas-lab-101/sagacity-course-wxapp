@@ -148,7 +148,7 @@ export function addUserPoint(data) { //pointCode(001 002 003)
  */
 export function addUserHistory(data) {
   return fetch({
-    url: '/wxapp/user/addUserHistory',
+    url: '/wxapp/user/v3/addUserHistory',
     data: data || {},
     method: 'POST'
   })

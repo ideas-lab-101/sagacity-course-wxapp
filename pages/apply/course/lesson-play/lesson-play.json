@@ -8,6 +8,7 @@
   "usingComponents": {
     "wu-toptips": "/components/wu/toptips/index",
     "wux-switch": "wux-weapp/switch/index",
+    "wux-actionsheet": "wux-weapp/actionsheet/index",
     "words-progress": "/components/pages/words-progress/index"
   }
 }

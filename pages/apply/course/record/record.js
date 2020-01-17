@@ -151,7 +151,7 @@ Page({
           this.innerAudioContext.destroy()
           this.innerAudioContext = null
         }
-        App.globalData.bachgroundSound = null //清空背景音
+        App.globalData.backgroundSound = null //清空背景音
     },
 
     /**
@@ -516,7 +516,7 @@ Page({
                 $wuToast().show({type: 'text', color: '#fff', text: '提交成功', success: () => {}})
                 this.closeRecordOverEvent() // 关闭弹出层
                 this.submitRecordAction = true // 如果正式提交录音  做记录
-                App.globalData.bachgroundSound = null //清空背景音
+                App.globalData.backgroundSound = null //清空背景音
                 setTimeout(() => {
                     wx.navigateTo({
                         url: `/pages/apply/mine/my-record/my-record?id=${res.data}&skip=1`
@@ -535,7 +535,7 @@ Page({
      * 重置推荐背景音列表
      **/
     _resetBackSound: function () {
-        const globalItem = App.globalData.bachgroundSound
+        const globalItem = App.globalData.backgroundSound
         if (!globalItem) {
             this.setData({
               backgroundSoundItem: null,

@@ -1,6 +1,6 @@
-const { lessonDataInfo, getLessonList } = require('../request/coursePort')
-const { addUserHistory } = require('../request/userPort')
-const { $wuPlayWidget } = require('../components/wu/index')
+import { lessonDataInfo, getLessonList } from '../request/coursePort'
+import { addUserHistory } from '../request/userPort'
+import { $wuPlayWidget } from '../components/wu/index'
 
 const audioRequest = function (dataID, loopState, frame, audioBack, successBack) {
 
@@ -10,13 +10,13 @@ const audioRequest = function (dataID, loopState, frame, audioBack, successBack)
                 data_id: Number(dataID)
             })
             .then((res) => {
-                const player = getApp().globalData.audio.getPlayer()
+                const player = getApp().audio.getPlayer()
                 let isSameID = true
                 if (Number(dataID) !== Number(player.id) || player.id === '') {
                     isSameID = false
                 }
 
-                getApp().globalData.audio.create(isSameID, res, loopState, frame, audioBack) // 创建新的播放信息
+                getApp().audio.create(isSameID, res, loopState, frame, audioBack) // 创建新的播放信息
 
                 successBack && successBack(res, isSameID, dataID) // 页面回调setData渲染方法
                 resolve(res)
@@ -49,7 +49,7 @@ const postHistoryEvent = function (dataID, frame, total) {
 
 const audioEndClearPlayWidget = function () {
     // 重置palyWidget 组件中的数据
-    const player = getApp().globalData.audio.getPlayer()
+    const player = getApp().audio.getPlayer()
     $wuPlayWidget().upData(player)
 }
 

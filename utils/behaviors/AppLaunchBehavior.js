@@ -1,16 +1,12 @@
 module.exports = Behavior({
     methods: {
         __initAppLaunch: function() {
-            return new Promise(resolve => {
-                if (!getApp().identityCallback) {
-                    getApp().identityCallback = () => {
-                        this.__init()
-                        resolve()
-                    }
-                }else {
-                    this.__init()
-                }
-            })
+            if (!getApp().identityCallback) {
+                getApp().identityCallback = () => Promise.resolve()
+                
+                return Promise.resolve()
+            }
+            return Promise.resolve()
         }
     }
 })

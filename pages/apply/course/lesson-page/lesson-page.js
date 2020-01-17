@@ -49,7 +49,7 @@ Page({
     },
 
     onShow: function () {
-        $wuPlayWidget().show(App.globalData.audio.getPlayer())
+        //$wuPlayWidget().show(App.globalData.audio.getPlayer())
 
         if(App.accreditLogin) { // 重新加载数据
             App.accreditLogin = false
@@ -64,7 +64,7 @@ Page({
     },
 
     onHide: function() {
-        $wuPlayWidget().detached()
+       // $wuPlayWidget().detached()
         this.isLoadPass = false
     },
 

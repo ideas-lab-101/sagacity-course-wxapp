@@ -1,10 +1,19 @@
 const App = getApp()
-import { userFavor, addUserPoint } from '../../../../request/userPort'
-const { audioRequest, getPageLessonList } = require('../../../../controller/audioRequest')
+
 const WxParse = require('../../../../components/wxParse/wxParse')
-const { $wuBackdrop, $wuToast, $wuActionSheet } = require('../../../../components/wu/index')
+import { $wuBackdrop } from '../../../../components/wu/index'
+import { $wuxActionSheet  } from 'wux-weapp/index'
+const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
+const BackgroundAudioPlayBehavior = require('./BackgroundAudioPlayBehavior')
+
+const { lessonDataInfo, getLessonList } = require('../../../../request/coursePort')
+import { userFavor, addUserPoint } from '../../../../request/userPort'
+
+const Toast = require('../../../../viewMethod/toast')
+const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
+    behaviors: [AppLaunchBehavior, BackgroundAudioPlayBehavior],
     data: {
         nav: {
             title: "",
@@ -15,19 +24,13 @@ Page({
                 timingFunction: "linear"
             }
         },
-        info: {},
+        statusBarHeight: App.globalData.equipment.statusBarHeight,
+        info: null,
+
         lesson: {
           pageNumber: 1,
           lastPage: true,
           list: []
-        },
-
-        audioParams: {
-            isPlay: false,
-            sliderValue: 0,
-            currentTime: 0,
-            sliderStart: '00:00',
-            sliderEnd: '00:00'
         },
         hasPrev: false,
         hasNext: false,
@@ -43,24 +46,26 @@ Page({
     },
 
     onLoad: function (options) {
-        this.isLoadPass = true // 判断是否重新进入当夜页面
+        this.isLoadPass = true
+
         this.optionsId = options.id
-        this.optionsFrame = options.frame/1000 // 按照之前的帧数进入
-        if (options.frame === null || options.frame === undefined) {
-            this.optionsFrame = 0
-        }
-        // this.initAudioRequest(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
+        this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
+
+        this.__initAppLaunch()
+            .then(() => {
+                this.__init(this.optionsId, this.optionsFrame)
+            })
     },
 
     onShow: function () {
-        this.initAudioRequest(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
+        //this.__init(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
         /*if(App.accreditLogin) { // 重新加载数据
             App.accreditLogin = false
-            this.initAudioRequest(this.optionsId, this.optionsFrame)
+            this.__init(this.optionsId, this.optionsFrame)
         }
         if (!this.isLoadPass) { // 没进入onload 再次进入页面时调用
             if (!this.data.info.is_enroll && App.enroll.has(this.data.info.data.CourseID)){
-              this.initAudioRequest(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
+              this.__init(this.optionsId, this.optionsFrame) // 传入ID FRAME 帧数
             }
         }*/
     },
@@ -70,14 +75,14 @@ Page({
     },
 
     onUnload: function () {
-        // App.globalData.audio.empty()
+        // App.backgroundAudioManager.empty()
     },
 
     onShareAppMessage: function () {
         return {
-            imageUrl: `${this.data.info.data.CoverURL}?imageView2/5/h/300`,
-            title: this.data.info.data.DataName,
-            path: "/pages/apply/course/lesson-play/lesson-play?id=" + this.data.info.data.DataID,
+            imageUrl: `${this.data.info.lesson_data.cover_url}?imageView2/5/h/300`,
+            title: this.data.info.lesson_data.data_name,
+            path: "/pages/apply/course/lesson-play/lesson-play?id=" + this.data.info.lesson_data.data_id,
             success: (ret) => {
                 addUserPoint({ pointCode: '001'})
             }
@@ -87,41 +92,68 @@ Page({
     /**
     **  media audio 初始化事件
     **/
-    initAudioRequest: function (id, frame) {
-        const audioBack = {
-            canplayFn: this._canplayBack,
-            playFn: this._playBack,
-            pauseFn: this._pauseBack,
-            endFn: this._endBack,
-            stopFn: this._stopBack,
-            timeUpdateFn: this._timeUpdateBack,
-            waitingFn: this._waiting
-        }
-        audioRequest(id,
-            this.data.state,
-            frame,
-            audioBack,
-            this.initSetPage)
+    __init: function (id, frame) {
+
+        return lessonDataInfo({
+            data_id: Number(id)
+        })
+            .then((res) => {
+
+                this.setData({
+                    info: res.data,
+                    'nav.title': res.data.lesson_data.data_name
+                })
+                WxParse.wxParse('detail', 'html', res.data.lesson_data.content || '<p style="font-size: 14px;">暂无介绍</p>', this, 5)
+
+                if (res.data.lesson_data.format === 'audio') {
+                    this.initOperation() // 设置上一条 下一条按钮
+                    this.initAudio()
+                } else {
+                    console.error('文件和文件类型不匹配')
+                }
+
+                return res
+            })
+            .catch((ret) => {
+                console.error('请求音乐播放源出错!')
+            })
+
     },
 
-    initSetPage: function (res, isSameID, id) {
-        this.setData({ info: res, 'nav.title': res.data.DataName })
-        if (this.data.info.data.DataType === 'audio') {
-            this.initAudio(id, isSameID)
-        } else {
-            console.error('文件和文件类型不匹配')
-        }
-        WxParse.wxParse('detail', 'html', this.data.info.data.Content || '<p style="font-size: 14px;">暂无介绍</p>', this, 5)
-    },
+    /**
+     * 初始化播放器
+     */
+    initAudio: function () {
+        const { lesson_data } = this.data.info
+        const id = lesson_data.data_id
+        const src = lesson_data.data_url
+        const title = lesson_data.data_name
+        const epname = lesson_data.lesson_name
+        const coverImgUrl = lesson_data.cover_url
+        const loopState = this.data.state
 
-    initOperation: function (id) {  // 设置上一条 下一条
+        this.__initBackgroundAudio({
+            id,
+            loopState,
+            src,
+            title,
+            epname,
+            coverImgUrl,
+            frame: 0
+        })
+    },
+    /**
+     * 设置上一条 下一条
+     */
+    initOperation: function () {
         let prev = true
         let next = true
+        const { pre_data_id, next_data_id, lesson_data, is_enroll } = this.data.info
 
-        if (this.data.info.preDataID === 0) {
+        if (pre_data_id === 0 || (!is_enroll && lesson_data.open_state === 0)) {
             prev = false
         }
-        if (this.data.info.nextDataID === 0) {
+        if (next_data_id === 0 || (!is_enroll && lesson_data.open_state === 0)) {
             next = false
         }
         this.setData({
@@ -129,141 +161,104 @@ Page({
             hasNext: next
         })
     },
+    /**
+     * 上一首
+     * @returns {boolean}
+     */
+    audioPrevEvent: function () {
+        const { hasPrev } = this.data
+        const { pre_data_id } = this.data.info
 
-    initAudio: function (id, isSameID) {
-        // 判断进入的时候的 id 是否在播放列表中, 给出结果 是否被中断, 如果中断说明传入ID 不在播放列表中
-        this.initOperation(id) // 设置上一条 下一条按钮
-       /**
-       * 判断是否同一首音频进入 并且是播放状态
-       */
-        if (isSameID && App.globalData.audio.getPlayer().play) {
-            App.globalData.audio.play()
-            this.setData({
-                'audioParams.isPlay': true
-            })
-        }else if(isSameID && !App.globalData.audio.getPlayer().play) {
-            App.globalData.audio.play()
+        if (!hasPrev) {
+            return false
         }
+        this.optionsId = pre_data_id
+        this.optionsFrame = 0
+        this.__init( pre_data_id )
     },
+    /**
+     * 下一首
+     * @returns {boolean}
+     */
+    audioNextEvent: function () {
+        const { hasNext } = this.data
+        const { next_data_id } = this.data.info
+
+        if (!hasNext) {
+            return false
+        }
+        this.optionsId = next_data_id
+        this.optionsFrame = 0
+        this.__init(next_data_id)
+    },
+
+
+
+
 
     /**
     **  页面触发事件
     **/
-
     turnBackPageEvent: function () {
         wx.navigateTo({
-            url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.data.CourseID}`
+            url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.lesson_data.course_id}`
         })
     },
 
     goRecordListEvent: function () {
-        if (!this.data.info.data.rCount || this.data.info.data.rCount === 0) {
+        if (!this.data.info.lesson_data.record_count || this.data.info.lesson_data.record_count === 0) {
             return false
         }
         wx.navigateTo({
-            url: `/pages/apply/course/record-list/record-list?id=${this.data.info.data.DataID}`
+            url: `/pages/apply/course/record-list/record-list?id=${this.data.info.lesson_data.data_id}`
         })
     },
 
     audioPlayEvent: function () {
-        if (App.globalData.audio.getPlayer().end && App.globalData.audio.getPlayer().stop) {
-            return false
-        }
-        if (!this.data.info.is_enroll && this.data.info.data.openState === 0) {
-            wx.showModal({
-                title: '',
-                content: '您还没有加入此课，还不能查看',
-                showCancel: true,
-                cancelText: '算了',
-                confirmText: '去加入',
-                success: (res) => {
-                    if (res.confirm) {
-                        wx.navigateTo({
-                            url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.data.CourseID}`
-                        })
-                    }
-                }
-            })
+        const { is_enroll, lesson_data } = this.data.info
+
+        if (!is_enroll && lesson_data.open_state === 0) {
+            this.dialogTip()
             return false
         }
 
-        if (!this.data.audioParams.isPlay) {
-            App.globalData.audio.play()
-            this.setData({
-                'audioParams.isPlay': true
-            })
-        } else {
-            App.globalData.audio.pause()
-            this.setData({
-                'audioParams.isPlay': false
-            })
-        }
+        this.audioPlayOrPause()
     },
 
-    audioPrevEvent: function () {
-        if (!this.data.hasPrev) {
-            return false
-        }
-        App.globalData.audio.stop() // 先暂停   防止在播放试听而没加入的下一首产生
-        this.optionsId = this.data.info.preDataID
-        this.optionsFrame = 0
-        this.initAudioRequest(this.data.info.preDataID)   // 重新请求数据
-    },
 
-    audioNextEvent: function () {
-        if (!this.data.hasNext) {
-            return false
-        }
-        App.globalData.audio.stop() // 先暂停   防止在播放试听而没加入的下一首产生
-       this.optionsId = this.data.info.nextDataID
-       this.optionsFrame = 0
-       this.initAudioRequest(this.data.info.nextDataID)   // 重新请求数据
-    },
 
+    /**
+     * 是否循环
+     */
     audioLoopEvent: function () {
+        const { state } = this.data
         let txt = ''
-        if (this.data.state === 'order') {
-            this.setData({
-                state: 'loop'
-            })
-            App.globalData.audio.setLoopState('loop')
+        if (state === 'order') {
+            this.setData({ state: 'loop' })
+            App.audio.setLoopState('loop')
             txt = '单曲循环'
         }else {
-            this.setData({
-                state: 'order'
-            })
-            App.globalData.audio.setLoopState('order')
+            this.setData({ state: 'order' })
+            App.audio.setLoopState('order')
             txt = '顺序播放'
         }
-        $wuToast().show({
-            type: 'text',
-            duration: 1000,
-            text: txt
-        })
+        Toast.text({ text: txt })
     },
 
     changeAudioEvent: function (e) {
         const openState = e.currentTarget.dataset.openstate
         const id = e.currentTarget.dataset.id
-        if (this.data.info.is_enroll || (!this.data.info.is_enroll && openState === 1)) {
-            this.initAudioRequest(id)
+        if (this.data.info.is_enroll || (!this.data.info.is_enroll && open_state === 1)) {
+            this.__init(id)
         }else {
-            wx.showModal({
-                title: '',
-                content: '尚未加入，不能查看',
-                confirmText: '去加入',
-                cancelText: '算了',
-                success: (res) => {
-                    if (res.confirm) {
-                        wx.navigateTo({
-                            url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.data.CourseID}`
-                        })
-                    }
-                }
-            })
+            this.dialogTip()
         }
     },
 
+    /**
+     * 进度 歌词切换
+     * @param e
+     */
     captionChangeEvent: function (e) {
       let temp = false
       if(e.detail.current === 1) {
@@ -295,15 +290,14 @@ Page({
 
     _getLessonList() {
         this.isLoading = true
-        return getPageLessonList({
-          courseID: this.data.info.data.CourseID,
+        /*return getPageLessonList({
+          course_id: this.data.info.lesson_data.course_id,
           page: this.data.lesson.pageNumber
         }).then(res => {
-          console.log(res)
           this.isLoading = false
-          this.setData({ 'lesson.list': this.data.lesson.list.concat(res.list),  'lesson.lastPage': res.lastPage})
+          this.setData({ 'lesson.list': this.data.lesson.list.concat(res.data.list),  'lesson.lastPage': res.data.lastPage})
           return true
-        })
+        })*/
     },
 
     lessonScollTolowerEvent() {
@@ -319,15 +313,12 @@ Page({
    * @param e
    */
     collectEvent: function () {
-        userFavor({dataID: Number(this.data.info.data.DataID), type: 'ld'}).then((res) => {
+        userFavor({dataID: Number(this.data.info.lesson_data.data_id), type: 'ld'}).then((res) => {
             this.setData({
                 'info.is_favor': res.is_favor
             })
-            $wuToast().show({
-                type: 'text',
-                duration: 1000,
-                text: res.msg
-            })
+
+            Toast.text({ text: res.data.msg })
         })
     },
 
@@ -339,24 +330,12 @@ Page({
             return false
         }
         if (!this.data.info.is_enroll) {
-            wx.showModal({
-                title: '',
-                content: '尚未加入，不能查看',
-                confirmText: '去加入',
-                cancelText: '算了',
-                success: (res) => {
-                    if (res.confirm) {
-                        wx.navigateTo({
-                            url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.data.CourseID}`
-                        })
-                    }
-                }
-            })
+            this.dialogTip()
             return false
         }
 
         const self = this
-        $wuActionSheet().showSheet({
+        $wuxActionSheet().showSheet({
             titleText: '请选择录制模式',
             buttons: [{
                 text: '朗诵(显示字幕)'
@@ -371,10 +350,10 @@ Page({
                   readMode = 1
                 }
 
-                App.globalData.audio.pause()
+                //App.backgroundAudioManager.pause()
                 setTimeout(() => {
                   wx.navigateTo({
-                    url: `/pages/apply/course/record/record?id=${self.data.info.data.DataID}&mode=${readMode}` // readMode 背诵还是朗诵
+                    url: `/pages/apply/course/record/record?id=${self.data.info.lesson_data.data_id}&mode=${readMode}` // readMode 背诵还是朗诵
                   })
                 }, 100)
                 return true
@@ -384,14 +363,20 @@ Page({
         })
     },
 
+
+    /**
+     * 播放进度
+     * @param e
+     * @returns {boolean}
+     */
     sliderChangeEvent: function (e) {
         if (!this.duration) {
             console.error('获取总长度出错')
             return false
         }
         const position = this.duration*e.detail.value / 100
-        App.globalData.audio.seek(position)
-        App.globalData.audio.play()
+        App.backgroundAudioManager.seek(position)
+        App.backgroundAudioManager.play()
     },
 
     controlFixEvent: function (e) {
@@ -403,62 +388,18 @@ Page({
     },
 
     /**
-    **  audio监听回调方法
-    **/
-    _canplayBack: function (duration) {
-        this.duration = duration
-    },
-    _playBack: function (id) {
-        console.log('play')
-        this.setData({
-            'audioParams.isPlay': true,
-            sliderProgressVisible: true
+     * 未加入提示
+     */
+    dialogTip() {
+        Dialog.confirm({
+            content: '您还没有加入此课，还不能查看',
+            cancelText: '算了',
+            confirmText: '去加入',
+            onConfirm: () => {
+                wx.navigateTo({
+                    url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.lesson_data.course_id}`
+                })
+            }
         })
-    },
-    _pauseBack: function () {
-        console.log('pause')
-        this.setData({
-            'audioParams.isPlay': false
-        })
-    },
-    _stopBack: function () {
-        console.log('stop')
-        this.setData({
-            'audioParams.isPlay': false,
-            progress: 0,
-            sliderProgressVisible: false
-        })
-    },
-    _endBack: function (start) {
-        console.log('end')
-        this.duration = 0
-        this.setData({
-            'audioParams.isPlay': false,
-            'audioParams.sliderValue': 0,
-            progress: 0,
-            sliderProgressVisible: false
-        })
-    },
-    _timeUpdateBack: function (currentTime, duration, start, end) {
-        this.duration = duration
-        if (Math.round(currentTime) === Math.round(duration) || Math.ceil(currentTime) === Math.ceil(duration)) {
-            currentTime = duration
-        }
-
-        let sector = (currentTime*100/duration)/100
-        const sliderVal =  currentTime*100 / duration
-
-        this.setData({
-            'audioParams.currentTime': currentTime,
-            timeTotal: end,
-            'audioParams.sliderValue': sliderVal,
-            'audioParams.sliderStart': start,
-            'audioParams.sliderEnd': end,
-            progress: sector,
-            sliderProgressVisible: true
-        })
-    },
-    _waiting: function () {
-        console.log('Audio waiting')
     }
 })
