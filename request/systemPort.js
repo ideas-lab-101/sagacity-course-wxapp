@@ -38,8 +38,17 @@ export const bindUser = function (data) {
 }
 
 
-
-
+/**
+ * 获得指定的码表值
+ * master_id
+ */
+export function getEnumDetail(data) {
+  return fetch({
+    url: '/wxapp/system/v3/getEnumDetail',
+    data: data || {},
+    method: 'GET'
+  })
+}
 
 
 
@@ -77,25 +86,18 @@ export const bindUser = function (data) {
 // 获得平台中的管理对象
 export function getObjectType(data) {
   return fetch({
-    url: 'wxapp/system/getObjectType',
+    url: '/wxapp/system/getObjectType',
     data: data || {},
     method: 'GET'
   })
 }
 
-// 获得指定的码表值
-export function GetEnumDetail(data) {
-  return fetch({
-    url: 'wxapp/system/GetEnumDetail',
-    data: data || {},
-    method: 'GET'
-  })
-}
+
 
 // 检查session接口
 export function ValidLogin(data) {  // token
   return fetch({
-    url: 'wxapp/system/ValidLogin',
+    url: '/wxapp/system/ValidLogin',
     data: data || {},
     method: 'POST'
   })
@@ -104,7 +106,7 @@ export function ValidLogin(data) {  // token
 // 自动登录接口(更新session)
 export function WXSSLogin(data) {  // code
   return fetch({
-    url: 'wxapp/system/WXSSLogin',
+    url: '/wxapp/system/WXSSLogin',
     data: data || {},
     method: 'POST'
   })
@@ -113,7 +115,7 @@ export function WXSSLogin(data) {  // code
 // 注册接口
 export function WXSSMain(data) {  // code userInfo
   return fetch({
-    url: 'wxapp/system/WXSSMain',
+    url: '/wxapp/system/WXSSMain',
     data: data || {},
     method: 'POST'
   })
@@ -122,7 +124,7 @@ export function WXSSMain(data) {  // code userInfo
 // 获得微绑定电话号码
 export function getWXPhoneNumber(data) {  // encryptedData session_key iv
   return fetch({
-    url: 'wxapp/system/getWXPhoneNumber',
+    url: '/wxapp/system/getWXPhoneNumber',
     data: data || {},
     method: 'GET'
   })
@@ -131,7 +133,7 @@ export function getWXPhoneNumber(data) {  // encryptedData session_key iv
 // 获得验证码 支持电话或邮件
 export function getIdentityCode(data) {  // account accountType（1-电话|2-邮件）
   return fetch({
-    url: 'wxapp/system/getIdentityCode',
+    url: '/wxapp/system/getIdentityCode',
     data: data || {},
     method: 'GET'
   })
@@ -140,7 +142,7 @@ export function getIdentityCode(data) {  // account accountType（1-电话|2-邮
 // 验证验证码
 export function checkIdentityCode(data) {  // account identityCode
   return fetch({
-    url: 'wxapp/system/checkIdentityCode',
+    url: '/wxapp/system/checkIdentityCode',
     data: data || {},
     method: 'POST'
   })
@@ -149,7 +151,7 @@ export function checkIdentityCode(data) {  // account identityCode
 // 搜索
 export function Search(data) {  // key
   return fetch({
-    url: 'wxapp/system/v2/Search',
+    url: '/wxapp/system/v2/Search',
     data: data || {},
     method: 'POST'
   })
@@ -158,7 +160,7 @@ export function Search(data) {  // key
 // 热搜词列表
 export function HotSearch(data) {
   return fetch({
-    url: 'wxapp/system/HotSearch',
+    url: '/wxapp/system/HotSearch',
     data: data || {},
     method: 'GET'
   })
@@ -167,7 +169,7 @@ export function HotSearch(data) {
 // 扫码登录
 export function ScanLogin(data) { // key
   return fetch({
-    url: 'wxapp/system/ScanLogin',
+    url: '/wxapp/system/ScanLogin',
     data: data || {},
     method: 'POST'
   })
@@ -176,7 +178,7 @@ export function ScanLogin(data) { // key
 // 获取电话号码
 export function getPhoneNumber(data) { // key
   return fetch({
-    url: 'wxapp/system/getPhoneNumber',
+    url: '/wxapp/system/getPhoneNumber',
     data: data || {},
     method: 'POST'
   })
@@ -185,7 +187,7 @@ export function getPhoneNumber(data) { // key
 // 获取分享
 export function GetWXSSCode(data) { // dataID type
   return fetch({
-    url: 'wxapp/system/v2/GetWXSSCode',
+    url: '/wxapp/system/v2/GetWXSSCode',
     data: data || {},
     method: 'GET'
   })

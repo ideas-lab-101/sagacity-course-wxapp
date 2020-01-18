@@ -7,25 +7,31 @@ const { host } = require('../sever.config')
 // 获得作品推荐背景音，此接口调整为跟读模式下的指定背景音
 export function getRecommendMusic(data) { //dataID
   return fetch({
-    url: 'wxapp/record/getRecommendMusic',
+    url: '/wxapp/record/getRecommendMusic',
     data: data || {},
     method: 'GET'
   })
 }
 
-// 获得指定分类下的背景音
-export function getMusicList(data) { //styleID
+/**
+ * 获得指定类别的背景音列表
+ * style_id key(支持按歌曲名搜索)
+ */
+export function getMusicList(data) {
   return fetch({
-    url: 'wxapp/record/v2/getMusicList',
+    url: '/wxapp/record/v3/getMusicList',
     data: data || {},
     method: 'GET'
   })
 }
 
-// 获得录音作品详情
-export function getRecordInfo(data) { //recordID token
+/**
+ * 录制的音频信息
+ * token record_id
+ */
+export function getRecordInfo(data) {
   return fetch({
-    url: 'wxapp/record/v2/getRecordInfo',
+    url: '/wxapp/record/v3/getRecordInfo',
     data: data || {},
     method: 'GET'
   })
@@ -35,7 +41,7 @@ export function getRecordInfo(data) { //recordID token
 export function uploadRecordFile(options, progress, complete) { //musicID recordFile(File)
   return new Promise( (resolve, reject) => {
     const uploadTask = wx.uploadFile({
-      url: host + 'wxapp/record/v2/uploadRecordFile',
+      url: host + '/wxapp/record/v2/uploadRecordFile',
       filePath: options.path,
       name: 'recordFile',
       formData:  {
@@ -63,7 +69,7 @@ export function uploadRecordFile(options, progress, complete) { //musicID record
 // 获取是否混音完成状态
 export function queryTaskState(data) { // taskID
   return fetch({
-    url: 'wxapp/record/v2/queryTaskState',
+    url: '/wxapp/record/v2/queryTaskState',
     data: data || {},
     method: 'GET'
   })
@@ -73,7 +79,7 @@ export function queryTaskState(data) { // taskID
 // 修改录音描述
 export function updateRecordSign(data) { //recordID desc
   return fetch({
-    url: 'wxapp/record/updateRecordSign',
+    url: '/wxapp/record/updateRecordSign',
     data: data || {},
     method: 'POST'
   })
@@ -82,7 +88,7 @@ export function updateRecordSign(data) { //recordID desc
 // 放弃录制
 export function recordCancel(data) { //fileURL recordURL
   return fetch({
-    url: 'wxapp/record/v2/recordCancel',
+    url: '/wxapp/record/v2/recordCancel',
     data: data || {},
     method: 'POST'
   })
@@ -91,7 +97,7 @@ export function recordCancel(data) { //fileURL recordURL
 // 提交录制
 export function submitRecordFile(data) { //fileURL recordURL  mode  musicID
   return fetch({
-    url: 'wxapp/record/v2/submitRecordFile',
+    url: '/wxapp/record/v2/submitRecordFile',
     data: data || {},
     method: 'POST'
   }, { title: '正在提交，请等候...'})
@@ -100,7 +106,7 @@ export function submitRecordFile(data) { //fileURL recordURL  mode  musicID
 // 设置作品公开
 export function setPublic(data) { //recordID blnPublic
   return fetch({
-    url: 'wxapp/record/setPublic',
+    url: '/wxapp/record/setPublic',
     data: data || {},
     method: 'POST'
   })
@@ -109,7 +115,7 @@ export function setPublic(data) { //recordID blnPublic
 // 删除作品
 export function delRecord(data) { //recordID
   return fetch({
-    url: 'wxapp/record/delRecord',
+    url: '/wxapp/record/delRecord',
     data: data || {},
     method: 'POST'
   })
@@ -118,7 +124,7 @@ export function delRecord(data) { //recordID
 // 专辑作品
 export function getAlbumInfo(data) { // albumID token
   return fetch({
-    url: 'wxapp/record/v2/getAlbumInfo',
+    url: '/wxapp/record/v2/getAlbumInfo',
     data: data || {},
     method: 'GET'
   })

@@ -1,7 +1,7 @@
 const App = getApp()
 const { $wuNavigation, $wuToast } = require('../../../../components/wu/index')
-const { bindUser, getUserInfo } = require('../../../request/userPort')
-const { getPhoneNumber } = require('../../../request/systemPort')
+const { bindUser, getUserInfo } = require('../../../../request/userPort')
+const { getPhoneNumber } = require('../../../../request/systemPort')
 import WxValidate from '../../../../utils/WxValidate'
 
 Page({

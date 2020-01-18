@@ -1,6 +1,6 @@
 const App = getApp()
 const { $wuNavigation } = require('../../../../components/wu/index')
-const { getMessageList, setMessage } = require('../../../request/msgPort')
+const { getMessageList, setMessage } = require('../../../../request/msgPort')
 
 Page({
     data: {

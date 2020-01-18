@@ -110,7 +110,7 @@ Page({
     __init: function () {
         userAccountInfo()
             .then((res) => {
-                this.setData({ userInfo: res.data.data})
+                this.setData({ userInfo: res.data.account})
             })
 
 
@@ -203,6 +203,13 @@ Page({
     profileEvent: function () {
         wx.navigateTo({
             url: '/pages/apply/mine/create-profile/create-profile'
+        })
+    },
+
+    goRecordPlay(e) {
+        const  { id } = e.currentTarget.dataset
+        wx.navigateTo({
+            url: `/pages/apply/mine/record-play/record-play?id=${id}`
         })
     },
   /**

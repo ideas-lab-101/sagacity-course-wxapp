@@ -82,9 +82,9 @@ export function lessonDataInfo(data) {
  * 指定资源的录制列表
  * data_id
  */
-export function getRecordList(data) {
+export function getDataRecordList(data) {
   return fetch({
-    url: '/wxapp/course/v3/getRecordList',
+    url: '/wxapp/course/v3/getDataRecordList',
     data: data || {},
     method: 'GET'
   })

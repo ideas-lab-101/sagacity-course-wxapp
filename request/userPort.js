@@ -57,10 +57,13 @@ export function updateZoneBg(options, cancelTask) { //token bgFile(File)
   })
 }
 
-// 获得加入列表
-export function getEnrollList(data) { //token 分页参数
+/**
+ * 获得用户订阅列表
+ * token page
+ */
+export function getEnrollList(data) {
   return fetch({
-    url: '/wxapp/user/getEnrollList',
+    url: '/wxapp/user/v3/getEnrollList',
     data: data || {},
     method: 'GET'
   })

@@ -43,6 +43,10 @@ class BackgroundAudioManager {
         return Object.assign({}, Player, this.options)
     }
 
+    get isPlay() {
+        return this.AudioPlayer.getPlayer.play
+    }
+
     create(options, pageAudioBack, info) {
         /**
          * 最后页面的渲染

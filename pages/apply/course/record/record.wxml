@@ -15,17 +15,19 @@
         <view class="flex between record-backmusic-box">
             <view class="flex _info" wx:if="{{backgroundSoundItem}}">
                 <view class="bs-single">
-                        <view class="_image {{!tryParams.isPlay || tryParams.id !== item.MusicID?'':'active'}}">
-                            <view><image src="{{backgroundSoundItem.CoverURL}}" mode="aspectFill"/></view>
+                        <view class="_image">
+                            <view><image src="{{backgroundSoundItem.cover_url}}" mode="aspectFill"/></view>
                         </view>
-                        <view class="_name">{{backgroundSoundItem.Title}}</view>
+                        <view class="_name">{{backgroundSoundItem.title}}</view>
                 </view>
             </view>
             <view class="flex _info" wx:else>
                 <text class="_noFont">点击右侧选背景音</text>
             </view>
             <view class="_title {{markedWords.data[0].show?'MarkDown':''}}" id="MarkDown01">
-                <view class="_r" hover-class="event-hover-class-view" catchtap="getBackSoundListEvent"><text class="iconfont icon-music"></text> 选择背景音</view>
+                <view class="_r" hover-class="event-hover-class-view" catchtap="getBackSoundListEvent">
+                    <text class="iconfont icon-music"></text> 选择背景音
+                </view>
             </view>
         </view>
 

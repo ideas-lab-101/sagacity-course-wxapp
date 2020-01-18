@@ -1,15 +1,14 @@
-<wu-toast id="wu-toast" />
-<wu-loading id="wu-loading" />
-
-
-<wu-navigation title="{{nav.title}}" transparent="{{nav.transparent}}" model="{{nav.model}}" animation="{{nav.animation}}" />
+<wu-navigation title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}" />
 
 <view class="rep-container" hidden="{{!loadData}}">
 
     <block wx:if="{{result}}">
         <view class="rep-container-blur {{systemSeries==='android'?'android':''}}"
-              style="background: url({{recordData.CoverURL}}?imageView2/1/w/300/h/400) no-repeat top center; background-size: 120% 100%;">
-            <!--<image src="{{recordData.CoverURL}}" mode="aspectFill" class="_image"></image>-->
+              style="background: url({{recordData.cover_url}}?imageView2/1/w/300/h/400) no-repeat top center; background-size: 120% 100%;">
+            <!--<image src="{{recordData.cover_url}}" mode="aspectFill" class="_image"></image>-->
         </view>
 
         <view class="rep-container-info">
@@ -18,21 +17,21 @@
                     <view bindtap="goUserPageEvent"><image src="{{userData.avatar_url}}" mode="aspectFill"></image></view>
                 </view>
 
-                <view class="_name">{{userData.Caption}}</view>
+                <view class="_name">{{userData.caption}}</view>
                 <view class="_desc">
-                    <view>{{recordData.Sign || '分享了一段录制的作品'}} <text class="_edit" catchtap="openEditPlayerEvent" wx:if="{{mineInfo}}">[编辑]</text></view>
+                    <view>{{recordData.sign || '分享了一段录制的作品'}} <text class="_edit" catchtap="openEditPlayerEvent" wx:if="{{isMine}}">[编辑]</text></view>
                 </view>
             </view>
 
             <view class="rep-del">
 
                 <view class="rep-del-img" bindtap="recordPlayEvent">
-                    <view class="_image {{tryParams.isPlay?'active':''}}"><image src="{{recordData.CoverURL}}" mode="aspectFill"></image></view>
+                    <view class="_image {{tryParams.isPlay?'active':''}}"><image src="{{recordData.cover_url}}" mode="aspectFill"></image></view>
                     <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay}}"></text>
                     <text class="iconfont icon-weibiaoti519" wx:else></text>
                 </view>
-                <view class="_name">{{recordData.Name}}</view>
-                <view class="_desc">{{recordData.Desc}}</view>
+                <view class="_name">{{recordData.name}}</view>
+                <view class="_desc">{{recordData.desc}}</view>
                 <view class="rep-del-eye">
                     <view wx:if="{{recordData.mode === 1}}"><text class="iconfont icon-biyan"></text> 背诵</view>
                     <view wx:else><text class="iconfont icon-yanjing"></text> 朗诵</view>
@@ -45,9 +44,9 @@
                 <view class="rep-top-bubble" style="background:url('https://sagacity-course-000019.tcb.qcloud.la/system/play_bg.png?sign=7eaa10fcc9db297a3a993e59f9801bdb&t=1536736604') no-repeat center; background-size: 100% 100%;"></view>
 
                 <view class="rep-replay-l">
-                    <view class="_l" wx:if="{{recordData.likeCount > 0}}">
-                        <view  wx:for="{{likes}}" wx:key="{{index}}" class="_image"><image src="{{item.avatar_url}}" mode="aspectFill"></image></view>
-                        <view class="_num">{{recordData.likeCount}}次赞</view>
+                    <view class="_l" wx:if="{{recordData.like_count > 0}}">
+                        <view  wx:for="{{likes}}" wx:key="user_id" class="_image"><image src="{{item.avatar_url}}" mode="aspectFill"></image></view>
+                        <view class="_num">{{recordData.like_count}}次赞</view>
                     </view>
                 </view>
 
@@ -56,8 +55,8 @@
                     <view wx:else bindtap="collectEvent" class="active"><text class="iconfont icon-guanzhu1"></text></view>
                     <view wx:if="{{!is_like}}" bindtap="likeEvent" class="flex"><text class="iconfont icon-zan"></text> <text class="_ff"></text></view>
                     <view wx:else class="active flex"><text class="iconfont icon-liked"></text> <text class="_ff"></text></view>
-                    <view bindtap="openCommentEvent" class="flex"><text class="iconfont icon-liuyan"></text> <text class="_ff">{{recordData.commentCount}}</text></view>
-                    <rich-text nodes="{{common.filterText(recordData.viewCount)}}"></rich-text>
+                    <view bindtap="openCommentEvent" class="flex"><text class="iconfont icon-liuyan"></text> <text class="_ff">{{recordData.comment_count}}</text></view>
+                    <rich-text nodes="{{common.filterText(recordData.view_count)}}"></rich-text>
                 </view>
 
 
@@ -84,7 +83,7 @@
                 </view>-->
 
                 <view class="rep-link">
-                    <button open-type="share" plain wx:if="{{recordData.blnPublic}}">发给朋友听听</button>
+                    <button open-type="share" plain wx:if="{{recordData.bln_public}}">发给朋友听听</button>
                     <view wx:else class="color-999">此作品未公开</view>
                     <view bindtap="goLessonPlayEvent" class="rep-goNav">我也要录制</view>
                 </view>
@@ -113,7 +112,7 @@
 
 <!--编辑分享文章-->
 <wu-backdrop id="wu-backdrop" bind:click="closeEditPlayerEvent" />
-<wu-animation-group wux-class="edit-player" in="{{ editin }}" class-names="wux-animate--fadeInDown">
+<wu-animation-group wux-class="edit-player" in="{{ editIn }}" class-names="wux-animate--fadeInDown">
     <view class="_insert">
         <form bindsubmit="submitShareFontEditEvent" report-submit="ture">
             <textarea placeholder="编辑文字"
@@ -121,7 +120,7 @@
                       maxlength="25"
                       class="_e"
                       name="text"
-                      value="{{recordData.Sign || '分享了一段录制的音频'}}"/>
+                      value="{{recordData.sign || '分享了一段录制的音频'}}"/>
             <view class="_txt">最多编辑文字25个</view>
             <button formType="submit" plain class="_btn">确定</button>
         </form>

@@ -1,7 +1,7 @@
 const App = getApp()
 const { $wuNavigation } = require('../../../../components/wu/index')
-const { getFavorList, userFavor } = require('../../../request/userPort')
-const { getObjectType } = require('../../../request/systemPort')
+const { getFavorList, userFavor } = require('../../../../request/userPort')
+const { getObjectType } = require('../../../../request/systemPort')
 
 Page({
     data: {

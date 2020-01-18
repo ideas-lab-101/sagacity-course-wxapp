@@ -1,4 +1,4 @@
-const { getRecordList } = require('../../../../request/coursePort')
+import { getDataRecordList } from '../../../../request/coursePort'
 const App = getApp()
 
 Page({
@@ -17,7 +17,7 @@ Page({
     },
 
     onLoad: function (options) {
-        this._initLessonRecordData(options.id)
+        this.__init(options.id)
     },
 
     /**
@@ -34,15 +34,15 @@ Page({
     /**
      * 获取数据事件
      **/
-    _initLessonRecordData: function (id) {
-        getRecordList({dataID: Number(id)}).then((res) => {
-            console.log(res)
-            this.setData({
-                recordList: res.list
-            })
-        }).catch((ret) => {
+    __init: function (id) {
+        getDataRecordList({
+            data_id: Number(id)
         })
-
+            .then((res) => {
+                this.setData({
+                    recordList: res.data.list
+                })
+            })
     }
 
 })

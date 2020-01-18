@@ -3,7 +3,7 @@
 <view capture-bind:touchstart="frameTouchStart" capture-bind:touchend="frameTouchEnd" wx:if="{{isLogin}}">
 
   <view class="mine-background">
-    <image src="{{moduleMine.changeURL(userInfo.ZoneBgURL, userInfo.avatar_url)}}" mode="aspectFill"></image>
+    <image src="{{moduleMine.changeURL(userInfo.background_url, userInfo.avatar_url)}}" mode="aspectFill"></image>
     <view class="_shadow"></view>
   </view>
 
@@ -52,11 +52,11 @@
               <text class="user-font">收藏</text>
             </navigator>
             <navigator class="dataone" bindtap="getTicketEvent">
-              <text class="user-num">{{userInfo.msg_count}}</text>
+              <text class="user-num">{{userInfo.coupon}}</text>
               <text class="user-font">课程券</text>
             </navigator>
             <navigator class="dataone" url="/pages/apply/mine/my-message/my-message">
-              <text class="user-num {{userInfo.msgCount>0?'red':''}}">{{userInfo.msg_count}}</text>
+              <text class="user-num {{userInfo.msg_count>0?'red':''}}">{{userInfo.msg_count}}</text>
               <text class="user-font">未读消息</text>
             </navigator>
           </view>
@@ -97,10 +97,10 @@
 
             <view class="mine-userRecord-b" wx:if="{{content.list.length>0}}">
                   <view wx:for="{{content.list}}" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}" wx:key="record_id">
-                        <navigator url="/pages/apply/mine/record-play/record-play?id={{item.record_id}}" class="_linkto">
+                        <view class="_linkTo" catchtap="goRecordPlay" data-id="{{item.record_id}}">
                           <view class="_name">{{item.name}}</view>
                           <view class="_desc">{{item.desc}}</view>
-                        </navigator>
+                        </view>
                         <view class="bs-single" bindtap="tryListenEvent" data-id="{{item.record_id}}" data-url="{{item.file_url}}">
                           <view class="_insert">
                             <view class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}">

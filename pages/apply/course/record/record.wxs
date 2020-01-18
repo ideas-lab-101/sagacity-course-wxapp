@@ -20,7 +20,7 @@ var filterText = function (obj){
         },
         children: [{
             type: 'text',
-            text: obj.Title
+            text: obj.title
         }]
     }]
 }

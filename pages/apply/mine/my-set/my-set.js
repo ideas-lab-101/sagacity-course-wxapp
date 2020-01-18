@@ -1,6 +1,6 @@
 const App = getApp()
 const { $wuNavigation, $wuToast } = require('../../../../components/wu/index')
-const { getInfoList } = require('../../../request/infoPort')
+const { getInfoList } = require('../../../../request/infoPort')
 
 Page({
     data: {

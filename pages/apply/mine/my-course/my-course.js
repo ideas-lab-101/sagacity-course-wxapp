@@ -1,46 +1,37 @@
 const App = getApp()
 const { $wuNavigation } = require('../../../../components/wu/index')
-const { getEnrollList } = require('../../../request/userPort')
+const { getEnrollList } = require('../../../../request/userPort')
+const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 
 Page({
-    data: {
-      pager: {
-        lastPage: true,
-        pageNumber: 1
-      },
-      courseList: []
-    },
+    behaviors: [PageReachBottomBehavior],
+    data: {},
 
     onLoad: function () {
-      this._initData()
+
+      this.__init()
     },
 
-  _initData: function () {
-    this.isLoading = true
-    getEnrollList({page: this.data.pager.pageNumber }).then((res) => {
-      console.log(res)
-      this.isLoading = false
-      this.setData({
-        'pager.lastPage': res.lastPage,
-        courseList: this.data.courseList.concat(res.list)
-      })
-    })
-  },
-
-  onReachBottom: function () {
-    if (this.data.lastPage ||  this.isLoading) {
-      return false
-    }
-    this.setData({
-      "pager.pageNumber": this.data.pager.pageNumber + 1
-    })
-    this._initData()
-  },
-
-    onShow: function () {
+    onReachBottom: function () {
+      this.__ReachBottom()
     },
 
     onPageScroll: function (e) {
       $wuNavigation().scrollTop(e.scrollTop)
+    },
+
+    __init () {
+      this.__getTurnPageDataList({
+        isPageShow: true,
+        interfaceFn: getEnrollList,
+        params: {}
+      })
+    },
+
+    goCoursePage(e) {
+      const { id } = e.currentTarget.dataset
+      wx.navigateTo({
+        url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
+      })
     }
 })

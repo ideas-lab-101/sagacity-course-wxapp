@@ -1,5 +1,5 @@
 const App = getApp()
-const { userFavor, userLike, getUserInfo, getCourseList, getRecordList } = require('../../../request/userPort')
+const { userFavor, userLike, getUserInfo, getCourseList, getRecordList } = require('../../../../request/userPort')
 const { $wuToast } = require('../../../../components/wu/index')
 
 Page({

@@ -286,7 +286,7 @@
 .mine-userRecord-single.active{
   background-color: rgba(115, 52, 41, 0.15);
 }
-.mine-userRecord-single ._linkto{
+.mine-userRecord-single ._linkTo{
   margin-left: 140rpx;
   padding-left: 10rpx;
 }

@@ -202,7 +202,7 @@ Page({
             events: {
                 acceptDataSetBackgroundSound: (data) => {
                     console.log(data)
-                    if (!data) {
+                    if (!data.item) {
                         this.setData({
                             backgroundSoundItem: null,
                             'form.musicID': 0
@@ -210,13 +210,12 @@ Page({
                         return false
                     }
                     this.setData({
-                        backgroundSoundItem: data,
-                        'form.musicID': data.MusicID
+                        backgroundSoundItem: {...data.item},
+                        'form.musicID': data.music_id
                     })
                 }
             },
             success: (res) => {
-                console.log(res)
                 res.eventChannel.emit('acceptDataSetBackgroundSound', { item: this.data.backgroundSoundItem })
             }
         })
@@ -278,7 +277,7 @@ Page({
                 Toast.text({ text: '提交成功'})
                 this.closeRecordOverEvent() // 关闭弹出层
                 this.submitRecordAction = true // 如果正式提交录音  做记录
-                App.globalData.backgroundSound = null //清空背景音
+
                 setTimeout(() => {
                     wx.navigateTo({
                         url: `/pages/apply/mine/my-record/my-record?id=${res.data}&skip=1`

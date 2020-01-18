@@ -1,12 +1,15 @@
-const { $wuBackdrop, $wuToast } = require('../../../../components/wu/index')
-const { getRecordInfo, updateRecordSign } = require('../../../../pages/request/recordPort')
-const { userFavor, userLike, addUserPoint } = require('../../../../pages/request/userPort')
+import { $wuBackdrop } from '../../../../components/wu/index'
+import { getRecordInfo, updateRecordSign } from '../../../../request/recordPort'
+import { userFavor, userLike, addUserPoint } from '../../../../request/userPort'
 const App = getApp()
-const { $audioPlay } = require('../../../../components/pages/index')
+import { $audioPlay } from '../../../../components/pages/index'
+const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
+const Toast = require('../../../../viewMethod/toast')
 
 Page({
-
+    behaviors: [AppLaunchBehavior],
     data: {
+        systemSeries: App.globalData.systemSeries,
         nav: {
           title: "",
           model: 'fold',
@@ -17,20 +20,20 @@ Page({
           }
         },
 
-        mineInfo: false,
+        isMine: false,
         userData: {},
         recordData: {},
         likes: [],
-        tryParams: {
-            isPlay: false
-        },
-        systemSeries: App.globalData.systemSeries,
+
         loseMsg: '此作品已经失效了！',
         slider: {
           current: '',
           duration: '',
           disabled: true,
           value: 0
+        },
+        tryParams: {
+            isPlay: false
         }
     },
 
@@ -45,58 +48,24 @@ Page({
         /**
          * * 停止背景音播放
          **/
-        if ( App.globalData.audio) {
-            App.globalData.audio.pause()
+        if (App.backgroundAudioManager.isPlay) {
+            App.backgroundAudioManager.pause()
         }
-        this._initRecordInfoData(this.optionsId)
 
-        /**
-         * * 初始换播放插件
-         **/
-        /*this.innerAudioContext = new AudioManager({
-          canPlay: this._audioManagerCanPlay,
-          play: this._audioManagerPlay,
-          pause: this._audioManagerPause,
-          timeUpdate: this._audioManagerTimeUpdate,
-          stop: this._audioManagerStop,
-          end: this._audioManagerEnd,
-          destroy: this._audioManagerDestroy
-        })*/
+        this.__initAppLaunch({
+            id: this.optionsId
+        })
     },
 
-    onShow: function () {
-      if(App.accreditLogin) { // 重新加载数据
-        App.accreditLogin = false
-        this._initRecordInfoData(this.optionsId)
-      }
-        /**
-         * * 停止背景音播放
-         **/
-        if ( App.globalData.audio) {
-            App.globalData.audio.pause()
-        }
-    },
-    onReady: function () {
-    },
-    onHide: function () {
-        /*if (this.innerAudioContext) {
-          this.innerAudioContext.pause()
-        }*/
-    },
-    onUnload: function () {
-        /*console.log('page onUnload')
-        if (this.innerAudioContext) {
-          this.innerAudioContext.destroy()
-          this.innerAudioContext = null
-        }*/
-    },
     onShareAppMessage: function (res) {
-        if(this.data.recordData.blnPublic) {
-          const title = this.data.recordData.Sign || `${this.data.userData.Caption} の ${this.data.recordData.Name}`
+        const {bln_public, sign, name, cover_url, record_id} = this.data.recordData
+        const { caption } = this.data.userData
+        if(bln_public) {
+          const title = sign || `${caption} の ${name}`
           return {
             title: title,
-            imageUrl: `${this.data.recordData.CoverURL}?imageView2/5/h/300`,
-            path: `/pages/apply/mine/record-play/record-play?id=${this.data.recordData.RecordID}`,
+            imageUrl: `${cover_url}?imageView2/5/h/300`,
+            path: `/pages/apply/mine/record-play/record-play?id=${record_id}`,
             success: (ret) => {
               addUserPoint({pointCode: '002'})
             }
@@ -113,76 +82,75 @@ Page({
   /**
    * 收藏事件
    */
-  collectEvent: function() {
+    collectEvent: function() {
         userFavor({
-                dataID: this.data.recordData.RecordID,
+                data_id: this.data.recordData.record_id,
                 type: 'record'
         }).then((res) => {
             this.setData({
-                'is_favor': res.is_favor
+                'is_favor': res.data.is_favor
             })
-          $wuToast().show({
-                type: 'text',
-                duration: 1000,
-                text: res.msg
-            })
+            Toast.text({ text: res.msg })
         })
     },
     likeEvent: function() {
       userLike({
-                dataID: this.data.recordData.RecordID,
+                data_id: this.data.recordData.record_id,
                 type: 'record'
-        }).then((res) => {
-            //this.data.recordData.likeCount++
-            this.setData({
-                'is_like': true,
-                // 'recordData.likeCount': this.data.recordData.likeCount
             })
-        })
+          .then((res) => {
+                this.setData({
+                    'is_like': true
+                })
+            })
     },
     openCommentEvent: function () {
         wx.navigateTo({
-            url: `/pages/common/comment/comment?type=record&id=${this.data.recordData.RecordID}`
+            url: `/pages/common/comment/comment?type=record&id=${this.data.recordData.record_id}`
         })
     },
     closeEditPlayerEvent: function () {
-      $wuBackdrop().release()
+        $wuBackdrop().release()
         this.setData({
-            editin: false
+            editIn: false
         })
     },
     openEditPlayerEvent: function () {
-      $wuBackdrop().retain()
+        $wuBackdrop().retain()
         this.setData({
-            editin: true
+            editIn: true
         })
     },
     submitShareFontEditEvent: function (e) {
         if (e.detail.value.text.trim() === '') {
             return false
         }
-      updateRecordSign({
-                recordID: this.data.recordData.RecordID,
+
+        updateRecordSign({
+                recordID: this.data.recordData.record_id,
                 text: e.detail.value.text,
                 formid: e.detail.formId
-        }).then((res) => {
-            this.setData({
-                'recordData.Sign': e.detail.value.text
             })
-            this.closeEditPlayerEvent()
-        }).catch((ret) => {})
+          .then((res) => {
+                this.setData({
+                    'recordData.Sign': e.detail.value.text
+                })
+                this.closeEditPlayerEvent()
+            })
     },
+
     goUserPageEvent: function () {
-        if (App.user.ckLogin() && this.data.mineInfo) {
+        if (App.user.ckLogin() && this.data.isMine) {
             wx.switchTab({
                 url: `/pages/tabBar/mine/mine`
             })
         }else {
             wx.navigateTo({
-                url: `/pages/apply/mine/user-page/user-page?id=${this.data.userData.UserID}`
+                url: `/pages/apply/mine/user-page/user-page?id=${this.data.userData.user_id}`
             })
         }
     },
+
     goLessonPlayEvent() {
       if(!App.user.ckLogin()) {
         wx.navigateTo({
@@ -190,70 +158,72 @@ Page({
         })
       }else {
         wx.navigateTo({
-          url: `/pages/apply/course/lesson-play/lesson-play?id=${this.data.recordData.DataID}`
+          url: `/pages/apply/course/lesson-play/lesson-play?id=${this.data.recordData.data_id}`
         })
       }
+    },
+
+    /**
+     * 获取数据事件
+     * @param id
+     * @private
+     */
+    __init: function ({id}) {
+        getRecordInfo({
+            record_id: Number(id)
+        })
+            .then((res) => {
+                    let isMine = false
+                    if (App.user.ckLogin() && App.user.userInfo.user_id === res.data.user.user_id) {
+                        isMine = true
+                    }
+
+                    this.setData({
+                        loadData: true,
+                        isMine: isMine,
+                        result: true,
+                        userData: res.data.user,
+                        recordData: res.data.record_info,
+                        likes: res.data.likes,
+                        is_favor: res.data.is_favor,
+                        is_like: res.data.is_like
+                    })
+                    if(!res.data.record_info.bln_public) {
+                      wx.hideShareMenu()
+                    }
+                  /**
+                   * 播放初始化
+                   **/
+                  $audioPlay().playInit(res.data.record_info.file_url, res.data.record_info.record_id)
+            })
+            .catch((ret) => {
+                  let msg = this.data.loseMsg
+                  if(ret.code === -1 || ret.code === -2) {
+                    msg = ret.msg
+                  }
+                  this.setData({ loadData: true, loseMsg: msg})
+            })
     },
 
     /**
      * audio播放回调方法
      **/
     audioEventPlay: function () {
-      this.setData({ 'tryParams.isPlay': true, 'slider.disabled': false })
+        this.setData({ 'tryParams.isPlay': true, 'slider.disabled': false })
     },
     audioEventPause: function () {
-      this.setData({'tryParams.isPlay': false})
+        this.setData({'tryParams.isPlay': false})
     },
     audioEventStop: function () {
-      this.setData({'tryParams.isPlay': false})
+        this.setData({'tryParams.isPlay': false})
     },
     audioEventEnd: function () {
-      this.setData({'tryParams.isPlay': false})
+        this.setData({'tryParams.isPlay': false})
     },
     audioEventDestroy: function () {
-      this.setData({'tryParams.isPlay': false})
+        this.setData({'tryParams.isPlay': false})
     },
     audioEventError: function () {
-      this.setData({'tryParams.isPlay': false})
-    },
-    /**
-     * 获取数据事件
-     **/
-    _initRecordInfoData: function (id) {
-        getRecordInfo({recordID: Number(id)}).then((res) => {
-            if (res.code) {
-                let temp = false
-                if (App.user.ckLogin() && App.user.userInfo.UserID === res.data.UserID) {
-                    temp = true
-                }
-                this.setData({
-                    loadData: true,
-                    mineInfo: temp,
-                    result: true,
-                    userData: res.userInfo,
-                    recordData: res.data,
-                    likes: res.likes,
-                    is_favor: res.is_favor,
-                    is_like: res.is_like
-                })
-                if(!res.data.blnPublic) {
-                  wx.hideShareMenu()
-                }
-              /**
-               * 播放初始化
-               **/
-              $audioPlay().playInit(res.data.FileURL, res.data.RecordID)
-            }else {
-                this.setData({
-                    loadData: true
-                })
-            }
-        }).catch((ret) => {
-          let msg = this.data.loseMsg
-          if(ret.code === -1 || ret.code === -2) {
-            msg = ret.msg
-          }
-          this.setData({ loadData: true, loseMsg: msg})
-        })
+        this.setData({'tryParams.isPlay': false})
     }
 })

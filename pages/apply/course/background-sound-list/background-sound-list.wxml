@@ -1,8 +1,9 @@
-<wu-toast id="wu-toast" />
-<wu-loading id="wu-loading" />
 <wxs src="./background-sound-list.wxs" module="moduleBackgroundSoundList" />
 
-<wu-navigation title="{{nav.title}}" backgroundColor="{{nav.backgroundColor}}" navTitle="{{nav.navTitle}}" animation="{{nav.animation}}" />
+<wu-navigation title="{{nav.title}}"
+               backgroundColor="{{nav.backgroundColor}}"
+               navTitle="{{nav.navTitle}}"
+               animation="{{nav.animation}}" />
 
 <view class="bs-container">
 
@@ -12,11 +13,11 @@
                      scroll-with-animation="true"
                      id="index-tab-box">
             <view class="bs-tab-single-box" style="width: auto;">
-                <text wx:for-items="{{tabData}}"
-                      wx:key="{{index}}"
+                <text wx:for="{{tabData}}"
+                      wx:key="detail_id"
                       class="sticky-tab-single {{tabIndex === index?'active':''}}"
                       catchtap="tabChangeEvent"
-                      data-index="{{index}}">{{item.Caption}}</text>
+                      data-index="{{index}}">{{item.caption}}</text>
             </view>
         </scroll-view>
     </view>
@@ -24,27 +25,25 @@
     <view class="bs-con">
 
         <block wx:if="{{listData.length>0}}">
-        <view class="bs-single {{item.MusicID === listCheckedId ?'active':''}}" wx:for="{{listData}}" wx:key="{{index}}" bindtap="checkEvent" data-index="{{index}}">
-            <view class="_insert">
-                <view class="_image {{!tryParams.isPlay || tryParams.id !== item.MusicID?'':'active'}}">
-                    <view><image src="{{item.CoverURL}}" mode="aspectFill"/></view>
+            <view class="bs-single {{item.music_id === listCheckedId ?'active':''}}" wx:for="{{listData}}" wx:key="music_id" bindtap="checkEvent" data-index="{{index}}">
+                <view class="_insert">
+                    <view class="_image {{!tryParams.isPlay || tryParams.id !== item.music_id?'':'active'}}">
+                        <view><image src="{{item.cover_url}}" mode="aspectFill"/></view>
+                    </view>
+                    <view class="_name">{{item.title}}</view>
+                    <view class="_like" wx:if="{{item.like_count !== 0}}">{{item.like_count}}人用过</view>
+                    <view class="_like" wx:else>没人用过</view>
+                    <view class="_recommend">
+                        <text class="iconfont icon-duigou"></text>
+                    </view>
                 </view>
-                <view class="_name">{{item.Title}}</view>
-                <view class="_like" wx:if="{{item.likeCount !== 0}}">{{item.likeCount}}人用过</view>
-                <view class="_like" wx:else>没人用过</view>
-                <view class="_recommend">
-                    <text class="iconfont icon-duigou"></text>
+                <view class="_try">
+                    <text catchtap="tryListenEvent" data-id="{{item.music_id}}" data-url="{{item.resource_url}}" wx:if="{{!tryParams.isPlay || tryParams.id !== item.music_id}}">试听</text>
+                    <text catchtap="tryListenEvent" data-id="{{item.music_id}}" data-url="{{item.resource_url}}" wx:else>播放中</text>
                 </view>
             </view>
-            <view class="_try">
-                <text catchtap="tryListenEvent" data-index="{{index}}" wx:if="{{!tryParams.isPlay || tryParams.id !== item.MusicID}}">试听</text>
-                <text catchtap="tryListenEvent" data-index="{{index}}" wx:else>播放中</text>
-            </view>
-        </view>
         </block>
         <view class="nodata" wx:else>暂无数据</view>
-
     </view>
-
 </view>
 

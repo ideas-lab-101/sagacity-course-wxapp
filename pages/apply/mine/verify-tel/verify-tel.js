@@ -1,6 +1,6 @@
 const App = getApp()
 const { $wuxToast } = require('wux-weapp')
-const { getWXPhoneNumber, getIdentityCode, checkIdentityCode } = require('../../../request/systemPort')
+const { getWXPhoneNumber, getIdentityCode, checkIdentityCode } = require('../../../../request/systemPort')
 import WxValidate from '../../../../utils/WxValidate'
 
 Page({
