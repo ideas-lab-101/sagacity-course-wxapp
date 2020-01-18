@@ -43,10 +43,10 @@ Page({
         this.optionsId = options.id
         this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
 
-        this.__initAppLaunch()
-            .then(() => {
-                this.__init(this.optionsId, this.optionsFrame)
-            })
+        this.__initAppLaunch({
+            id: this.optionsId,
+            frame: this.optionsFrame
+        })
     },
 
     onShow: function () {
@@ -56,14 +56,14 @@ Page({
     },
 
     onUnload: function () {
-        // App.backgroundAudioManager.empty()
     },
 
     onShareAppMessage: function () {
+        const {cover_url, data_name, data_id} = this.data.info.lesson_data
         return {
-            imageUrl: `${this.data.info.lesson_data.cover_url}?imageView2/5/h/300`,
-            title: this.data.info.lesson_data.data_name,
-            path: "/pages/apply/course/lesson-play/lesson-play?id=" + this.data.info.lesson_data.data_id,
+            imageUrl: `${cover_url}?imageView2/5/h/300`,
+            title: data_name,
+            path: `/pages/apply/course/lesson-play/lesson-play?id=${data_id}`,
             success: (ret) => {
                 addUserPoint({ pointCode: '001'})
             }
@@ -73,7 +73,7 @@ Page({
     /**
     **  media audio 初始化事件
     **/
-    __init: function (id, frame) {
+    __init: function ({id, frame}) {
 
         return lessonDataInfo({
             data_id: Number(id)
@@ -88,7 +88,7 @@ Page({
 
                 if (res.data.lesson_data.format === 'audio') {
                     this.initOperation() // 设置上一条 下一条按钮
-                    this.initAudio()
+                    this.initAudio(frame)
                 } else {
                     console.error('文件和文件类型不匹配')
                 }
@@ -103,7 +103,7 @@ Page({
     /**
      * 初始化播放器
      */
-    initAudio: function () {
+    initAudio: function (frame) {
         const { lesson_data } = this.data.info
         const id = lesson_data.data_id
         const src = lesson_data.data_url
@@ -119,7 +119,7 @@ Page({
             title,
             epname,
             coverImgUrl,
-            frame: 0
+            frame
         })
     },
     /**
@@ -154,7 +154,7 @@ Page({
         }
         this.optionsId = pre_data_id
         this.optionsFrame = 0
-        this.__init( pre_data_id )
+        this.__init({id: pre_data_id, frame: 0})
     },
     /**
      * 下一首
@@ -169,10 +169,8 @@ Page({
         }
         this.optionsId = next_data_id
         this.optionsFrame = 0
-        this.__init(next_data_id)
+        this.__init({ id: next_data_id, frame: 0})
     },
-
-
 
 
 
@@ -225,10 +223,12 @@ Page({
     },
 
     changeAudioEvent: function (e) {
-        const openState = e.currentTarget.dataset.openstate
+        const openState = Number(e.currentTarget.dataset.openstate)
+        const isEnroll = this.data.info.is_enroll
         const id = e.currentTarget.dataset.id
-        if (this.data.info.is_enroll || (!this.data.info.is_enroll && open_state === 1)) {
-            this.__init(id)
+
+        if (isEnroll || (!isEnroll && openState === 1)) {
+            this.__init({ id, frame: 0})
         }else {
             this.dialogTip()
         }
@@ -322,7 +322,9 @@ Page({
                 if(index === 1) {
                   readMode = 1
                 }
-
+                /**
+                 * 暂停背景音播放
+                 */
                 self.pauseBackgroundAudio()
 
                 setTimeout(() => {

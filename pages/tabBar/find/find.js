@@ -1,5 +1,4 @@
 var App = getApp()
-const { $wuPlayWidget } = require('../../../components/wu/index')
 const { getCourseUpdate, getRecordUpdate, getHotLessonData } = require('../../../request/mainPort')
 
 Page({
@@ -33,14 +32,6 @@ Page({
 
     onLoad: function(options) {
         this.__init()
-    },
-
-    onShow: function () {
-        $wuPlayWidget().show(App.globalData.audio.getPlayer())
-    },
-
-    onHide: function() {
-        $wuPlayWidget().detached()
     },
 
     onPullDownRefresh: function() {

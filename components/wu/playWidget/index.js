@@ -38,7 +38,6 @@ Component({
         }
     },
     methods: {
-
         /**
          * 显示
          */
@@ -66,14 +65,26 @@ Component({
 
         /**
          * 更新
+         * @param player
          */
         upData(player) {
-            this.setData({
-                playerData: player
-            })
+            if (!player) {
+                return false
+            }
+            const lastPage = getCurrentPages()[getCurrentPages().length - 1]
+
+            if (lastPage.selectComponent('#wu-play-widget')) {
+                this.setData({ playerData: player })
+            }else {
+                this.data.playerData = player
+            }
         },
 
-        // 内置事件
+        /**
+         * 内置事件
+         * @param e
+         * @private
+         */
         _operationEvent(e) {
             if (this.data.playerData.play) {
                 getApp().backgroundAudioManager.pause()
@@ -89,14 +100,10 @@ Component({
                 })
             }
         },
-
         _closeEvent(e) {
-            //App.playWidgetController = true
             this.setData({
                 show: false
             })
         }
-
     }
-
 })

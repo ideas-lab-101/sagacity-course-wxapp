@@ -30,11 +30,16 @@ Page({
       /**
        * 初始化被选中的背景音
        **/
-        if (App.globalData.backgroundSound){
-            this.setData({
-                listCheckedId: App.globalData.backgroundSound.MusicID
-            })
-        }
+        this.eventChannel = this.getOpenerEventChannel()
+        this.eventChannel.on('acceptDataSetBackgroundSound', data => {
+            console.log(data)
+            if (data){
+                this.setData({
+                    listCheckedId: data.MusicID
+                })
+            }
+        })
+
         this._initBackSoundTypeData()
     },
 
@@ -92,7 +97,8 @@ Page({
             'nav.title': item?item.Title:'选择背景音',
             'nav.navTitle': item?'确定':''
         })
-        App.globalData.backgroundSound = item
+
+        this.eventChannel.emit('acceptDataSetBackgroundSound', {data: item})
     },
 
     tryListenEvent: function (e) {

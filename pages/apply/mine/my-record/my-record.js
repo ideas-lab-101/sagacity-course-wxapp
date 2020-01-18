@@ -1,9 +1,9 @@
 const App = getApp()
 const { $wuNavigation, $wuBackdrop, $wuMarkedwords } = require('../../../../components/wu/index')
 const { $share, $teamsTask } = require('../../../../components/pages/index')
-const { getRecordList } = require('../../../request/userPort')
-const { getTeamList, addTeamRecord, getTeamTask } = require('../../../request/teamPort')
-const { setPublic, delRecord } = require('../../../request/recordPort')
+const { getRecordList } = require('../../../../request/userPort')
+const { getTeamList, addTeamRecord, getTeamTask } = require('../../../../request/teamPort')
+const { setPublic, delRecord } = require('../../../../request/recordPort')
 import AudioManager from '../../../../controller/AudioManager'
 
 Page({
@@ -95,6 +95,8 @@ Page({
           'nav.backURL': '/pages/tabBar/mine/mine'
         })
       }
+
+      this.eventChannel = this.getOpenerEventChannel()
 
       /**
        * * 初始换播放插件
@@ -240,12 +242,14 @@ Page({
       setPublic({
               recordID: id,
               blnPublic: stus
-      }).then((res) => {
-          const obj = `record.list[${index}].blnPublic`
-          this.setData({
-              [obj]: stus
-          })
       })
+          .then((res) => {
+              this.eventChannel.emit('acceptDataMyRecordPublic', {recordID: id })
+              const obj = `record.list[${index}].blnPublic`
+              this.setData({
+                  [obj]: stus
+              })
+          })
     },
 
     tryListenEvent: function (e) {

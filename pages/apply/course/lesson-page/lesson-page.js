@@ -4,12 +4,13 @@ import { $share } from '../../../../components/pages/index'
 import { getCourseInfo, getLessonList, getCourseContent } from '../../../../request/coursePort'
 import { userEnroll, userFavor, addUserPoint } from '../../../../request/userPort'
 const WxParse = require('../../../../components/wxParse/wxParse')
+const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
 const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 const Toast = require('../../../../viewMethod/toast')
 const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
-    behaviors: [PageReachBottomBehavior],
+    behaviors: [AppLaunchBehavior, PageReachBottomBehavior],
     data: {
         nav: {
             title: "",
@@ -43,26 +44,30 @@ Page({
         if(options.scene) {
           this.optionsId = options.scene
         }
-        this.isLoadPass = true
+        this.PageOnload = true
 
-        this.__init()
+        this.__initAppLaunch()
     },
 
     onShow: function () {
-        if(App.accreditLogin) { // 重新加载数据
-            App.accreditLogin = false
-            this.initLessonData()
-        }
-
-        if (!this.isLoadPass) {
-            if (!this.data.info.is_enroll && App.enroll.has(this.data.info.course_info.CourseID) && App.user.ckLogin()){
+        /**
+         * 重新渲染其他页面已经加入了此课程的情况
+         * 比如此课程未加入  进入了试听
+         * 播放界面再次链接到此页面  播放界面加入了课程  此处栈内应该渲染
+         */
+        if (!this.PageOnload) {
+            const { is_enroll, course_info } = this.data.info
+            if (!is_enroll && App.enrollController.has(course_info.course_id) && App.user.ckLogin()) {
                 this.setData({ 'info.is_enroll': true })
             }
         }
     },
 
     onHide: function() {
-        this.isLoadPass = false
+        this.PageOnload = false
+    },
+    onUnload: function() {
+        this.PageOnload = false
     },
 
     onReachBottom: function () {
@@ -129,9 +134,9 @@ Page({
               /**
                * 存储已经被加入的课程
                */
-            /*if (res.data.is_enroll) {
-              App.enroll.add(this.optionsId)
-            }*/
+            if (res.data.is_enroll) {
+              App.enrollController.add(this.optionsId)
+            }
           })
     },
     /**
@@ -262,7 +267,10 @@ Page({
         })
             .then((res) => {
 
-                //App.enroll.add(this.optionsId) // 存储已经被加入的课程
+                /**
+                 * 存储已经被加入的课程
+                 */
+                App.enrollController.add(this.optionsId)
 
                 this.closePayLayerEvent() // 关闭加入层
                 this.setData({
@@ -277,5 +285,4 @@ Page({
                 })
             })
     }
-
 })

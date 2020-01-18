@@ -90,6 +90,7 @@ class user {
                             Session.setUserInfo(this.userInfo)
 
                             // 判断是否加载成功
+                            getApp().identityLoaded = res.data
                             if (getApp().identityCallback) {
                                 getApp().identityCallback()
                             }

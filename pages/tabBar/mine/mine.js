@@ -1,19 +1,19 @@
 const App = getApp()
-const { $wuBackdrop } = require('../../../components/wu/index')
-const { $share } = require('../../../components/pages/index')
-const { ScanLogin } = require('../../../request/systemPort')
-const { GetAccountInfo, getRecordList, addUserPoint, updateZoneBg } = require('../../../request/userPort')
-import AudioManager from '../../../controller/AudioManager'
+import { $share } from '../../../components/pages/index'
+import { ScanLogin } from '../../../request/systemPort'
+import { userAccountInfo, getRecordList, addUserPoint, updateZoneBg } from '../../../request/userPort'
+
+const PageReachBottomBehavior = require('../../../utils/behaviors/PageReachBottomBehavior')
+const InnerAudioPlayBehavior = require('../../../utils/behaviors/InnerAudioPlayBehavior')
+const Dialog = require('../../../viewMethod/dialog')
+const Toast = require('../../../viewMethod/toast')
 
 Page({
+    behaviors: [PageReachBottomBehavior, InnerAudioPlayBehavior],
     data: {
-        userInfo: {},
+        statusBarHeight: App.globalData.equipment.statusBarHeight,
+        userInfo: null,
         msgCount: 10,
-        record: {
-            list: [],
-            lastPage: false,
-            pageNumber: 1
-        },
         scroll: {
             scrollTop: 0,
             fixed: 540,
@@ -21,81 +21,41 @@ Page({
             time: 0
         },
 
-        tryParams: {
-            isPlay: false,
-            id: ''
-        },
-
         isLogin: true
     },
     onLoad: function (options) {
-        App.pages.add(this) // 缓存数据
         if (App.user.ckLogin()) {
-            this._initData() // 请求基础数据
-            this._initUserRecordData() // 请求我的录制
+            this.__init()
         } else {
-          this.setData({
-            isLogin: false
-          })
+          this.setData({ isLogin: false })
         }
         /**
          * * 停止背景音播放
          **/
-        if ( App.globalData.audio) {
-          App.globalData.audio.pause()
+        if ( App.backgroundAudioManager) {
+          App.backgroundAudioManager.pause()
         }
-
-        this.innerAudioContext = new AudioManager({  //初始换播放插件
-          play: this._audioManagerPlay,
-          pause: this._audioManagerPause,
-          stop: this._audioManagerStop,
-          end: this._audioManagerEnd,
-          error: this._audioManagerError,
-          destroy: this._audioManagerDestroy
-        })
-
         this.isPageLoad = true
+
+        this.__initInnerAudioManager()
     },
 
     onShow: function () {
-      /*if (!App.user.ckLogin()) {
-        wx.navigateTo({
-          url: '/pages/common/accredit/accredit'
-        })
-        return false
-      }*/
-      /**
-      * * 判断是否是新弹出页面授权
-      **/
-      if ( App.accreditLogin && !this.isPageLoad && App.user.ckLogin()) {
-        App.accreditLogin = false
-        this._initData() // 请求基础数据
-        this.setData({
-          isLogin: true,
-          'record.list': [],
-          'record.lastPage': false,
-          'record.pageNumber': 1
-        })
-        this._initUserRecordData() // 请求我的录制
-      }
       /**
       * * 更新 消息数 比如加入 收藏 删除等等
       **/
 
-      if (App.requestLoadManager.consume('userEnroll') || App.requestLoadManager.consume('userFavor') ||
+      /*if (App.requestLoadManager.consume('userEnroll') || App.requestLoadManager.consume('userFavor') ||
           App.requestLoadManager.consume('addUserPoint') || App.requestLoadManager.consume('setMessage') ||
           App.requestLoadManager.consume('bindUser')) {
-          this._initData() // 请求基础数据
+          this.__init() // 请求基础数据
       }
       if (App.requestLoadManager.consume('submitRecordFile') || App.requestLoadManager.consume('setPublic') || App.requestLoadManager.consume('delRecord')) {
           this.data.record.list = []
           this.data.record.lastPage = false
           this.data.record.pageNumber = 1
           this._initUserRecordData() // 请求我的录制
-      }
-    },
-
-    onReady: function () {
+      }*/
     },
 
     onHide: function () {
@@ -144,6 +104,25 @@ Page({
         }
     },
 
+    /**
+     * 请求调用事件
+     **/
+    __init: function () {
+        userAccountInfo()
+            .then((res) => {
+                this.setData({ userInfo: res.data.data})
+            })
+
+
+        this.__getTurnPageDataList({
+            isPageShow: true,
+            interfaceFn: getRecordList,
+            params: {
+                user_id: App.user.userInfo.user_id,
+                bln_public: 1
+            }
+        })
+    },
 
     goLogin() {
       wx.navigateTo({
@@ -177,7 +156,22 @@ Page({
 
     goMineAllRecordEvent: function (e) {
         wx.navigateTo({
-            url: '/pages/apply/mine/my-record/my-record?'
+            url: `/pages/apply/mine/my-record/my-record`,
+            events: {
+                acceptDataMyRecordPublic: (data) => {
+                    if (!data.recordID) {
+                        return false
+                    }
+                    this.__getTurnPageDataList({
+                        isPageShow: true,
+                        interfaceFn: getRecordList,
+                        params: {
+                            user_id: App.user.userInfo.user_id,
+                            bln_public: 1
+                        }
+                    })
+                }
+            }
         })
     },
 
@@ -191,10 +185,10 @@ Page({
                     if (obj.type === 'login') {
                         this._scanLogin(obj.key)
                     } else {
-                        wx.showToast({title: '错误的二维码！', icon: 'none'})
+                        Toast.text({ text: '错误的二维码！' })
                     }
                 } catch (e) {
-                    wx.showToast({title: '错误的二维码！', icon: 'none'})
+                    Toast.text({ text: '错误的二维码！' })
                 }
             }
         })
@@ -222,10 +216,10 @@ Page({
             sourceType: ['album', 'camera'],
             success: (res) => {
                 if (res.tempFiles[0].size > 5242880) {
-                    wx.showModal({
+
+                    Dialog.alert({
                         title: '提示',
-                        content: '图片大小不能超过5M，请重选',
-                        showCancel: false
+                        content: '图片大小不能超过5M，请重选'
                     })
                     return false
                 }
@@ -240,21 +234,6 @@ Page({
                 })
             }
         })
-    },
-
-    tryListenEvent: function (e) {
-        const index = e.currentTarget.dataset.index
-        const url = this.data.record.list[index].FileURL
-        const id = this.data.record.list[index].RecordID
-        if (this.data.tryParams.isPlay && id === this.data.tryParams.id) {
-            this.innerAudioContext.stop()
-            return false
-        }
-        this.setData({
-          'tryParams.isPlay': true,
-          'tryParams.id': id
-        })
-        this.innerAudioContext.play(url)
     },
   /**
    * 滚动向上滑动效果
@@ -300,20 +279,9 @@ Page({
    * @param e
    * @returns {boolean}
    */
-    scrolltolowerEvent: function (e) {
-        if (this.data.record.lastPage || this.isLoading) {
-            return false
-        }
-        this.isLoading = true
-        this.data.record.pageNumber++
-        this._initUserRecordData().then(() => {   // 请求我的录制
-          this.isLoading = false
-        }).catch(() => {
-          this.isLoading = false
-          this.data.record.pageNumber--
-        })
+    scrollToLowerEvent: function (e) {
+        this.__ReachBottom()
     },
-
     scrollRecordEvent: function (e) {
         this.setData({
             'scroll.scrollTop': this.data.scroll.fixed
@@ -334,72 +302,27 @@ Page({
             id: id
         })
     },
-    /**
-    * 请求调用事件
-    **/
-    _initData: function () {
-        GetAccountInfo().then((res) => {
-            this.setData({
-                userInfo: res.data
-            })
-        })
-    },
 
+    /**
+     * 扫码
+     * @param key
+     * @private
+     */
     _scanLogin(key) {
-        wx.showModal({
+        Dialog.confirm({
             content: '是否登录网页版？',
-            success: res => {
-                if (res.confirm) {
-                    ScanLogin({key: key}).then((res) => {
+            onConfirm: () => {
+                ScanLogin({key: key})
+                    .then((res) => {
                         if (res.code === 1) {
-                            wx.showToast({
-                                title: res.msg
-                            })
+                            Toast.text({ text: res.msg })
                         }else {
-                            wx.showToast({
-                                title: res.msg,
-                                icon: 'none'
-                            })
+                            Toast.text({ text: res.msg })
                         }
                     })
-                }
             }
         })
     },
 
-    _initUserRecordData: function () {
-        return getRecordList({ page: this.data.record.pageNumber, userID: getApp().user.userInfo.UserID, blnPublic: 1}).then((res) => {
-            this.setData({
-                'record.list': this.data.record.list.concat(res.list),
-                'record.lastPage': res.lastPage,
-                'record.pageNumber': res.pageNumber
-            })
-        })
-    },
 
-    /**
-     * audio播放回调方法
-     **/
-    _audioManagerPlay: function () {
-    },
-    _audioManagerPause: function () {
-    },
-    _audioManagerStop: function () {
-      this._audioManagerRelease()
-    },
-    _audioManagerEnd: function () {
-      this._audioManagerRelease()
-    },
-    _audioManagerError: function () {
-      this._audioManagerRelease()
-    },
-    _audioManagerDestroy: function () {
-      this.innerAudioContext = null
-    },
-    _audioManagerRelease: function () {
-      this.setData({
-        'tryParams.isPlay': false,
-        'tryParams.id': ''
-      })
-    }
 })

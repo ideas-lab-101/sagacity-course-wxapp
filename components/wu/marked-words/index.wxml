@@ -1,0 +1,29 @@
+
+<wu-backdrop id="wu-backdrop" opacity="0.75"/>
+<wu-animation-group wux-class="wu-marked-words" in="{{ in }}" class-names="wux-animate--fadeIn">
+    <view class="_insert" bindtouchmove="false">
+
+
+        <block wx:for="{{words}}" wx:key="*this">
+            <block wx:if="{{current === index}}">
+
+                <block wx:for="{{item.urls}}" wx:key="*this" wx:for-item="i" wx:for-index="j">
+                    <view wx:if="{{i.url}}"
+                          class="wu-marked-words-single"
+                          style=" z-index: {{i.zIndex}}; top: {{i.top || 0}}; left: {{ i.right?'auto' : (i.left || 0)}}; right: {{ i.right || 'auto'}}; width: {{i.width || '100%'}};height: {{i.height || 'auto'}};"
+                          bindtap="handlerTapEvent"
+                          data-j="{{j}}"
+                          data-index="{{index}}">
+                        <image src="{{i.url}}" mode="widthFix" class="_image"></image>
+                    </view>
+                    <view wx:else class="wu-marked-words-single-o"></view>
+
+                </block>
+
+
+            </block>
+        </block>
+
+
+    </view>
+</wu-animation-group>

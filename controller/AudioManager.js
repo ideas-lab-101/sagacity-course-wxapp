@@ -1,5 +1,9 @@
-class audioManager {
-    constructor(backFn) {
+'use strict';
+
+class AudioManager {
+
+    constructor(id, backFn) {
+        this.audioID = id
         this.innerAudioContext = null
         this.backFn = backFn
         // 初始化
@@ -11,7 +15,7 @@ class audioManager {
      **/
     init(backFn) {
         console.log('this audio manager init')
-        this.innerAudioContext = wx.createInnerAudioContext()
+        this.innerAudioContext = wx.createAudioContext(this.audioID)
         if(wx.setInnerAudioOption) {
           wx.setInnerAudioOption({
             mixWithOther: false,
@@ -135,4 +139,4 @@ class audioManager {
 
 }
 
-module.exports = audioManager
+module.exports = AudioManager

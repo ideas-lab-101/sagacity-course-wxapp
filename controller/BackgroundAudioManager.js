@@ -98,7 +98,7 @@ class BackgroundAudioManager {
          */
         const page = this._isResetPage()
         if (page) {
-            page.__init(id, 0)
+            page.__init({id, frame: 0})
             return false
         }
         this.loadNewDataEvent(id)
@@ -122,7 +122,7 @@ class BackgroundAudioManager {
          */
         const page = this._isResetPage()
         if (page) {
-            page.__init(id, 0)
+            page.__init({id, frame: 0})
             return false
         }
         this.loadNewDataEvent(id)
@@ -181,9 +181,16 @@ class BackgroundAudioManager {
 
         this.pageAudioBack && this.pageAudioBack.canplayFn && this.pageAudioBack.canplayFn(this.options.id)
     }
-    _playBack(id) {
-        console.log('BackgroundAudioManager play', id)
-        this.pageAudioBack && this.pageAudioBack.playFn && this.pageAudioBack.playFn(id)
+    _playBack(player) {
+        console.log('BackgroundAudioManager play', player)
+        /**
+         * 更新页面显示的播放组件数据
+         * @type {boolean|*}
+         */
+        const page = this._isResetPage()
+        backgroundAudioUpdatePlayWidget(player)
+
+        this.pageAudioBack && this.pageAudioBack.playFn && this.pageAudioBack.playFn(player)
     }
     _pauseBack(currentTime) {
         console.log('BackgroundAudioManager pause', currentTime)
@@ -234,9 +241,12 @@ class BackgroundAudioManager {
 
 module.exports = BackgroundAudioManager
 
-
+/**
+ * 这里请求新的地址  就给一条记录
+ * @param dataID
+ * @param frame
+ */
 const postHistoryEvent = function (dataID, frame) {
-    // 这里请求新的地址  就给一条记录
     addUserHistory({
         data_id: Number(dataID),
         frame: Number(frame)
@@ -249,8 +259,12 @@ const postHistoryEvent = function (dataID, frame) {
         })
 }
 
-const audioEndClearPlayWidget = function () {
-    // 重置palyWidget 组件中的数据
-    const player = getApp().backgroundAudio.getPlayer()
-    $wuPlayWidget().upData(player)
+/**
+ * 更新页面播放组件
+ * @param player
+ */
+const backgroundAudioUpdatePlayWidget = function (player) {
+    try {
+        $wuPlayWidget().upData(player)
+    }catch (e) {}
 }

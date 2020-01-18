@@ -3,12 +3,11 @@ import { postPay } from './payPort'
 const { host } = require('../sever.config')
 
 /**
- * 用户方法调用
- * */
-// 获取个人信息
-export function GetAccountInfo(data) {
+ * 活动用户账户信息
+ */
+export function userAccountInfo(data) {
   return fetch({
-    url: '/wxapp/user/GetAccountInfo',
+    url: '/wxapp/user/v3/userAccountInfo',
     data: data || {},
     method: 'GET'
   })
@@ -124,10 +123,13 @@ export function getCourseList(data) { //userID 分页参数
   })
 }
 
-// 获得用户录制的作品
-export function getRecordList(data) { //userID 分页参数
+/**
+ * 获得用户录制的作品
+ * user_id page bln_public(取全部作品0或公开作品1)
+ */
+export function getRecordList(data) {
   return fetch({
-    url: '/wxapp/user/getRecordList',
+    url: '/wxapp/user/v3/getRecordList',
     data: data || {},
     method: 'GET'
   })

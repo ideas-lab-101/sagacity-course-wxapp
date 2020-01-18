@@ -70,22 +70,23 @@ class audio {
             return false
         }
 
-        // 创建新的播放信息  初始化播放信息参数
+        /**
+         * 创建新的播放信息  初始化播放信息参数
+         * @type {({} & {play: boolean, coverImgUrl: null, epname: string, stop: boolean, src: null, loopState: string, end: boolean, id: null, title: string, pause: boolean, frame: number}) | any}
+         */
         this.player = Object.assign({}, this.player, {...options})
 
         console.log('背景音开始播放')
         this.backgroundAudioManager.src = this.player.src
-        this.player.play = true
-
+        this.backgroundAudioManager.title = this.player.title
+        this.backgroundAudioManager.epname = this.player.epname
+        this.backgroundAudioManager.coverImgUrl  = this.player.coverImgUrl
         if (Number(this.player.frame) > 0) {
             setTimeout(() => {
                 this.backgroundAudioManager.seek(Number(this.player.frame))
             }, 100)
         }
-
-        this.backgroundAudioManager.title = this.player.title
-        this.backgroundAudioManager.epname = this.player.epname
-        this.backgroundAudioManager.coverImgUrl  = this.player.coverImgUrl
+        this.player.play = true
         /**
          * 监听事件
          */
@@ -154,7 +155,7 @@ class audio {
             if (manager.duration) {
                 this.duration = manager.duration
             }
-            fns && fns.playFn && fns.playFn(this.player.id)
+            fns && fns.playFn && fns.playFn(this.player)
         })
 
         manager.onPause( () => {

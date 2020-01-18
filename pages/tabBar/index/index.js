@@ -31,9 +31,6 @@ Page({
          * 请求数据
          **/
         this.__initAppLaunch()
-            .then(() => {
-                this.__init()
-            })
         this.PageOnload = true
     },
 

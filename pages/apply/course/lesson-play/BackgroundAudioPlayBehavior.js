@@ -70,7 +70,7 @@ module.exports = Behavior({
             this.duration = duration
         },
 
-        _playBack: function (id) {
+        _playBack: function (player) {
             console.log('Audio play')
             this.setData({
                 'audioParams.isPlay': true,

@@ -20,11 +20,11 @@
   padding: 20rpx 20rpx;
   margin: 0 20rpx 10rpx 20rpx;
   background-color: white;
-  box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 30rpx rgba(0, 0, 0, 0.1);
 }
 .global-play-widget-insert>._close{
   transition: all 0.5s;
-  color: #000000;
+  color: #999999;
   width: 65rpx;
   height: 65rpx;
   line-height: 65rpx;

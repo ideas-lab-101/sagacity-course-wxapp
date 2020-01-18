@@ -1,10 +1,9 @@
-<wu-toast id="wu-toast" />
 <wu-marked-words id="wu-marked-words" words="{{markedWords.data}}" version="{{markedWords.version}}" bindmarkDownFree="markDownFreeEvent"/>
 <import src="/components/wxParse/wxParse.wxml" />
 <wxs src="./record.wxs" module="moduleRecord" />
 
 <wu-navigation
-    title="{{courseData.DataName}}"
+    title="{{courseData.data_name}}"
     model="{{nav.mode}}"
     transparent="{{nav.transparent}}"
     animation="{{nav.animation}}" />
@@ -15,15 +14,12 @@
         <!--选择背景音部分-->
         <view class="flex between record-backmusic-box">
             <view class="flex _info" wx:if="{{backgroundSoundItem}}">
-
-
                 <view class="bs-single">
                         <view class="_image {{!tryParams.isPlay || tryParams.id !== item.MusicID?'':'active'}}">
                             <view><image src="{{backgroundSoundItem.CoverURL}}" mode="aspectFill"/></view>
                         </view>
                         <view class="_name">{{backgroundSoundItem.Title}}</view>
                 </view>
-
             </view>
             <view class="flex _info" wx:else>
                 <text class="_noFont">点击右侧选背景音</text>
@@ -38,9 +34,9 @@
             <view class="record-swiper-b">
                 <scroll-view scroll-y class="record-swiper" wx:if="{{mode === '0'}}">
                     <view class="record-swiper-shade-up"></view>
-                    <view wx:if="{{courseData.Prompt.length>0}}">
+                    <view wx:if="{{courseData.prompt.length>0}}">
                         <view class="record-swiper-single-b">
-                            <view wx:for="{{courseData.Prompt}}" wx:key="{{index}}" class="record-swiper-single">{{item.Content}}</view>
+                            <view wx:for="{{courseData.prompt}}" wx:key="time_line" class="record-swiper-single">{{item.content}}</view>
                         </view>
                         <view class="record-swiper-single-s"></view>
                     </view>
@@ -58,7 +54,7 @@
         <view class="record-btn-box" wx:if="{{!recordSettingOpened || recordSetting}}">
             <!--倒数部分-->
             <view class="record-reciprocal" wx:if="{{reciprocal.visible}}">
-                <text wx:for="{{reciprocal.count}}" wx:key="{{index}}"></text>
+                <text wx:for="{{reciprocal.count}}" wx:key="*this"></text>
             </view>
             <!--录音计时器部分-->
             <view class="record-time" wx:if="{{recordStart && !reciprocal.visible}}">
@@ -79,26 +75,23 @@
             </view>
         </view>
 
-
         <view class="recordTake" wx:else>
-            <button open-type="openSetting" type="primary" plain class="_setingTake" bindopensetting="opensettingEvent">微信授权录音</button>
+            <button open-type="openSetting" type="primary" plain class="_setingTake" bindopensetting="openRecordSettingAgainEvent">微信授权录音</button>
         </view>
 
-
     </view>
-
 </view>
 
 <!--提交录制数据-->
 <wu-backdrop id="wu-backdrop" bind:click="" />
-<wu-animation-group wux-class="record-over" in="{{ recordin }}" class-names="wux-animate--slideInUp">
+<wu-animation-group wux-class="record-over" in="{{ recordIn }}" class-names="wux-animate--slideInUp">
     <view class="_insert">
         <view class="record-over-tip">如对录制效果不满意，可点击重录按钮；或在作品管理中删除。</view>
         <view class="record-over-list">
             <view class="_con">
-                <text>{{courseData.LessonName}}</text>
-                <text class="_shi" bindtap="recordPlayEvent" wx:if="{{!tryParams.isPlay || tryParams.id !== 'tryListenID'}}"><text class="iconfont icon-bofang1"></text> 试听</text>
-                <text class="_shi" wx:else bindtap="recordPlayEvent"><text class="iconfont icon-weibiaoti519"></text> 暂停</text>
+                <text>{{courseData.lesson_name}}</text>
+                <text class="_shi" catchtap="tryListenEvent" data-id="tryListenID" data-url="{{form.fileURL}}" wx:if="{{!tryParams.isPlay || tryParams.id !== 'tryListenID'}}"><text class="iconfont icon-bofang1"></text> 试听</text>
+                <text class="_shi" catchtap="tryListenEvent" data-id="tryListenID" data-url="{{form.fileURL}}" wx:else><text class="iconfont icon-weibiaoti519"></text> 暂停</text>
             </view>
             <view class="_back">
                 <rich-text nodes="{{moduleRecord.filterText(backgroundSoundItem)}}"></rich-text>

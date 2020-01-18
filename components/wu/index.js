@@ -20,6 +20,7 @@ const $wuScrollTop = (selector = '#wu-scrollTop', ctx) => getCtx(selector, ctx)
 const $wuSlogon = (selector = '#wu-slogon', ctx) => getCtx(selector, ctx)
 const $wuLoading = (selector = '#wu-loading', ctx) => getCtx(selector, ctx)
 const $wuPendant = (selector = '#wu-pendant', ctx) => getCtx(selector, ctx)
+const $wuMarkedWords = (selector = '#wu-marked-words', ctx) => getCtx(selector, ctx)
 
 export {
     $wuBackdrop,
@@ -28,5 +29,6 @@ export {
     $wuScrollTop,
     $wuSlogon,
     $wuLoading,
-    $wuPendant
+    $wuPendant,
+    $wuMarkedWords
 }

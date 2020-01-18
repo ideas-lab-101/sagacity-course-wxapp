@@ -1,58 +1,63 @@
+'use strict';
 
+class RecordManager {
 
-class recordManager {
-
-    constructor(options) {
-        this.recorderManager = null
-        this.time = 0
-        this.countManager = false
-
-        // 初始化
-        this.init(options.listenBack)
-    }
-
-    /**
-     * 初始化
-     **/
-    init(BackFn) {
-        console.log('this record init')
-        this.recorderManager = wx.getRecorderManager()
-        this._listenEvent(BackFn)
-    }
-
-    free() {
-        this.recorderManager = null
-        this.time = 0
-        this.countManager = false
-    }
-
-    start() {
-        this.recorderManager.start({
+    constructor(options = {}, listenFn) {
+        if (!listenFn) {
+            listenFn = {...options}
+        }
+        this.options = Object.assign({}, {
             duration: 600000,
             sampleRate: 44100,
             numberOfChannels: 1,
             encodeBitRate: 192000,
             audioSource: 'auto',
             format: 'aac'
-        })
+        }, options)
+        this.RecorderManager = null
+        this.time = 0
+        this.countManager = false
+        /**
+         * 初始化
+         */
+        this.init(listenFn)
+    }
+
+    /**
+     * 初始化
+     **/
+    init(BackFn) {
+        console.log('The record init')
+        this.RecorderManager = wx.getRecorderManager()
+        this._listenEvent(this.RecorderManager, BackFn)
+    }
+
+    free() {
+        this.RecorderManager = null
+        this.time = 0
+        this.countManager = false
+    }
+
+    start() {
+        this.RecorderManager.start(this.options)
         this.countManager = true
     }
 
     pause() {
-        this.recorderManager.pause()
+        this.RecorderManager.pause()
         this.countManager = false
     }
 
     stop() {
-        if (this.recorderManager) {
-            this.recorderManager.stop()
+        if (this.RecorderManager) {
+            this.RecorderManager.stop()
         }
         this.time = 0
         this.countManager = false
     }
 
     resume() {
-        this.recorderManager.resume()
+        this.RecorderManager.resume()
         this.countManager = true
     }
 
@@ -64,41 +69,42 @@ class recordManager {
      * 内部事件
      **/
 
-    _listenEvent(options) {
+    _listenEvent(manager, options) {
 
-        this.recorderManager.onStart( () => {
+        manager.onStart( () => {
             console.log('start record')
             this._addTime() // 开始录制的时候 计算时间
             options.startBack && options.startBack()
         })
 
-        this.recorderManager.onPause( () => {
+        manager.onPause( () => {
             console.log('pause record')
             options.pauseBack && options.pauseBack(res)
         })
 
-        this.recorderManager.onStop( (res) => {
-            console.log('stop record')
-            console.log(res)
+        manager.onStop( (res) => {
+            console.log('stop record', res)
             const { tempFilePath } = res
             options.stopBack && options.stopBack(res)
         })
 
-        this.recorderManager.onResume( () => {
+        manager.onResume( () => {
             this._addTime() // 开始录制的时候 计算时间
             options.resumeBack && options.resumeBack()
         })
 
-        this.recorderManager.onError( (res) => {
+        manager.onError( (res) => {
             console.error(res)
             options.errorBack && options.errorBack(res)
         })
 
-        this.recorderManager.onInterruptionBegin( () => {
+        manager.onInterruptionBegin( () => {
+            this.pause()
             options.interruptionBeginBack && options.interruptionBeginBack()
         })
 
-        this.recorderManager.onInterruptionEnd( () => {
+        manager.onInterruptionEnd( () => {
+            this.resume()
             options.interruptionEndBack && options.interruptionEndBack()
         })
 
@@ -125,6 +131,4 @@ class recordManager {
     }
 
 }
-
-
-module.exports = recordManager
+module.exports = RecordManager

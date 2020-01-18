@@ -12,6 +12,7 @@ const { equipmentStatus, checkVersion } = require('./utils/equipment')
 const { checkVersionUpdate } = require('./utils/updateVersion')
 const { networkChange } = require('./utils/network')
 const BackgroundAudioManager = require('./controller/BackgroundAudioManager')
+const EnrollController = require('./controller/EnrollController')
 
 App({
   onLaunch: function (options) {
@@ -58,10 +59,9 @@ App({
 
 
 
-    userInfo: {},
+
 
     qiNiuToken: '',
-    backgroundSound: null,
     systemSeries: null
   },
 
@@ -71,5 +71,6 @@ App({
   request: Axios.axios, // 数据请求封装
   requestManager: new RequestManager(), // 请求更新管理器
   dataStorageManager: new DataStorageManager(), // 资料库  缓存数据
-  backgroundAudioManager: new BackgroundAudioManager() // 背景音管理器
+  backgroundAudioManager: new BackgroundAudioManager(), // 背景音管理器
+  enrollController: new EnrollController(), // 管理所有被加入的课程 实现页面渲染
 })

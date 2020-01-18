@@ -188,15 +188,23 @@
   border-top: 15rpx #f7f7f7 solid;
 }
 
-.item {
+.mine-learn-con .item {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 96rpx;
   font-size: 32rpx;
   padding: 0 30rpx;
   font-weight: 500;
+  border: 0 !important;
+  color: black !important;
+  margin: 0 !important;
+  flex: 1;
 }
-
+.mine-learn-con .item.shareBtn {
+  width: auto !important;
+  min-width: unset;
+}
 .item .iconfont {
   font-size: 40rpx;
 }
@@ -215,16 +223,7 @@
   line-height: 1;
 }
 
-.shareBtn {
-  text-align: left;
-  border: 0 !important;
-  color: black !important;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  font-size: 32rpx;
-  font-weight: 500;
-}
+
 
 .shareBtn::after, .shareBtn:before {
   border: 0 !important;
@@ -302,7 +301,7 @@
   color: #999;
   display: flex;
   align-items: center;
-  margin-top: 10rpx;
+  margin-top: 15rpx;
   position: relative;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -313,27 +312,22 @@
   position: absolute; right: 10rpx; top: -45rpx; font-size: 22rpx; color: #999;
 }
 .mine-userRecord-single ._oper{
-  padding-left: 140rpx; text-align: right; color: #000; display: flex; align-items: center; flex-direction: row-reverse;overflow: hidden;
+  text-align: right; color: #000; display: flex; align-items: center; justify-content: space-between; overflow: hidden;
 }
 .mine-userRecord-single ._oper ._d{
   display: flex;
   align-items: center;
 }
 .mine-userRecord-single ._oper ._d ._s{ padding: 15rpx 36rpx; font-size: 22rpx; display: flex; align-items: center; color: #666;}
-/*.mine-userRecord-single ._oper ._d .shareBtn{ line-height: 1.2; color: #000 !important; padding: 15rpx 40rpx 10rpx; }*/
 .mine-userRecord-single ._oper ._d ._font{
   margin-left: 15rpx; vertical-align: middle; margin-top: 6rpx;
 }
 .mine-userRecord-single ._oper ._d .iconfont{
   font-size: 30rpx;
 }
-.mine-userRecord-single ._eye{
-  position: absolute; left: 40rpx; bottom: 27rpx; z-index: 10; font-size: 22rpx;
-}
-.mine-userRecord-single ._eye .iconfont{
+.mine-userRecord-single ._eye, .mine-userRecord-single ._eye .iconfont{
   font-size: 22rpx;
 }
-
 .norecord{
   color: #999999; text-align: center; font-size: 24rpx;
 }

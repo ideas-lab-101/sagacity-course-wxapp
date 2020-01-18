@@ -19,32 +19,30 @@
     <view class="play-audio">
 
         <view class="play-cover">
-
-                   <!--词 进度切换-->
-                    <swiper current="{{captionCurrent}}" bindchange="captionChangeEvent" class="play-cover-swiper">
-                        <!--进度-->
-                        <swiper-item>
-                            <view class="play-cover-progress" bindtap="turnBackPageEvent">
-                                <view class="play-canvas-box">
-                                    <template is="progress" data="{{progress: progress}}"/>
-                                </view>
-                                <image src="{{info.lesson_data.cover_url}}" mode="aspectFill" class="play-coverUrl"></image>
+               <!--词 进度切换-->
+                <swiper current="{{captionCurrent}}" bindchange="captionChangeEvent" class="play-cover-swiper">
+                    <!--进度-->
+                    <swiper-item>
+                        <view class="play-cover-progress" bindtap="turnBackPageEvent">
+                            <view class="play-canvas-box">
+                                <template is="progress" data="{{progress: progress}}"/>
                             </view>
-                            <!--当前课本信息显示-->
-                            <view class="play-lesson-title" style="top: {{statusBarHeight + 50}}px;">
-                                <view>{{info.lesson_data.data_name}}</view>
-                                <text>{{info.lesson_data.lesson_name}}</text>
-                            </view>
-                        </swiper-item>
-                        <!--词-->
-                        <swiper-item>
-                            <view class="play-words-progress">
-                                <words-progress frame="{{audioParams.currentTime}}" overall="{{info.lesson_data.prompt}}"></words-progress>
-                            </view>
-                        </swiper-item>
-                    </swiper>
-
-            </view>
+                            <image src="{{info.lesson_data.cover_url}}" mode="aspectFill" class="play-coverUrl"></image>
+                        </view>
+                        <!--当前课本信息显示-->
+                        <view class="play-lesson-title" style="top: {{statusBarHeight + 50}}px;">
+                            <view>{{info.lesson_data.data_name}}</view>
+                            <text>{{info.lesson_data.lesson_name}}</text>
+                        </view>
+                    </swiper-item>
+                    <!--词-->
+                    <swiper-item>
+                        <view class="play-words-progress">
+                            <words-progress frame="{{audioParams.currentTime}}" overall="{{info.lesson_data.prompt}}"></words-progress>
+                        </view>
+                    </swiper-item>
+                </swiper>
+        </view>
 
         <view class="play-record" wx:if="{{info.lesson_data.bln_interact === 1}}">
               <view class="recordUser flex" catchtap="goRecordListEvent">
@@ -60,46 +58,43 @@
         </view>
 
         <view class="play-operration">
-          <text class="time _opera">{{audioParams.sliderStart}} / {{timeTotal}}</text>
-          <view class="_opera _panel flex">
-              <text class="mr-5">字幕</text>
-              <wux-switch name="positive" slot="footer" size="small" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
-          </view>
-          <view class="collect _opera" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text></view>
-          <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text></view>
-          <button plain class="share _opera" hover-class="none" open-type="share"><text class="iconfont icon-chakantiezifenxiang"></text></button>
+              <text class="time _opera">{{audioParams.sliderStart}} / {{timeTotal}}</text>
+              <view class="_opera _panel flex">
+                  <text class="mr-5">字幕</text>
+                  <wux-switch name="positive" slot="footer" size="small" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
+              </view>
+              <view class="collect _opera" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text></view>
+              <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text></view>
+              <button plain class="share _opera" hover-class="none" open-type="share"><text class="iconfont icon-chakantiezifenxiang"></text></button>
         </view>
 
         <view class="play-console">
-            <view class="_uniterm _panel" bindtap="openCatalogEvent"><text class="iconfont icon-list"></text></view>
-            <view class="_uniterm {{hasPrev?'':'noFocus'}}" bindtap="audioPrevEvent"><text class="iconfont icon-prev"></text></view>
-            <view class="_uniterm _play" bindtap="audioPlayEvent">
-                <text class="iconfont icon-bofang1" wx:if="{{!audioParams.isPlay}}"></text>
-                <text class="iconfont icon-weibiaoti519" wx:else></text>
-            </view>
-            <view class="_uniterm {{hasNext?'':'noFocus'}}" bindtap="audioNextEvent"><text class="iconfont icon-next"></text></view>
-            <view class="_uniterm" wx:if="{{state==='order'}}" bindtap="audioLoopEvent"><text class="iconfont icon-shunxubofang"></text></view>
-            <view class="_uniterm" wx:else bindtap="audioLoopEvent"><text class="iconfont icon-loop"></text></view>
+                <view class="_uniterm _panel" bindtap="openCatalogEvent"><text class="iconfont icon-list"></text></view>
+                <view class="_uniterm {{hasPrev?'':'noFocus'}}" bindtap="audioPrevEvent"><text class="iconfont icon-prev"></text></view>
+                <view class="_uniterm _play" bindtap="audioPlayEvent">
+                    <text class="iconfont icon-bofang1" wx:if="{{!audioParams.isPlay}}"></text>
+                    <text class="iconfont icon-weibiaoti519" wx:else></text>
+                </view>
+                <view class="_uniterm {{hasNext?'':'noFocus'}}" bindtap="audioNextEvent"><text class="iconfont icon-next"></text></view>
+                <view class="_uniterm" wx:if="{{state==='order'}}" bindtap="audioLoopEvent"><text class="iconfont icon-shunxubofang"></text></view>
+                <view class="_uniterm" wx:else bindtap="audioLoopEvent"><text class="iconfont icon-loop"></text></view>
 
-            <view class="_progress" hidden="{{!sliderProgressVisible}}">
-                <slider bindchange="sliderChangeEvent"
-                    min="0" max="100"
-                    backgroundColor="#e9e9e9"
-                    block-size="12"
-                    block-color="#000000"
-                    activeColor="#000000"
-                    value="{{audioParams.sliderValue}}"/>
-            </view>
-
+                <view class="_progress" hidden="{{!sliderProgressVisible}}">
+                    <slider bindchange="sliderChangeEvent"
+                        min="0"
+                        max="100"
+                        backgroundColor="#e9e9e9"
+                        block-size="12"
+                        block-color="#000000"
+                        activeColor="#000000"
+                        value="{{audioParams.sliderValue}}"/>
+                </view>
       </view>
 
     </view>
-
 </view>
 
-
-
-
+<!--显示目录-->
 <wu-backdrop id="wu-backdrop-catalog" bind:click="closeCatalogEvent" opacity="0" zIndex="1900"/>
 <wu-animation-group wux-class="catalog-frame" in="{{ catalogIn }}" class-names="wux-animate--slideInUp">
     <view class="_insert {{systemSeries==='android'?'android':''}}">

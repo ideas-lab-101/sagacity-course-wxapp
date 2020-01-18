@@ -54,10 +54,13 @@ export function getLessonList(data) {
   })
 }
 
-// 获得课程资源信息(录制时用)
-export function GetLessonInfo(data) { //dataID
+/**
+ * 获得课程资源信息(录制时用)
+ * data_id
+ */
+export function getLessonData(data) {
   return fetch({
-    url: '/wxapp/course/v3/GetLessonInfo',
+    url: '/wxapp/course/v3/getLessonData',
     data: data || {},
     method: 'GET'
   })
