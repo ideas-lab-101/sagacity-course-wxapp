@@ -37,15 +37,18 @@ export function getRecordInfo(data) {
   })
 }
 
-// 上传录音
-export function uploadRecordFile(options, progress, complete) { //musicID recordFile(File)
+/**
+ * 上传录音
+ * music_id(0则未选择背景音) recordFile(文件)
+ */
+export function uploadRecordFile(options, progress, complete) {
   return new Promise( (resolve, reject) => {
     const uploadTask = wx.uploadFile({
-      url: host + '/wxapp/record/v2/uploadRecordFile',
+      url: host + '/wxapp/record/v3/uploadRecordFile',
       filePath: options.path,
       name: 'recordFile',
       formData:  {
-        musicID: options.musicID,
+        music_id: options.musicID,
         duration: options.duration,
       },
       success: function (res) {
@@ -85,37 +88,49 @@ export function updateRecordSign(data) { //recordID desc
   })
 }
 
-// 放弃录制
-export function recordCancel(data) { //fileURL recordURL
+/**
+ * 撤销混音任务
+ * task_id file_url(混音后的文件) record_url(原音)
+ */
+export function recordCancel(data) {
   return fetch({
-    url: '/wxapp/record/v2/recordCancel',
+    url: '/wxapp/record/v3/recordCancel',
     data: data || {},
     method: 'POST'
   })
 }
 
-// 提交录制
-export function submitRecordFile(data) { //fileURL recordURL  mode  musicID
+/**
+ * 提交录制任务
+ * token data_id(课程资源id) music_id mode(背诵、朗诵) task_id file_url(混音后的文件) record_url(原音)
+ */
+export function submitRecordFile(data) {
   return fetch({
-    url: '/wxapp/record/v2/submitRecordFile',
+    url: '/wxapp/record/v3/submitRecordFile',
     data: data || {},
     method: 'POST'
   }, { title: '正在提交，请等候...'})
 }
 
-// 设置作品公开
-export function setPublic(data) { //recordID blnPublic
+/**
+ * 设置作品公开
+ * record_id bln_public
+ */
+export function setPublic(data) {
   return fetch({
-    url: '/wxapp/record/setPublic',
+    url: '/wxapp/record/v3/setPublic',
     data: data || {},
     method: 'POST'
   })
 }
 
-// 删除作品
-export function delRecord(data) { //recordID
+/**
+ * 删除作品
+ * token record_id
+ */
+export function delRecord(data) {
   return fetch({
-    url: '/wxapp/record/delRecord',
+    url: '/wxapp/record/v3/delRecord',
     data: data || {},
     method: 'POST'
   })

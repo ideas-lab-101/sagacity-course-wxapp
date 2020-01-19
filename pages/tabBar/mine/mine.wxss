@@ -320,7 +320,7 @@
 }
 .mine-userRecord-single ._oper ._d ._s{ padding: 15rpx 36rpx; font-size: 22rpx; display: flex; align-items: center; color: #666;}
 .mine-userRecord-single ._oper ._d ._font{
-  margin-left: 15rpx; vertical-align: middle; margin-top: 6rpx;
+  margin-left: 15rpx; vertical-align: middle;
 }
 .mine-userRecord-single ._oper ._d .iconfont{
   font-size: 30rpx;

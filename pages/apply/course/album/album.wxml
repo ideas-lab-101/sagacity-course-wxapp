@@ -29,14 +29,14 @@
             <view class="lesson-desc color-999 {{selectorTransition.disk}}">{{info.albumInfo.AlbumDesc}}</view>
               <view class="lesson-link font-14">
                   <!--收藏-->
-                  <view catchtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="event-hover-class-view">
+                  <view catchtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="basic-hover">
                       <text class="iconfont icon-guanzhu"></text>
                   </view>
-                  <view catchtap="collectEvent" class="lesson-link-opt red" hover-class="event-hover-class-view" wx:else>
+                  <view catchtap="collectEvent" class="lesson-link-opt red" hover-class="basic-hover" wx:else>
                       <text class="iconfont icon-guanzhu1"></text>
                   </view>
                   <!--分享-->
-                  <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="event-hover-class-view">
+                  <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="basic-hover">
                       <text class="iconfont icon-chakantiezifenxiang"></text>
                   </view>
               </view>
@@ -50,28 +50,28 @@
   <view class="lesson-intro">
       <!--<view class="lesson-link font-14">
           &lt;!&ndash;收藏&ndash;&gt;
-          <view catchtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="event-hover-class-view">
+          <view catchtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="basic-hover">
               <text class="iconfont icon-guanzhu"></text>
           </view>
-          <view catchtap="collectEvent" class="lesson-link-opt red" hover-class="event-hover-class-view" wx:else>
+          <view catchtap="collectEvent" class="lesson-link-opt red" hover-class="basic-hover" wx:else>
               <text class="iconfont icon-guanzhu1"></text>
           </view>
           &lt;!&ndash;点赞&ndash;&gt;
-          <view catchtap="likeEvent" class="lesson-link-opt" hover-class="event-hover-class-view">
+          <view catchtap="likeEvent" class="lesson-link-opt" hover-class="basic-hover">
               <text class="iconfont {{info.is_like?'icon-liked red':'icon-zan'}}"></text><text>{{info.albumInfo.likeCount}}</text>
           </view>
           &lt;!&ndash;评论&ndash;&gt;
-          <view catchtap="discussEvent" class="lesson-link-opt" hover-class="event-hover-class-view">
+          <view catchtap="discussEvent" class="lesson-link-opt" hover-class="basic-hover">
               <text class="iconfont icon-liuyan"></text>
           </view>
           &lt;!&ndash;分享&ndash;&gt;
-          <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="event-hover-class-view">
+          <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="basic-hover">
               <text class="iconfont icon-chakantiezifenxiang"></text>
           </view>
       </view>-->
       <view scroll-y class="lesson-intro-scroll">
           <block wx:for="{{info.recordList}}" wx:key="{{index}}">
-              <view class="catalog-single {{tryParams.isPlay && tryParams.id === item.RecordID?'active':''}}" catchtap="skipPlayerEvent" data-index="{{index}}" hover-class="event-hover-class-view">
+              <view class="catalog-single {{tryParams.isPlay && tryParams.id === item.RecordID?'active':''}}" catchtap="skipPlayerEvent" data-index="{{index}}" hover-class="basic-hover">
                 <image src="{{item.avatar_url}}" mode="aspectFill" class="_image"></image>
                 <view class="_title">
                     <text>{{item.Caption}}</text>

@@ -27,9 +27,9 @@
 
     <view class="relative">
       <view class="play-operration">
-        <view class="_opera" hover-class="event-hover-class-view"  bindtap="openDraftEvent"><text class="iconfont icon-info"></text> 介绍</view>
+        <view class="_opera" hover-class="basic-hover"  bindtap="openDraftEvent"><text class="iconfont icon-info"></text> 介绍</view>
         <view>
-          <view class="collect _opera" hover-class="event-hover-class-view" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text> 收藏</view>
+          <view class="collect _opera" hover-class="basic-hover" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text> 收藏</view>
           <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text> 已收藏</view>
           <button plain class="event-hover-class share _opera" open-type="share"><text class="iconfont icon-chakantiezifenxiang"></text> 分享</button>
         </view>

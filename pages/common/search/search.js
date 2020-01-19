@@ -1,6 +1,6 @@
 const app = getApp()
 const ArrayList = require("../../../utils/arrayList")
-const { Search, HotSearch } = require("../../request/systemPort")
+import { Search, HotSearch } from "../../../request/systemPort"
 
 Page({
 

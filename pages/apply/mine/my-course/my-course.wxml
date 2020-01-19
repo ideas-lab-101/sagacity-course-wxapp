@@ -10,7 +10,7 @@
       <view catchtap="goCoursePage"
             data-id="{{item.course_id}}"
             class="mycourse-single"
-            hover-class="event-hover-class">
+            hover-class="basic-hover">
         <text class="_time">{{moduleMyCourse.resolveTime(item.add_date)}}</text>
         <view class="_content clear">
           <view class="_img">

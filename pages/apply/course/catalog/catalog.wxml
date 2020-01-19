@@ -2,30 +2,29 @@
 
 <wu-navigation id="wu-navigation" title="资源库"></wu-navigation>
 
-<view class="sticky-classify" id="indexClassify">
-  <view class="sticky-classify-insert">
-    <scroll-view scroll-x class="sticky-tab-box"
+<view class="sticky-classify" style="top:{{statusBarHeight+45}}px;">
+    <scroll-view scroll-x
+                 class="sticky-tab-box"
                  scroll-left="{{tabParams.left}}"
                  scroll-with-animation="true"
                  id="index-tab-box">
       <view class="sticky-tab-single-box" style="width: auto;">
         <text wx:for="{{catalogTile}}"
-              wx:key="{{index}}"
+              wx:key="detail_id"
               class="sticky-tab-single {{current === index ? 'active' : ''}}"
               catchtap="changeMenuEvent"
-              data-index="{{index}}">{{item.TypeName}}</text>
+              data-index="{{index}}">{{item.caption}}</text>
       </view>
     </scroll-view>
-  </view>
 </view>
 
 <!-- 分类标签 -->
 <view>
-  <block wx:for="{{gather.list}}" wx:key="CourseID">
-    <navigator url="/pages/apply/course/lesson-page/lesson-page?id={{item.CourseID}}" class="index-book-box" hover-class="none">
-      <view class="_book"><image src="{{item.CoverURL}}" mode="aspectFill"></image></view>
-      <text class="_name">{{item.CourseName}}</text>
-    </navigator>
-  </block>
+    <view catchtap="goCoursePage" data-id="{{item.course_id}}" class="index-book-box" hover-class="none" wx:for="{{gather.list}}" wx:key="course_id">
+      <view class="_book">
+        <image src="{{item.cover_url}}" mode="aspectFill"></image>
+      </view>
+      <text class="_name">{{item.course_name}}</text>
+    </view>
 </view>
 

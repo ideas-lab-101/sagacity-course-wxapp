@@ -25,7 +25,7 @@
                 <text class="_noFont">点击右侧选背景音</text>
             </view>
             <view class="_title {{markedWords.data[0].show?'MarkDown':''}}" id="MarkDown01">
-                <view class="_r" hover-class="event-hover-class-view" catchtap="getBackSoundListEvent">
+                <view class="_r" hover-class="basic-hover" catchtap="getBackSoundListEvent">
                     <text class="iconfont icon-music"></text> 选择背景音
                 </view>
             </view>
@@ -92,8 +92,8 @@
         <view class="record-over-list">
             <view class="_con">
                 <text>{{courseData.lesson_name}}</text>
-                <text class="_shi" catchtap="tryListenEvent" data-id="tryListenID" data-url="{{form.fileURL}}" wx:if="{{!tryParams.isPlay || tryParams.id !== 'tryListenID'}}"><text class="iconfont icon-bofang1"></text> 试听</text>
-                <text class="_shi" catchtap="tryListenEvent" data-id="tryListenID" data-url="{{form.fileURL}}" wx:else><text class="iconfont icon-weibiaoti519"></text> 暂停</text>
+                <text class="_shi" catchtap="tryListenEvent" data-id="tryListenID" data-url="{{form.file_url}}" wx:if="{{!tryParams.isPlay || tryParams.id !== 'tryListenID'}}"><text class="iconfont icon-bofang1"></text> 试听</text>
+                <text class="_shi" catchtap="tryListenEvent" data-id="tryListenID" data-url="{{form.file_url}}" wx:else><text class="iconfont icon-weibiaoti519"></text> 暂停</text>
             </view>
             <view class="_back">
                 <rich-text nodes="{{moduleRecord.filterText(backgroundSoundItem)}}"></rich-text>

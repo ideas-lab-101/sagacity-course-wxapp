@@ -1,5 +1,5 @@
 const App = getApp()
-const { addComment } = require('../../request/commentPort')
+const { addComment } = require('../../../request/commentPort')
 const { $wuxActionSheet, $wuxToast } = require('wux-weapp/index')
 
 Page({

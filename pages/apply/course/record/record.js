@@ -56,12 +56,11 @@ Page({
        */
         courseData: null,  // 课程基本信息
         form: {
-            dataID: '', // 课程ID
-            fileURL: '', // 混音地址
-            recordURL: '', // 原音地址
-            teamID: 1, // 默认组ID
-            musicID: 0, // 背景音ID
-            taskID: 0   // 上传后拿到的判断线程的参数
+            data_id: '', // 课程ID
+            file_url: '', // 混音地址
+            record_url: '', // 原音地址
+            music_id: 0, // 背景音ID
+            task_id: 0   // 上传后拿到的判断线程的参数
         },
         reciprocal: { // 倒数计时
             visible: false,
@@ -72,7 +71,7 @@ Page({
     onLoad: function (options) {
         this.setData({
             mode: options.mode,
-            'form.dataID': options.id
+            'form.data_id': options.id
         })
         this.__init(options.id) // 请求数据
 
@@ -88,18 +87,15 @@ Page({
     },
 
     onHide: function () {
-        this.Recorder.free() //  置空录音管理器
-        if (this.innerAudioContext) {
-          this.innerAudioContext.stop()
-        }
+        /**
+         * 音频停止播放
+         */
+        this.__innerAudioStop()
     },
 
     onUnload: function () {
-        this.Recorder.free() //  置空录音管理器
-        if (this.innerAudioContext) {
-          this.innerAudioContext.destroy()
-          this.innerAudioContext = null
-        }
+        this.freeRecord() //  置空录音管理器
+        this.__innerAudioDestroy()
     },
 
     /**
@@ -136,7 +132,7 @@ Page({
    * @returns {boolean}
    */
     startRecordCheckMusic: function () {
-        if (!this.data.form.musicID && !this.startRecordAction) {
+        if (!this.data.form.music_id && !this.startRecordAction) {
             Dialog.confirm({
                 title: '尚无背景音',
                 content: '选择背景音将有更好的作品表现',
@@ -162,7 +158,11 @@ Page({
         if (this.data.reciprocal.visible) {
             return false
         }
-        this.innerAudioContext.stop()
+      /**
+       * 音频停止播放
+       */
+      this.__innerAudioStop()
+
         this.setData({
             'reciprocal.visible': true
         })
@@ -173,9 +173,11 @@ Page({
      * 关闭录制层
      */
     closeRecordOverEvent: function () {
-        if (this.innerAudioContext) {
-            this.innerAudioContext.stop()
-        }
+        /**
+         * 音频停止播放
+         */
+        this.__innerAudioStop()
+
         $wuBackdrop().release()
         this.setData({recordIn: false})
     },
@@ -187,10 +189,12 @@ Page({
         /**
         * 清理垃圾录音
         **/
+        const {file_url, record_url, task_id} = this.data.form
+
         recordCancel({
-            fileURL: this.data.form.fileURL,
-            recordURL: this.data.form.recordURL,
-            taskID: this.data.form.taskID
+            file_url,
+            record_url,
+            task_id
         })
     },
   /**
@@ -201,18 +205,14 @@ Page({
             url: `/pages/apply/course/background-sound-list/background-sound-list`,
             events: {
                 acceptDataSetBackgroundSound: (data) => {
-                    console.log(data)
+                    console.log('backgroundSoundItem', data)
                     if (!data.item) {
-                        this.setData({
-                            backgroundSoundItem: null,
-                            'form.musicID': 0
-                        })
+                        this.setData({backgroundSoundItem: null})
+                        this.data.form.music_id = 0
                         return false
                     }
-                    this.setData({
-                        backgroundSoundItem: {...data.item},
-                        'form.musicID': data.music_id
-                    })
+                    this.setData({backgroundSoundItem: {...data.item}})
+                    this.data.form.music_id = data.music_id
                 }
             },
             success: (res) => {
@@ -270,7 +270,7 @@ Page({
         }
 
         submitRecordFile({
-                ...this.data.from,
+                ...this.data.form,
                 mode: this.data.mode
             })
             .then((res) => {
@@ -280,7 +280,7 @@ Page({
 
                 setTimeout(() => {
                     wx.navigateTo({
-                        url: `/pages/apply/mine/my-record/my-record?id=${res.data}&skip=1`
+                        url: `/pages/apply/mine/my-record/my-record?skip=1`
                     })
                 }, 100)
             })

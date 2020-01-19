@@ -82,7 +82,7 @@
 
             <view class="watch-info-k flex">
               <view><text class="_count">{{moduleFind.resolveTime(item.AddTime)}}</text></view>
-              <view catchtap="goCommentEvent" data-id="{{item.RecordID}}" class="_comment" hover-class="event-hover-class-view">
+              <view catchtap="goCommentEvent" data-id="{{item.RecordID}}" class="_comment" hover-class="basic-hover">
                 <text class="iconfont icon-liuyan"></text>
                 <text class="_count ml-5">{{moduleFind.filterText(item.commentCount)}}</text>
                 <text class="ml-20">我说说</text>

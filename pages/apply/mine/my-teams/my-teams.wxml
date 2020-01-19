@@ -22,7 +22,7 @@
                 <text wx:if="{{userID !== moduleMyTeams.getUserInfo(index, one, two, three).UserID}}">我加入的小组</text>
                 <text wx:else class="color-Primary">我创建的小组</text>
               </view>
-              <view class="_set" hover-class="event-hover-class-view" catchtap="goTeamSetEvent" data-index="{{index}}"><text class='iconfont icon-setting'></text> 组设置</view>
+              <view class="_set" hover-class="basic-hover" catchtap="goTeamSetEvent" data-index="{{index}}"><text class='iconfont icon-setting'></text> 组设置</view>
               <view class="_title">
                 <text>{{item.TeamName}}</text>
                 <text wx:if="{{(moduleMyTeams.getTeamInfo(index, one, two, three).blnAuth) === 1}}" class="iconfont icon-shenfenzhengzhengmian"></text>

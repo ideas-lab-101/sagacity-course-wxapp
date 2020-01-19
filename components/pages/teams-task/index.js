@@ -1,7 +1,9 @@
-const { getTeamList, addTeamRecord, getTeamTask } = require('../../../request/teamPort')
-const { $wuBackdrop, $wuToast } = require('../../wu/index')
+import { getTeamList, addTeamRecord, getTeamTask } from '../../../request/teamPort'
+import { $wuBackdrop } from '../../wu/index'
 const computedBehavior = require('miniprogram-computed')
 import baseBehavior from '../../wu/helpers/baseBehavior'
+const Toast = require('../../../viewMethod/toast')
+const Dialog = require('../../../viewMethod/dialog')
 
 const defaults = {
   taskList: [],
@@ -13,13 +15,15 @@ const defaults = {
 Component({
     behaviors: [baseBehavior, computedBehavior],
     properties: {},
+    options: {
+      styleIsolation: 'apply-shared'
+    },
     data: defaults,
     computed: {
     },
     lifetimes: {
       created() {
         this.$wuBackdrop = $wuBackdrop('#wu-backdrop', this)
-        this.$wuToast = $wuToast('#wu-toast', this)
       },
       attached() {
       },
@@ -37,11 +41,14 @@ Component({
        * @param opts
        */
         show(opts = {}) {
-          this._getTeamList(opts.recordID).then(() => {
-            const options = this.$$mergeOptionsAndBindMethods(Object.assign({}, defaults, opts))
-            this.$$setData({ teamsIn: true, ...options })
-            this.$wuBackdrop.retain()
-          })
+
+          this._getTeamList(opts.recordID)
+              .then(() => {
+                  const options = this.$$mergeOptionsAndBindMethods(Object.assign({}, defaults, opts))
+                  this.$$setData({ teamsIn: true, ...options })
+                  this.$wuBackdrop.retain()
+              })
+
         },
       /**
        * 关闭层
@@ -50,6 +57,7 @@ Component({
           this.$$setData({ teamsIn: false})
           this.$wuBackdrop.release()
         },
+
         taskChange(e) {
           if(e.type === 'change') {
             this.setData({ current: e.detail.current})
@@ -68,11 +76,14 @@ Component({
        * @private
        */
       _getTeamList: function (recordID) {
-        return getTeamList({recordID: recordID}).then((res) => {
-          this.setData({
-            teamsList: res.list
-          })
-        })
+        return getTeamList({
+              record_id: recordID
+            })
+            .then((res) => {
+                this.setData({
+                    teamsList: res.data.list
+                })
+            })
       },
       /**
        * 获取小组 下的  已确认任务列表
@@ -80,49 +91,48 @@ Component({
        * @private
        */
       _getTeamTask: function (teamID) {
+
         getTeamTask({
-          teamID: teamID,
+          team_id: teamID,
           state: 1
-        }).then(res => {
-
-          res.list.map(item => {
-            item.ValidTime = this._timeToDay(item.ValidTime)
-          })
-          this.setData({ taskList: res.list})
-
-          return res
-        }).then( res => {
-
-          this.setData({ isTaskCurrent: true})
-          wx.nextTick(() => {
-            this.setData({ current: 1 })
-          })
         })
+            .then(res => {
+
+              res.list.map(item => {
+                item.ValidTime = this._timeToDay(item.ValidTime)
+              })
+              this.setData({ taskList: res.data.list})
+              return res
+            })
+            .then( res => {
+
+              this.setData({ isTaskCurrent: true})
+              wx.nextTick(() => {
+                this.setData({ current: 1 })
+              })
+            })
       },
       /**
        * 加入到小组 或者 小组任务
        * @param e
        */
       joinTeamEvent: function (e) {
-        const teamID = e.currentTarget.dataset.id
-        const index = e.currentTarget.dataset.index
-        const name = e.currentTarget.dataset.name
+        const { id, index, name} = e.currentTarget.dataset
         const blnAuth = Number(e.currentTarget.dataset.auth)
 
         this.setData({ teamCurrent: index})
         if (blnAuth === 1) {
-          this._getTeamTask(teamID)
+          this._getTeamTask(id)
           return false
         }
 
         this.setData({ isTaskCurrent: false})
-        wx.showModal({
+
+        Dialog.confirm({
           title: '加入提示',
           content: `是否把作品提交到${name}?`,
-          success: res => {
-            if (res.confirm) {
-              this._join(teamID, 0)
-            }
+          onConfirm: () => {
+            this._join(id, 0)
           }
         })
       },
@@ -132,49 +142,37 @@ Component({
        */
       joinTaskEvent(e) {
         const { teamCurrent, teamsList } = this.data
-        const taskID = e.currentTarget.dataset.id
-        const name = e.currentTarget.dataset.name
-        const time = e.currentTarget.dataset.time
+        const { id, time, name} = e.currentTarget.dataset
 
         if(time === '已截止') {
-          this.$wuToast.show({
-            type: 'text',
-            duration: 1000,
-            color: '#ffffff',
-            text: `作业已截止，不能提交了!`
-          })
+          Toast.text({ text: `作业已截止，不能提交了!` })
           return false
         }
-        wx.showModal({
+        Dialog.confirm({
           title: '加入提示',
           content: `确认是否提交?`,
-          success: res => {
-            if (res.confirm) {
-              this._join(teamsList[teamCurrent].TeamID, taskID)
-            }
+          onConfirm: () => {
+            this._join(teamsList[teamCurrent].team_id, id)
           }
         })
       },
 
       _join(teamID, taskID) {
-        addTeamRecord({teamID: teamID, recordID: this.data.recordID, taskID: taskID}).then((res) => {
-          this.$wuToast.show({
-            type: 'text',
-            duration: 1200,
-            color: '#ffffff',
-            text: res.msg
-          })
-          this.hide()
-        }).catch((ret) => {
-          if(ret.code === 2) {
-            this.$wuToast.show({
-              type: 'text',
-              duration: 1200,
-              color: '#ffffff',
-              text: ret.msg
-            })
-          }
+        addTeamRecord({
+          team_id: teamID,
+          record_id: this.data.recordID,
+          task_id: taskID
         })
+            .then((res) => {
+
+              Toast.text({ text:  res.msg })
+              this.hide()
+            })
+            .catch((ret) => {
+              if(ret.code === 2) {
+                Toast.text({ text:  ret.msg })
+              }
+            })
       },
       /**
        * 工具  判断剩余多少天
@@ -209,7 +207,6 @@ Component({
         }else {
           return `已截止`
         }
-
       }
 
     }

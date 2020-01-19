@@ -1,12 +1,14 @@
 const App = getApp()
-const { $wuNavigation, $wuBackdrop, $wuMarkedwords } = require('../../../../components/wu/index')
-const { $share, $teamsTask } = require('../../../../components/pages/index')
-const { getRecordList } = require('../../../../request/userPort')
-const { getTeamList, addTeamRecord, getTeamTask } = require('../../../../request/teamPort')
-const { setPublic, delRecord } = require('../../../../request/recordPort')
-import AudioManager from '../../../../controller/AudioManager'
+import { $wuNavigation, $wuBackdrop } from '../../../../components/wu/index'
+import { $share, $teamsTask } from '../../../../components/pages/index'
+import { getRecordList } from '../../../../request/userPort'
+import { setPublic, delRecord } from '../../../../request/recordPort'
+const InnerAudioPlayBehavior = require('../../../../utils/behaviors/InnerAudioPlayBehavior')
+const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
+const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
+    behaviors: [PageReachBottomBehavior, InnerAudioPlayBehavior],
     data: {
       nav: {
         title: '个人作品集',
@@ -16,20 +18,6 @@ Page({
         transparent: false
       },
       gOpenID: true,
-      /**
-       * list参数
-       */
-        record: {
-            list: [],
-            lastPage: false,
-            pageNumber: 1,
-            totalRow: 0
-        },
-
-        tryParams: {
-            isPlay: false,
-            id: ''
-        },
       /**
        * 学习小组参数
        */
@@ -95,24 +83,10 @@ Page({
           'nav.backURL': '/pages/tabBar/mine/mine'
         })
       }
-
       this.eventChannel = this.getOpenerEventChannel()
 
-      /**
-       * * 初始换播放插件
-       **/
-      this.innerAudioContext = new AudioManager({
-        play: this._audioManagerPlay,
-        pause: this._audioManagerPause,
-        stop: this._audioManagerStop,
-        end: this._audioManagerEnd,
-        error: this._audioManagerError,
-        destroy: this._audioManagerDestroy
-      })
-
-      this._initUserRecordData()
-
-      this._initUserInfo()
+      this.__init()
+      this.__initInnerAudioManager()
     },
 
     onReady: function () {
@@ -133,7 +107,7 @@ Page({
     },
 
     onReachBottom: function () {
-        this._ReachBottom()
+        this.__ReachBottom()
     },
 
     onHide: function () {
@@ -159,17 +133,31 @@ Page({
         if (this.shareIndex === undefined) {
             return false
         }
-        const title = `${App.user.userInfo.Caption} の ${this.data.record.list[this.shareIndex].Name}`
+        const { list } = this.data.content
+        const title = `${App.user.userInfo.caption} の ${list[this.shareIndex].name}`
         return {
             title: title,
-            imageUrl: `${this.data.record.list[this.shareIndex].CoverURL}?imageView2/5/h/300`,
-            path: `/pages/apply/mine/record-play/record-play?id=${this.data.record.list[this.shareIndex].RecordID}`,
+            imageUrl: `${list[this.shareIndex].cover_url}?imageView2/5/h/300`,
+            path: `/pages/apply/mine/record-play/record-play?id=${list[this.shareIndex].record_id}`,
             success: (ret) => {
                 postAddUserPoint({
                     data: { pointCode: '002'}
                 })
             }
         }
+    },
+
+    __init() {
+        this.__getTurnPageDataList({
+            isPageShow: true,
+            interfaceFn: getRecordList,
+            params: {
+                user_id: App.user.userInfo.user_id,
+                bln_public: 0
+            }
+        })
+
+        this.initUserAccounts()
     },
   /**
    * 关注公众号
@@ -181,32 +169,36 @@ Page({
       url: `/pages/common/documents/documents?id=${id}`
     })
   },
+
+    goLessonPlay(e) {
+        const { id } = e.currentTarget.dataset
+        wx.navigateTo({
+            url: `/pages/apply/course/lesson-play/lesson-play?id=${id}`
+        })
+    },
   /**
    * 删除作品
    * @param e
    */
   deleteRecordEvent: function (e) {
-        const index = e.currentTarget.dataset.index
-        const id = this.data.record.list[index].RecordID
-        wx.showModal({
-            title: '确认删除',
-            content: '您是否想好了要删除此作品？',
-            confirmText: '删除',
-            cancelText: '算了',
-            success: (res) => {
-                if (res.confirm) {
-                    this._deleteUserRecord(id, index)
-                }
-            }
-        })
+      const { index, id } = e.currentTarget.dataset
+
+      Dialog.confirm({
+          title: '确认删除',
+          content: '您是否想好了要删除此作品？',
+          cancelText: '算了',
+          confirmText: '删除',
+          onConfirm: () => {
+              this.deleteUserRecord(id, index)
+          }
+      })
     },
   /**
    * 打开学习小组
    * @param e
    */
   addStudyGroupEvent: function (e) {
-      const index = e.currentTarget.dataset.index
-      const id = this.data.record.list[index].RecordID
+      const { index, id } = e.currentTarget.dataset
       $teamsTask().show({recordID: id})
     },
   /**
@@ -214,10 +206,10 @@ Page({
    * @param e
    */
   singleShareEvent: function (e) {
-        const { list } = this.data.record
+        const { list } = this.data.content
         const { index } = e.currentTarget.dataset
-        const id = list[index].RecordID
-        const url = list[index].CoverURL
+        const id = list[index].record_id
+        const url = list[index].cover_url
 
         this.shareIndex = index // 保存记录  方便分享获取ID
         $share().show({
@@ -231,43 +223,28 @@ Page({
    * @param e
    */
   setPublicSwitchEvent: function (e) {
-      const { list } = this.data.record
+      const { list } = this.data.content
       const { index } = e.currentTarget.dataset
-      const id = list[index].RecordID
+      const id = list[index].record_id
       let stus = 0
 
       if(e.detail.value) {
           stus = 1
       }
+
       setPublic({
-              recordID: id,
-              blnPublic: stus
-      })
+              record_id: id,
+              bln_public: stus
+        })
           .then((res) => {
               this.eventChannel.emit('acceptDataMyRecordPublic', {recordID: id })
-              const obj = `record.list[${index}].blnPublic`
+              const obj = `content.list[${index}].bln_public`
               this.setData({
                   [obj]: stus
               })
           })
     },
 
-    tryListenEvent: function (e) {
-        const { list } = this.data.record
-        const { index } = e.currentTarget.dataset
-        const url = list[index].FileURL
-        const id = list[index].RecordID
-
-        if (this.data.tryParams.isPlay && id === this.data.tryParams.id) {
-            this.innerAudioContext.stop()
-            return false
-        }
-        this.setData({
-          'tryParams.isPlay': true,
-          'tryParams.id': id
-        })
-        this.innerAudioContext.play(url)
-    },
     /**
     *  向导组件回调函数
     * */
@@ -285,88 +262,32 @@ Page({
           })
         })
     },
-    /**
-    *  获取数据
-    * */
-    _initUserRecordData: function () {
-      return getRecordList({page: this.data.record.pageNumber, userID: getApp().user.userInfo.UserID}).then((res) => {
-            this.setData({
-                'record.list': this.data.record.list.concat(res.list),
-                'record.lastPage': res.lastPage,
-                'record.totalRow': res.totalRow
-            })
-           /**
-           *  控制向导组件根据数据显示
-           * */
-           //$wuMarkedwords()._checkMarker()
-        })
-    },
 
   /**
    * 如果重新关注公号  重新拉取用户信息
    * @private
    */
-  _initUserInfo() {
-      getApp().user.retTokenLogin((token, userInfo) => {
-        if(!userInfo.gOpenID) {
-          this.openAccountLayer()
-        }
-        this.setData({ gOpenID: userInfo.gOpenID})
-      })
+  initUserAccounts() {
+          // getApp().user.retTokenLogin((token, userInfo) => {
+          //   if(!userInfo.gOpenID) {
+          //     this.openAccountLayer()
+          //   }
+          //   this.setData({ gOpenID: userInfo.gOpenID})
+          // })
     },
 
-    _ReachBottom: function () {
-      if (this.data.record.lastPage || this.isLoading) {
-        return false
-      }
-      this.isLoading = true
-      this.data.record.pageNumber++
-      this._initUserRecordData().then(() => {
-        this.isLoading = false
-      }).catch(() => {
-        this.isLoading = false
-        this.data.record.pageNumber--
-      })
-    },
-
-    _deleteUserRecord: function (recordID, index) {
-        delRecord({recordID: recordID})
-          .then((res) => {
-            if (res.code) {
-                this.data.record.list.splice(index, 1)
-                this.data.record.totalRow--
-                this.setData({
-                    'record.list': this.data.record.list,
-                    'record.totalRow': this.data.record.totalRow
-                })
-            }
-          })
-    },
-
-    /**
-     * audio播放回调方法
-     **/
-    _audioManagerPlay: function () {
-    },
-    _audioManagerPause: function () {
-    },
-    _audioManagerStop: function () {
-      this._audioManagerRelease()
-    },
-    _audioManagerEnd: function () {
-      this._audioManagerRelease()
-    },
-    _audioManagerError: function () {
-      this._audioManagerRelease()
-    },
-    _audioManagerDestroy: function () {
-      this.innerAudioContext = null
-    },
-    _audioManagerRelease: function () {
-      this.setData({
-        'tryParams.isPlay': false,
-        'tryParams.id': ''
-      })
+    deleteUserRecord: function (recordID, index) {
+        delRecord({
+            record_id: recordID
+            })
+              .then((res) => {
+                  this.data.content.list.splice(index, 1)
+                  this.data.content.totalRow--
+                  this.setData({
+                      'content.list': this.data.content.list,
+                      'content.totalRow': this.data.content.totalRow
+                  })
+              })
     },
 
   /**

@@ -5,7 +5,7 @@
 <wu-navigation title="{{nav.title}}" backgroundColor="{{nav.backgroundColor}}" animation="{{nav.animation}}" />
 <view class="rl-container">
 
-    <view class="rl-single flex" hover-class="event-hover-class-view" wx:for="{{recordList}}" wx:key="{{index}}" bindtap="linktoEvent" data-index="{{index}}">
+    <view class="rl-single flex" hover-class="basic-hover" wx:for="{{recordList}}" wx:key="{{index}}" bindtap="linktoEvent" data-index="{{index}}">
 
         <text class="_count _num01" wx:if="{{index===0}}">{{index+1}}</text>
         <text class="_count _num02" wx:elif="{{index===1}}">{{index+1}}</text>

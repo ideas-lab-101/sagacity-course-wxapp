@@ -17,13 +17,15 @@ page{
     border: 0 !important;
     margin: 0;
     line-height: 1;
-    width: 100%;
+    width: 100% !important;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     padding: 30rpx;
     background-color: white !important;
     color: black !important;
     font-size: 32rpx;
+    font-weight: normal;
 }
 
 .set-title{

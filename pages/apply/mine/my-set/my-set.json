@@ -5,6 +5,6 @@
   "navigationBarTextStyle": "black",
   "disableScroll": false,
   "usingComponents": {
-    "wu-switch": "/components/wu/switch/index"
+    "wux-switch": "wux-weapp/switch/index"
   }
 }

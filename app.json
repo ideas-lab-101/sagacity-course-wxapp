@@ -87,7 +87,6 @@
         "web/web",
         "comment/comment",
         "cover/cover",
-        "accredit/accredit",
         "documents/documents"
       ]
     }

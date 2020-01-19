@@ -1,6 +1,7 @@
 import RecordManager from '../../../../controller/RecordManager'
 const Toast = require('../../../../viewMethod/toast')
 import {  uploadRecordFile } from '../../../../request/recordPort'
+import { $wuBackdrop } from '../../../../components/wu/index'
 
 module.exports = Behavior({
     data: {
@@ -46,6 +47,10 @@ module.exports = Behavior({
                 isPause: false
             })
             this.Recorder.stop()
+        },
+
+        freeRecord: function() {
+            this.Recorder.free()
         },
 
         pauseRecord: function () {
@@ -94,7 +99,10 @@ module.exports = Behavior({
                 'progressParams.visible': true,
                 recordTime: 0
             })
-            this._getMixtureRecord(res.tempFilePath, this.data.form.musicID, Math.ceil(res.duration)) // 上传到服务器  获取音频合成的接口
+            /**
+             * 上传到服务器  获取音频合成的接口
+             */
+            this._getMixtureRecord(res.tempFilePath, this.data.form.music_id, Math.ceil(res.duration))
         },
         _resumeBack: function () {
             this.resetTime() // 获取录制时间
@@ -158,14 +166,15 @@ module.exports = Behavior({
                     })
                 })
                 .then((res) => {
-                    const data = JSON.parse(res.data)
+                    const result = JSON.parse(res.data)
+                    console.log(result)
 
-                    this.data.form.fileURL = data.file_url
-                    this.data.form.recordURL = data.record_url
-                    this.data.form.taskID = data.taskID
+                    this.data.form.file_url = result.data.file_url
+                    this.data.form.record_url = result.data.record_url
+                    this.data.form.task_id = result.data.task_id
 
                     $wuBackdrop().retain() // 打开已经录制的音频层
-                    this.setData({ recordIn: true})
+                    this.setData({ recordIn: true, 'form.file_url': result.data.file_url})
                 })
                 .catch((ret) => {
                     Toast.text({ text: '录音合成失败,请重新录制'})

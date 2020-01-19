@@ -10,10 +10,10 @@ module.exports = Behavior({
         },
         contentLoad: false,
         contentInterfaceFn: null,
-        contentParams: null,
+        contentParams: null
     },
     methods: {
-        __ReachBottom: function() {
+        __ReachBottom() {
             let { lastPage, pageNumber } = this.data.content
             const {contentInterfaceFn, contentParams} = this.data
 
@@ -32,7 +32,7 @@ module.exports = Behavior({
                 })
         },
         
-        __getTurnPageDataList: function ({isPageShow, interfaceFn, params}) {
+        __getTurnPageDataList ({isPageShow, interfaceFn, params}) {
             if (!interfaceFn) {
                 throw 'The interface is null!'
             }

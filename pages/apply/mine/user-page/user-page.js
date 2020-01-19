@@ -1,8 +1,11 @@
 const App = getApp()
-const { userFavor, userLike, getUserInfo, getCourseList, getRecordList } = require('../../../../request/userPort')
-const { $wuToast } = require('../../../../components/wu/index')
+import { userFavor, userLike, getUserInfo, getRecordList } from '../../../../request/userPort'
+const { getCourseList } = require('../../../../request/coursePort')
+const MultiplePageReachBottomBehavior = require('../../../../utils/behaviors/MultiplePageReachBottomBehavior')
+const Toast = require('../../../../viewMethod/toast')
 
 Page({
+  behaviors: [MultiplePageReachBottomBehavior],
   data: {
     info: {},
     current: 0,
@@ -20,9 +23,8 @@ Page({
 
   onLoad: function(options) {
     this.optionsId = options.id
-    this._initData(options.id)
-    this._getRecordList()
-    this._getCourseList()
+
+    this.__init()
   },
 
   onShow: function() {
@@ -32,13 +34,17 @@ Page({
     }
   },
 
-  onHide: function() {},
-
   onShareAppMessage: function() {
     return {
       title: this.data.info.data.NickName,
-      path: "/pages/apply/mine/user-page/user-page?id=" + this.optionsId
+      path: `/pages/apply/mine/user-page/user-page?id=${this.optionsId}`
     }
+  },
+
+  __init() {
+    this.getUserInfo(options.id)
+    this._getRecordList()
+    this._getCourseList()
   },
 
   /**
@@ -54,11 +60,7 @@ Page({
       this.setData({
         'info.is_favor': res.is_favor
       })
-      $wuToast().show({
-        type: 'text',
-        duration: 1000,
-        text: res.msg
-      })
+      Toast.text({ text: txt })
     })
   },
 
@@ -73,16 +75,21 @@ Page({
     })
   },
 
-  _initData: function(id) {
+  getUserInfo: function(id) {
     getUserInfo({
-      userID: id
-    }).then((res) => {
-      this.setData({
-        info: res
+        userID: id
       })
-    })
+        .then((res) => {
+          this.setData({
+            info: res
+          })
+        })
   },
 
+  /**
+   * list切换
+   * @param e
+   */
   detailChangeEvent: function (e) {
     const index = Number(e.currentTarget.dataset.index)
     this.setData({
@@ -90,7 +97,7 @@ Page({
     })
   },
 
-  scrolltolowerEvent: function (e) {
+  scrollToLowerEvent: function (e) {
     if(this.data.current === 0) {
       if(this.data.record.lastPage || this.isLoading) {
         return false
@@ -109,7 +116,7 @@ Page({
   _getCourseList: function() {
     this.isLoading = true
     getCourseList({
-      userID: this.optionsId,
+      user_id: this.optionsId,
       page: this.data.course.pageNumber
     }).then((res) => {
       this.isLoading = false
@@ -122,10 +129,11 @@ Page({
 
   _getRecordList: function() {
     this.isLoading = true
+
     getRecordList({
-      userID: this.optionsId,
+      user_id: this.optionsId,
       page: this.data.record.pageNumber,
-      blnPublic: 1
+      bln_public: 1
     }).then((res) => {
       this.isLoading = false
       this.setData({

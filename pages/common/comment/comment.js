@@ -1,6 +1,6 @@
 const { $wuBackdrop, $wuNavigation, $wuActionSheet } = require('../../../components/wu/index')
 const App = getApp()
-const { getCommentList, addComment, delComment } = require('../../request/commentPort')
+const { getCommentList, addComment, delComment } = require('../../../request/commentPort')
 
 Page({
     data: {

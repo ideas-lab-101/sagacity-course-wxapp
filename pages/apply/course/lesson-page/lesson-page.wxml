@@ -23,18 +23,18 @@
 
       <view class="lesson-link font-14">
           <!--收藏-->
-          <view bindtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="event-hover-class-view">
+          <view bindtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="basic-hover">
             <text class="iconfont icon-guanzhu"></text>
           </view>
-          <view bindtap="collectEvent" class="lesson-link-opt lesson-link-collected" hover-class="event-hover-class-view" wx:else>
+          <view bindtap="collectEvent" class="lesson-link-opt lesson-link-collected" hover-class="basic-hover" wx:else>
             <text class="iconfont icon-guanzhu1"></text>
           </view>
           <!--收藏-->
-          <view class="lesson-link-opt lesson-link-comment" hover-class="event-hover-class-view" bindtap="discussEvent">
+          <view class="lesson-link-opt lesson-link-comment" hover-class="basic-hover" bindtap="discussEvent">
             <text class="iconfont icon-liuyan"></text>
           </view>
           <!--分享-->
-          <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="event-hover-class-view">
+          <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="basic-hover">
             <text class="iconfont icon-chakantiezifenxiang"></text>
           </view>
       </view>

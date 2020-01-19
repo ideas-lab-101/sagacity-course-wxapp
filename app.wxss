@@ -25,9 +25,6 @@ image {
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-.event-hover-class-view {
-  background-color: rgba(0, 0, 0, 0.08);
-}
 .view-hover-class-tg {
   background-color: #ddd;
 }
@@ -114,4 +111,3 @@ image {
 .pb-5{ padding-bottom: 10rpx;}
 .pb-10{ padding-bottom: 20rpx;}
 .pb-15{ padding-bottom: 30rpx;}
-

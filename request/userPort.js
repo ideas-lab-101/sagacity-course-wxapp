@@ -69,8 +69,11 @@ export function getEnrollList(data) {
   })
 }
 
-// 收藏（通用）
-export function userFavor(data) { //token dataID type(course|ld|user|record)
+/**
+ * 收藏（通用）
+ * token data_id type(course|ld|user|record)
+ */
+export function userFavor(data) {
   if (!getApp().user.ckLogin()) {
     wx.navigateTo({
       url: '/pages/common/accredit/accredit'
@@ -99,10 +102,13 @@ export function userLike(data) { //token dataID type(user|record)
   })
 }
 
-// 获得收藏列表
-export function getFavorList(data) { //token type 分页相关参数
+/**
+ * 获得收藏列表
+ * token type
+ */
+export function getFavorList(data) {
   return fetch({
-    url: '/wxapp/user/getFavorList',
+    url: '/wxapp/user/v3/getFavorList',
     data: data || {},
     method: 'GET'
   })

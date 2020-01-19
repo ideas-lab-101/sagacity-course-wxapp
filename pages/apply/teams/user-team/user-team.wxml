@@ -49,7 +49,7 @@
         <view class="mt-15 _s">
             <input placeholder="李白晚辈" class="_input" focus="{{attestation.focus}}" value="{{attestation.inp}}" bindblur="attestationSubEvent" bindconfirm="attestationSubEvent"/>
         </view>
-        <view class="mt-15 _s _pro" catchtap="openProfileEvent" hover-class="event-hover-class-view">
+        <view class="mt-15 _s _pro" catchtap="openProfileEvent" hover-class="basic-hover">
             <input placeholder="选择档案" class="_input" disabled value="{{profileItem.ProfileName}}"/><text class="iconfont icon-zuo"></text>
         </view>
         <view class="mt-15 _link flex around">

@@ -2,52 +2,28 @@
 page{
   background-color: white;
 }
-
 .sticky-classify{
-  position: relative;
-  width: 100%;
-  z-index: 99;
-  height: 40px;
-  margin-top: 20rpx;
-}
-.sticky-classify-insert{
   position: sticky;
-  top: 0;
+  position: -webkit-sticky;
   left: 0;
+  right: 0;
   z-index: 99;
   display: flex;
   justify-content:space-between;
-
+  background-color: white;
+  padding-top: 20rpx;
 }
 
 .sticky-tab-box{
-  background-color: #FFFFFF;
   flex:1;
   text-align: left;
   width: calc(100% - 50px);
 }
-
-.sticky-img{
-  display: block;
-  width: 100vw;
-  height: auto;
-}
-
-.sticky-del{
-  position: relative;
-  top: 35px;
-  display: block;
-  color: black;
-  text-align: left;
-  width: 100%;
-  height: calc(100vh - 35px);
-}
-
 .sticky-tab-single-box{
   text-align: left;
   vertical-align: top;
-  height: 40px;
-  line-height: 40px;
+  height: 80rpx;
+  line-height: 80rpx;
   display: flex;
   align-items: flex-end;
   white-space:nowrap;

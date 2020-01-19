@@ -84,7 +84,6 @@ class RecordManager {
 
         manager.onStop( (res) => {
             console.log('stop record', res)
-            const { tempFilePath } = res
             options.stopBack && options.stopBack(res)
         })
 

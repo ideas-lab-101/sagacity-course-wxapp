@@ -1,6 +1,6 @@
 const { $wuLoading, $wuNavigation } = require('../../../components/wu/index')
 const App = getApp()
-const { getInfoContent } = require('../../request/infoPort')
+const { getInfoContent } = require('../../../request/infoPort')
 const WxParse = require('../../../components/wxParse/wxParse')
 
 Page({

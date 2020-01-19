@@ -1,11 +1,12 @@
 var App = getApp()
-const { getCourseIndex, getCourseIndexList } = require('../../../../request/coursePort')
+const { getCourseList } = require('../../../../request/coursePort')
+const { getEnumDetail } = require('../../../../request/systemPort')
 
 Page({
     data: {
         catalogTile: [],
         current: 0,
-        statusBarHeight: App.globalData.deviceStatusBarHeight,
+        statusBarHeight: App.globalData.equipment.statusBarHeight,
         gather: {
             pageNumber: 1,
             lastPage: false,
@@ -16,21 +17,7 @@ Page({
     },
 
     onLoad: function(options) {
-        this.getCourseListData()
-        if (!App.globalData.deviceStatusBarHeight) {
-            try {
-                var res = wx.getSystemInfoSync()
-                this.setData({
-                    statusBarHeight: res.statusBarHeight
-                })
-            } catch (e) {}
-        }
-    },
-
-    onShow: function () {
-    },
-
-    onHide: function() {
+        this.__init()
     },
 
     onReachBottom: function () {
@@ -38,18 +25,26 @@ Page({
     },
 
     // 自定义事件
-    getCourseListData() {
-        getCourseIndex().then((res) => {
-            this.setData({ catalogTile: res.list })
-            this.__getCatalogList(true)
+    __init() {
+        getEnumDetail({
+            master_id: 9
         })
+            .then((res) => {
+                this.setData({ catalogTile: res.data.list })
+
+                this.__getCatalogList(true)
+            })
     },
 
+    /**
+     * TAB切换
+     * @param e
+     */
     changeMenuEvent: function (e) {
         const index = e.currentTarget.dataset.index
         const { catalogTile } = this.data
 
-        const item = App.dataStorageManager.change(catalogTile[index].TypeID)
+        const item = App.dataStorageManager.change(catalogTile[index].detail_id)
         if(item) {
             this.setData({
                 current: index,
@@ -64,6 +59,12 @@ Page({
         }
     },
 
+    goCoursePage(e) {
+      const { id } = e.currentTarget.dataset
+        wx.navigateTo({
+            url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
+        })
+    },
     /**
      * 下拉加载更多
      * @returns {boolean}
@@ -96,25 +97,25 @@ Page({
             this.data.gather.pageNumber = pageNumber
         }
 
-        return getCourseIndexList({
+        return getCourseList({
             page: pageNumber,
             pageSize,
-            typeID: catalogTile[current].TypeID
+            type_id: catalogTile[current].detail_id
         })
           .then(res => {
-              let tempList = [...res.list]
+              let tempList = [...res.data.list]
               if (!isPageShow) {
                   tempList = list.concat(tempList)
               }
               this.setData({
-                  'gather.lastPage': res.lastPage,
-                  'gather.totalRow': res.totalRow,
+                  'gather.lastPage': res.data.lastPage,
+                  'gather.totalRow': res.data.totalRow,
                   'gather.list': tempList
               }, () => {
                   /**
                    * 缓存数据
                    */
-                  App.dataStorageManager.add(catalogTile[current].TypeID, this.data.gather)
+                  App.dataStorageManager.add(catalogTile[current].detail_id, this.data.gather)
               })
 
           })

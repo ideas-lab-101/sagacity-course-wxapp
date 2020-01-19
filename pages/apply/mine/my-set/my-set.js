@@ -1,6 +1,8 @@
 const App = getApp()
-const { $wuNavigation, $wuToast } = require('../../../../components/wu/index')
-const { getInfoList } = require('../../../../request/infoPort')
+import { $wuNavigation } from '../../../../components/wu/index'
+import { getInfoList } from '../../../../request/infoPort'
+const Toast = require('../../../../viewMethod/toast')
+const Session = require('../../../../utils/session')
 
 Page({
     data: {
@@ -10,7 +12,7 @@ Page({
 
     onLoad: function () {
       try {
-        var value = wx.getStorageSync('___History')
+        const value = Session.getUserHistory()
         if (value === 1) {
           this.setData({
             controlFix: false
@@ -45,16 +47,8 @@ Page({
             temp = '显示历史记录'
             his = 0
         }
-        $wuToast().show({
-            type: 'text',
-            duration: 1000,
-            color: '#fff',
-            text: temp
-        })
-        wx.setStorage({
-          key: '___History',
-          data: his
-        })
+        Toast.text({ text: temp})
+        Session.setUserHistory(his)
     },
 
     goContactEvent: function (e) {

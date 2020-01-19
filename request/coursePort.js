@@ -3,14 +3,6 @@ import { fetch } from '../axios/fetch'
 /**
  * 消息方法调用
  * */
-// 获得课程分类
-export function getCourseIndex(data) {
-  return fetch({
-    url: '/wxapp/main/v3/getCourseIndex',
-    data: data || {},
-    method: 'GET'
-  })
-}
 //获得分类下的课程信息
 export function getCourseIndexList(data) {
   return fetch({
@@ -19,10 +11,14 @@ export function getCourseIndexList(data) {
     method: 'GET'
   })
 }
-// 获得分类下的课程列表
-export function GetCourseList(data) { //typeID 分页参数
+
+/**
+ * 获得分类或指定用户的课程
+ * page type_id(不传或传0则取所有分类) user_id(获取指定用户的课程)
+ */
+export function getCourseList(data) {
   return fetch({
-    url: '/wxapp/course/v3/GetCourseList',
+    url: '/wxapp/course/v3/getCourseList',
     data: data || {},
     method: 'GET'
   })

@@ -11,7 +11,7 @@
 
   <view>
 
-    <view wx:for="{{member.list}}" wx:key="{{index}}" class="tm-single flex between" hover-class="event-hover-class-view" catchtap="goTeamRecordEvent" data-index="{{index}}">
+    <view wx:for="{{member.list}}" wx:key="{{index}}" class="tm-single flex between" hover-class="basic-hover" catchtap="goTeamRecordEvent" data-index="{{index}}">
       <view class="_l flex">
         <image src="{{item.avatar_url}}" lazy-load mode="aspectFill"/>
         <view>

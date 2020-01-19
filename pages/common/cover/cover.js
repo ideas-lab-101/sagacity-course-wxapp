@@ -1,6 +1,6 @@
 const { $wuLoading, $wuToast } = require('../../../components/wu/index')
 const App = getApp()
-const { GetWXSSCode } = require('../../request/systemPort')
+const { GetWXSSCode } = require('../../../request/systemPort')
 
 Page({
     data: {

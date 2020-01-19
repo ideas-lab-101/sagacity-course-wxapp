@@ -17,7 +17,7 @@
       <view class="data-single-date-sticky-box">
           <view class="data-single-date-sticky {{scrollDirection==='up'?'rel':''}}" style="top:{{navigationRect}}px;">
               <rich-text nodes="{{moduleTeamRecords.resolveTime(scrollCurrentTime).date}}"></rich-text>
-              <view class="_filter flex" wx:if="{{!optionsUserId}}" catchtap="filterRecordEvent" hover-class="event-hover-class-view">
+              <view class="_filter flex" wx:if="{{!optionsUserId}}" catchtap="filterRecordEvent" hover-class="basic-hover">
                   <view><text>筛选作品</text></view>
               </view>
           </view>
@@ -41,7 +41,7 @@
                           <text class="iconfont icon-del"></text><text>移除我的作品</text>
                       </text>
                   </view>
-                  <view class="data-single-del {{creatorID===item.UserID?'mine':''}}" hover-class="event-hover-class-view" catchtap="goRecordPageEvent" data-index="{{index}}">
+                  <view class="data-single-del {{creatorID===item.UserID?'mine':''}}" hover-class="basic-hover" catchtap="goRecordPageEvent" data-index="{{index}}">
                       <view class="tr-oper">
                           <text class="_k"><text class="iconfont icon-yinpin"></text></text>
                       </view>

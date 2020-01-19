@@ -23,6 +23,19 @@ module.exports = Behavior({
             })
         },
 
+        __innerAudioStop() {
+            if (this.innerAudioContext) {
+                this.innerAudioContext.stop()
+            }
+        },
+
+        __innerAudioDestroy() {
+            if (this.innerAudioContext) {
+                this.innerAudioContext.destroy()
+                this.innerAudioContext = null
+            }
+        },
+
         tryListenEvent: function (e) {
             const { id, url } = e.currentTarget.dataset
 

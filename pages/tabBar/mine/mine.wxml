@@ -62,7 +62,7 @@
           </view>
 
           <view class="mine-learn-con flex around">
-            <view class="item" hover-class="event-hover-class-view" bindtap="interestEvent">
+            <view class="item" hover-class="basic-hover" bindtap="interestEvent">
               <text class='iconfont icon-xuexi'></text>
               <view class="item-text">学习小组</view>
             </view>
@@ -75,7 +75,7 @@
         </view>
 
         <view class="mine-link-box">
-          <view class="mine-link" hover-class="event-hover-class-view" bindtap="goToGuidesEvent">
+          <view class="mine-link" hover-class="basic-hover" bindtap="goToGuidesEvent">
             <text class='iconfont icon-setting'></text> 个人设置
           </view>
         </view>
@@ -92,7 +92,7 @@
 
             <view class="flex between mine-userRecord-t">
               <view class="_l">我公开的作品</view>
-              <view class="_r" hover-class="event-hover-class-view" bindtap="goMineAllRecordEvent">作品管理 <text class="iconfont icon-zuo"></text></view>
+              <view class="_r" hover-class="basic-hover" bindtap="goMineAllRecordEvent">作品管理 <text class="iconfont icon-zuo"></text></view>
             </view>
 
             <view class="mine-userRecord-b" wx:if="{{content.list.length>0}}">
@@ -119,7 +119,7 @@
                             <view class="_d">
                               <view class="_s"><text class="_font">{{item.view_count}}次浏览</text></view>
                               <view class="_s"><text class="iconfont icon-zan"></text><text class="_font">{{item.like_count}}</text></view>
-                              <view class="_s" hover-class="event-hover-class-view" bindtap="singleShareEvent" data-index="{{index}}">
+                              <view class="_s" hover-class="basic-hover" bindtap="singleShareEvent" data-index="{{index}}">
                                 <text class="iconfont icon-chakantiezifenxiang"></text>
                               </view>
                             </view>

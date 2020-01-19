@@ -1,17 +1,12 @@
-<wu-loading id="wu-loading" title="加载中..." />
-<wu-toast id="wu-toast"></wu-toast>
 <wxs src="./my-set.wxs" module="moduleMySet" />
 
+<wu-navigation id="wu-navigation" title="个人设置"></wu-navigation>
+
 <view class="container">
-
-  <wu-navigation id="wu-navigation" title="个人设置"></wu-navigation>
-
-  <view class="">
-
     <view class="set-single flex between">
       <text>显示历史记录</text>
       <view class="_r">
-        <wu-switch name="positive" slot="footer" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
+        <wux-switch name="positive" slot="footer" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
       </view>
     </view>
 
@@ -24,12 +19,9 @@
 
     <view wx:if="{{documents.length>0}}">
       <view class="set-title">使用文档</view>
-      <view class="set-single flex between" hover-class="event-hover-class-view" bindtap="goToGuidesEvent" wx:for="{{documents}}" wx:key="{{index}}" data-id="{{item.InfoID}}">
+      <view class="set-single flex between" hover-class="basic-hover" bindtap="goToGuidesEvent" wx:for="{{documents}}" wx:key="{{index}}" data-id="{{item.InfoID}}">
         <text>{{item.Title}}</text>
         <view class="_r"><text class="iconfont icon-zuo"></text></view>
       </view>
     </view>
-
-  </view>
-
 </view>
