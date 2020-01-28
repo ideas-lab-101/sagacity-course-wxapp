@@ -81,14 +81,16 @@ export function userFavor(data) {
     return new Promise((resolve, reject) => {})
   }
   return fetch({
-    url: '/wxapp/user/userFavor',
+    url: '/wxapp/user/v3/userFavor',
     data: data || {},
     method: 'POST'
   })
 }
 
-// 点赞
-export function userLike(data) { //token dataID type(user|record)
+/**点赞
+ * token type(user|record) data_id
+  */
+export function userLike(data) {
   if (!getApp().user.ckLogin()) {
     wx.navigateTo({
       url: '/pages/common/accredit/accredit'
@@ -96,7 +98,7 @@ export function userLike(data) { //token dataID type(user|record)
     return new Promise((resolve, reject) => {})
   }
   return fetch({
-    url: '/wxapp/user/userLike',
+    url: '/wxapp/user/v3/userLike',
     data: data || {},
     method: 'POST'
   })
@@ -117,7 +119,7 @@ export function getFavorList(data) {
 // 获得指定的用户信息
 export function getUserInfo(data) { //userID
   return fetch({
-    url: '/wxapp/user/getUserInfo',
+    url: '/wxapp/user//v3getUserInfo',
     data: data || {},
     method: 'GET'
   })
@@ -126,7 +128,7 @@ export function getUserInfo(data) { //userID
 // 获得用户开设的课程
 export function getCourseList(data) { //userID 分页参数
   return fetch({
-    url: '/wxapp/user/getCourseList',
+    url: '/wxapp/user//v3getCourseList',
     data: data || {},
     method: 'GET'
   })
@@ -147,7 +149,7 @@ export function getRecordList(data) {
 // 增加个人积分
 export function addUserPoint(data) { //pointCode(001 002 003)
   return fetch({
-    url: '/wxapp/user/addUserPoint',
+    url: '/wxapp/user/v3/addUserPoint',
     data: data || {},
     method: 'POST'
   })

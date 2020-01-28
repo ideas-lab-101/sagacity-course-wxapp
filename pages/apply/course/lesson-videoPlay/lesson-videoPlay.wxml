@@ -1,19 +1,15 @@
-<!--play.wxml-->
 <import src="/components/wxParse/wxParse.wxml" />
-<wu-loading id="wu-loading"></wu-loading>
-<wu-toast id="wu-toast"></wu-toast>
+<wu-navigation id="wu-navigation" title="{{info.lesson_data.data_name}}" backgroundColor="#000" color="white"></wu-navigation>
 
 <view class="container">
 
-  <wu-navigation id="wu-navigation" title="{{info.data.DataName}}" backgroundColor="#000" color="white"></wu-navigation>
-
   <view class="play-video" id="play-video">
-      <video src="{{resource.DataURL}}"   controls="{{videoControls}}"
+      <video src="{{resource.data_url}}"   controls="{{videoControls}}"
              show-center-play-btn="{{videoShowCenterPlayBtn}}"
              autoplay="{{videoAutoplay}}"
              class="play-video-style"
              id="video-player"
-             data-id="{{info.data.DataID}}"
+             data-id="{{info.lesson_data.data_id}}"
              bindplay="videoPlayEvent"
              bindended="videoEndEvent"
              binderror="videoErrEvent">
@@ -35,26 +31,28 @@
         </view>
       </view>
 
-      <view class="play-video-lessonName">{{info.data.LessonName}} <image src="{{info.data.CoverURL}}" mode="aspectFill"  bindtap="turnBackPageEvent"></image></view>
-      <view class="play-video-dataName">{{info.data.DataName}}</view>
+      <view class="play-video-lessonName">{{info.lesson_data.lesson_name}} <image src="{{info.lesson_data.cover_url}}" mode="aspectFill"  bindtap="turnBackPageEvent"></image></view>
+      <view class="play-video-dataName">{{info.lesson_data.data_name}}</view>
 
       <view class="play-section">
         <view class="play-section-title"><text>目录</text></view>
         <!--目录-->
-        <view class="catalog-single {{!info.is_enroll && lesson.openState === 0?'desabled':''}}" wx:for="{{lesson.list}}" wx:key="{{i}}" wx:for-index="i" wx:for-item="lesson">
-          <text class="_title">{{lesson.LessonName}} <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.openState===0) || (!info.is_enroll && lesson.openState === 0))}}"></text></text>
-          <view class="_list {{(item.DataID===info.data.DataID) && ((!info.is_enroll && lesson.openState===1) || info.is_enroll)?'active':''}}"
-                wx:for="{{lesson.LessonData}}"
+        <view class="catalog-single {{!info.is_enroll && lesson.open_state === 0?'desabled':''}}" wx:for="{{content.list}}" wx:key="lesson_id" wx:for-index="i" wx:for-item="lesson">
+          <text class="_title">{{lesson.lesson_name}} <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.open_state===0) || (!info.is_enroll && lesson.open_state === 0))}}"></text></text>
+
+          <view class="_list {{(item.data_id===info.lesson_data.data_id) && ((!info.is_enroll && lesson.open_state===1) || info.is_enroll)?'active':''}}"
+                wx:for="{{lesson.lesson_data}}"
+                wx:key="data_id"
                 bindtap="changeVideoEvent"
-                data-openState="{{lesson.openState}}"
-                data-id="{{item.DataID}}">
+                data-openState="{{lesson.open_state}}"
+                data-id="{{item.data_id}}">
             <view class="__dataName">
-              <text class="iconfont icon-htmal5icon46" hidden="{{!(!info.is_enroll && lesson.openState === 0)}}"></text>
-              <text class="iconfont icon-bofang font-12" hidden="{{item.DataID===info.data.DataID? false:true}}"></text> {{item.DataName}}
+              <text class="iconfont icon-htmal5icon46" hidden="{{!(!info.is_enroll && lesson.open_state === 0)}}"></text>
+              <text class="iconfont icon-bofang font-12" hidden="{{item.data_id===info.lesson_data.data_id? false:true}}"></text> {{item.data_name}}
             </view>
             <view class="__dataType">
-              <text class="iconfont icon-yinpin" wx:if="{{item.DataType === 'audio'}}"></text>
-              <text class="iconfont icon-shipin" wx:elif="{{item.DataType === 'video'}}"></text>
+              <text class="iconfont icon-yinpin" wx:if="{{item.format === 'audio'}}"></text>
+              <text class="iconfont icon-shipin" wx:elif="{{item.format === 'video'}}"></text>
               <text wx:else></text>
             </view>
           </view>
@@ -63,7 +61,6 @@
     </view>
 
   </scroll-view>
-
 </view>
 
 

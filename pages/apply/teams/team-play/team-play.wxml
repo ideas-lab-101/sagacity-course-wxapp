@@ -1,7 +1,3 @@
-<wu-toast id="wu-toast" />
-<wu-loading id="wu-loading" />
-
-
 <wu-navigation title="{{nav.title}}"
             transparent="{{nav.transparent}}"
             model="{{nav.model}}"
@@ -11,7 +7,6 @@
 
     <view class="rep-container-info" wx:if="{{result}}" catchtouchmove="{{false}}">
 
-
         <view class="rep-del-img" bindtap="recordPlayEvent">
             <view class="_image {{tryParams.isPlay?'active':''}}"><image src="{{userData.avatar_url}}" mode="aspectFill"></image></view>
             <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay}}"></text>
@@ -19,9 +14,9 @@
         </view>
 
         <view class="rep-del-font">
-            <view class="_caption">{{userData.Label || userData.Caption}}</view>
-            <view class="_name">{{recordData.Name}}</view>
-            <view class="_desc">{{recordData.Desc}}</view>
+            <view class="_caption">{{userData.label || userData.caption}}</view>
+            <view class="_name">{{recordData.name}}</view>
+            <view class="_desc">{{recordData.desc}}</view>
         </view>
 
         <view class="rep-del-eye">
@@ -38,33 +33,20 @@
                         bind:audioEventDestroy="audioEventDestroy"
                         bind:audioEventError="audioEventError"></audio-play>
         </view>
-        <!--<view class="rep-del-slider" catchtouchmove="{{false}}">
-            <text>{{slider.current}}</text>
-            <slider bindchange="sliderChangeEvent"
-                    min="0" max="100"
-                    backgroundColor="#e9e9e9"
-                    block-size="14"
-                    block-color="#000000"
-                    activeColor="#000000"
-                    disabled="{{slider.disabled}}"
-                    value="{{slider.value}}"/>
-            <text>{{slider.duration}}</text>
-        </view>-->
-
 
         <view class="rep-fix-bottom">
             <view class="rep-replay-l">
                 <view class="_l" wx:if="{{recordData.likeCount > 0}}">
                     <view  wx:for="{{likes}}" class="_image" wx:key="{{index}}"><image src="{{item.avatar_url}}" mode="aspectFill"></image></view>
-                    <view class="_num">{{recordData.likeCount}}次赞</view>
+                    <view class="_num">{{recordData.like_count}}次赞</view>
                 </view>
             </view>
             <view class="rep-in flex around">
                 <view wx:if="{{!is_like}}" catchtap="likeEvent" class="flex"><text class="iconfont icon-zan"></text> <text class="_ff"></text></view>
                 <view wx:else class="color-danger flex"><text class="iconfont icon-liked"></text> <text class="_ff"></text></view>
-                <view wx:if="{{recordData.blnMark === 0}}" catchtap="markEvent"><text class="iconfont icon-shoucang6"></text></view>
+                <view wx:if="{{recordData.bln_mark === 0}}" catchtap="markEvent"><text class="iconfont icon-shoucang6"></text></view>
                 <view wx:else catchtap="markEvent" class="color-danger"><text class="iconfont icon-collect-on"></text></view>
-                <rich-text nodes="{{common.filterText(recordData.viewCount)}}"></rich-text>
+                <rich-text nodes="{{common.filterText(recordData.view_count)}}"></rich-text>
             </view>
         </view>
     </view>

@@ -1,3 +1,5 @@
+const Constants = require('../utils/constants');
+
 /**
  * 继承finally
  * @param callback
@@ -70,7 +72,7 @@ export const fetch = function (options, loading) {
        * 重新拉取 发起的请求数
        * 重新拉取token 再重新发起请求拉数据 如果连续错误会反复拉取5次
        */
-      if(ret.code === 6 && requestTokenNum < 6) {
+      if(ret.code === Constants.ERR_INVALID_SESSION && requestTokenNum < 6) {
         requestTokenNum++
 
         return getApp().user.goLogin()

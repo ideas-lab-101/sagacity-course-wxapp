@@ -1,13 +1,24 @@
 page{
     background-color: #f7f7f7;
 }
+
+.teams-nav{
+    height: 90rpx;
+    line-height: 90rpx;
+    text-align: center;
+    font-weight: bold;
+}
 .my-swiper{
     width: 100%; height: 100%;
 }
 
 .mg-right-box{
-    padding: 40rpx; margin: 30rpx 12rpx 30rpx 20rpx; background-color: white; box-shadow:0 8rpx 20rpx rgba(0, 0, 0, 0.05);
-    height: calc(100% - 80px); position: relative; border: 1rpx solid rgba(0, 0, 0, 0.08);
+    padding: 40rpx;
+    margin: 20rpx 20rpx 0 20rpx;
+    background-color: white;
+    box-shadow: 0 0 40rpx rgba(0, 0, 0, 0.08);
+    height: calc(100% - 60px);
+    position: relative;
 }
 .mg-right-box.auth{
     border-color: rgba(115, 52, 41, 0.5); box-shadow:0 8rpx 20rpx rgba(115, 52, 41, 0.3);
@@ -53,13 +64,13 @@ page{
     font-size:28rpx;
     color: black !important;
     width: auto !important;
-    padding: 10rpx 30rpx;
+    padding: 15rpx 30rpx;
     line-height: 1;
     background-color: #f7f7f7 !important;
     border-radius: 200rpx;
 }
 .mg-right-resource{
-    margin-top: 70rpx;
+    margin-top: 60rpx;
 }
 .mg-right-resource>._t{ font-size: 26rpx; font-weight: 500;}
 .mg-right-resource>._c{}
@@ -77,7 +88,7 @@ page{
 }
 
 .mg-right-resource-l{
-    margin-top: 70rpx; font-size: 34rpx; font-weight: 500; text-align: center;
+    margin-top: 60rpx; font-size: 34rpx; font-weight: 500; text-align: center;
 }
 .mg-right-resource-l text{ text-decoration: underline; display: inline-block; padding: 10rpx; }
 
@@ -158,7 +169,7 @@ page{
     margin-top: 30rpx;
     display: block;
     font-size: 22rpx;
-    height: 54rpx;
+    height: 56rpx;
     white-space:normal;
     overflow:hidden;
     display:-webkit-box;

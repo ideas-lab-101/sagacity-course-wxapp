@@ -1,11 +1,12 @@
 import AudioManager from "../../../../controller/AudioManager";
-const { $wuPlayWidget, $wuNavigation, $wuBackdrop, $wuToast } = require('../../../../components/wu/index')
+const { $wuPlayWidget, $wuNavigation, $wuBackdrop } = require('../../../../components/wu/index')
 const { $share } = require('../../../../components/pages/index')
 const App = getApp()
 const { GetCourseInfo, GetCourseContent } = require('../../../../request/coursePort')
 const { getAlbumInfo } = require('../../../../request/recordPort')
 const { userLike, userFavor, addUserPoint } = require('../../../../request/userPort')
 const WxParse = require('../../../../components/wxParse/wxParse')
+const Toast = require('../../../../viewMethod/toast')
 
 Page({
     data: {
@@ -179,27 +180,36 @@ Page({
      * 收藏事件
      */
     collectEvent: function () {
-        userFavor({dataID: this.optionsId, type: 'album'}).then((res) => {
-            this.setData({
-                'info.is_favor': res.is_favor
-            })
-            $wuToast().show({ type: 'text', duration: 1000, text: res.msg})
+        userFavor({
+            data_id: this.optionsId,
+            type: 'album'
         })
+            .then((res) => {
+                this.setData({
+                    'info.is_favor': res.is_favor
+                })
+                Toast.text({ text: res.msg})
+            })
     },
     likeEvent(e) {
       const index = e.currentTarget.dataset.index
       const item = this.data.info.recordList[index]
       const id = item.RecordID
-      userLike({dataID: id, type: 'record'}).then((res) => {
-        item.likeCount++
-        const obj = `info.recordList[${index}].likeCount`
-        this.setData({
-          [obj]: item.likeCount
-        })
-        $wuToast().show({ type: 'text', duration: 1000, text: res.msg})
-      }).catch(err => {
-        $wuToast().show({ type: 'text', duration: 1000, text: err.msg})
+      userLike({
+          data_id: id,
+          type: 'record'
       })
+          .then((res) => {
+            item.likeCount++
+            const obj = `info.recordList[${index}].likeCount`
+            this.setData({
+              [obj]: item.likeCount
+            })
+              Toast.text({ text: res.msg})
+          })
+          .catch(ret => {
+              Toast.text({ text: ret.msg})
+          })
     },
   /**
    * 留言事件

@@ -5,6 +5,6 @@
   "navigationBarTextStyle": "black",
   "disableScroll": false,
   "usingComponents": {
-    "wu-actionsheet": "/components/wu/actionsheet/index"
+    "wux-actionsheet": "wux-weapp/actionsheet/index"
   }
 }

@@ -63,7 +63,7 @@ Page({
    **/
   userFavorEvent(callback) { // 用户收藏
     userFavor({
-      dataID: this.optionsId,
+      data_id: this.optionsId,
       type: 'topic'                 // (activity|course|match|info)
     }).then((res) => {
       callback && callback(res)

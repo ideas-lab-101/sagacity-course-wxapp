@@ -1,6 +1,6 @@
 const App = getApp()
 const { $wuNavigation, $wuToast, $wuBackdrop } = require('../../../../components/wu/index')
-const { getTeamInfo, joinTeam, getTeamProfile } = require('../../../request/teamPort')
+const { getTeamInfo, joinTeam, getTeamProfile } = require('../../../../request/teamPort')
 
 Page({
     data: {

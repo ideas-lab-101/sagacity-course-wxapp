@@ -25,7 +25,7 @@
       </view>
     </view>
 
-    <!--<view class="set-single flex between" hover-class="basic-hover" bindtap="openStatisticalEvent" wx:if="{{isCreator === 'true'}}">
+    <!--<view class="set-single flex between" hover-class="basic-hover" bindtap="openStatisticalEvent" wx:if="{{isCreator}}">
       <text>组数据管理</text>
     </view>-->
 

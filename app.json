@@ -2,6 +2,7 @@
   "pages": [
     "pages/tabBar/index/index",
     "pages/tabBar/find/find",
+    "pages/tabBar/teams/teams",
     "pages/tabBar/mine/mine"
   ],
   "window": {
@@ -27,6 +28,12 @@
       {
         "pagePath": "pages/tabBar/find/find",
         "text": "学习",
+        "iconPath": "/assets/images/list_blank.png",
+        "selectedIconPath": "/assets/images/list_fill.png"
+      },
+      {
+        "pagePath": "pages/tabBar/teams/teams",
+        "text": "小组",
         "iconPath": "/assets/images/list_blank.png",
         "selectedIconPath": "/assets/images/list_fill.png"
       },

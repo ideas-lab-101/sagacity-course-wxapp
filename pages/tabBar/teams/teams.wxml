@@ -1,35 +1,32 @@
-<wxs src="./my-teams.wxs" module="moduleMyTeams" />
-<wu-navigation id="wu-navigation" title="学习小组({{nav.title}})"
-               transparent="{{nav.transparent}}"
-               model="{{nav.model}}"
-               animation="{{nav.animation}}">
-</wu-navigation>
+<wxs src="./teams.wxs" module="moduleTeams" />
 
+<view style="padding-top: {{statusBarHeight}}px;" id="teams-nav" class="teams-nav">学习小组({{nav.title}})</view>
 
 <view class="container">
   <view class="flex top my-container" style="height: {{pageContentHeight}}">
+
     <block wx:if="{{teamList.length>0}}">
-      <swiper class="my-swiper" next-margin="15px" bindchange="teamSwiperChangeEvent" bindanimationfinish="teamSwiperAnimationfinish" current="{{teamCurrent}}">
+      <swiper class="my-swiper" next-margin="20px" bindchange="teamSwiperChangeEvent" bindanimationfinish="teamSwiperAnimationfinish" current="{{teamCurrent}}">
         <block wx:for="{{teamList}}" wx:key="team_id">
           <swiper-item>
-            <view class="mg-right-box {{moduleMyTeams.getTeamInfo(index, one, two, three).bln_auth === 1 ? 'auth' : ''}}">
+            <view class="mg-right-box {{moduleTeams.getTeamInfo(index, one, two, three).bln_auth === 1 ? 'auth' : ''}}">
 
               <view class="mg-right-num"><text>{{index+1}}</text></view>
               <view class="_sign">
-                <text wx:if="{{userID !== moduleMyTeams.getUserInfo(index, one, two, three).user_id}}">我加入的小组</text>
+                <text wx:if="{{userID !== moduleTeams.getUserInfo(index, one, two, three).user_id}}">我加入的小组</text>
                 <text wx:else class="color-Primary">我创建的小组</text>
               </view>
               <view class="_set" hover-class="basic-hover" catchtap="goTeamSetEvent" data-index="{{index}}"><text class='iconfont icon-setting'></text> 组设置</view>
               <view class="_title">
                 <text>{{item.team_name}}</text>
-                <text wx:if="{{(moduleMyTeams.getTeamInfo(index, one, two, three).bln_auth) === 1}}" class="iconfont icon-shenfenzhengzhengmian"></text>
+                <text wx:if="{{(moduleTeams.getTeamInfo(index, one, two, three).bln_auth) === 1}}" class="iconfont icon-shenfenzhengzhengmian"></text>
               </view>
               <view class="_link">
                 <view class="mg-right-author">
                   <image wx:if="{{index%3===0}}" src="{{ one.userInfo.avatar_url}}" mode="aspectFill"/>
                   <image wx:if="{{index%3===1}}" src="{{ two.userInfo.avatar_url}}" mode="aspectFill"/>
                   <image wx:if="{{index%3===2}}" src="{{ three.userInfo.avatar_url}}" mode="aspectFill"/>
-                  <text>{{moduleMyTeams.getUserInfo(index, one, two, three).label || moduleMyTeams.getUserInfo(index, one, two, three).caption}}</text> <text class="color-999 font-10">(创建者)</text>
+                  <text>{{moduleTeams.getUserInfo(index, one, two, three).label || moduleTeams.getUserInfo(index, one, two, three).caption}}</text> <text class="color-999 font-10">(创建者)</text>
                 </view>
                 <view class="mg-right-link">
                   <button plain open-type="share" class="_k">
@@ -38,14 +35,14 @@
                 </view>
 
               </view>
-              <view class="_desc color-999">{{moduleMyTeams.getTeamInfo(index, one, two, three).team_desc}}</view>
+              <view class="_desc color-999">{{moduleTeams.getTeamInfo(index, one, two, three).team_desc}}</view>
 
               <!--小组资源-->
               <view class="mg-right-resource">
                 <view class="_t">小组资源</view>
                 <view class="mg-right-resource-del mt-10">
-                  <view wx:if="{{moduleMyTeams.getCourseList(index, one, two, three).length>0}}">
-                    <view class="index-book-box" wx:for="{{moduleMyTeams.getCourseList(index, one, two, three)}}" wx:key="course_id" wx:for-index="courseIndex" wx:for-item="courseItem"
+                  <view wx:if="{{moduleTeams.getCourseList(index, one, two, three).length>0}}">
+                    <view class="index-book-box" wx:for="{{moduleTeams.getCourseList(index, one, two, three)}}" wx:key="course_id" wx:for-index="courseIndex" wx:for-item="courseItem"
                           catchtap="goCourseEvent" data-id="{{courseItem.course_id}}">
                       <view class="_book"><image src="{{courseItem.cover_url}}" mode="aspectFill"></image></view>
                       <text class="_name">{{courseItem.course_name}}</text>
@@ -57,11 +54,11 @@
 
               <!--小组成员-->
               <view class="mg-right-members mg-right-resource">
-                <view class="_t">小组成员({{moduleMyTeams.getTeamInfo(index, one, two, three).member_count}})</view>
+                <view class="_t">小组成员({{moduleTeams.getTeamInfo(index, one, two, three).member_count}})</view>
                 <view class="_c mt-10">
-                  <view wx:if="{{moduleMyTeams.getMembers(index,one,two,three).length>0}}" catchtap="goMembersEvent" data-index="{{index}}" class="flex">
+                  <view wx:if="{{moduleTeams.getMembers(index,one,two,three).length>0}}" catchtap="goMembersEvent" data-index="{{index}}" class="flex">
                     <image src="{{memberItem.avatar_url}}" lazy-load mode="aspectFill"
-                           wx:for="{{moduleMyTeams.getMembers(index,one,two,three)}}"
+                           wx:for="{{moduleTeams.getMembers(index,one,two,three)}}"
                            wx:key="user_id"
                            wx:for-index="memberIndex"
                            wx:for-item="memberItem"></image>
@@ -73,7 +70,7 @@
 
               <!--小组作品-->
               <view class="mg-right-resource-l color-Primary">
-                <text catchtap="goTeamRecordsEvent" data-index="{{index}}">查看小组的作品({{moduleMyTeams.getTeamInfo(index, one, two, three).record_count}})</text>
+                <text catchtap="goTeamRecordsEvent" data-index="{{index}}">查看小组的作品({{moduleTeams.getTeamInfo(index, one, two, three).record_count}})</text>
               </view>
 
             </view>

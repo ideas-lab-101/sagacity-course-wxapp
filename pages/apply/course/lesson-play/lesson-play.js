@@ -291,13 +291,16 @@ Page({
    * @param e
    */
     collectEvent: function () {
-        userFavor({dataID: Number(this.data.info.lesson_data.data_id), type: 'ld'}).then((res) => {
-            this.setData({
-                'info.is_favor': res.is_favor
-            })
-
-            Toast.text({ text: res.data.msg })
+        userFavor({
+            data_id: Number(this.data.info.lesson_data.data_id),
+            type: 'ld'
         })
+            .then((res) => {
+                this.setData({
+                    'info.is_favor': res.is_favor
+                })
+                Toast.text({ text: res.msg })
+            })
     },
 
     recordEvent: function (e) {

@@ -1,8 +1,9 @@
 const App = getApp()
-import { getTeamList, getTeamInfo } from '../../../../request/teamPort'
+import { getTeamList, getTeamInfo } from '../../../request/teamPort'
 
 Page({
     data: {
+      statusBarHeight: App.globalData.equipment.statusBarHeight,
       nav: {
         title: 0,
         model: 'extrude',
@@ -83,7 +84,7 @@ Page({
         var screenHeight = res.windowHeight
       } catch (e) {}
       var query = wx.createSelectorQuery()
-      query.select('#wu-navigation').boundingClientRect()
+      query.select('#teams-nav').boundingClientRect()
       query.exec((ret) => {
         let h = 0
         ret.forEach((item) => {
@@ -114,15 +115,13 @@ Page({
         success: (ret) => {}
       }
     },
-
-    // 自定义事件
-  /**
-   * 链接事件
-   * @param e
-   */
+      /**
+       * 链接事件
+       * @param e
+       */
     goMembersEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const teamID = this.data.teamList[index].TeamID
+      const teamID = this.data.teamList[index].team_id
       if(!teamID){
         return false
       }
@@ -139,7 +138,7 @@ Page({
     },
     goTeamRecordsEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const teamID = this.data.teamList[index].TeamID
+      const teamID = this.data.teamList[index].team_id
       if(!teamID){
         return false
       }
@@ -148,23 +147,41 @@ Page({
         url: `/pages/apply/teams/team-records/team-records?id=${teamID}`
       })
     },
+
     goTeamSetEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const teamID = this.data.teamList[index].team_id
-      const teamName = this.data.teamList[index].team_name
-      const blnAuth = this.data.teamList[index].bln_auth
+      const { teamList, userID } = this.data
+      const teamID = teamList[index].team_id
+      const teamName = teamList[index].team_name
+      const blnAuth = teamList[index].bln_auth
+
       if(!teamID){
         return false
       }
       this._getCurrentInfoAll(teamID) // 设置全局变量  存储当前进入的小组信息
       let isCreator = false
-      if(this.data.userID === App.teamActive.userInfo.user_id) {
+      if(userID === App.teamActive.userInfo.user_id) {
         isCreator = true
       }
+
+      const self = this
       wx.navigateTo({
-        url: `/pages/apply/teams/team-set/team-set?id=${teamID}&title=${encodeURI(teamName)}&isCreator=${isCreator}&blnAuth=${blnAuth}`
+        url: `/pages/apply/teams/team-set/team-set?id=${teamID}&title=${encodeURI(teamName)}&isCreator=${isCreator}&blnAuth=${blnAuth}`,
+        events: {
+          acceptDataTeamSet: function(data) {
+              const i = teamList.findIndex(item => item.team_id === Number(data.teamID))
+              if (i !== -1) {
+                  teamList.splice(index, 1)
+                  self.setData({teamList})
+              }
+          }
+        },
+        success: function(res) {
+          res.eventChannel.emit('acceptDataTeamSet', { teamID: teamID })
+        }
       })
     },
+
     _getCurrentInfoAll: function (teamID) {
       let _ti = null
       let _ui = null
@@ -210,9 +227,10 @@ Page({
       }
 
       this.data.teamCurrentID = teamList[loadIndex].team_id
-      this._getTeamInfo(this.data.teamCurrentID, loadIndex).then(() => {
-        this.setData({ teamCurrent: index })
-      })
+      this._getTeamInfo(this.data.teamCurrentID, loadIndex)
+          .then(() => {
+            this.setData({ teamCurrent: index })
+          })
     },
 
     teamSwiperAnimationfinish(e) {
@@ -264,7 +282,7 @@ Page({
     },
 
     _filterTeamCurrent: function (teamList, id) {
-      if(id === null || id === 'undefined' || teamList.length<=0) {
+      if(id === null || id === 'undefined' || teamList.length<=0 ) {
         return -1
       }
       return teamList.findIndex(item => {

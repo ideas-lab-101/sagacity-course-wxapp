@@ -200,12 +200,12 @@ Page({
     collectEvent: function () {
 
         userFavor({
-            dataID: Number(this.optionsId),
+            data_id: Number(this.optionsId),
             type: 'course'
         })
             .then((res) => {
                 this.setData({ 'info.is_favor': res.data.is_favor })
-                Toast.text({ text: res.data.msg})
+                Toast.text({ text: res.msg})
             })
     },
 

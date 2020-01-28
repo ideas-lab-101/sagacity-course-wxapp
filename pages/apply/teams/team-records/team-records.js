@@ -1,8 +1,10 @@
 const App = getApp()
-const { $wuNavigation, $wuToast, $wuBackdrop, $wuActionSheet } = require('../../../../components/wu/index')
-const { getTeamRecordList, removeTeamRecord } = require('../../../request/teamPort')
+import { getTeamRecordList, removeTeamRecord } from '../../../../request/teamPort'
+import { $wuxActionSheet } from 'wux-weapp'
+const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 
 Page({
+    behaviors: [PageReachBottomBehavior],
     data: {
       nav: {
         title: '全部作品',
@@ -18,12 +20,6 @@ Page({
       /**
        * 数据参数
        */
-      record: {
-        list: [],
-        pageNumber: 1,
-        lastPage: true,
-        totalRow: 0
-      },
       creatorID: null,
       /**
        * 计算滚动的参数
@@ -39,9 +35,11 @@ Page({
       this.optionsId = options.id
       this.setData({
         creatorID: App.teamActive?App.teamActive.userInfo.UserID : '',
-        optionsUserId: options.userid || ''
+        optionsUserId: options.userid || '',
+        userID: App.user.userInfo.user_id ,
+        'nav.title': options.title?decodeURI(options.title):'全部作品'
       })
-      this.setData({userID: App.user.userInfo.UserID , 'nav.title': options.title?decodeURI(options.title):'全部作品'})
+
       this.optionsShowMark = 0  // 0-全部 1-星标；2-组所有者；3-用户自己
 
     },
@@ -53,28 +51,16 @@ Page({
       if ( App.globalData.audio) {
         App.globalData.audio.pause()
       }
-      this.data.record = {
-        list: [],
-        pageNumber: 1,
-        lastPage: true,
-        totalRow: 0
-      }
-      this._getTeamRecordList(this.optionsId)
+
+      this.__init(this.optionsId)
     },
 
-    onReady: function () {
-    },
-    onHide: function () {
-    },
-
-    onUnload: function () {
-    },
     onPageScroll: function (e) {
       this.scrollEvent(e.scrollTop)
     },
 
     onReachBottom: function () {
-      this._ReachBottom()
+      this.__ReachBottom()
     },
 
     // 自定义事件
@@ -84,7 +70,8 @@ Page({
    * @returns {boolean}
    */
     scrollEvent: function(scrollTop) {
-      if(this.data.record.list.length<=0) {
+      const { list } = this.data.content
+      if(list.length<=0) {
         return false
       }
       let dateIndex = 0
@@ -96,10 +83,13 @@ Page({
         dateIndex = 0
         this.data.scrollDirection = 'up'
       }
-      this.setData({scrollCurrentTime: this.data.record.list[dateIndex].AddTime, scrollDirection: this.data.scrollDirection})
+      this.setData({scrollCurrentTime: list[dateIndex].add_time, scrollDirection: this.data.scrollDirection})
     },
+
     getSingleClientRect: function (e) {
-      if(this.data.record.list.length<=0) {
+      const { list, pageNumber } = this.data.content
+
+      if(list.length<=0) {
         this.setData({scrollCurrentTime: null})
         return false
       }
@@ -113,8 +103,8 @@ Page({
         this.setData({
           navigationRect: ret[0].height  // 顶部navation高度
         })
-        if(this.data.record.pageNumber === 1 && this.data.record.list.length > 0) {
-          this.setData({scrollCurrentTime: this.data.record.list[0].AddTime})
+        if(pageNumber === 1 && list.length > 0) {
+          this.setData({scrollCurrentTime: list[0].add_time})
         }
       })
     },
@@ -173,8 +163,9 @@ Page({
     },
 
     filterRecordEvent: function (e) {
-      $wuActionSheet().showSheet({
+      $wuxActionSheet().showSheet({
         titleText: '请选择筛选模式',
+        theme: 'wx',
         buttons: [
           {
             text: '显示全部作品'
@@ -218,7 +209,7 @@ Page({
             totalRow: 0
           }
           this.setData({'nav.title': text})
-          this._getTeamRecordList(this.optionsId)
+          this.__init(this.optionsId)
           return true
         },
         cancelText: '取消',
@@ -230,7 +221,7 @@ Page({
      * */
     goRecordPageEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const RecordID = this.data.record.list[index].RecordID
+      const RecordID = this.data.content.list[index].record_id
       wx.navigateTo({
         url: `/pages/apply/teams/team-play/team-play?recordid=${RecordID}&teamid=${this.optionsId}`
       })
@@ -238,42 +229,26 @@ Page({
     /**
      *  获取数据
      * */
-    _getTeamRecordList: function (teamID) {
-      return getTeamRecordList({
-        teamID: teamID,
-        page: this.data.record.pageNumber,
-        userID: this.data.optionsUserId,
-        showMark: this.optionsShowMark
-      }).then((res) => {
-        this.setData({
-          'record.list': this.data.record.list.concat(res.list),
-          'record.lastPage': res.lastPage,
-          'record.totalRow': res.totalRow
-        }, () => {
-          this.getSingleClientRect() // 获取demo计算
-        })
+    __init: function (teamID) {
+
+      this.__getTurnPageDataList({
+        isPageShow: true,
+        interfaceFn: getTeamRecordList,
+        params: {
+          team_id: teamID,
+          user_id: this.data.optionsUserId,
+          data_type: this.optionsShowMark
+        }
       })
+          .then(() => {
+            this.getSingleClientRect() // 获取demo计算
+          })
     },
+
     _removeTeamRecord: function (submitID) {
       return removeTeamRecord({submitID: submitID}).then((res) => {
         return res
       })
-    },
-
-    _ReachBottom: function () {
-      if (this.data.record.lastPage || this.isLoading) {
-        return false
-      }
-      this.data.record.pageNumber++
-      this.isLoading = true
-      this._getTeamRecordList(this.optionsId)
-        .then(() => {
-          this.isLoading = false
-        })
-        .catch(() => {
-          this.isLoading = false
-          this.data.record.pageNumber--
-        })
     }
 
 })

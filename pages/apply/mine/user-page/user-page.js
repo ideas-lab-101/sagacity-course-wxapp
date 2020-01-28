@@ -54,7 +54,7 @@ Page({
   collectEvent: function() { // 收藏事件
     userFavor(
       {
-        dataID: this.optionsId,
+        data_id: this.optionsId,
         type: 'user'
       }).then((res) => {
       this.setData({
@@ -66,7 +66,7 @@ Page({
 
   likeEvent: function() {
     userLike({
-      dataID: this.optionsId,
+      data_id: this.optionsId,
       type: 'user'
     }).then((res) => {
       this.setData({

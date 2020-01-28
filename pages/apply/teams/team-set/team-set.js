@@ -1,6 +1,8 @@
 const App = getApp()
-const { $wuNavigation, $wuToast, $wuBackdrop } = require('../../../../components/wu/index')
-const {  setTeamLabel, exitTeam, getTeamLabel, getTeamIdentity } = require('../../../request/teamPort')
+import { $wuBackdrop } from '../../../../components/wu/index'
+import {  setTeamLabel, exitTeam, getTeamLabel, getTeamIdentity } from '../../../../request/teamPort'
+const Toast = require('../../../../viewMethod/toast')
+const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
     data: {
@@ -24,20 +26,19 @@ Page({
 
     onLoad: function (options) {
       this.optionsId = options.id
-      this.setData({'nav.title': decodeURI(options.title), isCreator: options.isCreator, blnAuth: Number(options.blnAuth)})
-      this._getTeamLabel()
+      this.setData({
+        'nav.title': decodeURI(options.title),
+        isCreator: options.isCreator,
+        blnAuth: Number(options.blnAuth)
+      })
+
+      this.eventChannel = this.getOpenerEventChannel()
+
+      this.__init()
     },
 
-    onShow: function () {
+    openStatisticalEvent: function () {
     },
-
-    onPageScroll: function (e) {
-      //$wuNavigation().scrollTop(e.scrollTop)
-    },
-
-    // 自定义事件
-  openStatisticalEvent: function () {
-  },
   /**
    * 修改昵称
    */
@@ -65,7 +66,7 @@ Page({
       errText = '请输入4~20个文字!'
     }
     if(errText !== null) {
-      $wuToast().show({ type: 'forbidden', duration: 1000, text: errText })
+      Toast.text({ text: errText })
       return false
     }
     this._changeNickName(this.data.attestation.inp)
@@ -76,14 +77,12 @@ Page({
    */
   exitEvent: function (e) {
       const self = this
-      wx.showModal({
+      Dialog.confirm({
         title: '提示',
         content: '确定要退出此小组?',
         confirmText: '退出',
-        success(res) {
-          if(res.confirm) {
-            self._exitTeam()
-          }
+        onConfirm: () => {
+          self._exitTeam()
         }
       })
     },
@@ -92,33 +91,51 @@ Page({
    * @private
    */
   _exitTeam: function () {
-      exitTeam({teamID: this.optionsId}).then(res => {
-        console.log(res)
-        wx.navigateBack({
-          delta: 1
-        })
-      }).catch(ret => {
-        if(ret.code === 0) {
-          $wuToast().show({ type: 'forbidden', duration: 1000, text: ret.msg })
-        }
+      exitTeam({
+        team_id: this.optionsId
       })
+          .then(res => {
+
+            this.eventChannel.emit('acceptDataTeamSet', {teamID: this.optionsId});
+            wx.navigateBack({
+              delta: 1
+            })
+          })
+          .catch(ret => {
+            if(ret.code === 0) {
+              Toast.text({ text: ret.msg })
+            }
+          })
     },
+
   _changeNickName: function (label) {
-    setTeamLabel({teamID: this.optionsId, label: label}).then((res) => {
-      $wuToast().show({ type: 'text', duration: 1000, text: '修改成功' })
-      this.setData({'attestation.temp': this.data.attestation.inp})
-      setTimeout(() => {
-        wx.navigateBack({
-          delta: 1
-        })
-      }, 800)
+    setTeamLabel({
+      team_id: this.optionsId,
+      label
     })
+        .then((res) => {
+          Toast.text({ text: '修改成功' })
+
+          this.setData({'attestation.temp': this.data.attestation.inp})
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 800)
+        })
   },
 
-  _getTeamLabel: function () {
-    getTeamIdentity({teamID: this.optionsId}).then((res) => {
-      this.setData({'attestation.inp': res.data.Label, 'attestation.temp': res.data.Label, 'attestation.profileName': res.data.ProfileName})
+  __init: function () {
+    getTeamIdentity({
+      team_id: this.optionsId
     })
+        .then((res) => {
+          this.setData({
+            'attestation.inp': res.data.label,
+            'attestation.temp': res.data.label,
+            'attestation.profileName': res.data.profile_name
+          })
+        })
   }
 
 })

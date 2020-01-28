@@ -39,8 +39,8 @@ class video {
      * 内部事件
      **/
     _fiterTime(time) {
-        var max = parseInt(time / 60)
-        return this.filterTime(max) + ':' + this.filterTime(parseInt(time % 60))
+        const max = parseInt(time / 60)
+        return this._filterTime(max) + ':' + this._filterTime(parseInt(time % 60))
     }
 
     _filterTime(num) {

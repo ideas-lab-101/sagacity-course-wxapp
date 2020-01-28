@@ -82,6 +82,10 @@ class BackgroundAudioManager {
         this.AudioPlayer.pause()
     }
 
+    stop() {
+        this.AudioPlayer.stop()
+    }
+
     seek(position) {
         this.AudioPlayer.seek(position)
     }
