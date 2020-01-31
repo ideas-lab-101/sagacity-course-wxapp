@@ -40,6 +40,8 @@ Page({
         'nav.title': options.title?decodeURI(options.title):'全部作品'
       })
 
+      this.eventChannel = this.getOpenerEventChannel()
+
       this.optionsShowMark = 0  // 0-全部 1-星标；2-组所有者；3-用户自己
 
     },
@@ -63,7 +65,6 @@ Page({
       this.__ReachBottom()
     },
 
-    // 自定义事件
   /**
    * 获取单条数据的demo
    * @param e
@@ -151,12 +152,17 @@ Page({
         confirmText: '移除',
         success(res) {
           if(res.confirm) {
-            self._removeTeamRecord(SubmitID).then(() => {
-              self.data.record.list.splice(index, 1)
-              self.data.record.totalRow --
-              self.setData({'record.list': self.data.record.list, 'record.totalRow': self.data.record.totalRow})
-              self.voicePauseEvent()
-            })
+
+            self._removeTeamRecord(SubmitID)
+                .then(() => {
+
+                  let { list, totalRow } = self.data.content
+                  list.splice(index, 1)
+                  totalRow --
+                  self.setData({'content.list': list, 'content.totalRow': totalRow})
+                  //self.voicePauseEvent()
+                })
+
           }
         }
       })
@@ -199,7 +205,7 @@ Page({
           }
           if(index === 3) {
             this.optionsShowMark = 0
-            this.data.optionsUserId = App.user.userInfo.UserID
+            this.data.optionsUserId = App.user.userInfo.user_id
             text = '自己作品'
           }
           this.data.record = {
@@ -246,9 +252,13 @@ Page({
     },
 
     _removeTeamRecord: function (submitID) {
-      return removeTeamRecord({submitID: submitID}).then((res) => {
-        return res
+      return removeTeamRecord({
+        submit_id: submitID
       })
+          .then((res) => {
+              this.eventChannel.emit('acceptDataTeamRecordChange', {teamID: this.optionsId});
+              return res
+          })
     }
 
 })

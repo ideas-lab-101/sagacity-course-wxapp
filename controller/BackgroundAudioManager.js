@@ -61,9 +61,9 @@ class BackgroundAudioManager {
         /**
          * 判断是同一首进入 就吧渲染播放
          */
-        if (this.options && this.options.id === options.id ) {
+        /*if (this.options && this.options.id === options.id ) {
             return false
-        }
+        }*/
         this.info = Object.assign({}, this.info, info)
         this.options = options
         this.loopState = options.loopState

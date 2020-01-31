@@ -1,7 +1,9 @@
 const App = getApp()
 import { getTeamList, getTeamInfo } from '../../../request/teamPort'
+const TeamCacheBehavior = require('./TeamCacheBehavior')
 
 Page({
+    behaviors: [TeamCacheBehavior],
     data: {
       statusBarHeight: App.globalData.equipment.statusBarHeight,
       nav: {
@@ -17,26 +19,6 @@ Page({
        * 存储的数据参数
        */
       teamList: [],
-
-      one: {
-        members: [],
-        courseList: [],
-        teamInfo: '',
-        userInfo: ''
-      },
-      two: {
-        members: [],
-        courseList: [],
-        teamInfo: '',
-        userInfo: ''
-      },
-      three: {
-        members: [],
-        courseList: [],
-        teamInfo: '',
-        userInfo: ''
-      },
-
       /**
        * 选定的小组
        */
@@ -59,23 +41,6 @@ Page({
     },
 
     onShow: function () {
-      /**
-       * * 如果小组内删除了作品操作，反向更新
-       **/
-      /*if (App.requestLoadManager.consume('removeTeamRecord') || App.requestLoadManager.consume('setTeamLabel')) {
-        if(this.data.teamCurrent === null) {
-          return false
-        }
-        const teamID = this.data.teamList[this.data.teamCurrent].TeamID
-        this._getTeamInfo(teamID, this.data.teamCurrent)
-      }*/
-
-      /**
-       * * 如果退出小组，反向更新
-       **/
-      /*if (App.requestLoadManager.consume('exitTeam')) {
-        this.__init()
-      }*/
     },
 
     onReady: function () {
@@ -125,7 +90,6 @@ Page({
       if(!teamID){
         return false
       }
-      this._getCurrentInfoAll(teamID) // 设置全局变量  存储当前进入的小组信息
       wx.navigateTo({
         url: `/pages/apply/teams/team-members/team-members?id=${teamID}`
       })
@@ -138,13 +102,25 @@ Page({
     },
     goTeamRecordsEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const teamID = this.data.teamList[index].team_id
+      const { teamList, userID } = this.data
+      const teamID = teamList[index].team_id
       if(!teamID){
         return false
       }
-      this._getCurrentInfoAll(teamID) // 设置全局变量  存储当前进入的小组信息
+      const self = this
       wx.navigateTo({
-        url: `/pages/apply/teams/team-records/team-records?id=${teamID}`
+          url: `/pages/apply/teams/team-records/team-records?id=${teamID}`,
+          events: {
+              acceptDataTeamRecordChange: function(data) {
+                  const i = teamList.findIndex(item => item.team_id === Number(data.teamID))
+                  let count = self.data.teamsCache[i].team_info.record_count
+                  const obj = `teamsCache[${i}].team_info.record_count`
+                  self.setData({[obj]: count - 1})
+              }
+          },
+          success: function(res) {
+              res.eventChannel.emit('acceptDataTeamRecordChange', { teamID: teamID })
+          }
       })
     },
 
@@ -158,7 +134,6 @@ Page({
       if(!teamID){
         return false
       }
-      this._getCurrentInfoAll(teamID) // 设置全局变量  存储当前进入的小组信息
       let isCreator = false
       if(userID === App.teamActive.userInfo.user_id) {
         isCreator = true
@@ -170,8 +145,10 @@ Page({
         events: {
           acceptDataTeamSet: function(data) {
               const i = teamList.findIndex(item => item.team_id === Number(data.teamID))
+
               if (i !== -1) {
-                  teamList.splice(index, 1)
+                  teamList.splice(i, 1)
+                  self.__delete(i)
                   self.setData({teamList})
               }
           }
@@ -182,24 +159,6 @@ Page({
       })
     },
 
-    _getCurrentInfoAll: function (teamID) {
-      let _ti = null
-      let _ui = null
-      if(teamID === this.data.one.teamInfo.team_id) {
-        _ti = this.data.one.teamInfo
-        _ui = this.data.one.userInfo
-      }else if(teamID === this.data.two.teamInfo.team_id) {
-        _ti = this.data.two.teamInfo
-        _ui = this.data.two.userInfo
-      }else if(teamID === this.data.three.teamInfo.team_id) {
-        _ti = this.data.three.teamInfo
-        _ui = this.data.three.userInfo
-      }
-      App.teamActive = {
-        teamInfo: _ti,
-        userInfo: _ui
-      }
-    },
     /**
     * 触发事件
     * @param e
@@ -282,50 +241,29 @@ Page({
     },
 
     _filterTeamCurrent: function (teamList, id) {
-      if(id === null || id === 'undefined' || teamList.length<=0 ) {
+      if(id === null || id === undefined || teamList.length<=0 ) {
         return -1
       }
-      return teamList.findIndex(item => {
-          return Number(item.team_id) === Number(id)
-      })
+      return teamList.findIndex(item => Number(item.team_id) === Number(id))
     },
 
+    /**
+     * 获取TEAM 信息
+     * @param teamID
+     * @param index
+     * @returns {*}
+     * @private
+     */
     _getTeamInfo: function (teamID, index) {
-      return getTeamInfo({
-        team_id: teamID
-      })
+        if (this.__has(index)) {
+            return Promise.resolve()
+        }
+
+        return getTeamInfo({
+            team_id: teamID
+        })
           .then((res) => {
-            if(index%3 === 0) {
-              setTimeout(() => {
-                this.setData({
-                  'one.members': res.data.members,
-                  'one.courseList': res.data.courses,
-                  'one.teamInfo': res.data.team_info,
-                  'one.userInfo': res.data.owner
-                })
-              }, 100)
-            }else if(index%3 === 1) {
-              setTimeout(() => {
-                this.setData({
-                  'two.members': res.data.members,
-                  'two.courseList': res.data.courses,
-                  'two.teamInfo': res.data.team_info,
-                  'two.userInfo': res.data.owner
-                })
-              }, 100)
-            }else if(index%3 === 2) {
-              setTimeout(() => {
-                this.setData({
-                  'three.members': res.data.members,
-                  'three.courseList': res.data.courses,
-                  'three.teamInfo': res.data.team_info,
-                  'three.userInfo': res.data.owner
-                })
-              }, 100)
-            }else {
-              return null
-            }
-            return res
+              this.__add({ index, teamInfo: res.data })
           })
     }
 

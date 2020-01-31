@@ -2,28 +2,36 @@ page{
     background-color: #f7f7f7;
 }
 .container{
-    padding: 60rpx 40rpx; height: calc(100% - 60px);
+    padding: 60rpx 40rpx; height: calc(100vh - 120rpx);
 }
 .ut-container{
-    padding: 40rpx; background-color: white; box-shadow:0 8rpx 50rpx rgba(0, 0, 0, 0.04); height: calc(100% - 40px);
+    padding: 40rpx;
+    background-color: white;
+    box-shadow:0 10rpx 60rpx rgba(0, 0, 0, 0.04);
+    height: calc(100% - 40px);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
 }
 
 .ut-userinfo{
      display: flex; align-items: center; flex-direction: column;
 }
 .ut-userinfo image{
-    width: 100rpx; height: 100rpx; border-radius: 500rpx;
+    width: 160rpx; height: 160rpx; border-radius: 1000px;
 }
 
 .ut-userinfo ._name{
-    font-size: 38rpx; font-weight: 500; margin-top: 40rpx; color: black; position: relative;
+    font-size: 40rpx; font-weight: 500; margin-top: 40rpx; color: black; position: relative;
 }
 .ut-userinfo ._name ._f{
     position: absolute; right: -90rpx; bottom: 6rpx;
 }
 
 .ut-teamname{
-    margin-top: 160rpx; display: flex; align-items: center; font-weight: 500; font-size: 45rpx; justify-content: center;
+    display: flex; align-items: center; font-weight: 500; font-size: 45rpx; justify-content: center;
+    margin-top: 60rpx;
 }
 .ut-teamname .iconfont{ font-size: 60rpx;}
 .ut-teamdesc{
@@ -51,6 +59,7 @@ page{
 }
 .ut-link ._l{
     background-color: #f7f7f7 !important; color: black !important; border: 0!important; text-align: center; font-size: 34rpx;border-radius: 6rpx;
+    width: 100%; font-weight: normal;
 }
 
 .ut-team-other{
@@ -58,7 +67,7 @@ page{
 }
 
 .ut-team-rz{ font-size: 22rpx; color: #999999; display: flex; align-items: center; justify-content: center;}
-.ut-team-rz .iconfont{ font-size: 30rpx; margin-right:10rpx;}
+.ut-team-rz .iconfont{ margin-right:10rpx;}
 
 /****************/
 .attestation-layer{

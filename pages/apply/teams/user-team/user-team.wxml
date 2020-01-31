@@ -1,41 +1,45 @@
-<wu-loading id="wu-loading" title="加载中..." />
-<wu-toast id="wu-toast"></wu-toast>
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}">
+</wu-navigation>
 
 <view class="container">
 
-  <wu-navigation id="wu-navigation" title="{{nav.title}}"
-                 transparent="{{nav.transparent}}"
-                 model="{{nav.model}}"
-                 animation="{{nav.animation}}">
-  </wu-navigation>
-
   <view class="ut-container">
-      <view class="ut-teamname"><text class='iconfont icon-xuexi'></text><text>{{teamInfo.TeamName}}</text></view>
-      <view class="ut-teamdesc color-999">{{teamInfo.TeamDesc}}</view>
+      <view>
+          <view class="ut-teamname"><text class='iconfont icon-xuexi'></text><text>{{teamInfo.team_name}}</text></view>
+          <view class="ut-teamdesc color-999">{{teamInfo.team_desc}}</view>
+      </view>
+
 
       <view class="ut-team-other">
         <view class="ut-userinfo">
           <image src="{{userInfo.avatar_url}}" mode="aspectFill"></image>
-          <text class="_name"><text>{{userInfo.Label || userInfo.Caption}}</text><text class="_f font-10 color-999">(创建者)</text></text>
+          <text class="_name"><text>{{userInfo.label || userInfo.caption}}</text><text class="_f font-10 color-999">(创建者)</text></text>
         </view>
 
         <view class="ut-teammembers">
-          <text class="_title color-999">已加入成员({{teamInfo.mCount}})</text>
+          <text class="_title color-999">已加入成员({{teamInfo.member_count}})</text>
           <view class="ut-teammembers-d">
-              <image src="{{item.avatar_url}}" mode="aspectFill" wx:for="{{members}}" wx:key="{{index}}"></image>
+              <image src="{{item.avatar_url}}" mode="aspectFill" wx:for="{{members}}" wx:key="user_id"></image>
           </view>
         </view>
       </view>
 
-      <view wx:if="{{teamInfo.blnAuth===1}}" class="ut-team-rz">
-          <text  class="iconfont icon-shenfenzhengzhengmian"></text><text>需要认证，认证通过才能加入小组</text>
+
+      <view>
+          <view wx:if="{{teamInfo.bln_auth===1}}" class="ut-team-rz">
+              <text  class="iconfont icon-shenfenzhengzhengmian"></text><text>需要认证，认证通过才能加入小组</text>
+          </view>
+
+          <view class="ut-link">
+              <view catchtap="joinTeamEvent" wx:if="{{!isJoin}}">加入小组</view>
+              <view catchtap="goTeamEvent" wx:else>进入小组</view>
+              <button class="_l" plain open-type="share">邀请朋友加入</button>
+          </view>
       </view>
 
-      <view class="ut-link">
-        <view catchtap="joinTeamEvent" wx:if="{{!isJoin}}">加入小组</view>
-        <view catchtap="goTeamEvent" wx:else>进入小组</view>
-        <button class="_l" plain open-type="share">邀请朋友加入</button>
-      </view>
   </view>
 
 </view>
@@ -69,10 +73,10 @@
             <text>确定</text>
         </view>
     </view>
-    <scroll-view scroll-y style="height: {{'calc(100% - '+statusBarHeight+'px - 45px)'}};" bindscrolltolower="profileTolower">
-        <view class="profile-single {{profileItem.ProfileID === item.ProfileID?'active':''}}" wx:for="{{profile.list}}" wx:key="{{index}}" catchtap="profileChange" data-item="{{item}}">
-            <text>{{item.ProfileName}}</text>
-            <text class="_n">学号：{{item.ProfileNo}}</text>
+    <scroll-view scroll-y style="height: {{'calc(100% - '+statusBarHeight+'px - 45px)'}};" bindscrolltolower="profileToLower">
+        <view class="profile-single {{profileItem.profile_id === item.profile_id?'active':''}}" wx:for="{{content.list}}" wx:key="profile_id" catchtap="profileChange" data-item="{{item}}">
+            <text>{{item.profile_name}}</text>
+            <text class="_n">学号：{{item.profile_no}}</text>
         </view>
     </scroll-view>
 </wu-animation-group>

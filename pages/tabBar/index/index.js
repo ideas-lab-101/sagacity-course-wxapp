@@ -7,8 +7,8 @@ const Session = require('../../../utils/session')
 
 Page({
     behaviors: [AppLaunchBehavior],
-    statusBarHeight: App.globalData.equipment.statusBarHeight,
     data: {
+      statusBarHeight: App.globalData.equipment.statusBarHeight,
       swiper: [],
       slideCurrent: 0,
       selectionData: [],

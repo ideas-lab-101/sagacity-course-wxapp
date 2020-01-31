@@ -33,7 +33,7 @@
       },
       {
         "pagePath": "pages/tabBar/teams/teams",
-        "text": "小组",
+        "text": "我的小组",
         "iconPath": "/assets/images/list_blank.png",
         "selectedIconPath": "/assets/images/list_fill.png"
       },

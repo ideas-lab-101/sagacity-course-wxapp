@@ -263,8 +263,8 @@ Page({
         this.setData({ payBtnTxt: '加入...' })
 
         userEnroll({
-            course_id: this.optionsId
-        })
+                course_id: this.optionsId
+            })
             .then((res) => {
 
                 /**
@@ -278,7 +278,8 @@ Page({
                     payBtnTxt: '已加入'
                 })
             })
-            .catch(() => {
+            .catch((ret) => {
+                console.error(ret)
                 this.closePayLayerEvent() // 关闭加入层
                 this.setData({
                     payBtnTxt: '加入'

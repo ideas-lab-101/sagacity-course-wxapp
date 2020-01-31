@@ -1,15 +1,13 @@
 const App = getApp()
-
 const WxParse = require('../../../../components/wxParse/wxParse')
 import { $wuBackdrop } from '../../../../components/wu/index'
 import { $wuxActionSheet  } from 'wux-weapp'
 const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
 const BackgroundAudioPlayBehavior = require('./BackgroundAudioPlayBehavior')
+const LoadingCanvasBehavior = require('./LoadingCanvasBehavior')
 const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
-
-const { lessonDataInfo, getLessonList } = require('../../../../request/coursePort')
+import { lessonDataInfo, getLessonList } from '../../../../request/coursePort'
 import { userFavor, addUserPoint } from '../../../../request/userPort'
-
 const Toast = require('../../../../viewMethod/toast')
 const Dialog = require('../../../../viewMethod/dialog')
 
@@ -40,8 +38,9 @@ Page({
     },
 
     onLoad: function (options) {
-        this.optionsId = options.id
+        this.optionsId = Number(options.id)
         this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
+        this.PageOnload = true
 
         this.__initAppLaunch({
             id: this.optionsId,
@@ -50,12 +49,28 @@ Page({
     },
 
     onShow: function () {
+        /**
+         * 判断路由情况
+         * 列表 > 播放 > 列表 > 播放
+         * 当前ID 不相等的情况
+         */
+        if (!this.PageOnload && this.optionsId !== getApp().backgroundAudioManager.playerOptions.id) {
+            this.setData({
+                'audioParams.isPlay': false
+            })
+        }
+    },
+
+    onReady: function (e) {
+        //this.__initLoadingCanvas()
     },
 
     onHide: function () {
+        this.PageOnload = false
     },
 
     onUnload: function () {
+        this.PageOnload = false
     },
 
     onShareAppMessage: function () {
@@ -105,20 +120,15 @@ Page({
      */
     initAudio: function (frame) {
         const { lesson_data } = this.data.info
-        const id = lesson_data.data_id
-        const src = lesson_data.data_url
-        const title = lesson_data.data_name
-        const epname = lesson_data.lesson_name
-        const coverImgUrl = lesson_data.cover_url
         const loopState = this.data.state
 
         this.__initBackgroundAudio({
-            id,
+            id: lesson_data.data_id,
             loopState,
-            src,
-            title,
-            epname,
-            coverImgUrl,
+            src: lesson_data.data_url,
+            title: lesson_data.data_name,
+            epname: lesson_data.lesson_name,
+            coverImgUrl: lesson_data.cover_url,
             frame
         })
     },

@@ -49,6 +49,10 @@ module.exports = {
      */
     ERR_INVALID_SESSION: 6,
     /**
+     * 未订阅
+     */
+    ERR_NO_BUY: 11,
+    /**
      * 未登录 未绑定
      */
     ERR_INVALID_LOGIN: 401,

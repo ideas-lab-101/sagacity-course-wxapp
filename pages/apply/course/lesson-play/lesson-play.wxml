@@ -71,13 +71,19 @@
         <view class="play-console">
                 <view class="_uniterm _panel" bindtap="openCatalogEvent"><text class="iconfont icon-list"></text></view>
                 <view class="_uniterm {{hasPrev?'':'noFocus'}}" bindtap="audioPrevEvent"><text class="iconfont icon-prev"></text></view>
-                <view class="_uniterm _play" bindtap="audioPlayEvent">
-                    <text class="iconfont icon-bofang1" wx:if="{{!audioParams.isPlay}}"></text>
-                    <text class="iconfont icon-weibiaoti519" wx:else></text>
+                <view class="_uniterm _play">
+                    <view class="_trigger" bindtap="audioPlayEvent">
+                        <text class="iconfont icon-bofang1" wx:if="{{!audioParams.isPlay}}"></text>
+                        <text class="iconfont icon-weibiaoti519" wx:else></text>
+                    </view>
+                    <!--<view class="_loading">
+                        <canvas class="_loadingCanvas" canvas-id="loadingCanvas"></canvas>
+                    </view>-->
                 </view>
                 <view class="_uniterm {{hasNext?'':'noFocus'}}" bindtap="audioNextEvent"><text class="iconfont icon-next"></text></view>
                 <view class="_uniterm" wx:if="{{state==='order'}}" bindtap="audioLoopEvent"><text class="iconfont icon-shunxubofang"></text></view>
                 <view class="_uniterm" wx:else bindtap="audioLoopEvent"><text class="iconfont icon-loop"></text></view>
+
 
                 <view class="_progress" hidden="{{!sliderProgressVisible}}">
                     <slider bindchange="sliderChangeEvent"

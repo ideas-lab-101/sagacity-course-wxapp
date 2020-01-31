@@ -1,62 +1,61 @@
 const App = getApp()
 const { $wuNavigation } = require('../../../../components/wu/index')
-const { getMessageList, setMessage } = require('../../../../request/msgPort')
+import { getMessageList, setMessage } from '../../../../request/msgPort'
+const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 
 Page({
+    behaviors: [PageReachBottomBehavior],
     data: {
-        msg: {
-            pageNumber: 1,
-            lastPage: false,
-            list: []
-        }
     },
 
     onLoad: function () {
-        this._initMessageList()
+
+        this.__initAppLaunch()
     },
 
-    onShow: function () {},
+    onUnload: function () {
+        clearTimeout(this.linkFn)
+    },
 
     onPageScroll: function (e) {
       $wuNavigation().scrollTop(e.scrollTop)
     },
 
     onReachBottom: function () {
-        if (this.data.msg.lastPage || this.isLoading) {
-            return false
-        }
-      this.data.msg.pageNumber++
-        this._initMessageList()
+        this.__ReachBottom()
     },
 
-    // 自定义事件
+    /**
+     * 点击消除事件
+     * @param e
+     */
     cancelReadEvent: function (e) {
-        const index = e.currentTarget.dataset.index
-        const id = this.data.msg.list[index].MessageID
-        const dataID = this.data.msg.list[index].DataID
-        setMessage({messageID: id}).then((res) => {
-            if (res.code) {
-                this.data.msg.list.splice(index, 1)
-                this.setData({
-                    'msg.list': this.data.msg.list
-                })
-                setTimeout(() => {
+        const { index } = e.currentTarget.dataset
+        const { list } = this.data.content
+        const id = list[index].message_id
+        const dataID = list[index].data_id
+
+        setMessage({
+            message_id: id
+        })
+            .then((res) => {
+
+                list.splice(index, 1)
+                this.setData({ 'content.list': list })
+
+                this.linkFn = setTimeout(() => {
                     wx.navigateTo({
                         url: `/pages/apply/mine/record-play/record-play?id=${dataID}`
                     })
-                }, 10)
-            }
-        })
+                }, 100)
+            })
     },
 
-    _initMessageList: function () {
-        this.isLoading = true
-        getMessageList({page: this.data.msg.pageNumber, pageSize: 20}).then((res) => {
-            this.isLoading = false
-            this.setData({
-                'msg.lastPage': res.lastPage,
-                'msg.list': this.data.msg.list.concat(res.list)
-            })
+    __init: function () {
+        this.__getTurnPageDataList({
+            isPageShow: true,
+            interfaceFn: getMessageList,
+            params: {}
         })
     }
 

@@ -1,22 +1,22 @@
-const Video = require('../../../../controller/video')
 const App = getApp()
 import { lessonDataInfo, getLessonList } from '../../../../request/coursePort'
-const { userFavor, addUserHistory } = require('../../../../request/userPort')
+import { userFavor } from '../../../../request/userPort'
 const WxParse = require('../../../../components/wxParse/wxParse')
-const { $wuBackdrop } = require('../../../../components/wu/index')
+import { $wuBackdrop } from '../../../../components/wu/index'
 const Toast = require('../../../../viewMethod/toast')
 const Dialog = require('../../../../viewMethod/dialog')
 const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
+const VideoBehavior = require('../../../../utils/behaviors/VideoBehavior')
 
 Page({
-    behaviors: [AppLaunchBehavior, PageReachBottomBehavior],
+    behaviors: [AppLaunchBehavior, PageReachBottomBehavior, VideoBehavior],
     data: {
         info: null,
-        resource: null,
+        resourceURL: null,
         videoShowCenterPlayBtn: false,
         videoControls: true,
-        videoAutoplay: false,
+        videoAutoplay: true,
         scrollHeight: '100%'
     },
 
@@ -26,6 +26,7 @@ Page({
         }catch (err) {}
 
         this.optionsId = options.id
+        this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
 
         this.__initAppLaunch({
             data_id: this.optionsId
@@ -43,6 +44,8 @@ Page({
     },
 
     onReady: function () {
+        this.__initVideoContext()
+
         try {
             var res = wx.getSystemInfoSync()
             var screenHeight = res.windowHeight
@@ -59,28 +62,14 @@ Page({
                 scrollHeight: `${screenHeight - h}px`
             })
         })
-        /***
-         *视频组件控制初始化
-         **/
-        this.thisVideo = new Video()
     },
 
     onHide: function () {
-        /***
-         *视频组件控制清除
-         **/
-        this.thisVideo.clear()
-        this.videoEnd = true
         this.isLoadPass = false
     },
 
     onUnload: function () {
-        this.thisVideo = null
         this.isLoadPass = false
-    },
-
-    onPageScroll: function (e) {
-      //$wuNavigation().scrollTop(e.scrollTop)
     },
 
     onShareAppMessage: function () {
@@ -94,9 +83,6 @@ Page({
      *  media video
      */
     turnBackPageEvent: function () {
-        if (this.thisVideo) {
-            this.thisVideo.videoContext.stop()
-        }
         wx.navigateTo({
             url: `/pages/apply/course/lesson-page/lesson-page?id=${this.data.info.lesson_data.course_id}`
         })
@@ -105,10 +91,11 @@ Page({
     changeVideoEvent: function (e) {
         const openState = e.currentTarget.dataset.openstate
         const id = e.currentTarget.dataset.id
+
         if (this.data.info.is_enroll || (!this.data.info.is_enroll && openState === 1)) {
             if (id === this.data.info.lesson_data.data_id) {
                 if (this.videoEnd) {
-                    this.thisVideo.play()
+                    this.videoContextTask.play()
                     return false
                 }
                 return false
@@ -147,20 +134,15 @@ Page({
 
     openDraftEvent: function (e) {
         $wuBackdrop().retain()
-        this.setData({
-            in: true
-        })
+        this.setData({ in: true })
     },
 
     closeDraftEvent: function (e) {
         $wuBackdrop().release()
-        this.setData({
-            in: false
-        })
+        this.setData({ in: false})
     },
 
     tipEvent: function (e) {
-
         Dialog.confirm({
             content: '尚未加入，不能查看。',
             cancelText: '算了',
@@ -172,95 +154,73 @@ Page({
             }
         })
     },
-
-    /**
-     *视频组件 监听事件
-     **/
-    videoPlayEvent: function (e) {
-        this.thisVideo.create() // 视频组件控制调用
-        this.videoEnd = false
-    },
-
-    videoEndEvent: function (e) {
-        const id = this.data.info.next_data_id
-        if (id !== 0) {
-            this.__init({data_id:id})  // 重新请求数据  顺序播放
-        }else {
-            this.videoEnd = true
-        }
-    },
-
-    videoErrEvent: function (e) {},
-
     /**
     **  media video init event
     **/
-    __init: function ({data_id}) {
-      lessonDataInfo({
-          data_id: data_id
-      })
-          .then((res) => {
-                this.setData({
-                    info: res.data
-                })
-                WxParse.wxParse('detail', 'html', res.data.lesson_data.content || '<p style="font-size: 14px;">暂无介绍</p>', this, 5) // 添加文稿
+    __init: function ({data_id, isNext}) {
+          lessonDataInfo({
+              data_id: data_id
+          })
+              .then((res) => {
+                    this.setData({
+                        info: res.data
+                    })
+                    WxParse.wxParse('detail', 'html', res.data.lesson_data.content || '<p style="font-size: 14px;">暂无介绍</p>', this, 5) // 添加文稿
 
-                if(this.data.content.list.length<=0) {
-                  this.getLessonList()
-                }
-            })
-          .then(() => {
-                const { lesson_data } = this.data.info
-                if (lesson_data.format === 'video') {
-                    this.initVideo(lesson_data.data_id)
-                } else {
-                    console.error('文件和文件类型不匹配')
-                }
-        })
+                    if(this.data.content.list.length <= 0) {
+                      this.getLessonList()
+                    }
+
+                    if (res.data.lesson_data.format === 'video') {
+                      this.initVideo(res.data.lesson_data.data_id, isNext)
+                    } else {
+                      console.error('文件和文件类型不匹配')
+                    }
+                })
     },
 
-    lessonScollTolowerEvent() {
+    lessonScrollToLowerEvent() {
         this.__ReachBottom()
     },
 
     getLessonList() {
-        const courseID = this.data.info.lesson_data.course_id
+        const course_id = this.data.info.lesson_data.course_id
 
         return this.__getTurnPageDataList({
             isPageShow: true,
             interfaceFn: getLessonList,
-            params: {
-                course_id: courseID
-            }
+            params: { course_id }
         })
     },
 
-    initVideo: function (id) {
-        if (this.data.info.is_enroll || this.data.info.lesson_data.open_state === 1) { // 判断进入的时候的 id 是否在播放列表中, 给出结果 是否被中断, 如果中断说明传入ID 不在播放列表中
-          this.setData({
-            videoControls: true,
-            videoAutoplay: true
-          })
-        }else {
-          this.setData({
-            videoControls: false,
-            videoAutoplay: false
-          })
-          return false
+    initVideo: function (id, isNext) {
+        if (!this.videoContextTask) {
+            return false
         }
-
-        this.setData({
-            resource: this.data.info.lesson_data
-        })
         /**
-         * 这里请求新的地址  就给一条记录
+         * 判断进入的时候的 id 是否在播放列表中, 给出结果 是否被中断, 如果中断说明传入ID 不在播放列表中
          */
-        addUserHistory({
-            data_id: Number(this.data.info.lesson_data.data_id)
-        })
-            .then((res) => {
-                console.log('添加到历史记录')
+        if (this.data.info.is_enroll || this.data.info.lesson_data.open_state === 1) {
+            this.setData({
+                videoControls: true,
+                videoAutoplay: true
             })
+            if (this.optionsFrame && !isNext) {
+                this.videoContextTask.seek(this.optionsFrame)
+            }else {
+                this.videoContextTask.play()
+            }
+        }else {
+          console.log(this.videoContextTask)
+          this.setData({
+              videoControls: false,
+              videoAutoplay: false
+          })
+            setTimeout(() => {
+                this.videoContextTask.stop()
+            }, 200)
+
+        }
     }
 
 })

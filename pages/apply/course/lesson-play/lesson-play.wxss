@@ -110,7 +110,7 @@
 .play-progress{  height: 8vh; display: flex; padding: 0 30px; align-items: center; font-family: -apple-system-font, "Helvetica Neue", sans-serif; font-size: 12px;}
 .play-progress ._slider{ flex: 1;}
 .play-console{ display: flex; justify-content: space-around; align-items: center; height: 12vh; background-color: #e9e9e9; position: relative; z-index: 100; }
-.play-console ._uniterm{
+.play-console ._uniterm, .play-console ._uniterm._play ._trigger{
     text-align: center;
     display: inline-block;
     width: 120rpx;
@@ -119,11 +119,16 @@
     color: #333;
     position: relative;
 }
-.play-console ._uniterm._panel{ width: 140rpx;}
-.play-console ._uniterm text{  font-size: 34rpx;}
+.play-console ._uniterm._panel{
+    width: 140rpx;
+}
+.play-console ._uniterm .iconfont{
+    font-size: 34rpx;
+}
 .play-console ._uniterm._play{
     color: black;
     margin: 0 40rpx;
+    position: relative;
 }
 .play-console ._uniterm.noFocus{ color: rgba(0, 0, 0, 0.3)}
 .play-console ._play text{ display: inline-block;
@@ -132,7 +137,21 @@
 .play-console ._progress{
     position: absolute; width: 100%; left: 0; top: -15rpx; z-index: 10;
 }
-.play-console ._progress slider{ margin: 0;}
+.play-console ._progress slider{
+    margin: 0;
+}
+/*.play-console ._loading{
+    position: absolute;
+    width: 120rpx;
+    height: 120rpx;
+    left: 0;
+    top:  -500rpx;
+    z-index: 10;
+}
+.play-console ._loading ._loadingCanvas{
+    width: 200px;
+    height: 200px;
+}*/
 
 .play-section{  position: relative; z-index: 100; }
 .play-section-title{ text-align: left; position: relative; z-index: 11; padding: 30rpx 65rpx; color: black;}

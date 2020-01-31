@@ -8,7 +8,7 @@ export function postPay(order) {
   return new Promise( (resolve, reject) => {
 
     getApp().request({   // 后台生产支付订单
-      url: `wxapp/pay/wxPay`,
+      url: `/wxapp/pay/v3/wxPay`,
       data: {
         out_trade_no: order.orderCode,
         total_fee: order.totalPay,

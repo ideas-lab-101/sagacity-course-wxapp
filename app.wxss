@@ -2,10 +2,8 @@
 @import '/assets/styles/italic-font.wxss';
 @import '/assets/styles/color.wxss';
 
-body, page {
-  height: 100%;
-}
 page {
+  min-height: 100vh;
   background: #FFFFFF;
   position: relative;
   font-size: 32rpx;

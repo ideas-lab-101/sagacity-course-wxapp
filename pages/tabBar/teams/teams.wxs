@@ -6,59 +6,6 @@ var resolveTime = function (time) {
     return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'
 }
 
-var getMembers = function (index, one, two, three) {
-  if(index%3 == 0) {
-    return one.members
-  }else if(index%3 == 1) {
-    return two.members
-  }else if(index%3 == 2) {
-    return three.members
-  }else {
-    return null
-  }
-}
-
-
-var getUserInfo = function (index, one, two, three) {
-  if(index%3 == 0) {
-    return one.userInfo
-  }else if(index%3 == 1) {
-    return two.userInfo
-  }else if(index%3 == 2) {
-    return three.userInfo
-  }else {
-    return null
-  }
-}
-
-var getTeamInfo = function (index, one, two, three) {
-  if(index%3 == 0) {
-    return one.teamInfo
-  }else if(index%3 == 1) {
-    return two.teamInfo
-  }else if(index%3 == 2) {
-    return three.teamInfo
-  }else {
-    return null
-  }
-}
-
-var getCourseList = function (index, one, two, three) {
-  if(index%3 == 0) {
-    return one.courseList
-  }else if(index%3 == 1) {
-    return two.courseList
-  }else if(index%3 == 2) {
-    return three.courseList
-  }else {
-    return null
-  }
-}
-
 module.exports = {
-    resolveTime: resolveTime,
-  getMembers: getMembers,
-  getUserInfo: getUserInfo,
-  getTeamInfo: getTeamInfo,
-  getCourseList: getCourseList
+  resolveTime: resolveTime
 }

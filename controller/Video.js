@@ -1,6 +1,8 @@
-class video {
-    constructor() {
-        this.videoEnd = false
+'use strict';
+
+class Video {
+    constructor(id) {
+        this.videoID = id
         this.videoContext = null
         this.init()
     }
@@ -12,7 +14,7 @@ class video {
      * @memberof User
      */
     init() {
-        this.videoContext = wx.createVideoContext('video-player')
+        this.videoContext = wx.createVideoContext(this.videoID)
         this._screenChangeManager()
     }
 
@@ -28,17 +30,22 @@ class video {
         this.videoContext.pause()
     }
 
+    seek(position) {
+        this.videoContext.seek(position)
+    }
+
     stop() {
         this.videoContext.stop()
     }
 
     clear() {
         wx.stopAccelerometer()
+        wx.offAccelerometerChange()
     }
     /**
      * 内部事件
      **/
-    _fiterTime(time) {
+    geUpdateTime(time) {
         const max = parseInt(time / 60)
         return this._filterTime(max) + ':' + this._filterTime(parseInt(time % 60))
     }
@@ -91,7 +98,6 @@ class video {
                 lastState = nowState
                 if (nowState === 1) {
                     console.log('change:横屏')
-                    console.log(that.videoContext)
                     that.videoContext.requestFullScreen({
                         direction: 90
                     })
@@ -104,4 +110,4 @@ class video {
     }
 }
 
-module.exports = video
+module.exports = Video

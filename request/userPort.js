@@ -188,33 +188,32 @@ export function getUserHistory(data) {
  * token course_id
  */
 export function userEnroll(data) {
-  return new Promise( (resolve, reject) => {
-      fetch({
+      return fetch({
         url: '/wxapp/user/v3/userEnroll',
         data: data || {},
         method: 'POST'
       })
           .then((res) => {
 
-            // 这里判断如果价格不是0  就跳转支付
-            if (res.orderInfo) {
-
-              return postPay(res.orderInfo)
-                  .then((response) => { // 传入需要支付的参数
-                      if(response.data.orderState === 1002) {
-                        resolve(response)
-                      }else if(response.data.orderState === 1001) {
-                        reject(response)
-                      }
-                    })
-                    .catch( err => {
-                      reject(err)
-                    })
-            }  // 这里判断如果价格是0  就直接加入成功
-
-            resolve(res)
+            /**
+             * 这里判断如果价格不是0  就跳转支付
+             */
+            const orderInfo = res.data.orderInfo
+            if (orderInfo) {
+                return postPay(orderInfo)
+                    .then((response) => { // 传入需要支付的参数
+                        if(response.data.orderState === 1002) {
+                          //resolve(response)
+                        }else if(response.data.orderState === 1001) {
+                          //reject(response)
+                        }
+                      })
+              }
+            /**
+             * 这里判断如果价格是0  就直接加入成功
+             */
+            return res
           })
-  })
 }
 
 

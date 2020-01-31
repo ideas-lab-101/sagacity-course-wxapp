@@ -41,9 +41,15 @@ module.exports = Behavior({
          * 播放暂停切换
          */
         audioPlayOrPause() {
-            /*if (App.backgroundAudio.getPlayer().end && App.backgroundAudio.getPlayer().stop) {
+            /**
+             * 判断路由情况
+             * 列表 > 播放 > 列表 > 播放
+             * 当前ID 不相等的情况
+             */
+            if (this.optionsId !== getApp().backgroundAudioManager.playerOptions.id) {
+                this.initAudio(this.data.audioParams.currentTime)
                 return false
-            }*/
+            }
             if (!this.data.audioParams.isPlay) {
                 getApp().backgroundAudioManager.play()
             } else {
@@ -133,11 +139,9 @@ module.exports = Behavior({
         },
 
         _seeking: function () {
-            
         },
 
         _seeked: function () {
-            
         }
     }
 })
