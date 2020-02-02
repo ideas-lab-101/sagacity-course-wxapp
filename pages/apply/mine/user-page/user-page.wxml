@@ -1,16 +1,14 @@
 <wxs src="./user-page.wxs" module="moduleUserPage" />
+<wu-navigation id="wu-navigation" model="fold" transparent="true"></wu-navigation>
+
 
 <view class="container">
-
-  <wu-navigation id="wu-navigation" model="fold" transparent="true"></wu-navigation>
-
   <view class="master-backimg">
     <image src="{{moduleUserPage.changeURL(info.data.ZoneBgURL, info.data.avatar_url)}}" mode="aspectFill"></image>
   </view>
+
   <scroll-view scroll-y class="master-scroll" bindscrolltolower="scrollToLowerEvent">
-
     <view class="master-scroll-box">
-
       <view class="master-info">
         <image class="_img" src="{{info.data.avatar_url}}" mode="aspectFill"></image>
         <text class="_name">{{info.data.Caption}}</text>
@@ -33,78 +31,72 @@
             </view>
           </view>
         </view>
-
       </view>
 
       <view class="master-courses">
 
         <view class="_title" wx:if="{{info.data.RoleID === 2}}">
-          <text class="{{current === 0 ?'active':''}}" catchtap="detailChangeEvent" data-index="0">TA的作品</text>
-          <text class="{{current === 1 ?'active':''}}" catchtap="detailChangeEvent" data-index="1">TA的课程</text>
+          <text class="{{contentMultipleCurrent === 0 ?'active':''}}" catchtap="__turnPageTabChangeMultiple" data-index="0">TA的作品</text>
+          <text class="{{contentMultipleCurrent === 1 ?'active':''}}" catchtap="__turnPageTabChangeMultiple" data-index="1">TA的课程</text>
         </view>
 
         <view class="_title _s" wx:if="{{info.data.RoleID === 3}}">
           <text class="active">TA的作品</text>
         </view>
 
-        <view wx:if="{{current===0}}">
+        <view wx:if="{{contentMultipleCurrent===0}}">
 
-          <view wx:if="{{record.list.length>0}}">
-            <navigator class="data-single"
-                       hover-class="event-hover-class"
-                       wx:for="{{record.list}}"
-                       wx:key="{{index}}"
-                       url="/pages/apply/mine/record-play/record-play?id={{item.RecordID}}">
+          <navigator class="data-single"
+                     hover-class="event-hover-class"
+                     wx:for="{{contentMultiple.list}}"
+                     wx:key="record_id"
+                     url="/pages/apply/mine/record-play/record-play?id={{item.record_id}}">
 
-              <text class="_time">{{moduleUserPage.resolveTime(item.AddTime)}}</text>
-              <view class="_name">{{item.Name}}</view>
-              <view class="bs-single">
-                <view class="_insert">
-                  <view class="_image">
-                    <view><image src="{{item.CoverURL}}" mode="aspectFill" lazy-load/></view>
-                  </view>
+            <text class="_time">{{moduleUserPage.resolveTime(item.add_time)}}</text>
+            <view class="_name">{{item.name}}</view>
+            <view class="bs-single">
+              <view class="_insert">
+                <view class="_image">
+                  <view><image src="{{item.cover_url}}" mode="aspectFill" lazy-load/></view>
                 </view>
               </view>
-            </navigator>
+            </view>
+          </navigator>
 
-            <view class="nomore" wx:if="{{record.lastPage}}">额，数据到底了</view>
-          </view>
-          <view wx:else class="nodate">额，还没有数据哟</view>
+          <view class="nomore" wx:if="{{contentMultiple.lastPage && contentMultiple.list.length > 0}}">额，数据到底了</view>
+          <view class="nodate" wx:if="{{contentMultiple.list.length <= 0}}">额，还没有数据哟</view>
         </view>
 
-
-        <view wx:if="{{current===1}}">
-          <view wx:if="{{course.list.length>0}}">
+        <view wx:if="{{contentMultipleCurrent===1}}">
             <navigator class="data-single-c flex top"
                        hover-class="event-hover-class"
-                       wx:for="{{course.list}}"
-                       url="/pages/apply/course/lesson-page/lesson-page?id={{item.CourseID}}">
+                       wx:for="{{contentMultiple.list}}"
+                       wx:key="course_id"
+                       url="/pages/apply/course/lesson-page/lesson-page?id={{item.course_id}}">
 
               <view class="index-book-box" hover-class="none">
-                <view class="_book"><image src="{{item.CoverURL}}" lazy-load mode="aspectFill"></image></view>
+                <view class="_book"><image src="{{item.cover_url}}" lazy-load mode="aspectFill"></image></view>
               </view>
               <view class="_content" data-index="{{index}}">
                 <view>
-                  <view class="content_title">{{item.CourseName}}</view>
-                  <view class="content_desc">{{item.Desc}}</view>
+                  <view class="content_title">{{item.course_name}}</view>
+                  <view class="content_desc">{{item.desc}}</view>
                 </view>
                 <view class="content_m">
                   <text>
                     <text>{{item.lCount}}课时</text>
-                    <text class="ml-15">{{item.viewCount}}次浏览</text>
+                    <text class="ml-15">{{item.view_count}}次浏览</text>
                   </text>
-                  <text>{{moduleUserPage.translateCN(item.blnEnd)}}</text>
+                  <text>{{moduleUserPage.translateCN(item.bln_end)}}</text>
                 </view>
               </view>
             </navigator>
-            <view class="nomore" wx:if="{{record.lastPage}}">额，数据到底了</view>
-          </view>
-          <view wx:else class="nodate">额，还没有数据哟</view>
+            <view class="nomore" wx:if="{{contentMultiple.lastPage && contentMultiple.list.length > 0}}">额，数据到底了</view>
+            <view class="nodate" wx:if="{{contentMultiple.list.length <= 0}}">额，还没有数据哟</view>
         </view>
 
       </view>
 
     </view>
-
   </scroll-view>
 </view>

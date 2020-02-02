@@ -42,7 +42,7 @@ module.exports = Behavior({
 
             this.setData({ contentMultipleCurrent: Number(index)}, () => {
 
-                const data = this.__changeTurnPageCacheData(Number(index))
+                const data = this.__getTurnPageCacheData(Number(index))
                 if (!data) {
                     this.__getTurnPageDataListMultiple(contentMultipleArrayOptions)
                 }else {
@@ -52,6 +52,23 @@ module.exports = Behavior({
                 }
 
             })
+        },
+
+        /**
+         * 如果当前的数据 发生删除 马上更新缓存数据
+         * @param index
+         * @private
+         */
+        __deleteTurnPageMultiple(index) {
+            const { contentMultipleCurrent, contentMultiple } = this.data
+            contentMultiple.list.splice(index, 1)
+            this.setData({
+                'contentMultiple.list': contentMultiple.list
+            })
+            /**
+             * 更新缓存数据
+             */
+            this.__addTurnPageCacheData( contentMultipleCurrent, contentMultiple)
         },
 
         /**
@@ -137,7 +154,7 @@ module.exports = Behavior({
         },
 
         /**
-         * 缓存数据类的方法
+         * 缓存 更新数据类的方法
          * @param key
          * @param data
          * @private
@@ -166,7 +183,7 @@ module.exports = Behavior({
             return this.data.contentMultipleCacheData.findIndex(item => item.key === key)
         },
 
-        __changeTurnPageCacheData(key) {
+        __getTurnPageCacheData(key) {
             const index = this.__hasTurnPageCacheData(key)
             if (index !== -1) {
                 return this.data.contentMultipleCacheData[index].data

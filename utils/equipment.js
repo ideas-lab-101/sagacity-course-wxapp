@@ -62,6 +62,7 @@ const compareVersion = (v1, v2) => {
 }
 
 export const checkVersion = (isForce) => {
+  console.log(getSystemInfo(isForce))
   const version  = getSystemInfo(isForce).SDKVersion
 
   if (compareVersion(version, '2.9.2') < 0) {

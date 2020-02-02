@@ -1,22 +1,14 @@
+import {getFavorList} from "../../../request/userPort";
+
 var App = getApp()
-const { getCourseUpdate, getRecordUpdate, getHotLessonData } = require('../../../request/mainPort')
+import { getCourseUpdate, getRecordUpdate, getHotLessonData } from '../../../request/mainPort'
+const MultiplePageReachBottomBehavior = require('../../../utils/behaviors/MultiplePageReachBottomBehavior')
 
 Page({
+    behaviors: [MultiplePageReachBottomBehavior],
     data: {
         statusBarHeight: App.globalData.equipment.statusBarHeight,
         courseList: [],
-        record:{
-          pageNumber: 1,
-          lastPage: true,
-          list: [],
-          pageSize: 10
-        },
-        hot: {
-          pageNumber: 1,
-          lastPage: true,
-          list: [],
-          pageSize: 10
-        },
       /**
        * page params
        */
@@ -51,137 +43,29 @@ Page({
         }, 1000)
     },
     onReachBottom() {
-      this._reachBottom() // 下拉加载数据
+      this.__ReachBottomMultiple()
     },
   /**
    * 获取数据
    */
     __init() {
-        this._getCourseUpdate()
-        this._getRecordUpdate(true)
+      const params = [
+          {
+              isPageShow: true,
+              interfaceFn: getCourseUpdate,
+              params: {}
+          },
+          {
+              isPageShow: true,
+              interfaceFn: getHotLessonData,
+              params: {}
+          }
+      ]
+
+      this.__getTurnPageDataListMultiple(params)
     },
 
-    _getCourseUpdate() {
-        getCourseUpdate()
-            .then((res) => {
-            this.setData({ courseList: res.data.list })
-        })
-    },
 
-    _getHotLessonData(isPageShow) {
-        let {pageNumber, pageSize, list } = this.data.hot
-        if (isPageShow) {
-            pageNumber = 1
-        }
-        if (this.data.HotLoading) {
-            return false
-        }
-        this.data.HotLoading = true
-
-        return getHotLessonData({
-          page: pageNumber,
-          pageSize
-        }).then(res => {
-
-            let tempList = [...res.data.list]
-            if (!isPageShow) {
-                tempList = list.concat(tempList)
-            }
-
-          this.data.hot.pageNumber = pageNumber
-          this.setData({
-            'hot.list': tempList,
-            'hot.lastPage': res.data.lastPage,
-            'hot.totalRow': res.data.totalRow,
-          })
-        })
-            .finally(() => {
-                this.data.HotLoading = false
-            })
-    },
-
-    _getRecordUpdate(isPageShow) {
-        let { pageNumber, pageSize, list } = this.data.record
-        if (isPageShow) {
-            pageNumber = 1
-        }
-        if (this.data.ReordLoading) {
-            return false
-        }
-        this.data.ReordLoading = true
-
-        return getRecordUpdate({
-          page: pageNumber,
-          pageSize
-        }).then(res => {
-
-            let tempList = [...res.data.list]
-            if (!isPageShow) {
-                tempList = list.concat(tempList)
-            }
-
-            this.data.record.pageNumber = pageNumber
-            this.setData({
-            'record.list': tempList,
-            'record.lastPage': res.data.lastPage,
-            'record.totalRow': res.data.totalRow,
-            })
-        })
-            .finally(() => {
-                this.data.ReordLoading = false
-            })
-    },
-  /**
-   * 下拉加载数据调用方法
-   * @returns {boolean}
-   * @private
-   */
-    _reachBottom() {
-        const { current } = this.data.tab
-
-      if(current === 0) {
-        const { lastPage } = this.data.record
-
-        if(lastPage) {
-          return false
-        }
-
-        this.data.record.pageNumber++
-        this._getRecordUpdate()
-          .catch(() => {
-            this.data.record.pageNumber--
-          })
-
-
-      }else if(current === 1) {
-
-        const { lastPage } = this.data.hot
-
-        if( lastPage) {
-          return false
-        }
-
-        this.data.hot.pageNumber++
-        this._getHotLessonData()
-          .catch(() => {
-            this.data.hot.pageNumber--
-          })
-      }
-
-    },
-  /**
-   * TAB切换事件
-   * @param e
-   */
-  tabEvent: function (e) {
-      const index = Number(e.currentTarget.dataset.index)
-      this.setData({
-          'tab.current': index
-      })
-      if(index === 1 && this.data.hot.list.length <= 0) {
-        this._getHotLessonData(true)
-      }
-    },
   /**
    * 链接
    */

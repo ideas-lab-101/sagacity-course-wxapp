@@ -1,4 +1,5 @@
 'use strict';
+
 import { WXLogin, getWxaInfo, bindUser } from '../request/systemPort'
 const Session = require('./session')
 
@@ -84,15 +85,16 @@ class user {
                     WXLogin({code, userData: FormatUserInfo})
                         .then( (res) => {
 
-                            this.userInfo = res.data.user
-                            this.authToken = res.data.token
-                            Session.set(this.authToken)
-                            Session.setUserInfo(this.userInfo)
+                            if(!FormatUserInfo) {
+                                this.userInfo = res.data.user
+                                this.authToken = res.data.token
+                                Session.set(this.authToken)
+                                Session.setUserInfo(this.userInfo)
 
-                            // 判断是否加载成功
-                            getApp().identityLoaded = res.data
-                            if (getApp().identityCallback) {
-                                getApp().identityCallback()
+                                // 判断onLaunch是否先加载成功 在执行后面的方法
+                                this._getLaunchIsLoad(res.data)
+                            }else {
+
                             }
 
                             resolve(this.authToken)
@@ -118,7 +120,7 @@ class user {
                       /**
                        * 执行绑定
                        */
-                      //this.bindUser(res.data)
+                      this.bindUser(res.data)
                       resolve(this.authToken)
                   }, ret => {
                       reject(ret)
@@ -135,7 +137,7 @@ class user {
      */
     bindUser(tel) {
         const form = {
-            name: this.userInfo.Caption,
+            name: this.userInfo.caption,
             tel
         }
         return new Promise((resolve, reject) => {
@@ -150,11 +152,25 @@ class user {
                     Session.set(this.authToken)
                     Session.setUserInfo(this.userInfo)
 
+                    // 判断onLaunch是否先加载成功 在执行后面的方法
+                    this._getLaunchIsLoad(res.data)
+
                     resolve(this.authToken)
                 }, ret => {
                     reject(ret)
                 })
         })
+    }
+
+    /**
+     * 判断onLaunch是否先加载成功 在执行后面的方法
+     * @private
+     */
+    _getLaunchIsLoad(data) {
+        getApp().identityLoaded = data
+        if (getApp().identityCallback) {
+            getApp().identityCallback()
+        }
     }
 
     /**

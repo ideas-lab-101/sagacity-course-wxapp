@@ -16,7 +16,7 @@ export function userAccountInfo(data) {
 // 修改个人信息
 export function bindUser(data) { //token formData
   return fetch({
-    url: '/wxapp/user/bindUser',
+    url: '/wxapp/user/v3/bindUser',
     data: data || {},
     method: 'POST'
   })
@@ -119,7 +119,7 @@ export function getFavorList(data) {
 // 获得指定的用户信息
 export function getUserInfo(data) { //userID
   return fetch({
-    url: '/wxapp/user//v3getUserInfo',
+    url: '/wxapp/user/v3/getUserInfo',
     data: data || {},
     method: 'GET'
   })
@@ -128,7 +128,7 @@ export function getUserInfo(data) { //userID
 // 获得用户开设的课程
 export function getCourseList(data) { //userID 分页参数
   return fetch({
-    url: '/wxapp/user//v3getCourseList',
+    url: '/wxapp/user/v3/getCourseList',
     data: data || {},
     method: 'GET'
   })

@@ -15,10 +15,6 @@ Page({
         })
         this._initData(options.id)
     },
-
-    onShow: function () {
-    },
-
     /**
      *
      * 内部调用事件

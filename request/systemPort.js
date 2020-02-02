@@ -183,14 +183,19 @@ export function getPhoneNumber(data) { // key
     method: 'POST'
   })
 }
+*/
 
-// 获取分享
-export function GetWXSSCode(data) { // dataID type
+
+/**
+ * 获取分享
+ * data_id type
+ */
+export function getWXSSCode(data) {
   return fetch({
-    url: '/wxapp/system/v2/GetWXSSCode',
+    url: '/wxapp/system/v3/getWXSSCode',
     data: data || {},
     method: 'GET'
   })
-}*/
+}
 
 

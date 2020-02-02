@@ -1,6 +1,6 @@
 const App = getApp()
-const { addComment } = require('../../../request/commentPort')
-const { $wuxActionSheet, $wuxToast } = require('wux-weapp/index')
+import { addComment } from '../../../request/commentPort'
+const Toast = require('../../../viewMethod/toast')
 
 Page({
     data: {
@@ -46,12 +46,7 @@ Page({
    * 书写评论
    **/
   _errorToast(msg) {
-    $wuxToast().show({
-      type: 'text',
-      duration: 1000,
-      color: '#ffffff',
-      text: msg
-    })
+    Toast.text({ text: msg})
   },
   textInputEvent(e) {
     const val = e.detail.value
@@ -85,11 +80,10 @@ Page({
       dataID: this.optionsId,
       type: this.optionsType,
       content: content
-    }).then( res => {
-      console.log(res)
-      this.setData({'text.content': ''})
-      return res
     })
+        .then( res => {
+          this.setData({'text.content': ''})
+          return res
+        })
   }
-
 })

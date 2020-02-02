@@ -63,10 +63,15 @@ page{
     padding: 40rpx 20rpx;
 }
 .enroll-btn{
-    text-align: center; padding: 25rpx; border-radius: 6rpx; border: 0 !important; color: white !important;
+    text-align: center;
+    padding: 25rpx 0;
+    border-radius: 6rpx;
+    border: 0 !important;
+    color: white !important;
     line-height: 1.4;
-    background-color:#009b4c;
-    background-image:-webkit-linear-gradient(0deg, #009b4c, #acce22);
+    background-color: #009b4c !important;
+    width: 100% !important;
+    font-weight: normal;
 }
 
 .ei-val-box{ display: flex; justify-content: space-between; align-items: flex-end; padding-top: 30rpx; }

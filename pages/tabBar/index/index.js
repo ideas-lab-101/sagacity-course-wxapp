@@ -1,5 +1,4 @@
 const App = getApp()
-import { $wuLogin } from '../../../components/pages/index'
 import { index } from '../../../request/mainPort'
 import { getUserHistory } from '../../../request/userPort'
 const AppLaunchBehavior = require('../../../utils/behaviors/AppLaunchBehavior')
@@ -53,9 +52,7 @@ Page({
 
     onPullDownRefresh: function() {
       this.__init()
-      if(App.user.ckLogin()) {
-        this.getHistoryData()
-      }
+
       let fn = setTimeout( () => {
         clearTimeout(fn)
         wx.stopPullDownRefresh()
@@ -130,10 +127,5 @@ Page({
         wx.navigateTo({
             url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
         })
-    },
-
-    login() {
-        $wuLogin().show()
-    },
-
+    }
 })

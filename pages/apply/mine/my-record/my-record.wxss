@@ -1,5 +1,5 @@
 page{
-    background-color: white;
+    background-color: #f7f7f7;
 }
 .MarkDown{ position: relative; z-index: 9999 !important;}
 .nodate{ text-align: center; padding: 50rpx 30rpx; font-size: 24rpx; color: #999;}
@@ -21,10 +21,9 @@ page{
 }
 .mine-userRecord-single{
     margin-bottom: 120rpx;
-    background-color: #f7f7f7;
+    background-color: white;
     font-size: 32rpx;
     position: relative;
-    box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.06);
 }
 .mine-userRecord-single:last-child{
     margin-bottom: 40rpx;
@@ -39,7 +38,7 @@ page{
     position: relative; z-index: 10; padding: 30rpx 20rpx 20rpx;
 }
 .mine-userRecord-single>._panel{
-    background-color: white; padding-top: 10rpx;
+    padding-top: 10rpx;
 }
 .mine-userRecord-single ._linkto{
     margin-left: 140rpx;

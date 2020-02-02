@@ -1,7 +1,7 @@
 import baseBehavior from '../../wu/helpers/baseBehavior'
 import mergeOptionsToData from '../../wu/helpers/mergeOptionsToData'
 import { $wuBackdrop } from '../../wu/index'
-import { GetWXSSCode } from '../../../request/systemPort'
+import { getWXSSCode } from '../../../request/systemPort'
 
 const defaults = {
   coverUrl: '',
@@ -34,15 +34,16 @@ Component({
       },
 
       _getShareCodeEvent() {
-        GetWXSSCode({
-          dataID: this.data.id,
+        getWXSSCode({
+          data_id: this.data.id,
           type: this.data.type
-        }).then((res) => {
-          wx.previewImage({
-            current: res.qr_code,
-            urls: [res.qr_code]
-          })
         })
+            .then((res) => {
+              wx.previewImage({
+                current: res.data.qr_code,
+                urls: [res.data.qr_code]
+              })
+            })
       }
 
     }

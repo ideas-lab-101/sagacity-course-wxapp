@@ -1,18 +1,11 @@
-<wu-loading id="wu-loading" title="加载中..." />
-<wux-toast id="wux-toast" />
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}">
+</wu-navigation>
 
 <view class="container">
-
-  <wu-navigation id="wu-navigation" title="{{nav.title}}"
-                 transparent="{{nav.transparent}}"
-                 model="{{nav.model}}"
-                 animation="{{nav.animation}}">
-  </wu-navigation>
-
-
-    <view class="vt-box">
       <form bindsubmit="formSubmit">
-
           <vew class="vt-c">
               <wux-cell-group title="选择填写手机号或者微信手机号">
                   <wux-cell hover-class="none">
@@ -40,5 +33,4 @@
               </view>
           </view>
       </form>
-    </view>
 </view>

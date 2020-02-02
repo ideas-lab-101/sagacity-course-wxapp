@@ -1,4 +1,3 @@
-<wu-loading id="wu-loading" title="加载中..."/>
 <wxs src="./find.wxs" module="moduleFind" />
 
 <view class="findBack" style="padding-top: {{statusBarHeight + 10}}px;">
@@ -8,13 +7,13 @@
       <swiper autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}">
         <block wx:for="{{courseList}}" wx:key="{{index}}">
           <swiper-item>
-            <view class="newCourse-con flex between" bindtap="goPageEvent" data-id="{{item.CourseID}}">
+            <view class="newCourse-con flex between" bindtap="goPageEvent" data-id="{{item.course_id}}">
               <view class="newCourse-font">
-                <view class="_t">{{item.CourseName}}</view>
-                <view class="_d">{{item.Desc}}</view>
+                <view class="_t">{{item.course_name}}</view>
+                <view class="_d">{{item.desc}}</view>
               </view>
               <view class="index-book-box" hover-class="none">
-                <view class="_book"><image src="{{item.CoverURL}}" lazy-load mode="aspectFill"></image></view>
+                <view class="_book"><image src="{{item.cover_url}}" lazy-load mode="aspectFill"></image></view>
               </view>
             </view>
           </swiper-item>
@@ -26,11 +25,11 @@
   <view class="tab-box flex between">
     <view class="tab-single-l">
       <view class="tab-single-s">
-        <view class="tab-single {{tab.current === 0? 'active':''}}" bindtap="tabEvent" data-index="0">
+        <view class="tab-single {{contentMultipleCurrent === 0? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="0">
           <text class="iconfont icon-dongtai"></text>
           <text>动态</text>
         </view>
-        <view class="tab-single {{tab.current === 1? 'active':''}}" bindtap="tabEvent" data-index="1">
+        <view class="tab-single {{contentMultipleCurrent === 1? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="1">
           <text class="iconfont icon-hot"></text>
           <text>HOT</text>
         </view>
@@ -46,13 +45,13 @@
   </view>
 
   <!-- 关注 -->
-  <view wx:if="{{tab.current===0}}">
+  <view wx:if="{{contentMultipleCurrent===0}}">
 
     <!--<view class="watch-time"><text>今天</text><text>Today</text></view>-->
     <view class="watch-box">
 
-      <block wx:if="{{record.list.length>0}}">
-        <view class="watch-single" wx:for="{{record.list}}" wx:key="*this">
+      <block wx:if="{{contentMultiple.list.length>0}}">
+        <view class="watch-single" wx:for="{{contentMultiple.list}}" wx:key="*this">
           <view class="data-single">
 
             <view class="watch-info-a" catchtap="goUserEvent" data-id="{{item.UserID}}">
@@ -94,15 +93,13 @@
       </block>
       <view wx:else class="watch-single-nodata">太懒了，都没人把作品分享出来</view>
       <view wx:if="{{record.lastPage}}" class="watch-single-nodata">额，数据到底了</view>
-
     </view>
-
   </view>
 
   <!-- hot -->
   <view wx:else class="hot-box">
 
-    <view class="hot-listSingle" wx:for="{{hot.list}}" wx:key="course_id" bindtap="goDetailEvent" data-index="{{index}}">
+    <view class="hot-listSingle" wx:for="{{contentMultiple.list}}" wx:key="course_id" bindtap="goDetailEvent" data-index="{{index}}">
       <view class="clear hot-listSingle-h">
         <view class="_img">
           <image src="{{item.cover_url}}" mode="aspectFill" lazy-load></image>

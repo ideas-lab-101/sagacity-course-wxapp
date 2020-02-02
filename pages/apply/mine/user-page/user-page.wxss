@@ -41,7 +41,7 @@
 .master-courses>._title._s text.active::after{position: absolute; content: ""; left: -30rpx; top: 10%; width: 8rpx; height: 80%; background-color: #733429;}
 
 .share{ border:0 !important; margin:0; font-size:32rpx; color: black !important;  padding: 10rpx 30rpx; line-height: normal;
-    background-color: #f7f7f7 !important; border-radius: 200rpx; }
+    background-color: #f7f7f7 !important; border-radius: 200rpx; width: auto !important; font-weight: normal; }
 .share .iconfont{ }
 .share>view{ margin-top: 20rpx;}
 /*******course*******/

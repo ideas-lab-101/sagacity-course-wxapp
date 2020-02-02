@@ -2,6 +2,7 @@ const App = getApp()
 import { getTeamRecordList, removeTeamRecord } from '../../../../request/teamPort'
 import { $wuxActionSheet } from 'wux-weapp'
 const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
+const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
     behaviors: [PageReachBottomBehavior],
@@ -15,7 +16,7 @@ Page({
           timingFunction: "linear"
         }
       },
-      userID: '',
+      userID: null,
 
       /**
        * 数据参数
@@ -33,8 +34,9 @@ Page({
 
     onLoad: function (options) {
       this.optionsId = options.id
+
       this.setData({
-        creatorID: App.teamActive?App.teamActive.userInfo.UserID : '',
+        creatorID: options.creatorID,
         optionsUserId: options.userid || '',
         userID: App.user.userInfo.user_id ,
         'nav.title': options.title?decodeURI(options.title):'全部作品'
@@ -44,17 +46,16 @@ Page({
 
       this.optionsShowMark = 0  // 0-全部 1-星标；2-组所有者；3-用户自己
 
+      this.__init(this.optionsId)
     },
 
     onShow: function () {
       /**
        * * 如果有背景音,停止背景音播放
        **/
-      if ( App.globalData.audio) {
-        App.globalData.audio.pause()
+      if ( App.backgroundAudioManager) {
+        App.backgroundAudioManager.pause()
       }
-
-      this.__init(this.optionsId)
     },
 
     onPageScroll: function (e) {
@@ -146,24 +147,22 @@ Page({
         return false
       }
       const self = this
-      wx.showModal({
+
+      Dialog.confirm({
         title: '提示',
         content: '确定把我的作品移除此小组?',
         confirmText: '移除',
-        success(res) {
-          if(res.confirm) {
+        onConfirm: () => {
 
-            self._removeTeamRecord(SubmitID)
-                .then(() => {
+          self._removeTeamRecord(SubmitID)
+              .then(() => {
 
-                  let { list, totalRow } = self.data.content
-                  list.splice(index, 1)
-                  totalRow --
-                  self.setData({'content.list': list, 'content.totalRow': totalRow})
-                  //self.voicePauseEvent()
-                })
-
-          }
+                let { list, totalRow } = self.data.content
+                list.splice(index, 1)
+                totalRow --
+                self.setData({'content.list': list, 'content.totalRow': totalRow})
+                //self.voicePauseEvent()
+              })
         }
       })
     },
@@ -187,33 +186,32 @@ Page({
           }
         ],
         buttonClicked: (index, item) => {
-          let text = '全部作品'
-          if(index === 0) {
-            this.optionsShowMark = 0
-            this.data.optionsUserId = ''
-            text = '全部作品'
+          let text = '全部作品';
+
+          switch(index) {
+            case 0:
+              this.optionsShowMark = 0;
+              this.data.optionsUserId = '';
+              text = '全部作品';
+              break;
+            case 1:
+              this.optionsShowMark = 1;
+              this.data.optionsUserId = '';
+              text = '星标作品';
+              break;
+            case 2:
+              this.optionsShowMark = 0;
+              this.data.optionsUserId = this.data.creatorID;
+              text = '组所有者作品';
+              break;
+            case 3:
+              this.optionsShowMark = 0;
+              this.data.optionsUserId = App.user.userInfo.user_id;
+              text = '自己作品';
+              break;
+            default :
           }
-          if(index === 1) {
-            this.optionsShowMark = 1
-            this.data.optionsUserId = ''
-            text = '星标作品'
-          }
-          if(index === 2) {
-            this.optionsShowMark = 0
-            this.data.optionsUserId = this.data.creatorID
-            text = '组所有者作品'
-          }
-          if(index === 3) {
-            this.optionsShowMark = 0
-            this.data.optionsUserId = App.user.userInfo.user_id
-            text = '自己作品'
-          }
-          this.data.record = {
-            list: [],
-            pageNumber: 1,
-            lastPage: true,
-            totalRow: 0
-          }
+
           this.setData({'nav.title': text})
           this.__init(this.optionsId)
           return true

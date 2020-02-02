@@ -277,15 +277,16 @@ Page({
     },
 
     deleteUserRecord: function (recordID, index) {
+      let { list, totalRow } = this.data.content
         delRecord({
             record_id: recordID
             })
               .then((res) => {
-                  this.data.content.list.splice(index, 1)
-                  this.data.content.totalRow--
+                  list.splice(index, 1)
+                  totalRow--
                   this.setData({
-                      'content.list': this.data.content.list,
-                      'content.totalRow': this.data.content.totalRow
+                      'content.list': list,
+                      'content.totalRow': totalRow
                   })
               })
     },

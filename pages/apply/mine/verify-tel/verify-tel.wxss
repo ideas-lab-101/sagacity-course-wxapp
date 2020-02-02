@@ -14,11 +14,18 @@ page{
     width: 200rpx; display: inline-block; text-align: center; font-size: 30rpx; background-color: #eee; height: 70rpx; line-height: 70rpx;
 }
 .vt-btn{
-    text-align: center; padding: 25rpx; border-radius: 6rpx; border: 0 !important; background-color: #fa9606 !important; color: white !important;
+    text-align: center;
+    padding: 25rpx 0;
+    border-radius: 6rpx;
+    border: 0 !important;
+    background-color: #fa9606 !important;
+    color: white !important;
     line-height: 1.4;
+    width: 100% !important;
+    font-weight: normal;
 }
 .vt-btn.sel{
-    background-color: #34ac10 !important;
+    background-color: #009b4c !important;
 }
 .vt-c{
     display: block;

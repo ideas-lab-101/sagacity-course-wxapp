@@ -1,29 +1,26 @@
-
 <wxs src="./my-record.wxs" module="moduleMyRecord" />
 <wu-marked-words id="wu-marked-words"
                  words="{{markedWords.data}}"
                  version="{{markedWords.version}}"
                  exhibition="{{content.list.length>0?true:false}}" bindmarkDownFree="markDownFreeEvent"/>
 
+<wu-navigation id="wu-navigation" title="{{nav.title}}({{content.totalRow}})"
+               backURLType="{{nav.backURLType}}"
+               backURL="{{nav.backURL}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}">
+</wu-navigation>
+
 <view class="container">
-
-    <wu-navigation id="wu-navigation" title="{{nav.title}}({{content.totalRow}})"
-                   backURLType="{{nav.backURLType}}"
-                   backURL="{{nav.backURL}}"
-                   transparent="{{nav.transparent}}"
-                   model="{{nav.model}}">
-    </wu-navigation>
-
     <view class="mine-userRecord-tip" catchtap="goKeepWXAccounts" wx:if="{{!gOpenID}}">
         <text>点击此处关注【善听读】公众号</text>
         <text class="iconfont icon-dianji"></text>
     </view>
 
     <view wx:if="{{content.list.length>0}}" class="mine-userRecord-box">
-    <view>
-      <view wx:for="{{content.list}}" wx:key="record_id" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}" >
 
-        <view class="_insert" bindtap="tryListenEvent" data-id="{{item.record_id}}" data-url="{{item.file_url}}">
+        <view wx:for="{{content.list}}" wx:key="record_id" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}" >
+            <view class="_insert" bindtap="tryListenEvent" data-id="{{item.record_id}}" data-url="{{item.file_url}}">
 
             <view class="_linkto">
               <view class="_name">{{item.name}}</view>
@@ -48,9 +45,7 @@
 
             <view class="_time"><text>{{moduleMyRecord.resolveTime(item.add_time)}}</text></view>
         </view>
-
-
-        <view class="_panel">
+            <view class="_panel">
 
             <view class="flex between">
                 <view class="mr-evaluating">
@@ -89,12 +84,11 @@
             </view>
 
         </view>
-      </view>
-    </view>
-    <view class="nomore" wx:if="{{content.lastPage}}">额，数据到底了</view>
+        </view>
+
+        <view class="nomore" wx:if="{{content.lastPage}}">额，数据到底了</view>
     </view>
     <view wx:else class="nodate">额，此目录没有数据哟</view>
-
 </view>
 
 

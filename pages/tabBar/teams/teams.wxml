@@ -1,9 +1,11 @@
 <wxs src="./teams.wxs" module="moduleTeams" />
 
-<view style="padding-top: {{statusBarHeight}}px;" id="teams-nav" class="teams-nav">学习小组({{nav.title}})</view>
+<view style="padding-top: {{statusBarHeight}}px;"
+      id="teams-nav"
+      class="teams-nav">学习小组({{nav.title}})</view>
 
-<view class="container">
-  <view class="flex top my-container" style="height: {{pageContentHeight}}">
+<view style="height: {{pageContentHeight}}">
+  <view class="flex top content-container" wx:if="{{isLogin}}">
 
     <block wx:if="{{teamList.length>0}}">
       <swiper class="my-swiper"
@@ -13,7 +15,7 @@
               current="{{teamCurrent}}">
         <block wx:for="{{teamList}}" wx:key="team_id">
           <swiper-item>
-            <view class="mg-right-box {{teamsCache[index].team_info.bln_auth === 1 ? 'auth' : ''}}">
+            <view class="mg-right-box">
 
               <view class="mg-right-num"><text>{{index+1}}</text></view>
               <view class="_sign">
@@ -45,14 +47,17 @@
               <view class="mg-right-resource">
                 <view class="_t">小组资源</view>
                 <view class="mg-right-resource-del mt-10">
-                  <view wx:if="{{teamsCache[index].courses.length>0}}">
-                    <view class="index-book-box" wx:for="{{teamsCache[index].courses}}" wx:key="course_id" wx:for-index="courseIndex" wx:for-item="courseItem"
-                          catchtap="goCourseEvent" data-id="{{courseItem.course_id}}">
+                    <view class="index-book-box"
+                          wx:for="{{teamsCache[index].courses}}"
+                          wx:key="course_id"
+                          wx:for-index="courseIndex"
+                          wx:for-item="courseItem"
+                          catchtap="goCourseEvent"
+                          data-id="{{courseItem.course_id}}">
                       <view class="_book"><image src="{{courseItem.cover_url}}" mode="aspectFill"></image></view>
                       <text class="_name">{{courseItem.course_name}}</text>
                     </view>
-                  </view>
-                  <view wx:else class="mg-right-resource-n">当前小组暂无资源</view>
+                    <view wx:if="{{teamsCache[index].courses.length <= 0}}" class="mg-right-resource-n">当前小组暂无资源</view>
                 </view>
               </view>
 
@@ -82,9 +87,13 @@
         </block>
       </swiper>
     </block>
-    <view wx:else class="nodate">
-      <view class="color-999">您还没加入任何学习小组!</view>
-    </view>
+    <view wx:else class="nodate">您还没加入任何学习小组!</view>
 
   </view>
+
+  <view wx:else catchtap="goLoginEvent" class="teams-login">未登录</view>
 </view>
+
+
+<!--登录插件-->
+<wu-login id="wu-login" />

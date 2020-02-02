@@ -1,8 +1,9 @@
 const App = getApp()
-const { $wuNavigation, $wuToast } = require('../../../../components/wu/index')
-const { bindUser, getUserInfo } = require('../../../../request/userPort')
-const { getPhoneNumber } = require('../../../../request/systemPort')
+import { $wuNavigation } from '../../../../components/wu/index'
+import { bindUser, getUserInfo } from '../../../../request/userPort'
+import { getPhoneNumber } from '../../../../request/systemPort'
 import WxValidate from '../../../../utils/WxValidate'
+const Toast = require('../../../../viewMethod/toast')
 
 Page({
     data: {
@@ -21,14 +22,10 @@ Page({
     },
 
     onLoad: function () {
-        this._initValidate()
-        this.getUserInfo()
+        this.__init()
     },
 
     onShow: function () {
-      if(App.phone.verify) {  // 手机号通过验证 就反向传值
-        this.setData({ 'form.tel': App.phone.tel })
-      }
     },
 
     onPageScroll: function (e) {
@@ -69,57 +66,60 @@ Page({
   // 自定义事件
   goVerifyTelEvent() {
     wx.navigateTo({
-      url: `/pages/apply/mine/verify-tel/verify-tel`
+      url: `/pages/apply/mine/verify-tel/verify-tel`,
+      events: {
+        acceptDataVerifyTel: (data) => {
+          this.setData({ 'form.tel': data.mobile })
+        }
+      }
     })
   },
   setValueEvent(e) {  // 全局输入框设置数据
     const type = e.currentTarget.dataset.name
     this.setData({ [type]: e.detail.value })
   },
+
+  __init() {
+    this._initValidate()
+    this._getUserInfo()
+  },
   /**
    * 提交表单
    **/
   formSubmit(e) {
-    console.log(e)
     if (!this.WxValidate.checkForm(e)) {    //   验证字段
       const error = this.WxValidate.errorList[0]
-      console.log(error)
-      this._errorToast(error) // 错误提示
+      Toast.text({ text: error.msg})
       return false
     }
 
     bindUser({
       formData: JSON.stringify(e.detail.value)
-    }).then((res) => {
-      console.log(res)
-      this._errorToast(res)
-      setTimeout(()=> {
-        wx.navigateBack()
-      }, 500)
     })
+        .then((res) => {
+          Toast.text({ text: res.msg})
+          setTimeout(()=> {
+            wx.navigateBack({ delta: 1 })
+          }, 500)
+        })
 
   },
 
-  _errorToast(error) {
-    $wuToast().show({
-      type: 'text',
-      duration: 1000,
-      color: '#ffffff',
-      text: error.msg
-    })
-  },
   /**
    * 请求用户信息
    **/
-  getUserInfo() {
-    getUserInfo({ userID: App.user.userInfo.UserID }).then((res) => {
-      this.setData({
-        'form.name': res.data.Caption,
-        'form.tel': res.data.MobilePhone,
-        'form.email': res.data.Email,
-        'form.sign': res.data.SignText
-      })
+  _getUserInfo() {
+    getUserInfo({
+      user_id: App.user.userInfo.user_id
     })
+        .then((res) => {
+          this.setData({
+            'form.name': res.data.Caption,
+            'form.tel': res.data.MobilePhone,
+            'form.email': res.data.Email,
+            'form.sign': res.data.SignText
+          })
+        })
   },
   /**
      *  验证电话号码 自定义事件

@@ -1,4 +1,3 @@
-<!--分享-->
 <wu-backdrop id="wu-backdrop" bind:click="_closeShareLayerEvent" />
 <wu-animation-group wux-class="share-layer" in="{{ in }}" class-names="wux-animate--fadeInDown">
 	<view class="_insert">

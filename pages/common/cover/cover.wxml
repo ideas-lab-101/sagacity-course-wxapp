@@ -1,11 +1,5 @@
-<!--play.wxml-->
-<wu-loading id="wu-loading"></wu-loading>
-<wu-toast id="wu-toast"></wu-toast>
-
+<wu-navigation id="wu-navigation" title="保存封面"></wu-navigation>
 <view class="container">
-
-    <wu-navigation id="wu-navigation" title="保存封面"></wu-navigation>
-
     <view class="cover-box">
         <view class="_con">
             <image src="{{coverData.CoverURL}}" mode="widthFix"></image>
@@ -15,7 +9,6 @@
             <view wx:else><button open-type="openSetting" plain class="_setting" bindopensetting="opensettingEvent">微信授权保存到相册</button></view>
         </view>
     </view>
-
 </view>
 
 

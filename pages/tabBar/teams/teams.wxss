@@ -1,7 +1,9 @@
 page{
     background-color: #f7f7f7;
 }
-
+.content-container{
+    height: 100%;
+}
 .teams-nav{
     height: 90rpx;
     line-height: 90rpx;
@@ -14,15 +16,13 @@ page{
 
 .mg-right-box{
     padding: 40rpx;
-    margin: 20rpx 20rpx 0 20rpx;
+    margin: 20rpx 10rpx 0 20rpx;
     background-color: white;
-    box-shadow: 0 0 40rpx rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 40rpx rgba(0, 0, 0, 0.05);
     height: calc(100% - 60px);
     position: relative;
 }
-.mg-right-box.auth{
-    border-color: rgba(115, 52, 41, 0.5); box-shadow:0 8rpx 20rpx rgba(115, 52, 41, 0.3);
-}
+
 .mg-right-num{
     position: absolute; left: 0; top: 0; z-index: 10;
 }
@@ -39,7 +39,7 @@ page{
     position: absolute; right: 0; top: 0; font-size: 20rpx; color: #999999; z-index: 10; padding: 15rpx;
 }
 .mg-right-box>._title{
-    font-weight: 500; font-size: 46rpx; margin-top: 20rpx; display: flex; align-items: center; justify-content: center;
+    font-weight: 500; font-size: 48rpx; margin-top: 40rpx; display: flex; align-items: center; justify-content: center;
 }
 .mg-right-box>._title .iconfont{ margin-left: 10rpx; font-size: 38rpx; color: #999999;}
 .mg-right-box>._desc{
@@ -177,5 +177,14 @@ page{
     -webkit-line-clamp:2;
 }
 
-.nodate{ text-align: center; padding: 120rpx 30rpx; font-size: 26rpx;  width: 100%;}
+.nodate{
+    text-align: center;
+    padding: 120rpx 30rpx;
+    font-size: 26rpx;
+    color: #999999;
+}
+.teams-login{
+    text-align: center;
+    padding: 120rpx 30rpx;
+}
 

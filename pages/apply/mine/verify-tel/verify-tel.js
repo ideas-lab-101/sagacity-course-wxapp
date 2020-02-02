@@ -1,7 +1,7 @@
 const App = getApp()
-const { $wuxToast } = require('wux-weapp')
-const { getWXPhoneNumber, getIdentityCode, checkIdentityCode } = require('../../../../request/systemPort')
+import { getWXPhoneNumber, getIdentityCode, checkIdentityCode } from '../../../../request/systemPort'
 import WxValidate from '../../../../utils/WxValidate'
+const Toast = require('../../../../viewMethod/toast')
 
 Page({
     data: {
@@ -22,10 +22,9 @@ Page({
     },
 
     onLoad: function () {
-      this._initValidate()
-    },
+      this.eventChannel = this.getOpenerEventChannel()
 
-    onShow: function () {
+      this._initValidate()
     },
 
   /**
@@ -80,7 +79,6 @@ Page({
 
     _countTime() {
       if(this.data.countDown.count <= 0) {
-        console.log(this.data.countDown.count)
         this.setData({ 'countDown.count': 121, 'countDown.visible': true })
         return false
       }
@@ -93,19 +91,21 @@ Page({
     },
 
     getPhoneNumber(e) {
-      console.log(e)
-      getWXPhoneNumber({
-        encryptedData: e.detail.encryptedData,
-        session_key:  App.user.authToken,
-        iv: e.detail.iv
-      }).then((res) => {
-        console.log(res)
-        App.phone.verify = true     // 反向设置手机验证通过
-        App.phone.tel = res.data
-        setTimeout(() => {
-          wx.navigateBack()
-        }, 300)
-      })
+      if (e.detail.errMsg === "getPhoneNumber:ok") {
+        getWXPhoneNumber({
+          encryptedData: e.detail.encryptedData,
+          session_key:  App.user.authToken,
+          iv: e.detail.iv
+        })
+            .then((res) => {
+
+              this.eventChannel.emit('acceptDataVerifyTel', { mobile: res.data});
+
+              setTimeout(() => {
+                wx.navigateBack({ delta: 1 })
+              }, 500)
+            })
+      }
     },
 
     /**
@@ -121,50 +121,38 @@ Page({
       }
       if (!this.phoneWxValidate.checkForm(e)) {    //   验证字段
         const error = this.phoneWxValidate.errorList[0]
-        this._errorToast(error) // 错误提示
+        Toast.text({ text: error})
         return false
       }
       getIdentityCode({
         account: this.data.form.tel,
         accountType: 1         // （1-电话|2-邮件）
-      }).then((res) => {
-        console.log(res)
-        this.setData({ 'countDown.visible': false })
-        this._countTime()
       })
+          .then((res) => {
+            this.setData({ 'countDown.visible': false })
+            this._countTime()
+          })
     },
 
     formSubmit(e) {
-      if (!this.WxValidate.checkForm(e)) {    //   验证字段
+      if (!this.WxValidate.checkForm(e)) {
         const error = this.WxValidate.errorList[0]
-        this._errorToast(error) // 错误提示
+        Toast.text({ text: error})
         return false
       }
       checkIdentityCode({
         account: this.data.form.tel,
         identityCode: this.data.form.identityCode
-      }).then((res) => {
-        console.log(res)
-
-        App.phone.verify = true               // 反向设置手机验证通过
-        App.phone.tel = this.data.form.tel
-        setTimeout(() => {
-          wx.navigateBack()
-        }, 300)
-      }).catch((error) => {
-        this._errorToast({
-          msg: error.msg
-        })
       })
-    },
-
-    _errorToast(error) {
-      $wuxToast().show({
-        type: 'text',
-        duration: 1000,
-        color: '#ffffff',
-        text: error.msg
-      })
+          .then((res) => {
+            this.eventChannel.emit('acceptDataVerifyTel', { mobile: this.data.form.tel });
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 500)
+          })
+          .catch((error) => {
+            Toast.text({ text: error.msg})
+          })
     }
 
 })

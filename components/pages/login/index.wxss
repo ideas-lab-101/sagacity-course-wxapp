@@ -6,11 +6,10 @@
   position: fixed;
   z-index: 120;
   left: 0;
-  top: 30%;
+  top: 0;
+  right: 0;
   padding: 70rpx 50rpx;
   background-color: white;
-  width: 500rpx;
-  box-shadow: -20rpx 20rpx 3rpx rgba(0, 0, 0, 0.2);
 }
 .login-container .close{
   position: absolute;
@@ -27,13 +26,14 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-top: 20rpx;
 }
 .login-link ._btn{
   font-weight: normal;
   margin: 0;
   border-radius: 0;
   font-size: 32rpx;
-  line-height: 1.3;
+  line-height: 1.5;
   width: 100% !important;
 }
 .login-link ._btn._sub{

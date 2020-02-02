@@ -1,6 +1,7 @@
 const App = getApp()
 import { getTeamList, getTeamInfo } from '../../../request/teamPort'
 const TeamCacheBehavior = require('./TeamCacheBehavior')
+import { $wuLogin } from '../../../components/pages/index'
 
 Page({
     behaviors: [TeamCacheBehavior],
@@ -15,6 +16,7 @@ Page({
           timingFunction: "linear"
         }
       },
+      isLogin: true,
       /**
        * 存储的数据参数
        */
@@ -24,7 +26,7 @@ Page({
        */
       teamCurrent: null,   // swiper 改变的时候 当前的下标
       teamCurrentID: null,  // 当前加载的teamID  并一定指当前选中的TEAM  的ID
-      userID: '',
+      userID: null,
       /**
        * 页面固定参数 swiper 高度计算
        */
@@ -44,21 +46,19 @@ Page({
     },
 
     onReady: function () {
-      try {
-        var res = wx.getSystemInfoSync()
-        var screenHeight = res.windowHeight
-      } catch (e) {}
-      var query = wx.createSelectorQuery()
-      query.select('#teams-nav').boundingClientRect()
-      query.exec((ret) => {
-        let h = 0
-        ret.forEach((item) => {
-          h += item.height
+        const screenHeight = App.globalData.equipment.windowHeight
+        const query = wx.createSelectorQuery()
+
+        query.select('#teams-nav').boundingClientRect()
+        query.exec((ret) => {
+            let h = 0
+            ret.forEach((item) => {
+                h += item.height
+            })
+            this.setData({
+                pageContentHeight: `${screenHeight - h}px`
+            })
         })
-        this.setData({
-          pageContentHeight: `${screenHeight - h}px`
-        })
-      })
     },
 
     onShareAppMessage: function (res) {
@@ -102,14 +102,14 @@ Page({
     },
     goTeamRecordsEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const { teamList, userID } = this.data
+      const { teamList, teamsCache } = this.data
       const teamID = teamList[index].team_id
       if(!teamID){
         return false
       }
       const self = this
       wx.navigateTo({
-          url: `/pages/apply/teams/team-records/team-records?id=${teamID}`,
+          url: `/pages/apply/teams/team-records/team-records?id=${teamID}&creatorID=${teamsCache[index].owner.user_id}`,
           events: {
               acceptDataTeamRecordChange: function(data) {
                   const i = teamList.findIndex(item => item.team_id === Number(data.teamID))
@@ -126,7 +126,7 @@ Page({
 
     goTeamSetEvent: function (e) {
       const index = e.currentTarget.dataset.index
-      const { teamList, userID } = this.data
+      const { teamList, userID, teamsCache } = this.data
       const teamID = teamList[index].team_id
       const teamName = teamList[index].team_name
       const blnAuth = teamList[index].bln_auth
@@ -135,7 +135,7 @@ Page({
         return false
       }
       let isCreator = false
-      if(userID === App.teamActive.userInfo.user_id) {
+      if(userID === teamsCache[index].owner.user_id) {
         isCreator = true
       }
 
@@ -200,7 +200,12 @@ Page({
      *  获取数据
      * */
     __init: function () {
-      getTeamList()
+        if (!App.user.ckLogin()) {
+            this.setData({ isLogin: false })
+            return false
+        }
+
+        getTeamList()
           .then((res) => {
               const list = res.data.list
               /**
@@ -265,6 +270,21 @@ Page({
           .then((res) => {
               this.__add({ index, teamInfo: res.data })
           })
+    },
+    /**
+     * 登录事件
+     * @param e
+     */
+    goLoginEvent(e) {
+        wx.checkSession({
+            success (e) {
+                console.log(e)
+            },
+            fail (e) {
+                console.error(e)
+            }
+        })
+        $wuLogin().show()
     }
 
 })

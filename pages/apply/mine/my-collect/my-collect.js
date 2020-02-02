@@ -68,10 +68,8 @@ Page({
             type: type
         })
             .then((res) => {
-                this.data.favors.list.splice(index, 1)
-                this.setData({
-                    'favors.list': this.data.favors.list
-                })
+
+                this.__deleteTurnPageMultiple(index)
             })
     }
 })

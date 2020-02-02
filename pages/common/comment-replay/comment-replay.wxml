@@ -1,35 +1,28 @@
-<wu-loading id="wu-loading"></wu-loading>
-<wux-toast id="wux-toast" />
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}">
+</wu-navigation>
 
-<view>
+<!--写评论-->
+<view class="cr-box">
 
-    <wu-navigation id="wu-navigation" title="{{nav.title}}"
-                   transparent="{{nav.transparent}}"
-                   model="{{nav.model}}"
-                   animation="{{nav.animation}}">
-    </wu-navigation>
-
-    <!--写评论-->
-    <view class="cr-box">
-
-        <form bindsubmit="submitCommentEvent">
-            <view class="cr-b">
-                    <textarea name="content"
-                              focus="{{text.focus}}"
-                              value="{{text.content}}"
-                              maxlength="100"
-                              cursor-spacing="90"
-                              show-confirm-bar="{{false}}"
-                              bindinput="textInputEvent"
-                              placeholder="{{text.placeholder}}"
-                              class="cr-textarea"/>
-            </view>
-            <view class="cr-link">
-                <text>限制100字</text>
-                <button plain class="cr-btn {{text.canSubmit?'checked':''}}" form-type="submit">发送</button>
-            </view>
-        </form>
-
-    </view>
+    <form bindsubmit="submitCommentEvent">
+        <view class="cr-b">
+                <textarea name="content"
+                          focus="{{text.focus}}"
+                          value="{{text.content}}"
+                          maxlength="100"
+                          cursor-spacing="90"
+                          show-confirm-bar="{{false}}"
+                          bindinput="textInputEvent"
+                          placeholder="{{text.placeholder}}"
+                          class="cr-textarea"/>
+        </view>
+        <view class="cr-link">
+            <text>限制100字</text>
+            <button plain class="cr-btn {{text.canSubmit?'checked':''}}" form-type="submit">发送</button>
+        </view>
+    </form>
 
 </view>

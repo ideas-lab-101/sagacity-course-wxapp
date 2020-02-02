@@ -1,8 +1,11 @@
-const { $wuBackdrop, $wuNavigation, $wuActionSheet } = require('../../../components/wu/index')
 const App = getApp()
-const { getCommentList, addComment, delComment } = require('../../../request/commentPort')
+import { getCommentList, addComment, delComment } from '../../../request/commentPort'
+import { $wuNavigation } from '../../../components/wu/index'
+import { $wuxActionSheet } from 'wux-weapp/index'
+const PageReachBottomBehavior = require('../../../utils/behaviors/PageReachBottomBehavior')
 
 Page({
+    behaviors: [PageReachBottomBehavior],
     data: {
         nav: {
             title: "留言",
@@ -13,11 +16,6 @@ Page({
               timingFunction: "linear"
             }
         },
-        info: {
-            lastPage: true,
-            pageNumber: 1,
-            list: []
-        },
         isTaFocused: false,
         isCommentFocus: false,
         taPlaceholder: '留言',
@@ -27,26 +25,11 @@ Page({
     },
 
     onLoad: function (options) {
-        // 加载数据
         this.optionsId = options.id
         this.optionsType = options.type
-        console.log(options)
-
         this.setData({userInfo: App.user.userInfo })
-        this._initData(this.optionsId, this.optionsType)
-    },
 
-    onShow: function () {
-      /**
-       * 监听评论的是否添加
-       */
-      App.commentManager.listen(this.data.info.list, (data)=> {
-        //this.data.info.cCount++
-        this.setData({'info.list': data})
-      })
-    },
-
-    onReady: function () {
+        this.__init()
     },
 
     onPageScroll: function (e) {
@@ -54,20 +37,21 @@ Page({
     },
 
     onReachBottom: function (e) {
-      this._reachBottomLoad() // 下拉加载数据
+        this.__ReachBottom()
     },
       /**
        * 链接
        */
-      goReplay(referID, caption) {
+     goReplay(referID, caption) {
         wx.navigateTo({
           url: `/pages/common/comment-replay/comment-replay?id=${this.optionsId}&referid=${referID}&type=${this.optionsType}&caption=${caption}`
         })
-      },
-  /**
-     *
+    },
+    /**
      * 内部调用事件
-     * ***/
+     * @param e
+     * @returns {boolean}
+     */
     operationEvent: function (e) {
         const self = this
         const commentID = e.currentTarget.dataset.commentid
@@ -75,7 +59,7 @@ Page({
         if (!myself) {
             return false
         }
-        $wuActionSheet().showSheet({
+        $wuxActionSheet().showSheet({
             titleText: '操作确认？',
             cancelText: '取消',
             cancel() {},
@@ -148,34 +132,14 @@ Page({
      *
      * 内部数据获取事件
      * ***/
-    _initData: function (id, type) {
-        getCommentList({
-                dataID: id,
-                type: type,
-                page: this.data.info.pageNumber
-        }).then((res) => {
-            console.log(res)
-            this.setData({
-                'info.lastPage': res.lastPage,
-                'info.pageNumber': res.pageNumber,
-                'info.list': this.data.info.list.concat(res.list)
-            })
+    __init: function () {
+        this.__getTurnPageDataList({
+            isPageShow: true,
+            interfaceFn: getCommentList,
+            params: {
+                data_id: this.optionsId,
+                type: this.optionsType
+            }
         })
-    },
-    _reachBottomLoad() {
-        if(this.data.info.lastPage || this.isLoading) {
-          return false
-        }
-        this.isLoading = true
-        this.data.info.pageNumber++
-        this._initData(this.optionsId, this.optionsType)
-          .then(() => {
-            this.isLoading = false
-          })
-          .catch(() => {
-            this.isLoading = false
-            this.data.info.pageNumber--
-          })
-      }
-
+    }
 })

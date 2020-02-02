@@ -102,5 +102,3 @@
 
 <!--播发插件-->
 <wu-play-widget id="wu-play-widget" />
-<!--登录插件-->
-<wu-login id="wu-login" />

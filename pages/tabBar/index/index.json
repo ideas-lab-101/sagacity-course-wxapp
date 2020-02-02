@@ -4,7 +4,6 @@
   "usingComponents": {
     "wu-play-widget": "/components/wu/playWidget/index",
     "wu-scroll-top": "/components/wu/scrollTop/index",
-    "wu-slogon": "/components/wu/slogon/index",
-    "wu-login": "/components/pages/login/index"
+    "wu-slogon": "/components/wu/slogon/index"
   }
 }

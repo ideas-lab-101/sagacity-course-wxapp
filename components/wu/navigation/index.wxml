@@ -6,7 +6,7 @@
           catchtransitionend="_transitionend">
 
         <view class="_c" style="padding-top: {{paddingTop}}px; height: {{height}}; line-height: {{height}};color: {{color}};">
-            <view class="_back" hover-class="navigation-back-hover" catchtap="naviBackEvent">
+            <view class="_back" hover-class="navigation-back-hover" catchtap="navBackEvent">
                 <text class="iconfont icon-fanhui _text"></text>
                 <text class="_text" wx:if="{{homeFontVisible}}">{{navTitle}}</text>
             </view>
@@ -20,5 +20,4 @@
         <view style="padding-top: {{paddingTop}}px; {{transparent?'': 'background: '+ backgroundColor}}; color: {{color}}; height: {{height}}; opacity:{{opacity}}"></view>
 
     </view>
-
 </view>

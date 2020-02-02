@@ -68,7 +68,6 @@
         "my-course/my-course",
         "my-ticket/my-ticket",
         "my-record/my-record",
-        "my-teams/my-teams",
         "my-message/my-message",
         "my-set/my-set",
         "record-play/record-play",
@@ -106,7 +105,8 @@
   "usingComponents": {
     "wu-navigation": "/components/wu/navigation/index",
     "wu-backdrop": "/components/wu/backdrop/index",
-    "wu-animation-group": "/components/wu/animation-group/index"
+    "wu-animation-group": "/components/wu/animation-group/index",
+    "wu-login": "/components/pages/login/index"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

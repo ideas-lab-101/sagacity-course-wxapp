@@ -56,13 +56,11 @@ Component({
              * 系统参数
              */
             try {
-                var clientRect = wx.getMenuButtonBoundingClientRect() // 胶囊参数
-                var system = wx.getSystemInfoSync()
+                this.clientRect = wx.getMenuButtonBoundingClientRect() // 胶囊参数
+                const system = getApp().globalData.equipment
                 this.statusBarHeight = system.statusBarHeight
                 this.screenWidth = system.screenWidth
                 this.screenHeight = system.screenHeight
-
-                this.clientRect = clientRect
             } catch (e) {}
 
             this.animation = wx.createAnimation({
@@ -169,7 +167,7 @@ Component({
          * 返回链接
          * @param e
          */
-        naviBackEvent: function (e) {
+        navBackEvent: function (e) {
             const { backURL } = this.data
 
             if (getCurrentPages().length === 1) {

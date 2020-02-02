@@ -1,18 +1,15 @@
-<!--play.wxml-->
-<wu-loading id="wu-loading"></wu-loading>
-<wu-actionsheet id="wu-actionsheet"></wu-actionsheet>
+<wux-actionsheet id="wux-actionsheet"></wux-actionsheet>
 <wxs src="./comment.wxs" module="moduleComment" />
 
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}">
+</wu-navigation>
+
 <view class="container">
-
-    <wu-navigation id="wu-navigation" title="{{nav.title}}"
-                   transparent="{{nav.transparent}}"
-                   model="{{nav.model}}"
-                   animation="{{nav.animation}}">
-    </wu-navigation>
-
-    <block wx:if="{{info.list.length > 0}}">
-      <view class="comment-sub" wx:for="{{info.list}}" wx:key="{{item.CommentID}}">
+    <block wx:if="{{content.list.length > 0}}">
+      <view class="comment-sub" wx:for="{{content.list}}" wx:key="{{item.CommentID}}">
           <view class="flex _first">
               <image src="{{item.avatar_url}}" mode="widthFix"></image>
               <text class="_name color-999">{{item.Caption}}</text>
@@ -51,14 +48,12 @@
     </block>
     <view class="comment-nodata" wx:else >暂无留言</view>
 
-
     <view class="comment-sub-bottom" hidden="{{isCommentFocus}}" bindtap="commentFocusEvent">
         <view class="_fix flex between">
             <view><text class="iconfont icon-bianji"></text> 我要留言</view>
             <view class="_r color-999"><text class="iconfont icon-smile"></text></view>
         </view>
     </view>
-
 </view>
 
 
