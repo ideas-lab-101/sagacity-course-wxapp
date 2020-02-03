@@ -16,9 +16,9 @@ export const WXLogin = function (data) {
  * 获得加密信息
  * code encryptedData iv
  * */
-export const getWxaInfo = function (data) {
+export const getWxaPhone = function (data) {
   return fetch({
-    url: '/wxapp/system/v3/getWxaInfo',
+    url: '/wxapp/system/v3/getWxaPhone',
     data: data || {},
     method: 'POST'
   })
@@ -49,33 +49,6 @@ export function getEnumDetail(data) {
     method: 'GET'
   })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -130,23 +103,7 @@ export function getWXPhoneNumber(data) {  // encryptedData session_key iv
   })
 }
 
-// 获得验证码 支持电话或邮件
-export function getIdentityCode(data) {  // account accountType（1-电话|2-邮件）
-  return fetch({
-    url: '/wxapp/system/getIdentityCode',
-    data: data || {},
-    method: 'GET'
-  })
-}
 
-// 验证验证码
-export function checkIdentityCode(data) {  // account identityCode
-  return fetch({
-    url: '/wxapp/system/checkIdentityCode',
-    data: data || {},
-    method: 'POST'
-  })
-}
 
 // 搜索
 export function Search(data) {  // key
@@ -166,14 +123,7 @@ export function HotSearch(data) {
   })
 }
 
-// 扫码登录
-export function ScanLogin(data) { // key
-  return fetch({
-    url: '/wxapp/system/ScanLogin',
-    data: data || {},
-    method: 'POST'
-  })
-}
+
 
 // 获取电话号码
 export function getPhoneNumber(data) { // key
@@ -185,6 +135,42 @@ export function getPhoneNumber(data) { // key
 }
 */
 
+/**
+ * 扫码登录
+ * key
+ */
+export function ScanLogin(data) {
+  return fetch({
+    url: '/wxapp/system/v3/ScanLogin',
+    data: data || {},
+    method: 'POST'
+  })
+}
+
+
+/**
+ * 获得验证码 支持电话或邮件
+ * account account_type（1-电话|2-邮件）
+ */
+export function getIdentityCode(data) {
+  return fetch({
+    url: '/wxapp/system/v3/getIdentityCode',
+    data: data || {},
+    method: 'GET'
+  })
+}
+
+/**
+ * 验证验证码
+ * account identity_code
+ */
+export function checkIdentityCode(data) {
+  return fetch({
+    url: '/wxapp/system/v3/checkIdentityCode',
+    data: data || {},
+    method: 'POST'
+  })
+}
 
 /**
  * 获取分享
@@ -197,5 +183,3 @@ export function getWXSSCode(data) {
     method: 'GET'
   })
 }
-
-

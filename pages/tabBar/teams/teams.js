@@ -276,14 +276,6 @@ Page({
      * @param e
      */
     goLoginEvent(e) {
-        wx.checkSession({
-            success (e) {
-                console.log(e)
-            },
-            fail (e) {
-                console.error(e)
-            }
-        })
         $wuLogin().show()
     }
 

@@ -1,12 +1,13 @@
-const { fetch } = require('../axios/fetch')
+import { fetch } from '../axios/fetch'
+import { $wuLogin } from '../components/pages/index'
 
 /**
- * 评论方法调用
- * */
-// 获得评论列表
-export function getCommentList(data) { //dataID type token
+ * 获得评论列表
+ * data_id type token
+ */
+export function getCommentList(data) { //
   return fetch({
-    url: 'wxapp/comment/getCommentList',
+    url: '/wxapp/comment/v3/getCommentList',
     data: data || {},
     method: 'GET'
   }, true)
@@ -15,13 +16,11 @@ export function getCommentList(data) { //dataID type token
 // 新增留言
 export function addComment(data) { //token referID dataID dataType content
   if (!getApp().user.ckLogin()) {
-    wx.navigateTo({
-      url: '/pages/common/accredit/accredit'
-    })
-    return new Promise((resolve, reject) => {})
+    $wuLogin().show()
+    return Promise.reject()
   }
   return fetch({
-    url: 'wxapp/comment/addComment',
+    url: '/wxapp/comment/v3/addComment',
     data: data || {},
     method: 'POST'
   })
@@ -30,13 +29,11 @@ export function addComment(data) { //token referID dataID dataType content
 // 删除留言
 export function delComment(data) { //token commentID
   if (!getApp().user.ckLogin()) {
-    wx.navigateTo({
-      url: '/pages/common/accredit/accredit'
-    })
-    return new Promise((resolve, reject) => {})
+    $wuLogin().show()
+    return Promise.reject()
   }
   return fetch({
-    url: 'wxapp/comment/delComment',
+    url: '/wxapp/comment/v3/delComment',
     data: data || {},
     method: 'POST'
   })

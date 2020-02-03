@@ -9,12 +9,7 @@ Page({
     },
 
     onLoad: function () {
-
-        this.__initAppLaunch()
-    },
-
-    onUnload: function () {
-        clearTimeout(this.linkFn)
+        this.__init()
     },
 
     onPageScroll: function (e) {
@@ -43,7 +38,8 @@ Page({
                 list.splice(index, 1)
                 this.setData({ 'content.list': list })
 
-                this.linkFn = setTimeout(() => {
+                const linkFn = setTimeout(() => {
+                    clearTimeout(linkFn)
                     wx.navigateTo({
                         url: `/pages/apply/mine/record-play/record-play?id=${dataID}`
                     })

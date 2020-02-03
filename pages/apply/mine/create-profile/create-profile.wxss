@@ -76,10 +76,13 @@ page{
 
 .ei-val-box{ display: flex; justify-content: space-between; align-items: flex-end; padding-top: 30rpx; }
 
-.ei-val-box wux-input{ flex: 1; padding: 8rpx 0; }
+.ei-val-box input{ flex: 1; padding: 8rpx 0; }
 
-.ei-val-box wux-input.def{ background-color: #f1f1f1; margin-right: 10rpx; padding: 8rpx 10rpx;}
+.ei-val-box input.def{ background-color: #f1f1f1; margin-right: 10rpx; padding: 8rpx 10rpx;}
 
 .ei-val{ background-color: #eee; padding: 14rpx 25rpx; display: inline-block; font-size: 30rpx; }
 
-.ei-group .wux-cell__text{ font-size: 22rpx; color: #999999;}
+.ei-group .wux-cell__text{
+    font-size: 26rpx;
+    padding-top: 20rpx;
+}

@@ -6,7 +6,7 @@ const { fetch } = require('../axios/fetch')
 // 获得文档列表
 export function getInfoList(data) { // 分页参数
   return fetch({
-    url: 'wxapp/info/getInfoList',
+    url: '/wxapp/info/v3/getInfoList',
     data: data || {},
     method: 'GET'
   })
@@ -15,7 +15,7 @@ export function getInfoList(data) { // 分页参数
 // 获得文档详情
 export function getInfoContent(data) {  // infoID token
   return fetch({
-    url: 'wxapp/info/getInfoContent',
+    url: '/wxapp/info/v3/getInfoContent',
     data: data || {},
     method: 'GET'
   })

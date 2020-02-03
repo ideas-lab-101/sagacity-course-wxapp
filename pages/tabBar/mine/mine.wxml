@@ -39,6 +39,7 @@
               <view class="_edit _o" bindtap="profileEvent" wx:if="{{userInfo.state===1}}"><text class="iconfont icon-bianji"></text></view>
               <view class="_edit" bindtap="profileEvent" wx:else>[完善资料]</view>
             </view>
+            <view class="nickSign" wx:if="{{userInfo.sign_text}}">{{userInfo.sign_text}}</view>
             <!--<view class="pcount"><text>{{userInfo.point}}</text> 积分</view>-->
           </view>
 
@@ -163,3 +164,5 @@
 <!--分享组件-->
 <share id="share"></share>
 
+<!--登录插件-->
+<wu-login id="wu-login" />

@@ -4,15 +4,15 @@
 
 <view class="container">
   <view class="master-backimg">
-    <image src="{{moduleUserPage.changeURL(info.data.ZoneBgURL, info.data.avatar_url)}}" mode="aspectFill"></image>
+    <image src="{{moduleUserPage.changeURL(info.user_info.background_url, info.user_info.avatar_url)}}" mode="aspectFill"></image>
   </view>
 
   <scroll-view scroll-y class="master-scroll" bindscrolltolower="scrollToLowerEvent">
     <view class="master-scroll-box">
       <view class="master-info">
-        <image class="_img" src="{{info.data.avatar_url}}" mode="aspectFill"></image>
-        <text class="_name">{{info.data.Caption}}</text>
-        <text class="_txt">{{info.data.SignText || ''}}</text>
+        <image class="_img" src="{{info.user_info.avatar_url}}" mode="aspectFill"></image>
+        <text class="_name">{{info.user_info.caption}}</text>
+        <text class="_txt">{{info.user_info.sign_text || ''}}</text>
 
         <view class="master-watch">
           <view class="master-opera">
@@ -35,12 +35,12 @@
 
       <view class="master-courses">
 
-        <view class="_title" wx:if="{{info.data.RoleID === 2}}">
+        <view class="_title" wx:if="{{info.user_info.role_id === 2}}">
           <text class="{{contentMultipleCurrent === 0 ?'active':''}}" catchtap="__turnPageTabChangeMultiple" data-index="0">TA的作品</text>
           <text class="{{contentMultipleCurrent === 1 ?'active':''}}" catchtap="__turnPageTabChangeMultiple" data-index="1">TA的课程</text>
         </view>
 
-        <view class="_title _s" wx:if="{{info.data.RoleID === 3}}">
+        <view class="_title _s" wx:if="{{info.user_info.role_id === 3}}">
           <text class="active">TA的作品</text>
         </view>
 
@@ -80,11 +80,11 @@
               <view class="_content" data-index="{{index}}">
                 <view>
                   <view class="content_title">{{item.course_name}}</view>
-                  <view class="content_desc">{{item.desc}}</view>
+                  <view class="content_desc">{{item.course_desc}}</view>
                 </view>
                 <view class="content_m">
                   <text>
-                    <text>{{item.lCount}}课时</text>
+                    <text>{{item.lesson_count}}课时</text>
                     <text class="ml-15">{{item.view_count}}次浏览</text>
                   </text>
                   <text>{{moduleUserPage.translateCN(item.bln_end)}}</text>

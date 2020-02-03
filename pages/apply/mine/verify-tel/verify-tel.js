@@ -1,5 +1,5 @@
 const App = getApp()
-import { getWXPhoneNumber, getIdentityCode, checkIdentityCode } from '../../../../request/systemPort'
+import { getWxaPhone, getIdentityCode, checkIdentityCode } from '../../../../request/systemPort'
 import WxValidate from '../../../../utils/WxValidate'
 const Toast = require('../../../../viewMethod/toast')
 
@@ -78,30 +78,33 @@ Page({
     },
 
     _countTime() {
-      if(this.data.countDown.count <= 0) {
+      let { count } = this.data.countDown
+      if(count <= 0) {
         this.setData({ 'countDown.count': 121, 'countDown.visible': true })
         return false
       }
 
-      this.data.countDown.count--
-      this.setData({ 'countDown.count': this.data.countDown.count })
-      setTimeout(() => {
+      count--
+      this.setData({ 'countDown.count': count })
+
+      const TimeFn = setTimeout(() => {
+        clearTimeout(TimeFn)
         this._countTime()
       }, 1000)
     },
 
     getPhoneNumber(e) {
       if (e.detail.errMsg === "getPhoneNumber:ok") {
-        getWXPhoneNumber({
+        getWxaPhone({
           encryptedData: e.detail.encryptedData,
-          session_key:  App.user.authToken,
           iv: e.detail.iv
         })
             .then((res) => {
 
-              this.eventChannel.emit('acceptDataVerifyTel', { mobile: res.data});
+              this.eventChannel.emit('acceptDataVerifyTel', { mobile: res.data.phone});
 
-              setTimeout(() => {
+              const BackFn = setTimeout(() => {
+                clearTimeout(BackFn)
                 wx.navigateBack({ delta: 1 })
               }, 500)
             })
@@ -124,9 +127,14 @@ Page({
         Toast.text({ text: error})
         return false
       }
+
+      if (!this.data.countDown.visible) {
+        return false
+      }
+
       getIdentityCode({
         account: this.data.form.tel,
-        accountType: 1         // （1-电话|2-邮件）
+        account_type: 1         // （1-电话|2-邮件）
       })
           .then((res) => {
             this.setData({ 'countDown.visible': false })
@@ -142,12 +150,14 @@ Page({
       }
       checkIdentityCode({
         account: this.data.form.tel,
-        identityCode: this.data.form.identityCode
+        identity_code: this.data.form.identityCode
       })
           .then((res) => {
             this.eventChannel.emit('acceptDataVerifyTel', { mobile: this.data.form.tel });
-            setTimeout(() => {
-              wx.navigateBack()
+
+            const BackFn = setTimeout(() => {
+              clearTimeout(BackFn)
+              wx.navigateBack({ delta: 1 })
             }, 500)
           })
           .catch((error) => {

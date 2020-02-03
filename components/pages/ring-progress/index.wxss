@@ -1,0 +1,52 @@
+.play-canvas-box{
+  text-align: center;
+  line-height: 0;
+  position: relative;
+}
+
+/*progress*/
+.progress-wrap{
+  position: relative;
+  width: 200px;
+  height:200px;
+  border-radius: 50%;
+  background: none;
+  text-align: center;
+}
+.progress-wrap .right-part{
+  width:200px;
+  height: 200px;
+  position: absolute;
+  clip:rect(0px,auto,auto,100px);
+}
+.progress-wrap .right{
+  width: 200px;
+  height:200px;
+  position: absolute;
+  border-radius: 50%;
+  background: #733429;
+  clip:rect(0px,auto,auto,100px);
+}
+.progress-wrap .left-part{
+  width:200px;
+  height: 200px;
+  position: absolute;
+  clip:rect(0px,100px,auto,0px);
+}
+.progress-wrap .left{
+  width: 200px;
+  height:200px;
+  position: absolute;
+  border-radius: 50%;
+  background: #733429;
+  clip:rect(0px,100px,auto,0px);
+}
+.progress-wrap.opacity{
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: 0;
+}
+.progress-wrap.opacity .left, .progress-wrap.opacity .right{
+  background: rgba(115, 52, 41, 0.25);
+}

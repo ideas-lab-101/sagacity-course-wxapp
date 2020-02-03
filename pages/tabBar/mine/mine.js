@@ -1,5 +1,5 @@
 const App = getApp()
-import { $share } from '../../../components/pages/index'
+import { $share, $wuLogin } from '../../../components/pages/index'
 import { ScanLogin } from '../../../request/systemPort'
 import { userAccountInfo, getRecordList, addUserPoint, updateZoneBg } from '../../../request/userPort'
 
@@ -35,7 +35,7 @@ Page({
         if ( App.backgroundAudioManager) {
           App.backgroundAudioManager.pause()
         }
-        this.isPageLoad = true
+        this.PageOnLoad = true
 
         this.__initInnerAudioManager()
     },
@@ -44,22 +44,25 @@ Page({
       /**
       * * 更新 消息数 比如加入 收藏 删除等等
       **/
+        if (!this.PageOnLoad && (App.requestManager.update('userEnroll', this.route)
+            || App.requestManager.update('userFavor', this.route))) {
+
+            this.__accountInfo()
+        }
+
+        if (!this.PageOnLoad && (App.requestManager.update('bindUser', this.route))) {
+            this.__init()
+        }
 
       /*if (App.requestLoadManager.consume('userEnroll') || App.requestLoadManager.consume('userFavor') ||
           App.requestLoadManager.consume('addUserPoint') || App.requestLoadManager.consume('setMessage') ||
           App.requestLoadManager.consume('bindUser')) {
           this.__init() // 请求基础数据
-      }
-      if (App.requestLoadManager.consume('submitRecordFile') || App.requestLoadManager.consume('setPublic') || App.requestLoadManager.consume('delRecord')) {
-          this.data.record.list = []
-          this.data.record.lastPage = false
-          this.data.record.pageNumber = 1
-          this._initUserRecordData() // 请求我的录制
       }*/
     },
 
     onHide: function () {
-      this.isPageLoad = false
+      this.PageOnLoad = false
       /**
        * * 销毁音频播放组件
        **/
@@ -69,7 +72,7 @@ Page({
     },
 
     onUnload: function () {
-      this.isPageLoad = false
+      this.PageOnLoad = false
       /**
        * * 销毁音频播放组件
        **/
@@ -84,11 +87,12 @@ Page({
             if (this.shareIndex === undefined) {
                 return false
             }
-            const title = `${this.data.userInfo.Caption} の ${this.data.record.list[this.shareIndex].Name}`
+            const { list } = this.data.content
+            const title = `${this.data.userInfo.caption} の ${list[this.shareIndex].name}`
             return {
                 title: title,
-                imageUrl: `${this.data.record.list[this.shareIndex].CoverURL}?imageView2/5/h/300`,
-                path: `/pages/apply/mine/record-play/record-play?id=${this.data.record.list[this.shareIndex].RecordID}`,
+                imageUrl: `${list[this.shareIndex].cover_url}?imageView2/5/h/300`,
+                path: `/pages/apply/mine/record-play/record-play?id=${list[this.shareIndex].record_id}`,
                 success: (ret) => {
                     addUserPoint({ pointCode: '002'})
                 }
@@ -108,11 +112,7 @@ Page({
      * 请求调用事件
      **/
     __init: function () {
-        userAccountInfo()
-            .then((res) => {
-                this.setData({ userInfo: res.data.account})
-            })
-
+        this.__accountInfo()
 
         this.__getTurnPageDataList({
             isPageShow: true,
@@ -124,10 +124,15 @@ Page({
         })
     },
 
+    __accountInfo() {
+        userAccountInfo()
+            .then((res) => {
+                this.setData({ userInfo: res.data.account})
+            })
+    },
+
     goLogin() {
-      wx.navigateTo({
-        url: '/pages/common/accredit/accredit'
-      })
+        $wuLogin().show()
     },
     /**
     * 链接事件
@@ -185,10 +190,10 @@ Page({
                     if (obj.type === 'login') {
                         this._scanLogin(obj.key)
                     } else {
-                        Toast.text({ text: '错误的二维码！' })
+                       throw { msg: '错误的二维码！' }
                     }
-                } catch (e) {
-                    Toast.text({ text: '错误的二维码！' })
+                } catch (err) {
+                    Toast.text({ text: err.msg })
                 }
             }
         })
@@ -202,7 +207,12 @@ Page({
 
     profileEvent: function () {
         wx.navigateTo({
-            url: '/pages/apply/mine/create-profile/create-profile'
+            url: '/pages/apply/mine/create-profile/create-profile',
+            events: {
+                acceptDataCreateProfile: (data) => {
+                    this.__accountInfo()
+                }
+            }
         })
     },
 
@@ -223,22 +233,22 @@ Page({
             sourceType: ['album', 'camera'],
             success: (res) => {
                 if (res.tempFiles[0].size > 5242880) {
-
                     Dialog.alert({
                         title: '提示',
-                        content: '图片大小不能超过5M，请重选'
+                        content: '图片大小不能超过5M，请重选！'
                     })
                     return false
                 }
                 const tempFilePaths = res.tempFilePaths
+
                 updateZoneBg({
                     bgFile: tempFilePaths[0],
-                    userID: this.data.userInfo.UserID
-                }).then( (res) => {
-                    this.setData({
-                        'userInfo.ZoneBgURL': JSON.parse(res.data).zoneBgURL
-                    })
                 })
+                    .then( (res) => {
+                        this.setData({
+                            'userInfo.background_url': res.data.background_url
+                        })
+                    })
             }
         })
     },
@@ -319,13 +329,10 @@ Page({
         Dialog.confirm({
             content: '是否登录网页版？',
             onConfirm: () => {
+
                 ScanLogin({key: key})
                     .then((res) => {
-                        if (res.code === 1) {
-                            Toast.text({ text: res.msg })
-                        }else {
-                            Toast.text({ text: res.msg })
-                        }
+                        Toast.text({ text: res.msg })
                     })
             }
         })

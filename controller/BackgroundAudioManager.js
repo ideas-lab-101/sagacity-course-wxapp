@@ -65,13 +65,13 @@ class BackgroundAudioManager {
             return false
         }*/
         this.info = Object.assign({}, this.info, info)
-        this.options = options
+        this.options = {...options}
         this.loopState = options.loopState
 
         if (!info.isEnroll && info.openState === 0) {
             return false
         }
-        this.AudioPlayer.create(options, this.audioBack)
+        this.AudioPlayer.create({...options}, this.audioBack)
     }
 
     play() {
@@ -144,7 +144,10 @@ class BackgroundAudioManager {
     }
 
     singleLoop() {
-        this.AudioPlayer.create(this.options, this.audioBack, this.info)
+        if (this.options) {
+            const options = Object.assign({}, {...this.options}, { frame: 0})
+            this.AudioPlayer.create(options, this.audioBack)
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 const App = getApp()
 import { $wuNavigation } from '../../../../components/wu/index'
-import { bindUser, getUserInfo } from '../../../../request/userPort'
-import { getPhoneNumber } from '../../../../request/systemPort'
+import { getUserInfo } from '../../../../request/userPort'
+import { bindUser } from '../../../../request/systemPort'
 import WxValidate from '../../../../utils/WxValidate'
 const Toast = require('../../../../viewMethod/toast')
 
@@ -12,7 +12,6 @@ Page({
         model: 'extrude',
         transparent: false
       },
-
       form: {
         name: '',
         tel: '',
@@ -22,10 +21,13 @@ Page({
     },
 
     onLoad: function () {
+        this.eventChannel = this.getOpenerEventChannel()
+
         this.__init()
     },
 
-    onShow: function () {
+    onUnload: function() {
+
     },
 
     onPageScroll: function (e) {
@@ -51,7 +53,7 @@ Page({
     })
     Object.assign(this.validationMsgs, {
       'name': {
-        required: '请输入姓名',
+        required: '请输入昵称',
       },
       'tel': {
         required: '请输入手机号',
@@ -63,8 +65,11 @@ Page({
     })
     this.WxValidate = new WxValidate(this.validators, this.validationMsgs)
   },
-  // 自定义事件
-  goVerifyTelEvent() {
+  /**
+   * 自定义事件
+   * @param e
+   */
+  goVerifyTelEvent(e) {
     wx.navigateTo({
       url: `/pages/apply/mine/verify-tel/verify-tel`,
       events: {
@@ -98,6 +103,8 @@ Page({
     })
         .then((res) => {
           Toast.text({ text: res.msg})
+          this.eventChannel.emit('acceptDataCreateProfile', {})
+
           setTimeout(()=> {
             wx.navigateBack({ delta: 1 })
           }, 500)
@@ -114,30 +121,11 @@ Page({
     })
         .then((res) => {
           this.setData({
-            'form.name': res.data.Caption,
-            'form.tel': res.data.MobilePhone,
-            'form.email': res.data.Email,
-            'form.sign': res.data.SignText
+            'form.name': res.data.user_info.caption,
+            'form.tel': res.data.user_info.mobile_phone,
+            'form.email': res.data.user_info.email,
+            'form.sign': res.data.user_info.sign_text
           })
         })
-  },
-  /**
-     *  验证电话号码 自定义事件
-     * */
-    // getPhoneEvent: function (e) {
-    //     if (e.detail.errMsg === 'getPhoneNumber:ok') {
-    //         getPhoneNumber({
-    //                 encryptedData: e.detail.encryptedData,
-    //                 iv: e.detail.iv,
-    //                 session_key: App.user.sessionKey
-    //         }).then((res) => {
-    //             bindUser({phoneNumber: res.data}).then( ret => {
-    //                 wx.switchTab({
-    //                     url: '/pages/tabBar/mine/mine'
-    //                 })
-    //             })
-    //         })
-    //     }
-    // }
-
+  }
 })

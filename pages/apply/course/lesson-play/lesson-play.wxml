@@ -3,18 +3,16 @@
 <wux-actionsheet id="wux-actionsheet"></wux-actionsheet>
 <wu-toptips id="wu-toptips"></wu-toptips>
 
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}"></wu-navigation>
 
 <view class="container">
-
-    <wu-navigation id="wu-navigation" title="{{nav.title}}"
-                 transparent="{{nav.transparent}}"
-                 model="{{nav.model}}"
-                 animation="{{nav.animation}}"></wu-navigation>
 
     <view class="play-coverUrl-blur {{systemSeries==='android'?'android':''}}" wx:if="{{info}}"
           style="background: url({{info.lesson_data.cover_url}}?imageView2/1/w/300/h/400) no-repeat top center; background-size: 120% 100%;">
     </view>
-
 
     <view class="play-audio">
 
@@ -24,9 +22,7 @@
                     <!--进度-->
                     <swiper-item>
                         <view class="play-cover-progress" bindtap="turnBackPageEvent">
-                            <view class="play-canvas-box">
-                                <template is="progress" data="{{progress: progress}}"/>
-                            </view>
+                            <wu-ring-progress progress="{{progress}}"></wu-ring-progress>
                             <image src="{{info.lesson_data.cover_url}}" mode="aspectFill" class="play-coverUrl"></image>
                         </view>
                         <!--当前课本信息显示-->
@@ -50,9 +46,7 @@
                   <rich-text class="recordlist _opera" nodes="{{moduleLessPlay.filterText(info.lesson_data.record_count)}}"></rich-text>
               </view>
               <view class="record _opera" bindtap="recordEvent">
-                  <view class="record_s">
-                      <text class="iconfont icon-luyin"></text>
-                  </view>
+                  <view class="record_s"><text class="iconfont icon-luyin"></text></view>
                   <view class="wave"></view>
               </view>
         </view>
@@ -138,23 +132,3 @@
         </view>
     </view>
 </wu-animation-group>
-
-
-<template name="progress">
-    <view class="progress-wrap">
-        <view class="right-part">
-            <view class="right" style="{{moduleLessPlay.progressRotate(progress, '#733429').right}}"></view>
-        </view>
-        <view class="left-part">
-            <view class="left" style="{{moduleLessPlay.progressRotate(progress, '#733429').left}}"></view>
-        </view>
-    </view>
-    <view class="progress-wrap opacity">
-        <view class="right-part">
-            <view class="right" style="{{moduleLessPlay.progressRotate(progress, 'rgba(115, 52, 41, 0.25)').right}}"></view>
-        </view>
-        <view class="left-part">
-            <view class="left" style="{{moduleLessPlay.progressRotate(progress, 'rgba(115, 52, 41, 0.25)').left}}"></view>
-        </view>
-    </view>
-</template>

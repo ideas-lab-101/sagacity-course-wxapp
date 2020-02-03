@@ -17,6 +17,9 @@ var changeURL = function (zone, url) {
 }
 
 var resolveTime = function (time) {
+  if (!time) {
+    return ''
+  }
   var exp = getRegExp('-', 'g')
   var temp = time.replace(exp, '/')
   var d = getDate(temp)

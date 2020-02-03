@@ -1,0 +1,20 @@
+<wxs src="./index.wxs" module="moduleIndex" />
+
+<view class="play-canvas-box">
+	<view class="progress-wrap">
+		<view class="right-part">
+			<view class="right" style="{{moduleIndex.progressRotate(progress, '#733429').right}}"></view>
+		</view>
+		<view class="left-part">
+			<view class="left" style="{{moduleIndex.progressRotate(progress, '#733429').left}}"></view>
+		</view>
+	</view>
+	<view class="progress-wrap opacity">
+		<view class="right-part">
+			<view class="right" style="{{moduleIndex.progressRotate(progress, 'rgba(115, 52, 41, 0.25)').right}}"></view>
+		</view>
+		<view class="left-part">
+			<view class="left" style="{{moduleIndex.progressRotate(progress, 'rgba(115, 52, 41, 0.25)').left}}"></view>
+		</view>
+	</view>
+</view>

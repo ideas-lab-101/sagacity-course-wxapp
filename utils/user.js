@@ -1,6 +1,6 @@
 'use strict';
 
-import { WXLogin, getWxaInfo, bindUser } from '../request/systemPort'
+import { WXLogin, getWxaPhone, bindUser } from '../request/systemPort'
 const Session = require('./session')
 
 class user {
@@ -22,19 +22,23 @@ class user {
             this.authToken = false
         }
         try {
-            let userInfo = Session.getUserInfo()
-            if (userInfo) {
-                this.userInfo = userInfo
+            let authInfo = Session.getUserInfo()
+            if (authInfo) {
+                this.authInfo = authInfo
             } else {
                 throw false
             }
         } catch (e) {
-            this.userInfo = null
+            this.authInfo = null
         }
     }
 
     get token() {
-        return this.authToken
+        return Session.get()
+    }
+
+    get userInfo() {
+        return Session.getUserInfo()
     }
 
     /**
@@ -44,8 +48,8 @@ class user {
     ckLogin() {
       try {
         let AuthToken = Session.get()
-        let UserInfo = Session.getUserInfo()
-        if (AuthToken && UserInfo) {
+        let AuthInfo = Session.getUserInfo()
+        if (AuthToken && AuthInfo) {
           return AuthToken
         } else {
           throw false
@@ -61,7 +65,7 @@ class user {
     clear() {
       try {
           this.authToken = null
-          this.userInfo = null
+          this.authInfo = null
           Session.clear()
       } catch (e) {}
     }
@@ -70,31 +74,30 @@ class user {
      * 用户登录
      *
      * @param {any} code
-     * @param {any} userInfo
+     * @param {any} authInfo
      * @param {any} cb (authToken)
      * @memberof User
      */
-    goLogin(userInfo) {
-        const FormatUserInfo = JSON.stringify(userInfo) || '';
+    goLogin(authInfo) {
+        const FormatUserInfo = JSON.stringify(authInfo) || '';
 
         return new Promise((resolve, reject) => {
 
-            this._getWxLogin()
+            this.__getWxLogin()
                 .then( code => {
 
                     WXLogin({code, userData: FormatUserInfo})
                         .then( (res) => {
 
+                            this.authInfo = res.data.user
+                            this.authToken = res.data.token
+
                             if(!FormatUserInfo) {
-                                this.userInfo = res.data.user
-                                this.authToken = res.data.token
                                 Session.set(this.authToken)
-                                Session.setUserInfo(this.userInfo)
+                                Session.setUserInfo(this.authInfo)
 
                                 // 判断onLaunch是否先加载成功 在执行后面的方法
-                                this._getLaunchIsLoad(res.data)
-                            }else {
-
+                                this.__getLaunchIsLoad(res.data)
                             }
 
                             resolve(this.authToken)
@@ -112,15 +115,15 @@ class user {
      */
     getPhoneNumber(data) {
       return new Promise((resolve, reject) => {
-          this._getWxLogin()
+          this.__getWxLogin()
               .then( code => {
 
-                getWxaInfo({...data, code})
+                getWxaPhone({...data, code})
                   .then(res => {
                       /**
                        * 执行绑定
                        */
-                      this.bindUser(res.data)
+                      this.__bindUser(res.data.phone)
                       resolve(this.authToken)
                   }, ret => {
                       reject(ret)
@@ -135,9 +138,9 @@ class user {
      * @param tel
      * @returns {Promise<unknown>}
      */
-    bindUser(tel) {
+    __bindUser(tel) {
         const form = {
-            name: this.userInfo.caption,
+            name: this.authInfo.caption,
             tel
         }
         return new Promise((resolve, reject) => {
@@ -147,13 +150,12 @@ class user {
             })
                 .then( res => {
 
-                    this.userInfo = res.data.user
-                    this.authToken = res.data.session_key
+                    this.authInfo = res.data.user
                     Session.set(this.authToken)
-                    Session.setUserInfo(this.userInfo)
+                    Session.setUserInfo(this.authInfo)
 
                     // 判断onLaunch是否先加载成功 在执行后面的方法
-                    this._getLaunchIsLoad(res.data)
+                    this.__getLaunchIsLoad(res.data)
 
                     resolve(this.authToken)
                 }, ret => {
@@ -166,7 +168,7 @@ class user {
      * 判断onLaunch是否先加载成功 在执行后面的方法
      * @private
      */
-    _getLaunchIsLoad(data) {
+    __getLaunchIsLoad(data) {
         getApp().identityLoaded = data
         if (getApp().identityCallback) {
             getApp().identityCallback()
@@ -177,7 +179,7 @@ class user {
      * 获取微信用户信息
      * @returns {Promise<unknown>}
      */
-    _getWxLogin() {
+    __getWxLogin() {
         return new Promise((resolve, reject) => {
             wx.login({
                 success: res => {
@@ -198,7 +200,7 @@ class user {
     gatherUserParams(data) {
         return new Promise((resolve, reject) => {
 
-            return this._getWxLogin().then(code => {
+            return this.__getWxLogin().then(code => {
 
                 data = Object.assign({}, {
                     code,
@@ -212,4 +214,5 @@ class user {
         })
     }
 }
+
 module.exports = user

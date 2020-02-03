@@ -1,6 +1,7 @@
 
 .wp-container{
-  height: 100%; overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 .wp-container.record{
   padding: 0;
@@ -30,5 +31,7 @@
 }
 
 .wp-nodata{
-  text-align: center; color: #333333; font-size: 38rpx;
+  text-align: center;
+  color: #333333;
+  font-size: 38rpx;
 }

@@ -119,7 +119,7 @@ Component({
           encryptedData: e.detail.encryptedData,
           iv: e.detail.iv
         })
-            .then(res => {
+            .then(token => {
                 this.hide()
             })
       }

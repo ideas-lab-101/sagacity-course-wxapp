@@ -1,24 +1,3 @@
-var progressRotate = function (percentage, color){
-    var p = (percentage * 100);
-    var deg = p * 3.6;
-    if(p > 100 || p < 0) {
-        p = 100;
-    }
-    var left = 0,
-        right = 0;
-    if(deg <= 180){
-        right = "transform:rotate("+(deg-180)+"deg);"
-        left = "background: none;"
-    }else{
-        right = "transform:none;"
-        left = "background:"+color+"; transform:rotate("+(deg-360)+"deg);"
-    }
-    return {
-        left: left,
-        right: right
-    }
-}
-
 var filterText = function (val){
     if (!val || val == 0) {
         return '没人创作,去抢沙发吧'
@@ -41,6 +20,5 @@ var filterText = function (val){
 
 
 module.exports = {
-    progressRotate: progressRotate,
     filterText: filterText
 }

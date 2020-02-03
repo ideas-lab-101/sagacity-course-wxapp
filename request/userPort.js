@@ -1,5 +1,6 @@
 import { fetch } from '../axios/fetch'
 import { postPay } from './payPort'
+import {$wuLogin} from "../components/pages/index";
 const { host } = require('../sever.config')
 
 /**
@@ -22,8 +23,11 @@ export function bindUser(data) { //token formData
   })
 }
 
-// 更新用户空间背景
-export function updateZoneBg(options, cancelTask) { //token bgFile(File)
+/**
+ * 更新用户空间背景
+ * token bgFile(File)
+ */
+export function updateZoneBg(options, cancelTask) {
 
   wx.showLoading({
     title: '正在上传图片，请等候...',
@@ -32,16 +36,15 @@ export function updateZoneBg(options, cancelTask) { //token bgFile(File)
 
   return new Promise( (resolve, reject) => {
 
-    var uploadTask = wx.uploadFile({
-      url: host + '/wxapp/user/updateZoneBg',
+    const uploadTask = wx.uploadFile({
+      url: host + '/wxapp/user/v3/updateZoneBg',
       filePath: options.bgFile,
       name: 'bgFile',
       formData:  {
-        token: getApp().user.ckLogin(),
-        userID: options.userID
+        token: getApp().user.authToken
       },
       success: function (res) {
-        resolve(res)
+        resolve(JSON.parse(res.data))
       },
       fail: function (error) {
         reject(error)
@@ -75,10 +78,8 @@ export function getEnrollList(data) {
  */
 export function userFavor(data) {
   if (!getApp().user.ckLogin()) {
-    wx.navigateTo({
-      url: '/pages/common/accredit/accredit'
-    })
-    return new Promise((resolve, reject) => {})
+    $wuLogin().show()
+    return Promise.reject()
   }
   return fetch({
     url: '/wxapp/user/v3/userFavor',
@@ -92,10 +93,8 @@ export function userFavor(data) {
   */
 export function userLike(data) {
   if (!getApp().user.ckLogin()) {
-    wx.navigateTo({
-      url: '/pages/common/accredit/accredit'
-    })
-    return new Promise((resolve, reject) => {})
+    $wuLogin().show()
+    return Promise.reject()
   }
   return fetch({
     url: '/wxapp/user/v3/userLike',
@@ -174,7 +173,7 @@ export function addUserHistory(data) {
  */
 export function getUserHistory(data) {
   if (!getApp().user.ckLogin()) {
-    return new Promise((resolve, reject) => {})
+    return Promise.reject()
   }
   return fetch({
     url: '/wxapp/user/v3/getUserHistory',
@@ -215,6 +214,3 @@ export function userEnroll(data) {
             return res
           })
 }
-
-
-

@@ -10,13 +10,14 @@
               <wux-cell-group title="选择填写手机号或者微信手机号">
                   <wux-cell hover-class="none">
                       <view class="ei-val-box">
-                          <wux-input placeholder="手机号码" placeholder-style="color:#b4b4b4;" controlled value="{{form.tel}}" type="number" name="tel" bind:change="setValueEvent" data-name="form.tel"/>
+                          <input placeholder="手机号码" placeholder-style="color:#b4b4b4;" controlled value="{{form.tel}}" type="number" name="tel"
+                                 bindinput="setValueEvent" data-name="form.tel"/>
                       </view>
                   </wux-cell>
                   <wux-cell hover-class="none">
                       <view class="vt-code">
-                          <wux-input class="def" placeholder="输入短信验证码" placeholder-style="color:#b4b4b4;" type="number" controlled type="number" value="{{form.identityCode}}"
-                                     name="identityCode"  bind:change="setValueEvent" data-name="form.identityCode"/>
+                          <input class="def" placeholder="输入短信验证码" placeholder-style="color:#b4b4b4;" type="number" controlled value="{{form.identityCode}}" name="identityCode"
+                                 bindinput="setValueEvent" data-name="form.identityCode"/>
                           <text catchtap="getCodeEvent" wx:if="{{countDown.visible}}">点击获取</text>
                           <text class="c999-color" wx:else>{{countDown.count}}秒</text>
                       </view>

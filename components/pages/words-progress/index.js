@@ -32,16 +32,14 @@ Component({
         translateY: 0,
         transitionend: true
     },
-
-    created() {
+    lifetimes: {
+        created() {
+        },
+        attached() {
+        },
+        ready() {
+        }
     },
-
-    attached() {
-    },
-
-    ready() {
-    },
-
     pageLifetimes: {
       show: function () {},
       hide: function () { },
@@ -77,7 +75,7 @@ Component({
           }
           const exp = new RegExp('--', 'g')
           let temp = this.data.overall[0].time_line.split(exp)
-          return this._fiterTime(temp[0])
+          return this._filterTime(temp[0])
         },
 
         _getLastItem() {
@@ -86,7 +84,7 @@ Component({
           }
           const exp = new RegExp('--', 'g')
           let temp = this.data.overall[this.data.overall.length-1].time_line.split(exp)
-          return this._fiterTime(temp[1])
+          return this._filterTime(temp[1])
         },
 
         _scrollTo: function (newVal, oldVal) {
@@ -157,8 +155,8 @@ Component({
             const exp = new RegExp('--', 'g')
             return this.properties.overall.findIndex( item => {
                 let temp = item.time_line.split(exp)
-                let begin = this._fiterTime(temp[0])
-                let end = this._fiterTime(temp[1])
+                let begin = this._filterTime(temp[0])
+                let end = this._filterTime(temp[1])
                 return this._compareTime(time, begin, end)
             })
         },
@@ -180,7 +178,7 @@ Component({
             }
         },
 
-        _fiterTime(time) {
+        _filterTime(time) {
             const temp = this._formatTime(time)
             return temp.hour*360 + temp.min*60 + temp.sec
         }

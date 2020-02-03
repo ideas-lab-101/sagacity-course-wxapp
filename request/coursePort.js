@@ -1,16 +1,5 @@
 import { fetch } from '../axios/fetch'
 
-/**
- * 消息方法调用
- * */
-//获得分类下的课程信息
-export function getCourseIndexList(data) {
-  return fetch({
-    url: '/wxapp/main/v3/getCourseIndexList',
-    data: data || {},
-    method: 'GET'
-  })
-}
 
 /**
  * 获得分类或指定用户的课程
@@ -23,8 +12,6 @@ export function getCourseList(data) {
     method: 'GET'
   })
 }
-
-
 
 /**
  * 获得课程详情

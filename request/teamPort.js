@@ -1,4 +1,5 @@
-const { fetch } = require('../axios/fetch')
+import { $wuLogin } from '../components/pages/index'
+import { fetch } from '../axios/fetch'
 
 /**
  * 获得用户创建和加入的学习组
@@ -30,10 +31,8 @@ export function getTeamInfo(data) {
  */
 export function joinTeam(data) {
   if (!getApp().user.ckLogin()) {
-    wx.navigateTo({
-      url: '/pages/common/accredit/accredit'
-    })
-    return new Promise((resolve, reject) => {})
+    $wuLogin().show()
+    return Promise.reject()
   }
   return fetch({
     url: '/wxapp/team/v3/joinTeam',

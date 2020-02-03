@@ -65,9 +65,6 @@
     position: relative;
 }
 .data-single-c ._content .content_title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
     font-size: 34rpx;
     margin-top: 10rpx;
 }

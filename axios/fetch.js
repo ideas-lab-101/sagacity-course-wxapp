@@ -42,7 +42,7 @@ export const fetch = function (options, loading) {
    * @type {any}
    */
   options.data = Object.assign({},{
-    'token': getApp().user.authToken
+    'token': getApp().user.token
   }, options.data)
 
   return new Promise( (resolve, reject) => {

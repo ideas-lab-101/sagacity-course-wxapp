@@ -83,7 +83,7 @@ export function postPay(order) {
 // 可以获得订单状态
 function getOrderInfo(data) { //orderCode
   return fetch({
-    url: 'wxapp/pay/getOrderInfo',
+    url: '/wxapp/pay/v3/getOrderInfo',
     data: data || {},
     method: 'GET'
   }, false, ()=>{
