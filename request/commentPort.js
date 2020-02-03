@@ -5,7 +5,7 @@ import { $wuLogin } from '../components/pages/index'
  * 获得评论列表
  * data_id type token
  */
-export function getCommentList(data) { //
+export function getCommentList(data) {
   return fetch({
     url: '/wxapp/comment/v3/getCommentList',
     data: data || {},
@@ -26,8 +26,11 @@ export function addComment(data) { //token referID dataID dataType content
   })
 }
 
-// 删除留言
-export function delComment(data) { //token commentID
+/**
+ * 删除留言
+ * token comment_id
+ */
+export function delComment(data) {
   if (!getApp().user.ckLogin()) {
     $wuLogin().show()
     return Promise.reject()

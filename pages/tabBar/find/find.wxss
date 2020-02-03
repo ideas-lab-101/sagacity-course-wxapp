@@ -1,13 +1,9 @@
-page{
-  background-color: white;
-}
 .findBack{
   background: url('https://sagacity-course-000019.tcb.qcloud.la/system/nav_bg.jpeg?sign=bf06e616a6978a65e20bec6a8b5ff9ac&t=1537258809') no-repeat center top; background-size: 100% auto;
 }
 /*
 * 新课程
 */
-.newCourse-box{}
 .newCourse-box>._title{
   font-size: 40rpx; font-weight: 500; padding: 0 40rpx;
 }
@@ -24,7 +20,10 @@ page{
   font-weight: 500; font-size: 34rpx;
 }
 .newCourse-font ._d{
-  font-size: 22rpx; color: #666; margin-top: 30rpx; line-height: 1.4;
+  font-size: 22rpx;
+  color: #666;
+  margin-top: 30rpx;
+  line-height: 1.4;
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp: 3;

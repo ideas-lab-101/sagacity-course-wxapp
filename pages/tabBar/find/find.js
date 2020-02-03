@@ -1,5 +1,3 @@
-import {getFavorList} from "../../../request/userPort";
-
 var App = getApp()
 import { getCourseUpdate, getRecordUpdate, getHotLessonData } from '../../../request/mainPort'
 const MultiplePageReachBottomBehavior = require('../../../utils/behaviors/MultiplePageReachBottomBehavior')
@@ -16,9 +14,6 @@ Page({
             autoplay: true,
             interval: 5000,
             duration: 1000
-        },
-        tab: {
-            current: 0
         }
     },
 
@@ -27,16 +22,12 @@ Page({
     },
 
     onPullDownRefresh: function() {
-        this.setData({
-          'record.list': [],
-          'record.lastPage': true,
-          'record.pageNumber': 1,
-          'hot.list': [],
-          'hot.lastPage': true,
-          'hot.pageNumber': 1,
-          'tab.current': 0
-        })
+        /**
+         * 清除缓存数据
+         */
+        this.__clearTurnPageCacheData()
         this.__init()
+
         let fn = setTimeout( () => {
             clearTimeout(fn)
             wx.stopPullDownRefresh()
@@ -49,11 +40,15 @@ Page({
    * 获取数据
    */
     __init() {
+      this.__getCourseUpdate()
+
       const params = [
           {
               isPageShow: true,
-              interfaceFn: getCourseUpdate,
-              params: {}
+              interfaceFn: getRecordUpdate,
+              params: {
+                  day: 10
+              }
           },
           {
               isPageShow: true,
@@ -61,11 +56,16 @@ Page({
               params: {}
           }
       ]
-
       this.__getTurnPageDataListMultiple(params)
     },
 
 
+    __getCourseUpdate() {
+        getCourseUpdate()
+            .then(res => {
+                this.setData({ courseList: res.data.list})
+            })
+    },
   /**
    * 链接
    */
@@ -110,20 +110,16 @@ Page({
     },
 
     goDetailEvent: function (e) {
-        const index = e.currentTarget.dataset.index
-        const id = this.data.hot.list[index].DataID
-        const type = this.data.hot.list[index].Format
+        const { id, format} = e.currentTarget.dataset
 
-        if (type === 'audio') {
+        if (format === 'audio') {
             wx.navigateTo({
                 url: `/pages/apply/course/lesson-play/lesson-play?id=${id}`,
             })
-        } else if(type === 'video') {
+        } else if(format === 'video') {
             wx.navigateTo({
                 url: `/pages/apply/course/lesson-videoPlay/lesson-videoPlay?id=${id}`,
             })
         }
-
     }
-
 })

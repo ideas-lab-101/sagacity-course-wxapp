@@ -1,7 +1,7 @@
 const App = getApp()
 import { getCommentList, addComment, delComment } from '../../../request/commentPort'
 import { $wuNavigation } from '../../../components/wu/index'
-import { $wuxActionSheet } from 'wux-weapp/index'
+import { $wuxActionSheet } from 'wux-weapp'
 const PageReachBottomBehavior = require('../../../utils/behaviors/PageReachBottomBehavior')
 
 Page({
@@ -20,7 +20,7 @@ Page({
         isCommentFocus: false,
         taPlaceholder: '留言',
         taContent: '',
-        userInfo: {},
+        userInfo: null,
         keyboard: 0
     },
 
@@ -43,8 +43,23 @@ Page({
        * 链接
        */
      goReplay(referID, caption) {
+        const self = this
         wx.navigateTo({
-          url: `/pages/common/comment-replay/comment-replay?id=${this.optionsId}&referid=${referID}&type=${this.optionsType}&caption=${caption}`
+            url: `/pages/common/comment-replay/comment-replay?id=${this.optionsId}&referid=${referID}&type=${this.optionsType}&caption=${caption}`,
+            events: {
+                acceptDataCommentReplay: function(data) {
+                    let { list } = self.data.content
+                    if (data.referID === 'root') {
+                        list.unshift(data.data)
+                    }else {
+                        const index = list.findIndex(item => item.comment_id === Number(data.referID))
+                        list[index].child.unshift(data.data)
+                    }
+                    self.setData({
+                        'content.list': list
+                    })
+                }
+            }
         })
     },
     /**
@@ -60,16 +75,22 @@ Page({
             return false
         }
         $wuxActionSheet().showSheet({
+            theme: "wx",
             titleText: '操作确认？',
             cancelText: '取消',
-            cancel() {},
-            destructiveText: '撤销我的留言',
-            destructiveButtonClicked() {
-                return !!self._delComment(commentID)
-                  .then(() => {
-                    self._deleteData(commentID) // 删除数据
-                  })
+            buttons: [{
+                text: '撤销我的留言'
+            }],
+            buttonClicked(index, item) {
+                if (index === 0) {
+                    return !!self._delComment(commentID)
+                        .then(() => {
+                            self._deleteData(commentID) // 删除数据
+                        })
+                }
+                return true
             },
+            cancel() {}
         })
     },
   /**
@@ -94,20 +115,23 @@ Page({
      * 内部 处理事件
      * ***/
     _delComment(commentID) {
-      return delComment({commentID: commentID}).then((res) => {})
+      return delComment({comment_id: commentID})
     },
+
     _deleteData: function (CommentID) {
         const exactIndex = {
             listIndex: null,
             childIndex: null
         }
-        this.data.info.list.forEach((item, index) => {
-            if (Number(item.CommentID) === Number(CommentID)) {
+        const { list } = this.data.content
+
+        list.forEach((item, index) => {
+            if (Number(item.comment_id) === Number(CommentID)) {
                 exactIndex.listIndex = index
                 return false
             }
             const  childIndex = item.child.findIndex((c) => {
-                return Number(c.CommentID) === Number(CommentID)
+                return Number(c.comment_id) === Number(CommentID)
             })
             if (childIndex !== -1) {
                 exactIndex.listIndex = index
@@ -120,13 +144,13 @@ Page({
             return false
         }
 
-        let h = [].concat(this.data.info.list)
+        let h = [...list]
         if (!exactIndex.childIndex) {
             h.splice(exactIndex.listIndex, 1)
         }else {
             h[exactIndex.listIndex].child.splice(exactIndex.childIndex, 1)
         }
-        this.setData({ 'info.list': h })
+        this.setData({ 'content.list': h })
     },
     /**
      *

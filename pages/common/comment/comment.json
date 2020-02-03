@@ -5,5 +5,7 @@
   "navigationBarTextStyle": "black",
   "enablePullDownRefresh": false,
   "disableScroll": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "wux-actionsheet": "wux-weapp/actionsheet/index"
+  }
 }

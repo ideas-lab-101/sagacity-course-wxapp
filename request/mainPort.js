@@ -1,8 +1,5 @@
-const { fetch } = require('../axios/fetch')
+import { fetch } from '../axios/fetch'
 
-/**
- * 系统方法调用
- * */
 // 发现页面获取数据
 export function discover(data) {
   return fetch({
@@ -12,7 +9,9 @@ export function discover(data) {
   })
 }
 
-// 主页页面获取数据
+/**
+ * 主页页面获取数据
+ */
 export function index(data) {
   return fetch({
     url: '/wxapp/main/v3/index',
@@ -21,8 +20,11 @@ export function index(data) {
   })
 }
 
-// 获得更新的课程
-export function getCourseUpdate(data) { // day(默认为7)
+/**
+ * 获得更新的课程
+ * day(默认为7)
+ */
+export function getCourseUpdate(data) {
   return fetch({
     url: '/wxapp/main/v3/getCourseUpdate',
     data: data || {},
@@ -30,8 +32,11 @@ export function getCourseUpdate(data) { // day(默认为7)
   })
 }
 
-// 获得最新录制
-export function getRecordUpdate(data) { // day(默认为10)
+/**
+ * 获得最新录制动态
+ * day(默认为10)
+ */
+export function getRecordUpdate(data) {
   return fetch({
     url: '/wxapp/main/v3/getRecordUpdate',
     data: data || {},
@@ -39,8 +44,10 @@ export function getRecordUpdate(data) { // day(默认为10)
   })
 }
 
-// 获得热门章节
-export function getHotLessonData(data) { // count(默认100)
+/**
+ * 获得热门章节
+ */
+export function getHotLessonData(data) {
   return fetch({
     url: '/wxapp/main/v3/getHotLessonData',
     data: data || {},

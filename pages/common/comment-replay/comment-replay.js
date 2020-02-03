@@ -33,21 +33,18 @@ Page({
       if(options.caption !== 'undefined') {
         this.setData({'text.placeholder': `@${options.caption}`})
       }
-      this.data.userID = App.user.userInfo? App.user.userInfo.UserID : ''
+      this.data.userID = App.user.userInfo? App.user.userInfo.user_id : ''
+
+      this.eventChannel = this.getOpenerEventChannel()
     },
     onReady: function() {
       setTimeout(() => {
         this.setData({'text.focus': true})
       }, 10)
     },
-    onHide: function () {
-    },
   /**
    * 书写评论
    **/
-  _errorToast(msg) {
-    Toast.text({ text: msg})
-  },
   textInputEvent(e) {
     const val = e.detail.value
     let canSubmit = false
@@ -56,17 +53,21 @@ Page({
     }
     this.setData({'text.canSubmit': canSubmit})
   },
+
   submitCommentEvent(e) {
     const content = e.detail.value.content.trim()
     if(!content) {
       return false
     }
+
     this._addComment(content)
       .then(res => {
-        App.commentManager.add({dataID: this.optionsId, referID: this.optionsReferID}, res.data) // 向全局评论管理里面添加处理数据
-        wx.navigateBack({
-          delta: 1
-        })
+          this.eventChannel.emit('acceptDataCommentReplay', {dataID: this.optionsId, referID: this.optionsReferID, data: res.data.data});
+          const BackFn = setTimeout(() => {
+            clearTimeout(BackFn)
+            wx.navigateBack({ delta: 1 })
+          }, 500)
+
       })
   },
 
@@ -76,8 +77,8 @@ Page({
      * ***/
   _addComment(content) {
     return addComment({
-      referID: this.optionsReferID !== 'root'? this.optionsReferID:'',
-      dataID: this.optionsId,
+      refer_id: this.optionsReferID !== 'root'? this.optionsReferID:'',
+      data_id: this.optionsId,
       type: this.optionsType,
       content: content
     })

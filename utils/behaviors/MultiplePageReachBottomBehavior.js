@@ -36,6 +36,11 @@ module.exports = Behavior({
                 })
         },
 
+        /**
+         * 多个TAB切换调用事件
+         * @param e
+         * @private
+         */
         __turnPageTabChangeMultiple(e) {
             const { index } = e.currentTarget.dataset
             const { contentMultipleArrayOptions } = this.data
@@ -189,6 +194,10 @@ module.exports = Behavior({
                 return this.data.contentMultipleCacheData[index].data
             }
             return false
+        },
+
+        __clearTurnPageCacheData() {
+            this.data.contentMultipleCacheData = []
         }
     }
 })
