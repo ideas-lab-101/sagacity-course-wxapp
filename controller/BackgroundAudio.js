@@ -207,11 +207,11 @@ class audio {
         })
 
         manager.onPrev( () => { // ios only
-            //this.prevPlay() // 上一首
+            fns && fns.prevPlayFn && fns.prevPlayFn(this.start)
         })
 
         manager.onNext( () => { // ios only
-            //this.nextPlay() // 下一首
+            fns && fns.nextPlayFn && fns.nextPlayFn(this.start)
         })
 
         manager.onSeeking( () => {
@@ -223,7 +223,7 @@ class audio {
         })
 
         manager.onError( (err) => {
-            console.error(err)
+            console.error('BackgroundAudio：', err)
         })
 
         manager.onCanplay( () => {

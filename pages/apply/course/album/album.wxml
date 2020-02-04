@@ -1,32 +1,28 @@
-<!--play.wxml-->
-<wu-loading id="wu-loading"></wu-loading>
-<wu-toast id="wu-toast"></wu-toast>
 <wxs src="./album.wxs" module="moduleAlbum" />
 <import src="/components/wxParse/wxParse.wxml" />
 
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+               transparent="{{nav.transparent}}"
+               model="{{nav.model}}"
+               animation="{{nav.animation}}">
+</wu-navigation>
+
 <view class="container">
 
-  <wu-navigation id="wu-navigation" title="{{nav.title}}"
-                 transparent="{{nav.transparent}}"
-                 model="{{nav.model}}"
-                 animation="{{nav.animation}}">
-  </wu-navigation>
-
   <view class="lesson-top-box" style="padding-top: {{statusBarHeight+20}}px;">
-    <view class="lesson-top {{coverShow?'move':''}}" bindtransitionend="coverShowEndEvent"
-          style="background: url('https://sagacity-course-000019.tcb.qcloud.la/system/albm-bakc.jpg?sign=56d03fa98f703d2bf2b16310740a594b&t=1554086926') no-repeat center top; background-size: 100% auto;">
+    <view class="lesson-top {{coverShow?'move':''}}" bindtransitionend="coverShowEndEvent">
           <view class="lesson-book">
             <!--书本-->
             <view class="bs-single {{selectorTransition.disk}}">
                   <view class="_insert">
                       <view class="_image {{tryParams.isPlay?'active':''}}">
-                          <view><image src="{{info.albumInfo.CoverURL}}" mode="aspectFill" lazy-load/></view>
+                          <view><image src="{{info.album_info.cover_url}}" mode="aspectFill" lazy-load/></view>
                       </view>
                   </view>
               </view>
 
-            <view class="lesson-name {{selectorTransition.disk}}">{{info.albumInfo.AlbumName}}</view>
-            <view class="lesson-desc color-999 {{selectorTransition.disk}}">{{info.albumInfo.AlbumDesc}}</view>
+            <view class="lesson-name {{selectorTransition.disk}}">{{info.album_info.album_name}}</view>
+            <view class="lesson-desc color-999 {{selectorTransition.disk}}">{{info.album_info.album_desc}}</view>
               <view class="lesson-link font-14">
                   <!--收藏-->
                   <view catchtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="basic-hover">
@@ -48,40 +44,22 @@
   <!--目录-->
   <!--<view class="lesson-intro-totalRow"><view><text>共 {{lesson.totalRow}} 章节</text></view></view>-->
   <view class="lesson-intro">
-      <!--<view class="lesson-link font-14">
-          &lt;!&ndash;收藏&ndash;&gt;
-          <view catchtap="collectEvent" wx:if="{{!info.is_favor}}" class="lesson-link-opt" hover-class="basic-hover">
-              <text class="iconfont icon-guanzhu"></text>
-          </view>
-          <view catchtap="collectEvent" class="lesson-link-opt red" hover-class="basic-hover" wx:else>
-              <text class="iconfont icon-guanzhu1"></text>
-          </view>
-          &lt;!&ndash;点赞&ndash;&gt;
-          <view catchtap="likeEvent" class="lesson-link-opt" hover-class="basic-hover">
-              <text class="iconfont {{info.is_like?'icon-liked red':'icon-zan'}}"></text><text>{{info.albumInfo.likeCount}}</text>
-          </view>
-          &lt;!&ndash;评论&ndash;&gt;
-          <view catchtap="discussEvent" class="lesson-link-opt" hover-class="basic-hover">
-              <text class="iconfont icon-liuyan"></text>
-          </view>
-          &lt;!&ndash;分享&ndash;&gt;
-          <view class="lesson-action-share {{info.is_enroll?'color':''}} lesson-link-opt" catchtap="userShareEvent" hover-class="basic-hover">
-              <text class="iconfont icon-chakantiezifenxiang"></text>
-          </view>
-      </view>-->
       <view scroll-y class="lesson-intro-scroll">
-          <block wx:for="{{info.recordList}}" wx:key="{{index}}">
-              <view class="catalog-single {{tryParams.isPlay && tryParams.id === item.RecordID?'active':''}}" catchtap="skipPlayerEvent" data-index="{{index}}" hover-class="basic-hover">
+          <block wx:for="{{info.record_list}}" wx:key="record_id">
+              <view class="catalog-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}"
+                    catchtap="tryListenEvent"
+                    data-id="{{item.record_id}}"
+                    hover-class="basic-hover">
                 <image src="{{item.avatar_url}}" mode="aspectFill" class="_image"></image>
                 <view class="_title">
-                    <text>{{item.Caption}}</text>
-                    <view>{{item.DataName}}</view>
+                    <text>{{item.caption}}</text>
+                    <view>{{item.data_name}}</view>
                 </view>
                   <view class="_like" catchtap="likeEvent" data-index="{{index}}">
-                      <text class="iconfont icon-zan"></text><text>{{item.likeCount}}</text>
+                      <text class="iconfont icon-zan"></text><text>{{item.like_count}}</text>
                   </view>
                   <view class="_tag">
-                      <text class="_p iconfont icon-weibiaoti519" wx:if="{{tryParams.isPlay && tryParams.id === item.RecordID}}"></text>
+                      <text class="_p iconfont icon-weibiaoti519" wx:if="{{tryParams.isPlay && tryParams.id === item.record_id}}"></text>
                       <text class="iconfont icon-bofang1" wx:else></text>
                   </view>
               </view>
@@ -94,3 +72,6 @@
 
 <!--分享组件-->
 <share id="share"/>
+
+<!--登录插件-->
+<wu-login id="wu-login" />

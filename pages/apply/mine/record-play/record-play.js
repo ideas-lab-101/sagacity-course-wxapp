@@ -127,7 +127,7 @@ Page({
         }
 
         updateRecordSign({
-                recordID: this.data.recordData.record_id,
+                record_id: this.data.recordData.record_id,
                 text: e.detail.value.text,
                 formid: e.detail.formId
             })

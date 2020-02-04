@@ -1,6 +1,7 @@
 var App = getApp()
 import { getCourseUpdate, getRecordUpdate, getHotLessonData } from '../../../request/mainPort'
 const MultiplePageReachBottomBehavior = require('../../../utils/behaviors/MultiplePageReachBottomBehavior')
+import { $wuLogin } from '../../../components/pages/index'
 
 Page({
     behaviors: [MultiplePageReachBottomBehavior],
@@ -121,5 +122,15 @@ Page({
                 url: `/pages/apply/course/lesson-videoPlay/lesson-videoPlay?id=${id}`,
             })
         }
+    },
+
+    goFreeRecord() {
+        if (!App.user.ckLogin()) {
+            $wuLogin().show()
+            return false
+        }
+        wx.navigateTo({
+            url: `/pages/apply/course/free-record/free-record`,
+        })
     }
 })

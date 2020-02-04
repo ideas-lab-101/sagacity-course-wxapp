@@ -1,9 +1,9 @@
-const app = getApp()
+const App = getApp()
 const ArrayList = require("../../../utils/arrayList")
-import { Search, HotSearch } from "../../../request/systemPort"
+import { search, hotSearch } from "../../../request/systemPort"
+const Session = require('../../../utils/session')
 
 Page({
-
     data: {
       course_list: [],
       teacher_list: [],
@@ -11,32 +11,37 @@ Page({
       is_search: false,
       key: null,
       hot_tag: {},
-      my_search: {},
       my_search_arr: {}
     },
-
     onLoad: function (options) {
+        this.__init()
+    },
+
+    __init() {
         //获取搜索记录
-        let my_search = wx.getStorageSync("my_search")
-        if (my_search === '') {
-          my_search = { arr: [] }
+        let searchData = Session.getSearchCache()
+        if (!searchData || searchData === '') {
+            searchData = { arr: [] }
         }
-        let list = new ArrayList(my_search.arr)
+
+        this.SearchCache = new ArrayList(searchData.arr)
         this.setData({
-          my_search: list,
-          my_search_arr: list.toArray()
+            my_search_arr: this.SearchCache.toArray()
         })
 
-        HotSearch().then((res) => {
-            this.setData({
-                hot_tag: res.list
+        hotSearch()
+            .then((res) => {
+                this.setData({
+                    hot_tag: res.data.list
+                })
             })
-        })
     },
+
     goLesson(e) {
       const index = e.currentTarget.dataset.index
-      const id = this.data.data_list[index].ID
-      const type = this.data.data_list[index].Type
+      const id = this.data.data_list[index].id
+      const type = this.data.data_list[index].type
+
       if(type.includes('audio')) {
         wx.navigateTo({
           url: `/pages/apply/course/lesson-play/lesson-play?id=${id}`
@@ -47,34 +52,42 @@ Page({
         })
       }
     },
+
     get_data() {
-      Search({key: this.data.key}).then((res) => {
-            this.setData({
-                course_list: res.courseList,
-                teacher_list: res.teacherList,
-                data_list: res.dataList,
-                is_search: true
-            })
-
-            let key = this.data.key
-
-            //更新搜索记录
-            if (this.data.my_search.contains(key)) {//如果存在就先删除
-                this.data.my_search.remove(key)
-            }
-            this.data.my_search.add(key)
-            wx.setStorageSync("my_search", this.data.my_search)
+        const { key } = this.data
+        search({
+            key
         })
+            .then((res) => {
+                this.setData({
+                    course_list: res.data.course_list,
+                    teacher_list: res.data.teacher_list,
+                    data_list: res.data.data_list,
+                    is_search: true
+                })
+
+                let key = this.data.key
+
+                //更新搜索记录
+                if (this.SearchCache.contains(key)) {//如果存在就先删除
+                    this.SearchCache.remove(key)
+                }
+                this.SearchCache.add(key)
+
+                Session.setSearchCache(this.SearchCache)
+            })
     },
+
     clear_my_search(event) {
         let key = event.currentTarget.dataset.name
         //更新搜索记录
-        if (this.data.my_search.contains(key)) { // 如果存在就先删除
-            this.data.my_search.remove(key)
+        if (this.SearchCache.contains(key)) { // 如果存在就先删除
+            this.SearchCache.remove(key)
         }
-        wx.setStorageSync("my_search", this.data.my_search)
+
+        Session.setSearchCache(this.SearchCache)
         this.setData({
-            my_search_arr: this.data.my_search.toArray()
+            my_search_arr: this.SearchCache.toArray()
         })
     },
 
@@ -83,9 +96,7 @@ Page({
         if (key.trim() === '') {
             return false;
         }
-        this.setData({
-            key: key
-        })
+        this.setData({ key })
         this.get_data()
     },
 
@@ -98,16 +109,13 @@ Page({
                 key: null,
             })
         }else{
-            wx.navigateBack()
+            wx.navigateBack({ delta: 1 })
         }
     },
 
     tag_search(event) {
         const name = event.currentTarget.dataset.name
-        this.setData({
-            key: name
-        })
+        this.setData({ key: name })
         this.get_data()
     }
-
 })

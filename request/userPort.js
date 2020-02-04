@@ -28,7 +28,6 @@ export function bindUser(data) { //token formData
  * token bgFile(File)
  */
 export function updateZoneBg(options, cancelTask) {
-
   wx.showLoading({
     title: '正在上传图片，请等候...',
     mask: true
@@ -41,7 +40,7 @@ export function updateZoneBg(options, cancelTask) {
       filePath: options.bgFile,
       name: 'bgFile',
       formData:  {
-        token: getApp().user.authToken
+        token: getApp().user.token
       },
       success: function (res) {
         resolve(JSON.parse(res.data))

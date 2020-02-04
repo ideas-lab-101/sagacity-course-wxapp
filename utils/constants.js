@@ -22,6 +22,10 @@ module.exports = {
      */
     WX_MARK_WORDS: '__mark_words',
     /**
+     * WX_SEARCH_CACHE 搜索词存储
+     */
+    WX_SEARCH_CACHE: '__search_cache',
+    /**
      * WX_UPDATE_EXPIRE 更新用户信息时间存储
      */
     WX_UPDATE_EXPIRE: '__update_expire',

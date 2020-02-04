@@ -23,7 +23,7 @@ class InnerAudioManager {
             this.innerAudioContext.obeyMuteSwitch = false
         }
         this.innerAudioContext.autoplay = true
-        this._listenEvent(backFn) // 监听事件
+        this._listenEvent(backFn)
     }
 
     play(url) {
@@ -65,8 +65,8 @@ class InnerAudioManager {
     /**
      * 内部事件
      **/
-    _fiterTime(time) {
-        var max = parseInt(time / 60)
+    _filterTime(time) {
+        const max = parseInt(time / 60)
         return this._prefixTime(max) + ':' + this._prefixTime(parseInt(time % 60))
     }
 
@@ -110,31 +110,22 @@ class InnerAudioManager {
             options && options.error && options.error(res)
         })
 
-        this.audioCanplay(options)
+        this.innerAudioContext.onCanplay( () => {
+            console.log('can play')
+            options && options.canPlay && options.canPlay()
+        })
 
-        this.audioTimeUpdate(options)
-    }
-
-    audioTimeUpdate(options) {
         this.innerAudioContext.onTimeUpdate( () => {
             this.duration = this.innerAudioContext.duration
             const proto = {
                 duration: this.innerAudioContext.duration,
                 currentTime: this.innerAudioContext.currentTime,
-                durationFormat: this._fiterTime(this.innerAudioContext.duration),
-                currentTimeFormat: this._fiterTime(this.innerAudioContext.currentTime)
+                durationFormat: this._filterTime(this.innerAudioContext.duration),
+                currentTimeFormat: this._filterTime(this.innerAudioContext.currentTime)
             }
             options && options.timeUpdate && options.timeUpdate(proto)
         })
     }
-
-    audioCanplay(options) {
-        this.innerAudioContext.onCanplay( () => {
-            console.log('can play')
-            options && options.canPlay && options.canPlay()
-        })
-    }
-
 }
 
 module.exports = InnerAudioManager

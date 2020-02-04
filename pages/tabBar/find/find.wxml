@@ -46,7 +46,6 @@
 
   <!-- 关注 -->
   <view wx:if="{{contentMultipleCurrent===0}}">
-
     <!--<view class="watch-time"><text>今天</text><text>Today</text></view>-->
     <view class="watch-box">
 
@@ -94,7 +93,6 @@
 
   <!-- hot -->
   <view wx:else class="hot-box">
-
     <view class="hot-listSingle"
           wx:for="{{contentMultiple.list}}"
           wx:key="course_id"
@@ -119,6 +117,10 @@
 
 </view>
 
+<view class="freeRecord" catchtap="goFreeRecord">自由录制</view>
 
 <!--播放挂件-->
 <wu-play-widget id="wu-play-widget" />
+
+<!--登录插件-->
+<wu-login id="wu-login" />

@@ -43,7 +43,7 @@ class ArrayList{
 	 * 添加一个数组
 	 */
 	addAll(items){
-		items.forEach(e => this.arr.push(e));	
+		items.forEach(e => this.arr.push(e));
 	}
 	/**
 	 * 遍历集合
@@ -94,7 +94,7 @@ class ArrayList{
 	 * 判断集合是否为空
 	 */
 	isEmpty(){
-		return this.arr.length == 0;
+		return this.arr.length === 0;
 	}
 	/**
 	 * 移除此列表中指定位置上的元素
@@ -152,12 +152,12 @@ class ArrayList{
 	  */
 	 equals(list){
 	 	
-	 	if(list.size() != this.size()) return false;
+	 	if(list.size() !== this.size()) return false;
 
-	 	if(list == this) return true;
+	 	if(list === this) return true;
 
 	 	for(let i=0,len=this.length;i<len;i++){
-	 		if(this.arr[i] != list.arr[i]) return false;
+	 		if(this.arr[i] !== list.arr[i]) return false;
 	 	}
 	 	
 	 	return true;

@@ -197,3 +197,18 @@
   overflow:hidden;
 }
 .hot-listSingle-h ._del ._count{font-size: 24rpx; color: #999999;margin-top: 10rpx; justify-content: flex-end;}
+
+.freeRecord{
+  position: fixed;
+  z-index: 100;
+  right: 40rpx;
+  bottom: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #733429;
+  color: white;
+  border-radius: 1000rpx;
+}

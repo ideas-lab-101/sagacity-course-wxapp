@@ -5,13 +5,11 @@
 </wu-navigation>
 
 <view class="container">
-
   <view class="ut-container">
       <view>
           <view class="ut-teamname"><text class='iconfont icon-xuexi'></text><text>{{teamInfo.team_name}}</text></view>
           <view class="ut-teamdesc color-999">{{teamInfo.team_desc}}</view>
       </view>
-
 
       <view class="ut-team-other">
         <view class="ut-userinfo">
@@ -27,7 +25,6 @@
         </view>
       </view>
 
-
       <view>
           <view wx:if="{{teamInfo.bln_auth===1}}" class="ut-team-rz">
               <text  class="iconfont icon-shenfenzhengzhengmian"></text><text>需要认证，认证通过才能加入小组</text>
@@ -41,7 +38,6 @@
       </view>
 
   </view>
-
 </view>
 
 
@@ -54,7 +50,7 @@
             <input placeholder="李白晚辈" class="_input" focus="{{attestation.focus}}" value="{{attestation.inp}}" bindblur="attestationSubEvent" bindconfirm="attestationSubEvent"/>
         </view>
         <view class="mt-15 _s _pro" catchtap="openProfileEvent" hover-class="basic-hover">
-            <input placeholder="选择档案" class="_input" disabled value="{{profileItem.ProfileName}}"/><text class="iconfont icon-zuo"></text>
+            <input placeholder="选择档案" class="_input" disabled value="{{profileItem.profile_name}}"/><text class="iconfont icon-zuo"></text>
         </view>
         <view class="mt-15 _link flex around">
             <text catchtap="closeAttestationEvent" class="event-hover-class">取消</text>
@@ -74,9 +70,16 @@
         </view>
     </view>
     <scroll-view scroll-y style="height: {{'calc(100% - '+statusBarHeight+'px - 45px)'}};" bindscrolltolower="profileToLower">
-        <view class="profile-single {{profileItem.profile_id === item.profile_id?'active':''}}" wx:for="{{content.list}}" wx:key="profile_id" catchtap="profileChange" data-item="{{item}}">
+        <view class="profile-single {{profileItem.profile_id === item.profile_id?'active':''}}"
+              wx:for="{{content.list}}"
+              wx:key="profile_id"
+              catchtap="profileChange"
+              data-item="{{item}}">
             <text>{{item.profile_name}}</text>
             <text class="_n">学号：{{item.profile_no}}</text>
         </view>
     </scroll-view>
 </wu-animation-group>
+
+<!--登录插件-->
+<wu-login id="wu-login" />

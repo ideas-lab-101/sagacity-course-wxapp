@@ -12,6 +12,8 @@
     transition-duration: 0.5s;
     position: relative;
     z-index: 10;
+    background: url('https://sagacity-course-000019.tcb.qcloud.la/system/albm-bakc.jpg?sign=56d03fa98f703d2bf2b16310740a594b&t=1554086926') no-repeat center top;
+    background-size: 100% auto;
 }
 .lesson-top.move{
     opacity: 0;
@@ -55,7 +57,6 @@
     color: #ff3e02;
     display: inline-block;
 }
-
 
 /* lesson-lesson-link */
 .lesson-link{ display: flex; align-items: center; justify-content: space-around; position: absolute; z-index: 100; right: 0; top: 470rpx; }

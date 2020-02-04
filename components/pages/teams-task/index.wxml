@@ -32,13 +32,13 @@
                               data-time="{{item.valid_time}}"
                               data-name="{{item.content}}">
                             <view class="_info">
-                                <view>
-                                    <text class="_name" wx:if="{{item.datas}}">{{item.datas}}</text>
-                                    <view class="_content"><label>作业说明：</label>{{item.content}}</view>
-                                </view>
+                                <view class="_name" wx:if="{{item.data_names}}">{{item.data_names}}</view>
+                                <view class="_content"><label class="label">作业说明：</label>{{item.content}}</view>
+                            </view>
+                            <view class="_time">
+                                <text>发布时间：{{moduleMyDate.getTimeDate(item.add_time)}}</text>
                                 <text class="_toTime">{{item.valid_time}}</text>
                             </view>
-                            <text class="_time">发布时间：{{moduleMyDate.getTimeDate(item.add_time)}}</text>
                         </view>
                     </view>
                     <view wx:else class="noDate">该小组下没有任何的任务!</view>

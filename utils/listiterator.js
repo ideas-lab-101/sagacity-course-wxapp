@@ -11,7 +11,7 @@ class Iterator{
 	 * 获取下一个元素
 	 */
 	next(){
-		var temp = this.arr[this.i];
+		const temp = this.arr[this.i];
 		this.i++;
 		return temp;
 	}
@@ -19,28 +19,27 @@ class Iterator{
 	 * 删除当前元素
 	 */
 	remove(){
-		this.arr.splice(--this.i,1);
+		this.arr.splice(--this.i, 1);
 	}
 	/**
 	 * 是否存在下一个元素
 	 */
 	hasNext(){
-		if(this.arr == null || this.arr.length == this.i) return false;
+		if (this.arr == null || this.arr.length === this.i) return false;
 		return true;
 	}
 	/**
 	 * 判断是否存在上一个元素
 	 */
 	hasPrevious(){
-		return this.i != 0;
+		return this.i !== 0;
 	}
 	/**
 	 * 逆向遍历,获取上一个元素
 	 */
 	previous(){
 		this.i--;
-		var temp = this.arr[this.i];
-		return temp;
+		return this.arr[this.i];
 	}
 	/**
 	 * 替换当前指针指向元素

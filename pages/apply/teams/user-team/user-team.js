@@ -1,5 +1,6 @@
 const App = getApp()
 import { $wuBackdrop } from '../../../../components/wu/index'
+import { $wuLogin } from '../../../../components/pages/index'
 import { getTeamInfo, joinTeam, getTeamProfile } from '../../../../request/teamPort'
 const Toast = require('../../../../viewMethod/toast')
 const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
@@ -58,7 +59,6 @@ Page({
       }
     },
 
-    // 自定义事件
     /**
      * 链接事件
      * @param e
@@ -77,9 +77,7 @@ Page({
        * 未登录跳转
        */
       if (!App.user.ckLogin()) {
-        wx.navigateTo({
-          url: '/pages/common/accredit/accredit'
-        })
+        $wuLogin().show()
         return false
       }
       if(this.data.teamInfo.bln_auth === 1) {
@@ -206,11 +204,6 @@ Page({
              * 链接到学习小组列表
              */
             this.goTeamEvent()
-          })
-          .catch(ret => {
-            if(ret.code === 2) {
-              Toast.text({ text: ret.msg })
-            }
           })
     }
 })

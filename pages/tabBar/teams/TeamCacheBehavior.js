@@ -27,7 +27,7 @@ module.exports = Behavior({
         },
 
         __clear() {
-            this.data.teamsCache = {}
+            this.data.teamsCache = []
         }
     }
 })

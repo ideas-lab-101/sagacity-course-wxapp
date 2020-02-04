@@ -97,12 +97,9 @@ Component({
           state: 1
         })
             .then(res => {
-
-              res.list.map(item => {
-                item.ValidTime = this._timeToDay(item.ValidTime)
-              })
-              this.setData({ taskList: res.data.list})
-              return res
+                  res.data.list.map(item => item.valid_time = this._timeToDay(item.valid_time))
+                  this.setData({ taskList: res.data.list})
+                  return res
             })
             .then( res => {
 

@@ -164,6 +164,11 @@ class user {
         })
     }
 
+
+    __getUnReadMessage() {
+
+    }
+
     /**
      * 判断onLaunch是否先加载成功 在执行后面的方法
      * @private

@@ -43,6 +43,7 @@ export function getRecordInfo(data) {
  */
 export function uploadRecordFile(options, progress, complete) {
   return new Promise( (resolve, reject) => {
+
     const uploadTask = wx.uploadFile({
       url: host + '/wxapp/record/v3/uploadRecordFile',
       filePath: options.path,
@@ -58,31 +59,39 @@ export function uploadRecordFile(options, progress, complete) {
         reject(error)
       },
       complete: function () {
+        uploadTask.offProgressUpdate()
         uploadTask.abort()
-        complete && complete()
+        typeof complete === "function" && complete()
       }
     })
 
     uploadTask.onProgressUpdate((res) => {
-      progress && progress(res)
+      typeof progress === "function" && progress(res)
     })
+
   })
 }
 
-// 获取是否混音完成状态
-export function queryTaskState(data) { // taskID
+/**
+ * 获取是否混音完成状态
+ * task_id
+ */
+export function queryTaskState(data) {
   return fetch({
-    url: '/wxapp/record/v2/queryTaskState',
+    url: '/wxapp/record/v3/queryTaskState',
     data: data || {},
     method: 'GET'
   })
 }
 
 
-// 修改录音描述
-export function updateRecordSign(data) { //recordID desc
+/**
+ * 修改录音描述
+ * record_id desc
+ */
+export function updateRecordSign(data) {
   return fetch({
-    url: '/wxapp/record/updateRecordSign',
+    url: '/wxapp/record/v3/updateRecordSign',
     data: data || {},
     method: 'POST'
   })
@@ -136,10 +145,13 @@ export function delRecord(data) {
   })
 }
 
-// 专辑作品
-export function getAlbumInfo(data) { // albumID token
+/**
+ * 专辑作品
+ * token album_id
+ */
+export function getAlbumInfo(data) {
   return fetch({
-    url: '/wxapp/record/v2/getAlbumInfo',
+    url: '/wxapp/record/v3/getAlbumInfo',
     data: data || {},
     method: 'GET'
   })

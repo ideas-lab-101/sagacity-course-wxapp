@@ -1,10 +1,9 @@
-const { fetch } = require('../axios/fetch')
+import { fetch } from '../axios/fetch'
 
 /**
- * 消息方法调用
- * */
-// 获得未读消息列表
-export function getMessageList(data) { //token
+ * 获得未读消息列表
+ */
+export function getMessageList(data) {
   return fetch({
     url: '/wxapp/msg/v3/getMessageList',
     data: data || {},
@@ -12,8 +11,11 @@ export function getMessageList(data) { //token
   })
 }
 
-// 设置消息阅读标志
-export function setMessage(data) { //token messageID
+/**
+ * 设置消息阅读标志
+ * token message_id
+ */
+export function setMessage(data) {
   return fetch({
     url: '/wxapp/msg/v3/setMessage',
     data: data || {},

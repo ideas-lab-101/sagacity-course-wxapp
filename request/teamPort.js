@@ -42,8 +42,11 @@ export function joinTeam(data) {
 }
 
 
-// 获得小组任务列表
-export function getTeamTask(data) {  // token teamID state(可选，0|1)
+/**
+ * 获得小组任务列表
+ * team_id state(可选，0|1)
+ */
+export function getTeamTask(data) {
   return fetch({
     url: '/wxapp/team/v3/getTeamTask',
     data: data || {},
@@ -51,8 +54,11 @@ export function getTeamTask(data) {  // token teamID state(可选，0|1)
   })
 }
 
-// 作品加入到组
-export function addTeamRecord(data) {  // token teamID recordID taskID(小组任务，没有则为0)
+/**
+ * 提交作品到任务
+ * team_id task_id(小组任务，没有则为0) record_id
+ */
+export function addTeamRecord(data) {
   return fetch({
     url: '/wxapp/team/v3/addTeamRecord',
     data: data || {},

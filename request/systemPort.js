@@ -51,6 +51,28 @@ export function getEnumDetail(data) {
 }
 
 
+/**
+ * 搜索
+ * key
+ */
+export function search(data) {
+  return fetch({
+    url: '/wxapp/system/v3/search',
+    data: data || {},
+    method: 'POST'
+  })
+}
+
+/**
+ * 热搜词列表
+ */
+export function hotSearch(data) {
+  return fetch({
+    url: '/wxapp/system/v3/hotSearch',
+    data: data || {},
+    method: 'GET'
+  })
+}
 
 /*
 /!**
@@ -102,28 +124,6 @@ export function getWXPhoneNumber(data) {  // encryptedData session_key iv
     method: 'GET'
   })
 }
-
-
-
-// 搜索
-export function Search(data) {  // key
-  return fetch({
-    url: '/wxapp/system/v2/Search',
-    data: data || {},
-    method: 'POST'
-  })
-}
-
-// 热搜词列表
-export function HotSearch(data) {
-  return fetch({
-    url: '/wxapp/system/HotSearch',
-    data: data || {},
-    method: 'GET'
-  })
-}
-
-
 
 // 获取电话号码
 export function getPhoneNumber(data) { // key

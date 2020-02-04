@@ -26,16 +26,14 @@ Page({
        */
       teamCurrent: null,   // swiper 改变的时候 当前的下标
       teamCurrentID: null,  // 当前加载的teamID  并一定指当前选中的TEAM  的ID
-      userID: null,
-      /**
-       * 页面固定参数 swiper 高度计算
-       */
-      pageContentHeight: 0
+      userID: null
     },
 
     onLoad: function (options) {
       this.optionsId = options.id
       this.setData({userID: App.user.userInfo.user_id})
+
+      this.PageOnLoad = true
       /**
        * 初始化数据
        */
@@ -43,37 +41,28 @@ Page({
     },
 
     onShow: function () {
+        /**
+         * * 更新如果想小组添加了作品
+         **/
+        if (!this.PageOnLoad && (App.requestManager.update('addTeamRecord', this.route))) {
+            this.__clear()
+            this.__init()
+        }
+    },
+    onHide: function () {
+        this.PageOnLoad = false
     },
 
-    onReady: function () {
-        const screenHeight = App.globalData.equipment.windowHeight
-        const query = wx.createSelectorQuery()
-
-        query.select('#teams-nav').boundingClientRect()
-        query.exec((ret) => {
-            let h = 0
-            ret.forEach((item) => {
-                h += item.height
-            })
-            this.setData({
-                pageContentHeight: `${screenHeight - h}px`
-            })
-        })
+    onUnload: function () {
+        this.PageOnLoad = false
     },
-
     onShareAppMessage: function (res) {
       const index = this.data.teamCurrent
-      const teamID = this.data.teamList[index].team_id
-      const teamName = this.data.teamList[index].team_name
+      const { teamsCache, teamList } = this.data
+      const teamID = teamList[index].team_id
+      const teamName = teamList[index].team_name
+      const caption = teamsCache[index].label || teamsCache[index].caption
 
-      let caption = ''
-      if(index%3 === 0) {
-        caption = this.data.one.userInfo.label || this.data.one.userInfo.caption
-      }else if(index%3 === 1) {
-        caption = this.data.two.userInfo.label || this.data.two.userInfo.caption
-      }else if(index%3 === 2) {
-        caption = this.data.three.userInfo.label || this.data.three.userInfo.caption
-      }
       return {
         title: `${caption}创建了（${teamName}）`,
         path: `/pages/apply/teams/user-team/user-team?id=${teamID}&title=${encodeURI(teamName)}`,
@@ -123,7 +112,6 @@ Page({
           }
       })
     },
-
     goTeamSetEvent: function (e) {
       const index = e.currentTarget.dataset.index
       const { teamList, userID, teamsCache } = this.data

@@ -58,7 +58,8 @@
         "catalog/catalog",
         "background-sound-list/background-sound-list",
         "topic/topic",
-        "album/album"
+        "album/album",
+        "free-record/free-record"
       ]
     },
     {

@@ -1,7 +1,7 @@
-import RecordManager from '../../../../controller/RecordManager'
-const Toast = require('../../../../viewMethod/toast')
-import {  uploadRecordFile } from '../../../../request/recordPort'
-import { $wuBackdrop } from '../../../../components/wu/index'
+import RecordManager from '../../controller/RecordManager'
+const Toast = require('../../viewMethod/toast')
+import {  uploadRecordFile } from '../../request/recordPort'
+import { $wuBackdrop } from '../../components/wu/index'
 
 module.exports = Behavior({
     data: {
@@ -39,6 +39,7 @@ module.exports = Behavior({
             this.cancelRecordParams = false
             this.Recorder.start()
         },
+
         endRecord: function (e) {
             this.submitRecordAction = false // 重置录音混音完成提交成功后 执行操作
             this.startRecordAction = false
@@ -81,6 +82,7 @@ module.exports = Behavior({
             this.setData({recordStart: true})
             this.resetTime() // 获取录制时间
         },
+
         _stopBack: function (res) {
             if (this.data.recordTime < 15 && !this.cancelRecordParams) {
 
@@ -104,15 +106,19 @@ module.exports = Behavior({
              */
             this._getMixtureRecord(res.tempFilePath, this.data.form.music_id, Math.ceil(res.duration))
         },
+
         _resumeBack: function () {
             this.resetTime() // 获取录制时间
         },
+
         _errorBack: function (err) {
             console.error(err)
         },
+
         _interruptionBeginBack: function () {
             this.setData({isPause: true})
         },
+
         _interruptionEndBack: function () {
             this.setData({isPause: false})
             this.resetTime() // 获取录制时间

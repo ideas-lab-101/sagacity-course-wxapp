@@ -1,5 +1,4 @@
 import { $wuBackdrop } from '../../../../components/wu/index'
-import {  getLessonData } from '../../../../request/coursePort'
 import {  submitRecordFile, recordCancel } from '../../../../request/recordPort'
 const App = getApp()
 const AuthSettingBehavior = require('../../../../utils/behaviors/AuthSettingBehavior')
@@ -12,7 +11,7 @@ Page({
     behaviors: [AuthSettingBehavior, AuthRecordBehavior, InnerAudioPlayBehavior],
     data: {
         nav: {
-          title: "",
+          title: "自由录制",
           model: 'fold',
           transparent: true,
           animation: {
@@ -22,32 +21,6 @@ Page({
         },
         systemSeries: App.globalData.systemSeries,
         statusBarHeight: App.globalData.equipment.statusBarHeight,
-        markedWords: {
-            data: [
-              {
-                show: false,
-                urls: [
-                      {
-                          url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/record/marker-01.png?sign=3aea4d7a3ea7a468709f77aff0d453ac&t=1542898587',
-                          width: '360rpx',
-                          top: '120rpx',
-                          left: '60rpx'
-                      },
-                        {
-                          query: '#MarkDown01'
-                        },
-                        {
-                          url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/record/marker-03.png?sign=714e3eec09d0298c5c0b27884c2f00b6&t=1540883317',
-                          width: '220rpx',
-                          top: '300rpx',
-                          left: '460rpx',
-                          release: true
-                      }
-                  ]
-              }
-          ],
-            version: App.version
-        },
 
         backgroundSoundItem: null, // 背景音元素对象
       /**
@@ -68,11 +41,7 @@ Page({
         mode: 0, //  朗诵 0 背诵 1 模式
     },
     onLoad: function (options) {
-        this.setData({
-            mode: options.mode,
-            'form.data_id': options.id
-        })
-        this.__init(options.id) // 请求数据
+        this.__init()
 
         this.__initInnerAudioManager()
     },
@@ -102,7 +71,7 @@ Page({
      * @param id
      * @private
      */
-    __init: function (id) {
+    __init: function () {
         /**
          * 初始化授权
          */
@@ -111,13 +80,6 @@ Page({
          * 初始化录音管理器
          */
         this.__initRecorder()
-
-        getLessonData({
-            data_id: Number(id)
-        })
-            .then((res) => {
-                this.setData({ courseData: res.data })
-            })
     },
 
     startRecord: function (e) {
@@ -160,7 +122,7 @@ Page({
       /**
        * 音频停止播放
        */
-      this.__innerAudioStop()
+        this.__innerAudioStop()
 
         this.setData({
             'reciprocal.visible': true
@@ -264,10 +226,6 @@ Page({
      * 上传完成后合成混音
      */
     submitEvent: function () {
-        if(this.submitRecordAction) {
-          return false
-        }
-
         submitRecordFile({
                 ...this.data.form,
                 mode: this.data.mode
@@ -275,9 +233,9 @@ Page({
             .then((res) => {
                 Toast.text({ text: '提交成功'})
                 this.closeRecordOverEvent() // 关闭弹出层
-                this.submitRecordAction = true // 如果正式提交录音  做记录
 
-                setTimeout(() => {
+                const BackFn = setTimeout(() => {
+                    clearTimeout(BackFn)
                     wx.navigateTo({
                         url: `/pages/apply/mine/my-record/my-record?skip=1`
                     })

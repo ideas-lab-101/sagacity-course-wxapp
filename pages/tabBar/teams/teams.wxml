@@ -1,10 +1,8 @@
 <wxs src="./teams.wxs" module="moduleTeams" />
 
-<view style="padding-top: {{statusBarHeight}}px;"
-      id="teams-nav"
-      class="teams-nav">学习小组({{nav.title}})</view>
+<view style="padding-top: {{statusBarHeight}}px;" class="teams-nav">学习小组({{nav.title}})</view>
 
-<view style="height: {{pageContentHeight}}">
+<view style="height: calc(100vh - {{statusBarHeight + 45}}px);">
   <view class="flex top content-container" wx:if="{{isLogin}}">
 
     <block wx:if="{{teamList.length>0}}">
@@ -90,7 +88,6 @@
     <view wx:else class="nodate">您还没加入任何学习小组!</view>
 
   </view>
-
   <view wx:else catchtap="goLoginEvent" class="teams-login">未登录</view>
 </view>
 

@@ -3,6 +3,7 @@ import InnerAudioManager from '../../controller/InnerAudioManager'
 module.exports = Behavior({
     data: {
         tryParams: {
+            list: null,
             isPlay: false,
             id: null
         }
@@ -14,12 +15,15 @@ module.exports = Behavior({
              * @type {InnerAudioManager}
              */
             this.innerAudioContext = new InnerAudioManager({
-                play: this._audioManagerPlay,
-                pause: this._audioManagerPause,
-                stop: this._audioManagerStop,
-                end: this._audioManagerEnd,
-                error: this._audioManagerError,
-                destroy: this._audioManagerDestroy
+                play: this.__audioManagerPlay,
+                pause: this.__audioManagerPause,
+                stop: this.__audioManagerStop,
+                waiting: this.__audioManagerWaiting,
+                end: this.__audioManagerEnd,
+                error: this.__audioManagerError,
+                destroy: this.__audioManagerDestroy,
+                timeUpdate: this.__audioManagerTimeUpdate,
+                canPlay: this.__audioManagerCanPlay
             })
         },
 
@@ -53,30 +57,102 @@ module.exports = Behavior({
         /**
          * audio播放回调方法
          **/
-        _audioManagerPlay: function () {
+        __audioManagerPlay: function () {
+
         },
-        _audioManagerPause: function () {
+        __audioManagerPause: function () {
             this.setData({
                 'tryParams.isPlay': false
             })
         },
-        _audioManagerStop: function () {
-            this._audioManagerRelease()
+        __audioManagerStop: function () {
+            this.__audioManagerRelease()
         },
-        _audioManagerEnd: function () {
-            this._audioManagerRelease()
+
+        __audioManagerWaiting: function() {
+
         },
-        _audioManagerError: function () {
-            this._audioManagerRelease()
+
+        __audioManagerEnd: function () {
+            this.__audioEnd()
         },
-        _audioManagerDestroy: function () {
+        __audioManagerError: function (err) {
+            this.__audioManagerRelease()
+        },
+        __audioManagerDestroy: function () {
             this.innerAudioContext = null
         },
-        _audioManagerRelease: function () {
+
+        __audioManagerTimeUpdate: function(params) {
+
+        },
+
+        __audioManagerCanPlay: function() {
+
+        },
+
+        __audioManagerRelease: function () {
             this.setData({
                 'tryParams.isPlay': false,
                 'tryParams.id': null
             })
+        },
+
+        /**
+         * 初始化播放列表
+         * @param originalList
+         * @param recordID
+         * @param fileUrl
+         * @returns {boolean}
+         * @private
+         */
+        __initTryParamsList(originalList, recordID, fileUrl) {
+            if (!originalList || originalList.length <= 0) {
+                return false
+            }
+            const { list } = this.data.tryParams
+
+            const formatList = originalList.map(item => {
+                return {
+                    RecordID: item[recordID],
+                    FileURL: item[fileUrl]
+                }
+            })
+
+            if (!list) {
+                this.data.tryParams.list = [...formatList]
+                return false
+            }
+            this.data.tryParams.list = [...list].concat(formatList)
+        },
+
+        /**
+         * audio播放回调方法
+         **/
+          __audioEnd() {
+            const { list, id } = this.data.tryParams
+            /**
+             * 判断单个播放的情况
+             */
+            if (!list) {
+                this.__audioManagerRelease()
+                return false
+            }
+
+            let index = list.findIndex(item => id === item.RecordID)
+            if(index === -1 || index === list.length - 1) {
+                this.__audioManagerRelease()
+                return false
+            }
+            index ++
+            const currentID = list[index].RecordID
+            const url = list[index].FileURL
+
+            this.setData({
+                'tryParams.isPlay': true,
+                'tryParams.id': currentID
+            })
+            this.innerAudioContext.play(url)
         }
     }
 })

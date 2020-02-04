@@ -26,6 +26,9 @@ var setDecimals = function (val) {
 }
 
 var getTimeDate = function (time) {
+    if (!time) {
+        return ''
+    }
     var exp = getRegExp('-', 'g')
     var temp = time.replace(exp, '/')
     return temp.split(' ')[0]

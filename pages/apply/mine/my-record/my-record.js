@@ -97,8 +97,8 @@ Page({
       /**
        * * 停止背景音播放
        **/
-      if ( App.globalData.audio) {
-        App.globalData.audio.pause()
+      if ( App.backgroundAudioManager) {
+        App.backgroundAudioManager.pause()
       }
     },
 

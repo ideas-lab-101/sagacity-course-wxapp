@@ -22,29 +22,29 @@
         <view wx:for="{{content.list}}" wx:key="record_id" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}" >
             <view class="_insert" bindtap="tryListenEvent" data-id="{{item.record_id}}" data-url="{{item.file_url}}">
 
-            <view class="_linkto">
-              <view class="_name">{{item.name}}</view>
-              <view class="_desc">{{item.desc}}</view>
-            </view>
+                <view class="_linkto">
+                  <view class="_name">{{item.name}}</view>
+                  <view class="_desc">{{item.desc}}</view>
+                </view>
 
-            <!--未公开-->
-            <view class="mine-userRecord-single-crile" wx:if="{{item.bln_public === 0 }}">
-              <image src="{{item.cover_url}}" mode="aspectFill" lazy-load class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}"></image>
-              <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.record_id}}"></text>
-              <text class="iconfont icon-weibiaoti519" wx:else></text>
-            </view>
-            <view class="bs-single" wx:else>
-              <view class="_insert">
-                <view class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}">
-                  <view><image src="{{item.cover_url}}" mode="aspectFill" lazy-load/></view>
+                <!--未公开-->
+                <view class="mine-userRecord-single-crile" wx:if="{{item.bln_public === 0 }}">
+                  <image src="{{item.cover_url}}" mode="aspectFill" lazy-load class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}"></image>
                   <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.record_id}}"></text>
                   <text class="iconfont icon-weibiaoti519" wx:else></text>
                 </view>
-              </view>
-            </view>
+                <view class="bs-single" wx:else>
+                  <view class="_insert">
+                    <view class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}">
+                      <view><image src="{{item.cover_url}}" mode="aspectFill" lazy-load/></view>
+                      <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.record_id}}"></text>
+                      <text class="iconfont icon-weibiaoti519" wx:else></text>
+                    </view>
+                  </view>
+                </view>
 
-            <view class="_time"><text>{{moduleMyRecord.resolveTime(item.add_time)}}</text></view>
-        </view>
+                <view class="_time"><text>{{moduleMyRecord.resolveTime(item.add_time)}}</text></view>
+            </view>
             <view class="_panel">
 
             <view class="flex between">
