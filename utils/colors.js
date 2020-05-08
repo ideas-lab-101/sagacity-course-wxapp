@@ -2,7 +2,7 @@ export const colors = {
   'light': '#ddd',
   'stable': '#b2b2b2',
   'positive': '#387ef5',
-  'calm': '#57b3ff',
+  'calm': '#733429',
   'balanced': '#33cd5f',
   'energized': '#ffc900',
   'assertive': '#ef473a',

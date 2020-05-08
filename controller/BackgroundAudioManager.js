@@ -31,7 +31,8 @@ class BackgroundAudioManager {
             seekingFn: this._seeking.bind(this),
             seekedFn: this._seeked.bind(this),
             prevPlayFn: this._prevPlay.bind(this),
-            nextPlayFn: this._nextPlay.bind(this)
+            nextPlayFn: this._nextPlay.bind(this),
+            errorFn: this._errorPlay.bind(this)
         }
         /**
          * 初始化播放器
@@ -236,6 +237,10 @@ class BackgroundAudioManager {
     }
     _seeked() {
         this.pageAudioBack && this.pageAudioBack.seekedFn && this.pageAudioBack.seekedFn()
+    }
+
+    _errorPlay(err) {
+        this.pageAudioBack && this.pageAudioBack.errorFn && this.pageAudioBack.errorFn(err)
     }
 
     /**

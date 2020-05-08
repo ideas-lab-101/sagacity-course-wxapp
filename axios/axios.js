@@ -2,6 +2,7 @@
 const Config = require('../sever.config');
 const Toast = require("../viewMethod/toast");
 const Constants = require('../utils/constants');
+//const InterceptorManager = require('./InterceptorManager')
 
 const noop = function noop() {};
 
@@ -158,10 +159,13 @@ const axios = function (options = {}) {
       //console.log(res)
   })
 }
-
+/**
+ * 方法执行前拦截
+ */
+//const Proxy = InterceptorManager(axios)
 
 module.exports = {
-  axios,
+  axios: axios,
   requestTask,
   requestSeq,
   RequestError: RequestError

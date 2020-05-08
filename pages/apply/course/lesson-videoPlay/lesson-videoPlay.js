@@ -32,14 +32,12 @@ Page({
             data_id: this.optionsId
         })
 
-        this.isLoadPass = true
+        this.PageOnLoad = true
     },
 
     onShow: function () {
-        if (!this.isLoadPass) {
-            if (!this.data.info.is_enroll && App.enroll.has(this.data.info.lesson_data.course_id) && App.user.ckLogin()){
-                this.__init({data_id: this.optionsId})
-            }
+        if (!this.PageOnLoad && !this.data.info.is_enroll && App.enrollController.has(this.data.info.lesson_data.course_id) && App.user.ckLogin()) {
+            this.__init({data_id: this.optionsId})
         }
     },
 
@@ -47,29 +45,28 @@ Page({
         this.__initVideoContext()
 
         try {
-            var res = wx.getSystemInfoSync()
-            var screenHeight = res.windowHeight
+            const screenHeight = App.globalData.equipment.windowHeight
+            const query = wx.createSelectorQuery()
+            query.select('#wu-navigation').boundingClientRect()
+            query.select('#play-video').boundingClientRect()
+            query.exec((ret) => {
+                let h = 0
+                ret.forEach((item) => {
+                    h += item.height
+                })
+                this.setData({
+                    scrollHeight: `${screenHeight - h}px`
+                })
+            })
         } catch (e) {}
-        var query = wx.createSelectorQuery()
-        query.select('#wu-navigation').boundingClientRect()
-        query.select('#play-video').boundingClientRect()
-        query.exec((ret) => {
-            let h = 0
-            ret.forEach((item) => {
-                h += item.height
-            })
-            this.setData({
-                scrollHeight: `${screenHeight - h}px`
-            })
-        })
     },
 
     onHide: function () {
-        this.isLoadPass = false
+        this.PageOnLoad = false
     },
 
     onUnload: function () {
-        this.isLoadPass = false
+        this.PageOnLoad = false
     },
 
     onShareAppMessage: function () {

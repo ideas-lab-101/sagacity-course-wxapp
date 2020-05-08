@@ -1,18 +1,12 @@
 import RecordManager from '../../controller/RecordManager'
 const Toast = require('../../viewMethod/toast')
-import {  uploadRecordFile } from '../../request/recordPort'
-import { $wuBackdrop } from '../../components/wu/index'
 
 module.exports = Behavior({
     data: {
         recordStart: false,
         recordEnd: false,
         isPause: false,
-        recordTime: 0, // 录音时间
-        progressParams: { // 合成混音进度层
-            visible: false,
-            value: 5
-        }
+        recordTime: 0 // 录音时间
     },
     methods: {
 
@@ -41,7 +35,6 @@ module.exports = Behavior({
         },
 
         endRecord: function (e) {
-            this.submitRecordAction = false // 重置录音混音完成提交成功后 执行操作
             this.startRecordAction = false
             this.setData({
                 recordStart: false,
@@ -84,27 +77,26 @@ module.exports = Behavior({
         },
 
         _stopBack: function (res) {
-            if (this.data.recordTime < 15 && !this.cancelRecordParams) {
+            this.setData({
+                recordTime: 0
+            })
 
-                Toast.text({ text: '录制时间不得低于15秒'})
-                this.setData({
-                    recordTime: 0
-                })
-                return false
-            }
-
+            /**
+             * 是否是取消录制
+             */
             if (this.cancelRecordParams) {
                 return false
             }
 
-            this.setData({
-                'progressParams.visible': true,
-                recordTime: 0
-            })
+            if (this.data.recordTime < 15 && !this.cancelRecordParams) {
+                Toast.text({ text: '录制时间不得低于15秒'})
+                return false
+            }
+
             /**
              * 上传到服务器  获取音频合成的接口
              */
-            this._getMixtureRecord(res.tempFilePath, this.data.form.music_id, Math.ceil(res.duration))
+            this.getMixtureRecord(res.tempFilePath, Math.ceil(res.duration))
         },
 
         _resumeBack: function () {
@@ -144,47 +136,6 @@ module.exports = Behavior({
                 this.setData({ recordTime:  this.data.recordTime })
                 this.resetTime()
             }, 1000)
-        },
-
-        /**
-         * 上传到服务器  获取音频合成的接口
-         * @param path
-         * @param musicID
-         * @param duration
-         * @private
-         */
-        _getMixtureRecord: function (path, musicID, duration) {
-
-            uploadRecordFile({
-                    path: path,
-                    musicID: musicID,
-                    duration: duration
-                },
-                (progress) => {
-                    this.setData({
-                        'progressParams.value': progress.progress
-                    })
-                },
-                () => {
-                    this.setData({
-                        recordIn: false,
-                        'progressParams.visible': false
-                    })
-                })
-                .then((res) => {
-                    const result = JSON.parse(res.data)
-                    console.log(result)
-
-                    this.data.form.file_url = result.data.file_url
-                    this.data.form.record_url = result.data.record_url
-                    this.data.form.task_id = result.data.task_id
-
-                    $wuBackdrop().retain() // 打开已经录制的音频层
-                    this.setData({ recordIn: true, 'form.file_url': result.data.file_url})
-                })
-                .catch((ret) => {
-                    Toast.text({ text: '录音合成失败,请重新录制'})
-                })
         }
 
     }

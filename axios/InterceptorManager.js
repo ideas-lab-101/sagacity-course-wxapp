@@ -1,52 +1,30 @@
 'use strict';
 
-var utils = require('./utils');
+const InterceptorManager = function InterceptorManager(target) {
 
-function InterceptorManager() {
-  this.handlers = [];
+  const that = this
+
+  let handler = {
+
+    get: function(target, key, receiver) {
+      return Reflect.get(target, key, receiver)
+    },
+
+    apply: function(target, thisBinding, args) {
+      return Reflect.apply(target, thisBinding, args)
+    },
+
+    construct: function(target, args) {
+      console.log('construct', target)
+      return Reflect.construct(target, args)
+    }
+  }
+
+  return new Proxy(target, handler)
 }
 
-/**
- * Add a new interceptor to the stack
- *
- * @param {Function} fulfilled The function to handle `then` for a `Promise`
- * @param {Function} rejected The function to handle `reject` for a `Promise`
- *
- * @return {Number} An ID used to remove interceptor later
- */
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected
-  });
-  return this.handlers.length - 1;
-};
+InterceptorManager.prototype.use = function() {
+  console.log('use')
+}
 
-/**
- * Remove an interceptor from the stack
- *
- * @param {Number} id The ID that was returned by `use`
- */
-InterceptorManager.prototype.eject = function eject(id) {
-  if (this.handlers[id]) {
-    this.handlers[id] = null;
-  }
-};
-
-/**
- * Iterate over all the registered interceptors
- *
- * This method is particularly useful for skipping over any
- * interceptors that may have become `null` calling `eject`.
- *
- * @param {Function} fn The function to call for each interceptor
- */
-InterceptorManager.prototype.forEach = function forEach(fn) {
-  utils.forEach(this.handlers, function forEachHandler(h) {
-    if (h !== null) {
-      fn(h);
-    }
-  });
-};
-
-module.exports = InterceptorManager;
+module.exports = new InterceptorManager;

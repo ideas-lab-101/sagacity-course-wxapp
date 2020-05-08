@@ -32,7 +32,8 @@ module.exports = Behavior({
                 timeUpdateFn: this._timeUpdateBack,
                 waitingFn: this._waiting,
                 seekingFn: this._seeking,
-                seekedFn: this._seeked
+                seekedFn: this._seeked,
+                errorFn: this._error
             }
             getApp().backgroundAudioManager.create(options, this.data.audioBack, formatInfo)
         },
@@ -142,6 +143,14 @@ module.exports = Behavior({
         },
 
         _seeked: function () {
+        },
+
+        _error: function (err) {
+            this.setData({
+                'audioParams.isPlay': false,
+                progress: 0,
+                sliderProgressVisible: false
+            })
         }
     }
 })

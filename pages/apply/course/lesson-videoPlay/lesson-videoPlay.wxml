@@ -4,7 +4,7 @@
                backgroundColor="#000"
                color="white"></wu-navigation>
 
-<view class="container">
+<view class="container" wx:if="{{info}}">
 
   <view class="play-video" id="play-video">
       <video src="{{info.lesson_data.data_url}}"

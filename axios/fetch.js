@@ -1,5 +1,5 @@
 const Constants = require('../utils/constants');
-
+const { axios } = require('./axios')
 /**
  * 继承finally
  * @param callback
@@ -19,7 +19,6 @@ var isSubmiting = false
 var requestTokenNum = 0     // 重新请求次数
 
 export const fetch = function (options, loading) {
-
   /***
    * 锁定所有的POST请求 如果执行完成了 才能执行
    */
@@ -46,7 +45,7 @@ export const fetch = function (options, loading) {
   }, options.data)
 
   return new Promise( (resolve, reject) => {
-        getApp().request({
+      axios({
           url: options.url,
           data: options.data,
           timeout: options.timeout,

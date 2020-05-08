@@ -1,6 +1,6 @@
 import { $wuBackdrop } from '../../../../components/wu/index'
 import {  getLessonData } from '../../../../request/coursePort'
-import {  submitRecordFile, recordCancel } from '../../../../request/recordPort'
+import {  submitRecordFile, recordCancel, uploadRecordFile } from '../../../../request/recordPort'
 const App = getApp()
 const AuthSettingBehavior = require('../../../../utils/behaviors/AuthSettingBehavior')
 const AuthRecordBehavior = require('../../../../utils/behaviors/AuthRecordBehavior')
@@ -66,6 +66,10 @@ Page({
             count: 5
         },
         mode: 0, //  朗诵 0 背诵 1 模式
+        progressParams: { // 合成混音进度层
+            visible: false,
+            value: 5
+        }
     },
     onLoad: function (options) {
         this.setData({
@@ -264,10 +268,6 @@ Page({
      * 上传完成后合成混音
      */
     submitEvent: function () {
-        if(this.submitRecordAction) {
-          return false
-        }
-
         submitRecordFile({
                 ...this.data.form,
                 mode: this.data.mode
@@ -275,7 +275,6 @@ Page({
             .then((res) => {
                 Toast.text({ text: '提交成功'})
                 this.closeRecordOverEvent() // 关闭弹出层
-                this.submitRecordAction = true // 如果正式提交录音  做记录
 
                 setTimeout(() => {
                     wx.navigateTo({
@@ -286,5 +285,47 @@ Page({
             .catch((ret) => {
                 Toast.text({ text: ret.msg})
             })
-      }
+      },
+        /**
+         * 上传到服务器  获取音频合成的接口
+         * @param path
+         * @param musicID
+         * @param duration
+         * @private
+         */
+        getMixtureRecord: function (path, duration) {
+            this.setData({
+                'progressParams.visible': true
+            })
+            uploadRecordFile({
+                    path: path,
+                    musicID: this.data.form.music_id,
+                    duration: duration
+                },
+                (progress) => {
+                    this.setData({
+                        'progressParams.value': progress.progress
+                    })
+                },
+                () => {
+                    this.setData({
+                        recordIn: false,
+                        'progressParams.visible': false
+                    })
+                })
+                .then((res) => {
+                    const result = JSON.parse(res.data)
+                    console.log(result)
+
+                    this.data.form.file_url = result.data.file_url
+                    this.data.form.record_url = result.data.record_url
+                    this.data.form.task_id = result.data.task_id
+
+                    $wuBackdrop().retain() // 打开已经录制的音频层
+                    this.setData({ recordIn: true, 'form.file_url': result.data.file_url})
+                })
+                .catch((ret) => {
+                    Toast.text({ text: '录音合成失败,请重新录制'})
+                })
+        }
 })

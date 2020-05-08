@@ -85,7 +85,7 @@ class user {
 
             this.__getWxLogin()
                 .then( code => {
-
+                    console.log('code', code)
                     WXLogin({code, userData: FormatUserInfo})
                         .then( (res) => {
 

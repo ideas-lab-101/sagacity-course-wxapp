@@ -224,6 +224,7 @@ class audio {
 
         manager.onError( (err) => {
             console.error('BackgroundAudio：', err)
+            fns && fns.errorFn && fns.errorFn(err)
         })
 
         manager.onCanplay( () => {
