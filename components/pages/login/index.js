@@ -94,7 +94,6 @@ Component({
      * @param e
      */
     getUserInfo(e) {
-      console.log(e)
       if (e.detail.errMsg === "getUserInfo:ok") {
         const FunInherit = this.fns.FunInherit
 
@@ -113,7 +112,6 @@ Component({
      * @param e
      */
     getUserPhone(e) {
-      console.log(e)
       if (e.detail.errMsg === "getPhoneNumber:ok") {
         App.user.getPhoneNumber({
           encryptedData: e.detail.encryptedData,

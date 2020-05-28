@@ -1,3 +1,5 @@
+'use strict';
+
 class requestManager {
 
     constructor(options) {

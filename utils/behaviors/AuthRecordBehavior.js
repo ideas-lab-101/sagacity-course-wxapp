@@ -77,10 +77,6 @@ module.exports = Behavior({
         },
 
         _stopBack: function (res) {
-            this.setData({
-                recordTime: 0
-            })
-
             /**
              * 是否是取消录制
              */
@@ -92,7 +88,9 @@ module.exports = Behavior({
                 Toast.text({ text: '录制时间不得低于15秒'})
                 return false
             }
-
+            this.setData({
+                recordTime: 0
+            })
             /**
              * 上传到服务器  获取音频合成的接口
              */

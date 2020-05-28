@@ -188,6 +188,7 @@ Page({
      * 重新录制
      */
     resetEvent: function () {
+        this.__innerAudioStop()
         this.closeRecordOverEvent()
         /**
         * 清理垃圾录音
@@ -215,7 +216,7 @@ Page({
                         return false
                     }
                     this.setData({backgroundSoundItem: {...data.item}})
-                    this.data.form.music_id = data.music_id
+                    this.data.form.music_id = data.item.music_id
                 }
             },
             success: (res) => {
