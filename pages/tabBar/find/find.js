@@ -12,7 +12,7 @@ Page({
        * page params
        */
         swiper: {
-            autoplay: true,
+            autoplay: false,
             interval: 5000,
             duration: 1000
         }
@@ -46,17 +46,17 @@ Page({
       const params = [
           {
               isPageShow: true,
-              interfaceFn: getRecordUpdate,
-              params: {
-                  day: 10
-              }
-          },
-          {
-              isPageShow: true,
               interfaceFn: getHotLessonData,
               params: {}
-          }
-      ]
+          },
+          {
+                isPageShow: true,
+                interfaceFn: getRecordUpdate,
+                params: {
+                    day: 10
+                }
+            }
+        ]
       this.__getTurnPageDataListMultiple(params)
     },
 
@@ -124,13 +124,13 @@ Page({
         }
     },
 
-    goFreeRecord() {
+    goFreeRecording() {
         if (!App.user.ckLogin()) {
             $wuLogin().show()
             return false
         }
         wx.navigateTo({
-            url: `/pages/apply/course/free-record/free-record`,
+            url: `/pages/apply/course/free-record/free-record?mode=0`,
         })
     }
 })

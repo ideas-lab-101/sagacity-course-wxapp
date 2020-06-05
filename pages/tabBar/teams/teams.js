@@ -1,21 +1,12 @@
 const App = getApp()
 import { getTeamList, getTeamInfo } from '../../../request/teamPort'
 const TeamCacheBehavior = require('./TeamCacheBehavior')
-import { $wuLogin } from '../../../components/pages/index'
+const AppLoginBehavior = require('../../../utils/behaviors/AppLoginBehavior')
 
 Page({
-    behaviors: [TeamCacheBehavior],
+    behaviors: [TeamCacheBehavior, AppLoginBehavior],
     data: {
       statusBarHeight: App.globalData.equipment.statusBarHeight,
-      nav: {
-        title: 0,
-        model: 'extrude',
-        transparent: false,
-        animation: {
-          duration: 1000,
-          timingFunction: "linear"
-        }
-      },
       isLogin: true,
       /**
        * 存储的数据参数
@@ -30,14 +21,18 @@ Page({
     },
 
     onLoad: function (options) {
-      this.optionsId = options.id
-      this.setData({userID: App.user.userInfo.user_id})
+      if (App.user.ckLogin()) {
+        this.optionsId = options.id
+        this.setData({userID: App.user.userInfo.user_id, isLogin: true})
+        /**
+         * 初始化数据
+         */
+        //this.__init()
+      }else {
+        this.setData({ isLogin: false})
+      }
 
       this.PageOnLoad = true
-      /**
-       * 初始化数据
-       */
-      this.__init()
     },
 
     onShow: function () {
@@ -188,10 +183,6 @@ Page({
      *  获取数据
      * */
     __init: function () {
-        if (!App.user.ckLogin()) {
-            this.setData({ isLogin: false })
-            return false
-        }
 
         getTeamList()
           .then((res) => {
@@ -253,7 +244,7 @@ Page({
         }
 
         return getTeamInfo({
-            team_id: teamID
+            teamId: teamID
         })
           .then((res) => {
               this.__add({ index, teamInfo: res.data })
@@ -264,7 +255,9 @@ Page({
      * @param e
      */
     goLoginEvent(e) {
-        $wuLogin().show()
+      if (!this.__validateLoginEvent( this.__init)) {
+          return false
+      }
     }
 
 })

@@ -84,7 +84,7 @@ Page({
    */
     collectEvent: function() {
         userFavor({
-                data_id: this.data.recordData.record_id,
+                dataId: this.data.recordData.record_id,
                 type: 'record'
         }).then((res) => {
             this.setData({
@@ -95,7 +95,7 @@ Page({
     },
     likeEvent: function() {
       userLike({
-                data_id: this.data.recordData.record_id,
+                dataId: this.data.recordData.record_id,
                 type: 'record'
             })
           .then((res) => {
@@ -169,8 +169,9 @@ Page({
      * @private
      */
     __init: function ({id}) {
+        console.warn(id)
         getRecordInfo({
-            record_id: Number(id)
+            recordId: Number(id)
         })
             .then((res) => {
                     let isMine = false

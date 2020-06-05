@@ -5,19 +5,85 @@ page{
 .nodate{ text-align: center; padding: 50rpx 30rpx; font-size: 24rpx; color: #999;}
 .nomore{ text-align: center; padding: 20rpx; font-size: 24rpx; color: #999;}
 
-.mine-userRecord-tip{
-    padding: 20rpx 30rpx;
-    background-color: rgba(115, 52, 41, 0.1);
+.mine-userRecord-filter{
+    position: sticky;
+    position: -webkit-sticky;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 110;
+    height: 80rpx;
+    background-color: white;
+    align-items: stretch;
+}
+.mine-userRecord-filter .option{
+    padding: 0 0 0 40rpx;
+    color: #999999;
     font-size: 28rpx;
-    color: #733429;
+    transition: all 0.2s linear;
+    padding-bottom: 16rpx;
+}
+.mine-userRecord-filter .option:last-child{
+    margin-right: 0;
+}
+.mine-userRecord-filter .option.active{
+    font-size: 32rpx;
+}
+.mine-userRecord-filter .search{
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 40rpx;
+    position: relative;
+    z-index: 20;
 }
-.mine-userRecord-tip .iconfont{ margin-left: 40rpx;}
-
+.mine-userRecord-filter .search .iconfont{
+    font-size: 40rpx;
+    color: #999999;
+}
+.search-det{
+    position: absolute;
+    z-index: 50;
+    width: 0;
+    right: 0;
+    top: 0;
+    height: 68rpx;
+    background-color: white;
+    padding: 6rpx 10rpx;
+    overflow: hidden;
+}
+.search-det .insert{
+    flex: 1;
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 1000rpx;
+}
+.search-det .input{
+    flex: 1;
+    height: 70rpx;
+    line-height: 70rpx;
+    font-size: 30rpx;
+}
+.search-det .s{
+    margin: 0 !important;
+}
+.search-det .s, .search-det .del{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30rpx;
+    position: relative;
+    z-index: 20;
+    width: auto !important;
+    background: none;
+}
+.search-det .s .iconfont, .search-det .del .iconfont{
+    font-size: 40rpx;
+    color: #999999;
+}
+/***********************/
 .mine-userRecord-box{
-    padding: 70rpx 40rpx 40rpx;
+    padding: 70rpx 30rpx 40rpx;
 }
 .mine-userRecord-single{
     margin-bottom: 120rpx;
@@ -199,7 +265,6 @@ page{
 .mr-evaluating{
     font-size: 28rpx; color: #733429; padding: 10rpx 20rpx; display: flex; justify-content: flex-end;
 }
-.mr-evaluating ._l{}
 .mr-evaluating ._l ._k{
     color: #999; font-size: 24rpx;
 }
@@ -219,35 +284,3 @@ page{
 .share-layer ._link button::after,.share-layer ._link button::before{ border: 0 !important;}
 .share-layer ._link button .iconfont{ font-size: 40rpx;}
 .share-layer ._link button:active{background-color: #efefef;}
-
-/******AccountsIn********/
-.account-layer{
-    position: fixed;
-    width: 80vw;
-    left: 10vw;
-    top: 30%;
-    z-index: 4999;
-    background-color: white;
-    box-shadow: 0 10rpx 80rpx rgba(0, 0, 0, 0.08);
-}
-.account-backdrop{
-    z-index: 4888;
-}
-.account-layer>._insert{
-}
-.account-layer ._title{
-    background-color: #68b92e; padding: 60rpx 30rpx; color: white; font-size: 30rpx;
-}
-.account-layer ._title text{ font-size: 38rpx; }
-.account-layer ._d{ padding: 40rpx 0;}
-.account-layer ._s{
-    padding: 20rpx 40rpx 20rpx 80rpx; font-size: 30rpx; display: flex; align-items: center;
-}
-.account-layer ._s text{ position: relative;}
-.account-layer ._s text::after{
-    content: ""; position: absolute; left: -28rpx; top: 12rpx; width: 12rpx; height: 12rpx; border-radius: 100rpx; background-color: #999;
-}
-.account-layer ._link{
-    padding: 20rpx 40rpx 40rpx; display: flex; align-items: center;
-}
-.account-layer ._link text{ flex: 1; background-color: #007e3c; color: white; padding: 20rpx; text-align: center;}

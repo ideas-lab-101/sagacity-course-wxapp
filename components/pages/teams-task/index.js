@@ -93,7 +93,7 @@ Component({
       _getTeamTask: function (teamID) {
 
         getTeamTask({
-          team_id: teamID,
+          teamId: teamID,
           state: 1
         })
             .then(res => {
@@ -156,9 +156,9 @@ Component({
 
       _join(teamID, taskID) {
         addTeamRecord({
-          team_id: teamID,
-          record_id: this.data.recordID,
-          task_id: taskID
+          teamId: teamID,
+          recordId: this.data.recordID,
+          taskId: taskID
         })
             .then((res) => {
 

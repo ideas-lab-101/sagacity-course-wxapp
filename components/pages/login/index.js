@@ -7,7 +7,7 @@ const { isTabPage } = require('../../../utils/util')
 const defaults = {
   title: '数据加载中',
   mask: false,
-  transitionName: 'wux-animate--punch'
+  transitionName: 'wux-animate--fadeInRight'
 }
 
 Component({
@@ -95,13 +95,13 @@ Component({
      */
     getUserInfo(e) {
       if (e.detail.errMsg === "getUserInfo:ok") {
-        const FunInherit = this.fns.FunInherit
+        const userInfoInheritFn = this.fns.userInfoInheritFn
 
         App.user.goLogin({...e.detail.userInfo})
                   .then(res => {
 
-                      if (FunInherit && typeof FunInherit === 'function') {
-                        FunInherit()
+                      if (userInfoInheritFn && typeof userInfoInheritFn === 'function') {
+                        userInfoInheritFn()
                       }
                   })
       }
@@ -113,14 +113,45 @@ Component({
      */
     getUserPhone(e) {
       if (e.detail.errMsg === "getPhoneNumber:ok") {
-        App.user.getPhoneNumber({
-          encryptedData: e.detail.encryptedData,
-          iv: e.detail.iv
-        })
-            .then(token => {
-                this.hide()
+
+        wx.checkSession({
+          success: () => {
+
+            this.fetchPhone({
+              encryptedData: e.detail.encryptedData,
+              iv: e.detail.iv
             })
+          },
+          fail: () => {
+            // 重新执行登录
+            App.user.goLogin({
+              encryptedData: e.detail.encryptedData,
+              iv: e.detail.iv
+            })
+                .then(token => {
+                  
+                  this.fetchPhone({
+                    encryptedData: e.detail.encryptedData,
+                    iv: e.detail.iv
+                  })
+                })
+          }
+        })
+
+        
       }
+    },
+
+    fetchPhone(options) {
+      App.user.getPhoneNumber({...options})
+          .then(token => {
+
+              const userPhoneInheritFn = this.fns.userPhoneInheritFn
+              if (userPhoneInheritFn && typeof userPhoneInheritFn === 'function') {
+                userPhoneInheritFn()
+              }
+              this.hide()
+          })
     }
   }
 })

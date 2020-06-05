@@ -1,18 +1,18 @@
 <wxs src="./find.wxs" module="moduleFind" />
 
 <view class="findBack" style="padding-top: {{statusBarHeight + 10}}px;">
+  
   <!-- 新课程 -->
   <view class="newCourse-box" wx:if="{{courseList.length>0}}">
-      <view class="_title">近期更新</view>
-      <swiper autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}">
+      <swiper autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" indicator-dots>
         <block wx:for="{{courseList}}" wx:key="course_id">
           <swiper-item>
+            <view class="newCourse-title">{{item.type_name}}/{{item.course_name}}</view>
             <view class="newCourse-con flex between" bindtap="goPageEvent" data-id="{{item.course_id}}">
               <view class="newCourse-font">
-                <view class="_t">{{item.course_name}}</view>
-                <view class="_d">{{item.desc}}</view>
+                <view>{{item.course_desc}}</view>
               </view>
-              <view class="index-book-box" hover-class="none">
+              <view class="index-book-box">
                 <view class="_book"><image src="{{item.cover_url}}" lazy-load mode="aspectFill"></image></view>
               </view>
             </view>
@@ -21,34 +21,32 @@
       </swiper>
   </view>
 
-  <!-- tab -->
-  <view class="tab-box flex between">
-    <view class="tab-single-l">
-      <view class="tab-single-s">
-        <view class="tab-single {{contentMultipleCurrent === 0? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="0">
-          <text class="iconfont icon-dongtai"></text>
-          <text>动态</text>
-        </view>
-        <view class="tab-single {{contentMultipleCurrent === 1? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="1">
-          <text class="iconfont icon-hot"></text>
-          <text>HOT</text>
-        </view>
-        <view class="tab-single" bindtap="goStoreEvent">
-          <text class="iconfont icon-shu"></text>
-          <text>资源库</text>
-        </view>
-      </view>
-    </view>
-    <view class="tab-search" bindtap="goSearchEvent">
-      <text class="iconfont icon-chaxun"></text><text>搜索课程</text>
+  <!-- search -->
+  <view class="search-box">
+    <view class="_insert flex">
+      <text class="iconfont icon-chaxun color-c0"></text>
+      <view class="_s color-c0" bindtap="goSearchEvent">搜索课程</view>
+      <text class="_k color-999" catchtap="goStoreEvent">资源库</text>
     </view>
   </view>
 
+  <!-- tab -->
+  <view class="tab-box">
+        <view class="tab-single {{contentMultipleCurrent === 0? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="0">
+          <text>热门素材</text>
+        </view>
+        <view class="tab-single {{contentMultipleCurrent === 1? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="1">
+          <text>作品动态</text>
+        </view>
+        <view class="tab-single free">
+          <view class="link color-assistant-back" bindtap="goFreeRecording"><text class="iconfont icon-luyin"></text><text>自由录制</text></view>
+        </view>
+  </view>
+
   <!-- 关注 -->
-  <view wx:if="{{contentMultipleCurrent===0}}">
+  <view wx:if="{{contentMultipleCurrent===1}}">
     <!--<view class="watch-time"><text>今天</text><text>Today</text></view>-->
     <view class="watch-box">
-
       <view class="watch-single" wx:for="{{contentMultiple.list}}" wx:key="*this">
         <view class="data-single">
 
@@ -95,7 +93,7 @@
   <view wx:else class="hot-box">
     <view class="hot-listSingle"
           wx:for="{{contentMultiple.list}}"
-          wx:key="course_id"
+          wx:key="data_id"
           bindtap="goDetailEvent"
           data-id="{{item.data_id}}"
           data-format="{{item.format}}">
@@ -116,8 +114,6 @@
   </view>
 
 </view>
-
-<view class="freeRecord" catchtap="goFreeRecord">自由录制</view>
 
 <!--播放挂件-->
 <wu-play-widget id="wu-play-widget" />

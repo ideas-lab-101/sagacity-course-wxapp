@@ -1,4 +1,3 @@
-<wu-scroll-top right="50px" id="wu-scrollTop"/>
 <wu-slogon id="wu-slogon" sliders="{{globalSlogon.urls}}" version="{{globalSlogon.version}}"/>
 <wxs src="./index.wxs" module="moduleIndex" />
 
@@ -90,7 +89,7 @@
                                 <text>{{item.view_count}}次浏览</text>
                             </view>
                         </view>
-                        <view class="_name font-14">{{item.course_name}}</view>
+                        <view class="_name">{{item.course_name}}</view>
                     </view>
                 </view>
             </block>

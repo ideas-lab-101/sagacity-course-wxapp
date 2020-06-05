@@ -32,15 +32,15 @@ Page({
         isPageShow: true,
         interfaceFn: getRecordList,
         params: {
-          user_id: this.optionsId,
-          bln_public: 1
+          userId: this.optionsId,
+          blnPublic: 1
         }
       },
       {
         isPageShow: true,
         interfaceFn: getCourseList,
         params: {
-          user_id: this.optionsId
+          userId: this.optionsId
         }
       }
     ]
@@ -54,7 +54,7 @@ Page({
 
   collectEvent: function() { // 收藏事件
     userFavor({
-        data_id: this.optionsId,
+        dataId: this.optionsId,
         type: 'user'
       })
         .then((res) => {
@@ -65,7 +65,7 @@ Page({
 
   likeEvent: function() {
     userLike({
-      data_id: this.optionsId,
+      dataId: this.optionsId,
       type: 'user'
     })
         .then((res) => {
@@ -77,7 +77,7 @@ Page({
 
   getUserInfo: function() {
     getUserInfo({
-        user_id: this.optionsId
+        userId: this.optionsId
       })
         .then((res) => {
           this.setData({ info: res.data })

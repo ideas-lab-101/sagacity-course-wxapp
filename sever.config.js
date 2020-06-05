@@ -7,13 +7,13 @@ const version = '3.0.0'
  * 数据服务器
  * @type {string}
  */
-const host = Environment === 'development'? "http://dev.linestorm.ltd" : "http://xiaode.ideas-lab.cn"
+const host = Environment === 'development'? "https://xiaode.ideas-lab.cn" : "https://xiaode.ideas-lab.cn"
 
 /**
  * 上传文件服务器
  * @type {string}
  */
-const qiniuUploadUrl= Environment === 'development'? "https://up-z2.qbox.me" : "https://up-z2.qbox.me"
+const qiniuUploadUrl= Environment === 'development'? "https://xiaode.ideas-lab.cn" : "https://xiaode.ideas-lab.cn"
 
 /**
  * 图片服务器

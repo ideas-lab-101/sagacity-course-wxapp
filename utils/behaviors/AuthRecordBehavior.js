@@ -83,9 +83,9 @@ module.exports = Behavior({
             if (this.cancelRecordParams) {
                 return false
             }
-
             if (this.data.recordTime < 15 && !this.cancelRecordParams) {
                 Toast.text({ text: '录制时间不得低于15秒'})
+                this.setData({ recordTime: 0 })
                 return false
             }
             this.setData({
@@ -118,22 +118,35 @@ module.exports = Behavior({
          * 计算器   计算出录音录制时间
          */
         resetTime: function () {
+            let { recordStart, isPause, recordTime } = this.data
             this.recordTimeFn = setTimeout(() => {
                 clearTimeout(this.recordTimeFn)
-                if (!this.data.recordStart || (this.data.recordStart && this.data.isPause)) {
+                if (!recordStart || (recordStart && isPause)) {
                     return false
                 }
                 /**
                  * 如果时间长于590 就停止录制
                  */
-                if(this.data.recordTime > 590) {
+                if(recordTime >= 598) {
                     this.endRecord()
                     return false
                 }
-                this.data.recordTime++
-                this.setData({ recordTime:  this.data.recordTime })
+                recordTime++
+                this.setData({ 
+                    recordTime: recordTime,
+                    timeHand: this.countTimePosition(recordTime)
+                })
                 this.resetTime()
             }, 1000)
+        },
+
+        countTimePosition(time) {
+            const { windowWidth } = this.data
+            let result = windowWidth*time / 600
+            if ( windowWidth <= result + 35) {
+                result = windowWidth - 35
+            }
+            return result
         }
 
     }

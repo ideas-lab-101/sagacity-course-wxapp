@@ -1,13 +1,11 @@
 <wxs src="./lesson-page.wxs" module="moduleLessPage" />
 <import src="/components/wxParse/wxParse.wxml" />
 
-<view class="container">
-
-  <wu-navigation id="wu-navigation" title="{{nav.title}}"
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
                  transparent="{{nav.transparent}}"
-                 model="{{nav.model}}"
-                 animation="{{nav.animation}}">
-  </wu-navigation>
+                 model="{{nav.model}}"></wu-navigation>
+
+<view class="container">
 
   <view class="lesson-top-box">
 

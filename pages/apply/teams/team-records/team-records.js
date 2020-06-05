@@ -239,9 +239,9 @@ Page({
         isPageShow: true,
         interfaceFn: getTeamRecordList,
         params: {
-          team_id: teamID,
-          user_id: this.data.optionsUserId,
-          data_type: this.optionsShowMark
+          teamId: teamID,
+          userId: this.data.optionsUserId,
+          dataType: this.optionsShowMark
         }
       })
           .then(() => {

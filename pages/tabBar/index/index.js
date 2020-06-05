@@ -34,9 +34,6 @@ Page({
     },
 
     onShow: function () {
-        /**
-       * 请求历史数据
-       **/
         if(App.user.ckLogin() && !this.PageOnload) {
           this.getHistoryData()
         }
@@ -127,5 +124,5 @@ Page({
         wx.navigateTo({
             url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
         })
-    }
+    },
 })

@@ -1,14 +1,14 @@
 <wu-backdrop id="wu-backdrop" bind:click="_closeShareLayerEvent" />
 <wu-animation-group wux-class="share-layer" in="{{ in }}" class-names="wux-animate--fadeInDown">
 	<view class="_insert">
-		<image src="{{coverUrl}}" mode="aspectFill"></image>
+		<image class="img" src="{{coverUrl}}" mode="aspectFill"></image>
 		<view class="_triangle">
 			<view class="_link">
-				<button hover-class='none' open-type='share' plain id="groupShare">
+				<button class="btn" hover-class='none' open-type='share' plain id="groupShare">
 					<text class="iconfont icon-iconfontzhizuobiaozhunbduan32"></text>
 					<view>好友或群</view>
 				</button>
-				<button hover-class='none' plain bindtap="_getShareCodeEvent">
+				<button class="btn" hover-class='none' plain bindtap="_getShareCodeEvent">
 					<text class="iconfont icon-iconweixinpengyouquan"></text>
 					<view>生成海报</view>
 				</button>

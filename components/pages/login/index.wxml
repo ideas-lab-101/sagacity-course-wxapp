@@ -1,21 +1,28 @@
-<wu-backdrop id="wu-backdrop" transparent="{{true}}" catchtap="onCancel" zIndex="100" opacity="0.4"></wu-backdrop>
+<wu-backdrop id="wu-backdrop" 
+    transparent="{{true}}" 
+    catchtap="onCancel" 
+    zIndex="100" 
+    opacity="0.4"></wu-backdrop>
 <wu-animation-group wux-class="login-container"
                     in="{{ in }}"
                     classNames="{{ transitionName }}"
                     bind:exited="onExited"
                     wrapStyle="{{ { zIndex } }}">
-    <view class="login-logo">
-        <image mode="widthFix" class="img" src="https://7361-sagacity-radio-yi81j-1300877980.tcb.qcloud.la/system/logo.png?sign=56352407d9bc74e6ab07e4dc4efe40e2&t=1575896555"></image>
-    </view>
     <text class="close iconfont icon-guanbi" bindtap="hide"></text>
-    <view class="login-tip">
-        <text class="_t">阅读加加为您服务：</text>
-        <text>获取当前人物信息</text>
-    </view>
-    <view class="login-link">
-        <button class="_btn _sub" hover-class="button-hover" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="getUserInfo">登录</button>
-    </view>
-    <view class="login-link">
-        <button class="_btn _sub" hover-class="button-hover" open-type="getPhoneNumber" lang="zh_CN" bindgetphonenumber="getUserPhone">登录手机号码</button>
+    <view class="login-del">
+        <view class="login-logo">
+            <image mode="widthFix" class="img" src="https://sagacity-course-000019.tcb.qcloud.la/system/logo.png?sign=8f9ea5223ce95eff22e03820a447832a&t=1591252151"></image>
+        </view>
+        
+        <view class="login-tip">
+            <text>去听，听见内心</text>
+            <text>去读，读懂自己</text>
+        </view>
+        <view class="login-link">
+            <button class="_btn _sub" hover-class="button-hover" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="getUserInfo">登录</button>
+        </view>
+        <view class="login-link">
+            <button class="_btn _sub" hover-class="button-hover" open-type="getPhoneNumber" lang="zh_CN" bindgetphonenumber="getUserPhone">登录手机号码</button>
+        </view>
     </view>
 </wu-animation-group>

@@ -17,6 +17,7 @@ const EnrollController = require('./controller/EnrollController')
 App({
   onLaunch: function (options) {
     console.log('App launch:', options)
+    console.log(equipmentStatus())
     /**
      * 版本检测
      */

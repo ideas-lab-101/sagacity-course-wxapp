@@ -77,8 +77,8 @@ Page({
      * ***/
   _addComment(content) {
     return addComment({
-      refer_id: this.optionsReferID !== 'root'? this.optionsReferID:'',
-      data_id: this.optionsId,
+      referId: this.optionsReferID !== 'root'? this.optionsReferID:'',
+      dataId: this.optionsId,
       type: this.optionsType,
       content: content
     })

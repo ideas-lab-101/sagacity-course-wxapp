@@ -27,13 +27,13 @@
       },
       {
         "pagePath": "pages/tabBar/find/find",
-        "text": "学习",
+        "text": "动态",
         "iconPath": "/assets/images/list_blank.png",
         "selectedIconPath": "/assets/images/list_fill.png"
       },
       {
         "pagePath": "pages/tabBar/teams/teams",
-        "text": "我的小组",
+        "text": "小组",
         "iconPath": "/assets/images/list_blank.png",
         "selectedIconPath": "/assets/images/list_fill.png"
       },
@@ -53,13 +53,14 @@
         "lesson-page/lesson-page",
         "lesson-play/lesson-play",
         "lesson-videoPlay/lesson-videoPlay",
-        "record/record",
         "record-list/record-list",
         "catalog/catalog",
         "background-sound-list/background-sound-list",
         "topic/topic",
         "album/album",
-        "free-record/free-record"
+        "free-record/free-record",
+        "course-template/course-template",
+        "qrcode/qrcode"
       ]
     },
     {

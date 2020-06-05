@@ -7,6 +7,7 @@
   z-index: 120;
   left: 0;
   top: 0;
+  bottom: 0;
   right: 0;
   padding: 70rpx 50rpx;
   background-color: white;
@@ -21,7 +22,9 @@
   font-size: 38rpx;
   color: #999999;
 }
-
+.login-del{
+  
+}
 .login-link{
   display: flex;
   align-items: center;
@@ -43,8 +46,7 @@
 .button-hover{
   background-color: #01723c;
 }
-.login-logo{
-}
+
 .login-logo .img{
   width: 320rpx;
   height: auto;
@@ -55,8 +57,4 @@
   line-height: 2;
   display: flex;
   flex-direction: column;
-}
-.login-tip ._t{
-  color: #999999;
-  font-size: 28rpx;
 }

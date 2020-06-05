@@ -2,8 +2,7 @@
 
 <wu-navigation title="{{nav.title}}"
                backgroundColor="{{nav.backgroundColor}}"
-               navTitle="{{nav.navTitle}}"
-               animation="{{nav.animation}}" />
+               navTitle="{{nav.navTitle}}"/>
 
 <view class="bs-container">
 
@@ -25,7 +24,11 @@
     <view class="bs-con">
 
         <block wx:if="{{listData.length>0}}">
-            <view class="bs-single {{item.music_id === listCheckedId ?'active':''}}" wx:for="{{listData}}" wx:key="music_id" bindtap="checkEvent" data-index="{{index}}">
+            <view class="bs-single {{item.music_id === listCheckedId ?'active':''}}" 
+            wx:for="{{listData}}" 
+            wx:key="music_id" 
+            bindtap="checkEvent" 
+            data-index="{{index}}">
                 <view class="_insert">
                     <view class="_image {{!tryParams.isPlay || tryParams.id !== item.music_id?'':'active'}}">
                         <view><image src="{{item.cover_url}}" mode="aspectFill"/></view>

@@ -27,7 +27,7 @@ Page({
     // 自定义事件
     __init() {
         getEnumDetail({
-            master_id: 9
+            masterId: 9
         })
             .then((res) => {
                 this.setData({ catalogTile: res.data.list })
@@ -100,7 +100,7 @@ Page({
         return getCourseList({
             page: pageNumber,
             pageSize,
-            type_id: catalogTile[current].detail_id
+            typeId: catalogTile[current].detail_id
         })
           .then(res => {
               let tempList = [...res.data.list]

@@ -1,7 +1,7 @@
 <!--音频播放-->
 <view class="play-slider" catchtouchmove="{{false}}">
-	<text>{{slider.current}}</text>
-	<slider bindchange="sliderChangeEvent"
+	<text class="_txt">{{slider.current}}</text>
+	<slider class="_s" bindchange="sliderChangeEvent"
 			min="0" max="100"
 			backgroundColor="#e9e9e9"
 			block-size="14"
@@ -9,5 +9,5 @@
 			activeColor="#000000"
 			disabled="{{slider.disabled}}"
 			value="{{slider.value}}"/>
-	<text>{{slider.duration}}</text>
+	<text class="_txt">{{slider.duration}}</text>
 </view>

@@ -9,11 +9,7 @@ Page({
         nav: {
           title: "选择背景音",
           backgroundColor: '#e3d6d4',
-          navTitle: '',
-          animation: {
-            duration: 500,
-            timingFunction: "linear"
-          }
+          navTitle: ''
         },
         tabData: [],
         tabIndex: 0,
@@ -29,7 +25,7 @@ Page({
         this.eventChannel.on('acceptDataSetBackgroundSound', data => {
             if (data.item){
                 this.setData({
-                    listCheckedId: data.music_id
+                    listCheckedId: data.item.music_id
                 })
             }
         })
@@ -55,19 +51,20 @@ Page({
      * 获取数据事件
      **/
     __init: function () {
-        getEnumDetail({master_id: 10})
+        getEnumDetail({
+            masterId: 10
+        })
             .then((res) => {
                 this.setData({
                     tabData: res.data.list
                 })
-
                 this._initBackSoundListData(res.data.list[0].detail_id)
             })
     },
 
     _initBackSoundListData: function (styleID) {
         getMusicList({
-            style_id: styleID
+            styleId: styleID
         })
             .then((ret) => {
                 this.setData({

@@ -6,8 +6,7 @@
   "disableSwipeBack": true,
   "disableScroll": false,
   "usingComponents": {
-    "wux-switch": "wux-weapp/switch/index",
-    "wu-marked-words": "/components/wu/marked-words/index",
+    "wu-switch": "/components/wu/switch/index",
     "share": "/components/pages/share/index",
     "teams-task": "/components/pages/teams-task/index"
   }

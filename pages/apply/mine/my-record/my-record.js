@@ -4,12 +4,14 @@ import { $share, $teamsTask } from '../../../../components/pages/index'
 import { getRecordList } from '../../../../request/userPort'
 import { setPublic, delRecord } from '../../../../request/recordPort'
 const InnerAudioPlayBehavior = require('../../../../utils/behaviors/InnerAudioPlayBehavior')
+const MultiplePageReachBottomBehavior = require('../../../../utils/behaviors/MultiplePageReachBottomBehavior')
 const PageReachBottomBehavior = require('../../../../utils/behaviors/PageReachBottomBehavior')
 const Dialog = require('../../../../viewMethod/dialog')
 
 Page({
-    behaviors: [PageReachBottomBehavior, InnerAudioPlayBehavior],
+    behaviors: [MultiplePageReachBottomBehavior, PageReachBottomBehavior, InnerAudioPlayBehavior],
     data: {
+      statusBarHeight: App.globalData.equipment.statusBarHeight,
       nav: {
         title: '个人作品集',
         backURLType: 'switch',
@@ -18,60 +20,17 @@ Page({
         transparent: false
       },
       gOpenID: true,
+      tabs: [
+        { name: '全部作品', blnPublic: 0}, { name: '公开作品', blnPublic: 1}
+      ],
       /**
        * 学习小组参数
        */
       teamsList: [],
       /**
-       * 引导参数
+       * 查询
        */
-      markedWords: {
-            data: [
-              {
-                show: false,
-                urls: [
-                  {
-                    url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/myRecord/marker-05.png?sign=956cee75a42e24d7ffc05933ab791761&t=1541163446',
-                    width: '250px',
-                    top: '220rpx',
-                    left: '60rpx'
-                  },
-                  {
-                    query: '#MarkDown01'
-                  },
-                  {
-                    url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/myRecord/marker-04.png?sign=2554f76d2782f538d36fee18c2f8ba8f&t=1541428568',
-                    width: '220rpx',
-                    top: '480rpx',
-                    left: '260rpx',
-                    next: true
-                  }
-                ]
-              },
-              {
-                show: false,
-                urls: [
-                  {
-                    url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/myRecord/marker-01.png?sign=552449e47ab1ba50aff488b435f27e33&t=1540981169',
-                    width: '440rpx',
-                    top: '180rpx',
-                    left: '50rpx'
-                  },
-                  {
-                    query: '#MarkDown02'
-                  },
-                  {
-                    url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/myRecord/marker-03.png?sign=165a03793d52f0880856f32a86bbb9af&t=1541428612',
-                    width: '220rpx',
-                    top: '580rpx',
-                    left: '500rpx',
-                    release: true
-                  }
-                ]
-              }
-            ],
-            version: App.version
-        },
+      isSearchData: false
     },
 
     onLoad: function (options) {
@@ -83,8 +42,6 @@ Page({
           'nav.backURL': '/pages/tabBar/mine/mine'
         })
       }
-      this.eventChannel = this.getOpenerEventChannel()
-
       this.__init()
       this.__initInnerAudioManager()
     },
@@ -107,7 +64,11 @@ Page({
     },
 
     onReachBottom: function () {
+      if (this.data.isSearchData) {
         this.__ReachBottom()
+      }else {
+        this.__ReachBottomMultiple()
+      }
     },
 
     onHide: function () {
@@ -133,7 +94,7 @@ Page({
         if (this.shareIndex === undefined) {
             return false
         }
-        const { list } = this.data.content
+        const { list } = this.data.contentMultiple
         const title = `${App.user.userInfo.caption} の ${list[this.shareIndex].name}`
         return {
             title: title,
@@ -148,27 +109,19 @@ Page({
     },
 
     __init() {
-        this.__getTurnPageDataList({
+        const { tabs } = this.data
+        const params = tabs.map(item => {
+          return {
             isPageShow: true,
             interfaceFn: getRecordList,
             params: {
-                user_id: App.user.userInfo.user_id,
-                bln_public: 0
+                userId: App.user.userInfo.user_id,
+                blnPublic: item.blnPublic || ''
             }
+          }
         })
-
-        this.initUserAccounts()
+        this.__getTurnPageDataListMultiple(params)
     },
-  /**
-   * 关注公众号
-   * @param e
-   */
-  goKeepWXAccounts(e) {
-    const id = 46
-    wx.navigateTo({
-      url: `/pages/common/documents/documents?id=${id}`
-    })
-  },
 
     goLessonPlay(e) {
         const { id } = e.currentTarget.dataset
@@ -206,7 +159,7 @@ Page({
    * @param e
    */
   singleShareEvent: function (e) {
-        const { list } = this.data.content
+        const { list } = this.data.contentMultiple
         const { index } = e.currentTarget.dataset
         const id = list[index].record_id
         const url = list[index].cover_url
@@ -223,7 +176,7 @@ Page({
    * @param e
    */
   setPublicSwitchEvent: function (e) {
-      const { list } = this.data.content
+      const { list } = this.data.contentMultiple
       const { index } = e.currentTarget.dataset
       const id = list[index].record_id
       let stus = 0
@@ -233,15 +186,18 @@ Page({
       }
 
       setPublic({
-              record_id: id,
-              bln_public: stus
+              recordId: id,
+              blnPublic: stus
         })
           .then((res) => {
-              this.eventChannel.emit('acceptDataMyRecordPublic', {recordID: id })
-              const obj = `content.list[${index}].bln_public`
+              const obj = `contentMultiple.list[${index}].bln_public`
               this.setData({
                   [obj]: stus
               })
+              /**清除 更新缓存 */
+              const { contentMultipleCurrent, contentMultiple } = this.data
+              this.__clearTurnPageCacheData()
+              this.__addTurnPageCacheData( contentMultipleCurrent, contentMultiple)
           })
     },
 
@@ -262,22 +218,8 @@ Page({
           })
         })
     },
-
-  /**
-   * 如果重新关注公号  重新拉取用户信息
-   * @private
-   */
-  initUserAccounts() {
-          // getApp().user.retTokenLogin((token, userInfo) => {
-          //   if(!userInfo.gOpenID) {
-          //     this.openAccountLayer()
-          //   }
-          //   this.setData({ gOpenID: userInfo.gOpenID})
-          // })
-    },
-
     deleteUserRecord: function (recordID, index) {
-      let { list, totalRow } = this.data.content
+      let { list, totalRow } = this.data.contentMultiple
         delRecord({
             record_id: recordID
             })
@@ -285,23 +227,55 @@ Page({
                   list.splice(index, 1)
                   totalRow--
                   this.setData({
-                      'content.list': list,
-                      'content.totalRow': totalRow
+                      'contentMultiple.list': list,
+                      'contentMultiple.totalRow': totalRow
                   })
               })
     },
 
-  /**
-   * 关注公众号
-   */
-    closeAccountLayer() {
-      this.setData({ AccountsIn: false})
-      $wuBackdrop('#account-backdrop', this).release()
+    /**
+     * 查询相关
+     */
+    openSearch() {
+      this.setData({ isSearch: true}, () => {
+
+        this.animate('#search', [
+          { width: 0, ease: 'ease-in-out' },
+          { width: App.globalData.equipment.windowWidth -10 +'px !important', ease: 'ease-in-out' },
+          ], 260, function () {
+            this.setData({ searchFocus: true})
+        }.bind(this))
+      })
+    },
+    freeSearch() {
+      this.setData({ searchFocus: false}, () => {
+        this.animate('#search', [
+          { width: App.globalData.equipment.windowWidth -10 +'px !important', ease: 'ease-in-out' },
+          { width: 0, ease: 'ease-in-out' },
+          ], 260, function () {
+            this.setData({ isSearch: false, isSearchData: false})
+        }.bind(this))
+      })
     },
 
-    openAccountLayer() {
-      this.setData({ AccountsIn: true })
-      $wuBackdrop('#account-backdrop', this).retain()
-    }
+    doSearch(e) {
+      const { contentMultipleCurrent, tabs } = this.data;
+      const { key } = e.detail.value
+      if (String(key).trim() === '') {
+        return false
+      }
 
+      this.__getTurnPageDataList({
+        isPageShow: true, 
+        interfaceFn: getRecordList, 
+        params: {
+          userId: App.user.userInfo.user_id,
+          blnPublic: tabs[contentMultipleCurrent].blnPublic || '',
+          key: key
+        }
+      })
+      .then(() => {
+        this.setData({ isSearchData: true })
+      })
+    },
 })

@@ -1,6 +1,7 @@
-const { $wuLoading, $wuToast } = require('../../../components/wu/index')
+const { $wuLoading } = require('../../../components/wu/index')
 const App = getApp()
 const { GetWXSSCode } = require('../../../request/systemPort')
+const Toast = require('../../../viewMethod/toast')
 
 Page({
     data: {
@@ -70,18 +71,10 @@ Page({
                     wx.saveImageToPhotosAlbum({
                         filePath: r.tempFilePath,
                         success: () => {
-                            $wuToast().show({
-                                type: 'text',
-                                duration: 1000,
-                                text: '保存成功'
-                            })
+                            Toast.text({ text: '保存成功'})
                         },
                         fail: (err) => {
-                            $wuToast().show({
-                                type: 'text',
-                                duration: 1000,
-                                text: '保存失败'
-                            })
+                            Toast.text({ text: '保存失败'})
                         },
                         complete: () => {
                           $wuLoading().hide()
@@ -119,7 +112,7 @@ Page({
      * 内部数据获取事件
      * ***/
     _initData: function (id) {
-        GetWXSSCode({dataID: id, type: 'r'}).then((res) => {
+        GetWXSSCode({dataId: id, type: 'r'}).then((res) => {
             if (res.code) {
                 this.setData({
                     'coverData.CoverURL': res.qr_code

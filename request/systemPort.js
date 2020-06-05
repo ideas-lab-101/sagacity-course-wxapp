@@ -176,9 +176,9 @@ export function checkIdentityCode(data) {
  * 获取分享
  * data_id type
  */
-export function getWXSSCode(data) {
+export function getWxaCode(data) {
   return fetch({
-    url: '/wxapp/system/v3/getWXSSCode',
+    url: '/wxapp/system/v3/getWxaCode',
     data: data || {},
     method: 'GET'
   })

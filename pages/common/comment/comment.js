@@ -115,7 +115,7 @@ Page({
      * 内部 处理事件
      * ***/
     _delComment(commentID) {
-      return delComment({comment_id: commentID})
+      return delComment({commentId: commentID})
     },
 
     _deleteData: function (CommentID) {
@@ -161,7 +161,7 @@ Page({
             isPageShow: true,
             interfaceFn: getCommentList,
             params: {
-                data_id: this.optionsId,
+                dataId: this.optionsId,
                 type: this.optionsType
             }
         })

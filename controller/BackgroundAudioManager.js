@@ -160,7 +160,7 @@ class BackgroundAudioManager {
      */
     loadNewDataEvent (dataID) {
         return lessonDataInfo({
-            data_id: Number(dataID)
+            dataId: Number(dataID)
         })
             .then((res) => {
                 const data = res.data
@@ -278,7 +278,7 @@ module.exports = BackgroundAudioManager
  */
 const postHistoryEvent = function (dataID, frame) {
     addUserHistory({
-        data_id: Number(dataID),
+        dataId: Number(dataID),
         frame: Number(frame)
     })
         .then((res) => {

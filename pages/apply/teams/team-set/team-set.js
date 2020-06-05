@@ -92,7 +92,7 @@ Page({
    */
   _exitTeam: function () {
       exitTeam({
-        team_id: this.optionsId
+        teamId: this.optionsId
       })
           .then(res => {
 
@@ -110,7 +110,7 @@ Page({
 
   _changeNickName: function (label) {
     setTeamLabel({
-      team_id: this.optionsId,
+      teamId: this.optionsId,
       label
     })
         .then((res) => {
@@ -127,7 +127,7 @@ Page({
 
   __init: function () {
     getTeamIdentity({
-      team_id: this.optionsId
+      teamId: this.optionsId
     })
         .then((res) => {
           this.setData({

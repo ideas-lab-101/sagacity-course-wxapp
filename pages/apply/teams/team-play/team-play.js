@@ -71,7 +71,7 @@ Page({
      */
     likeEvent: function() {
         userLike({
-              data_id: this.data.recordData.record_id,
+              dataId: this.data.recordData.record_id,
               type: 'record'
           }).then((res) => {
               this.setData({is_like: true})
@@ -91,7 +91,7 @@ Page({
           state = 1
         }
         markRecord({
-            submit_id: this.data.recordData.submit_id,
+            submitId: this.data.recordData.submit_id,
             state: state
         })
             .then((res) => {
@@ -139,8 +139,8 @@ Page({
      **/
     __init: function (teamId, recordId) {
         getTeamRecordInfo({
-            team_id: teamId,
-            record_id: recordId
+            teamId: teamId,
+            recordId: recordId
         })
             .then((res) => {
                     let temp = false

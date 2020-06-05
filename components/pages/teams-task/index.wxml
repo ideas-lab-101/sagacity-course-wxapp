@@ -22,7 +22,7 @@
                 </scroll-view>
             </swiper-item>
             <swiper-item wx:if="{{isTaskCurrent}}">
-                <view class="_title">第二步,请选择<text>{{teamsList[teamCurrent].team_name}}</text>下的作业列表：</view>
+                <view class="_title">第二步,请选择<text class="_f">{{teamsList[teamCurrent].team_name}}</text>下的作业列表：</view>
                 <view class="teams-direction"><text class=" iconfont icon-fenzucopy"></text></view>
                 <scroll-view scroll-y class="teams-layer-scroll">
                     <view wx:if="{{taskList.length>0}}">

@@ -25,7 +25,7 @@ Page({
      **/
     linktoEvent: function (e) {
         const index = e.currentTarget.dataset.index
-        const id = this.data.recordList[index].RecordID
+        const id = this.data.recordList[index].record_id
         wx.navigateTo({
             url: `/pages/apply/mine/record-play/record-play?id=${id}`
         })
@@ -36,7 +36,7 @@ Page({
      **/
     __init: function (id) {
         getDataRecordList({
-            data_id: Number(id)
+            dataId: Number(id)
         })
             .then((res) => {
                 this.setData({

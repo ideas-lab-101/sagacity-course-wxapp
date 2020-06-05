@@ -1,0 +1,23 @@
+<wu-navigation id="wu-navigation" title="{{nav.title}}"
+                 transparent="{{nav.transparent}}"
+                 model="{{nav.model}}"></wu-navigation>
+
+<poster id="poster"
+        hide-loading="{{true}}"
+        preload="{{false}}"
+        config="{{posterConfig}}"
+        bind:success="onPosterSuccess"
+        bind:fail="onPosterFail">
+</poster>
+
+<view class="qc-container" wx:if="{{posterUrl}}">
+
+    <view class="qc-fix-top">
+        <image src="{{posterUrl}}"
+               show-menu-by-longpress
+               mode="widthFix"
+               class="qc-img" />
+    </view>
+
+    <view class="qc-tip">长按二维码，发送给朋友</view>
+</view>

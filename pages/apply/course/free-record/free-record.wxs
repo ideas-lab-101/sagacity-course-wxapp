@@ -26,18 +26,15 @@ var filterText = function (obj){
 }
 
 var countTime = function (time) {
-    if(time >= 580) {
-        return 590 - time
-    }else if(time > 0 && time < 580){
+    if(time > 0 && time <= 600){
         var minute = parseInt(time/60)
         var second = time - minute*60
-        return _prefixTime(minute) + ':' + _prefixTime(second)
-    }else {
-        return ''
+        return prefixTime(minute) + ':' + prefixTime(second)
     }
+    return ''
 }
 
-var _prefixTime = function (num) {
+var prefixTime = function (num) {
     return num < 10 ? '0'+num : num
 }
 

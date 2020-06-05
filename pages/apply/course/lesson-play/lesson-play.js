@@ -10,9 +10,10 @@ import { lessonDataInfo, getLessonList } from '../../../../request/coursePort'
 import { userFavor, addUserPoint } from '../../../../request/userPort'
 const Toast = require('../../../../viewMethod/toast')
 const Dialog = require('../../../../viewMethod/dialog')
+const AppLoginBehavior = require('../../../../utils/behaviors/AppLoginBehavior')
 
 Page({
-    behaviors: [AppLaunchBehavior, BackgroundAudioPlayBehavior, PageReachBottomBehavior],
+    behaviors: [AppLaunchBehavior, BackgroundAudioPlayBehavior, PageReachBottomBehavior, AppLoginBehavior],
     data: {
         nav: {
             title: "",
@@ -91,7 +92,7 @@ Page({
     __init: function ({id, frame}) {
 
         return lessonDataInfo({
-            data_id: Number(id)
+            dataId: Number(id)
         })
             .then((res) => {
 
@@ -285,7 +286,7 @@ Page({
             isPageShow: true,
             interfaceFn: getLessonList,
             params: {
-                course_id: courseID
+                courseId: courseID
             }
         })
     },
@@ -300,7 +301,7 @@ Page({
    */
     collectEvent: function () {
         userFavor({
-            data_id: Number(this.data.info.lesson_data.data_id),
+            dataId: Number(this.data.info.lesson_data.data_id),
             type: 'ld'
         })
             .then((res) => {
@@ -312,41 +313,26 @@ Page({
     },
 
     recordEvent: function (e) {
-        if (!App.user.ckLogin()) {
-              wx.navigateTo({
-                url: '/pages/common/accredit/accredit'
-            })
+        if (!this.__validateLoginEvent( this.__init)) {
             return false
         }
+        // if (!App.user.ckLogin()) {
+        //       wx.navigateTo({
+        //         url: '/pages/common/accredit/accredit'
+        //     })
+        //     return false
+        // }
         if (!this.data.info.is_enroll) {
             this.dialogTip()
             return false
         }
+        /**
+         * 暂停背景音播放
+         */
+        this.pauseBackgroundAudio()
 
-        const self = this
-        $wuxActionSheet().showSheet({
-            titleText: '请选择录制模式',
-            theme: 'wx',
-            buttons: [{ text: '朗诵(显示字幕)'}, { text: '背诵(不显示字幕)'}],
-            buttonClicked(index, item) {
-                let readMode = 0
-                if(index === 1) {
-                  readMode = 1
-                }
-                /**
-                 * 暂停背景音播放
-                 */
-                self.pauseBackgroundAudio()
-
-                setTimeout(() => {
-                  wx.navigateTo({
-                    url: `/pages/apply/course/record/record?id=${self.data.info.lesson_data.data_id}&mode=${readMode}` // readMode 背诵还是朗诵
-                  })
-                }, 100)
-                return true
-            },
-            cancelText: '取消',
-            cancel() {}
+        wx.navigateTo({
+            url: `/pages/apply/course/free-record/free-record?id=${this.data.info.lesson_data.data_id}&mode=0`
         })
     },
 

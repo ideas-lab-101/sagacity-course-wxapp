@@ -83,7 +83,7 @@
                 </view>-->
 
                 <view class="rep-link">
-                    <button open-type="share" plain wx:if="{{recordData.bln_public}}">发给朋友听听</button>
+                    <button open-type="share" class="color-primary" plain wx:if="{{recordData.bln_public}}">发给朋友听听</button>
                     <view wx:else class="color-999">此作品未公开</view>
                     <view bindtap="goLessonPlayEvent" class="rep-goNav">我也要录制</view>
                 </view>

@@ -1,0 +1,47 @@
+<wu-loading id="wu-loading" title="加载中..."/>
+
+<wu-navigation title="{{nav.title}}"
+               backgroundColor="{{nav.backgroundColor}}"
+               navTitle="{{nav.navTitle}}"/>
+
+<view class="sticky-classify" style="top:{{statusBarHeight+45}}px;">
+  <view class="sticky-search">
+    <text class="iconfont icon-chaxun"></text>
+    <input class="input" placeholder="查询" value="{{searchValue}}" bindinput="changeSearch" bindconfirm="confirmSearch"/>
+    <text class="iconfont icon-close" wx:if="{{searchValue}}" catchtap="freeSearch"></text>
+  </view>
+
+  <view class="sticky-tab">
+    <view wx:for="{{tabs}}" wx:key="*this" 
+    class="{{contentMultipleCurrent === index ?'active color-primary color-primary-border':''}}" 
+    bindtap="__turnPageTabChangeMultiple" 
+    data-index="{{index}}">
+      <text bindtap="inheritTabsChange">{{item.name}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 分类标签 -->
+<view wx:if="{{!isSearching}}">
+    <view class="index-book-box {{checkedId === item.data_id?'active':''}}"
+     catchtap="choiceTemplate" 
+     data-index="{{index}}"
+     hover-class="none" 
+     wx:for="{{contentMultiple.list}}" 
+     wx:key="data_id">
+      <text class="_name">{{item.name}}</text>
+      <view class="_desc">{{item.desc}}</view>
+    </view>
+</view>
+<view wx:else>
+    <view class="index-book-box {{checkedId === item.data_id?'active':''}}"
+     catchtap="choiceTemplate" 
+     data-index="{{index}}"
+     hover-class="none" 
+     wx:for="{{content.list}}" 
+     wx:key="data_id">
+      <text class="_name">{{item.name}}</text>
+      <view class="_desc">{{item.desc}}</view>
+    </view>
+</view>
+

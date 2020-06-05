@@ -1,15 +1,15 @@
 <wxs src="./mine.wxs" module="moduleMine" />
 
-<view capture-bind:touchstart="frameTouchStart" capture-bind:touchend="frameTouchEnd" wx:if="{{isLogin}}">
+<view capture-bind:touchstart="frameTouchStart" capture-bind:touchend="frameTouchEnd">
 
   <view class="mine-background">
-    <image src="{{moduleMine.changeURL(userInfo.background_url, userInfo.avatar_url)}}" mode="aspectFill"></image>
+    <image class="img" src="{{moduleMine.changeURL(userInfo.background_url, userInfo.avatar_url)}}" mode="aspectFill" wx:if="{{isLogin}}"></image>
+    <open-data class="img" type="userAvatarUrl" wx:else></open-data>
     <view class="_shadow"></view>
   </view>
 
   <scroll-view scroll-y class="mine-scroll"
                scroll-with-animation
-               bindscroll="pointFixScrollEvent"
                bindscrolltolower="scrollToLowerEvent"
                scroll-top="{{scroll.scrollTop}}">
 
@@ -22,115 +22,67 @@
           <text class="font-10">登录网页版</text>
         </view>
 
-        <!-- 编辑个人封面 -->
-        <view class="covered" bindtap="editCoverEvent" wx:if="{{userInfo.state===1}}">
-          <text class="iconfont icon-xiangji"></text>
-        </view>
-
         <!-- 基础信息 -->
         <view class="relative mine-top-box">
 
+          <!-- 编辑个人封面 -->
+          <view class="covered" bindtap="editCoverEvent" wx:if="{{userInfo.state===1}}">
+            <text class="iconfont icon-xiangji"></text>
+          </view>
+
           <view class="uerinfo">
-            <navigator class="avatar" url="/pages/apply/mine/user-page/user-page?id={{userInfo.user_id}}">
-              <image src="{{userInfo.avatar_url}}" class="avatar-img"></image>
-            </navigator>
-            <view class="nickname">
-              <text>{{userInfo.caption}}</text>
-              <view class="_edit _o" bindtap="profileEvent" wx:if="{{userInfo.state===1}}"><text class="iconfont icon-bianji"></text></view>
-              <view class="_edit" bindtap="profileEvent" wx:else>[完善资料]</view>
+            <view class="avatar" bindtap="getUserPageEvent">
+              <image src="{{userInfo.avatar_url}}" class="avatar-img" wx:if="{{isLogin}}"></image>
+              <view class="avatar-img" wx:else><open-data class="img" type="userAvatarUrl"></open-data></view>
+              
             </view>
-            <view class="nickSign" wx:if="{{userInfo.sign_text}}">{{userInfo.sign_text}}</view>
-            <!--<view class="pcount"><text>{{userInfo.point}}</text> 积分</view>-->
+            <view wx:if="{{isLogin}}">
+              <view class="nickname">
+                <text>{{userInfo.caption}}</text>
+                <view class="_edit _o" bindtap="profileEvent" wx:if="{{userInfo.state===1}}"><text class="iconfont icon-bianji"></text></view>
+                <view class="_edit" bindtap="profileEvent" wx:else>[完善资料]</view>
+              </view>
+              <view class="nickSign" wx:if="{{userInfo.sign_text}}">{{userInfo.sign_text}}</view>
+            </view>
+            <view wx:else class="login-trigger" catchtap="goLoginEvent">这里登录哟!</view>
           </view>
 
           <view class="userdata flex around">
-            <navigator class="dataone" url="/pages/apply/mine/my-course/my-course">
+            <view class="dataone" bindtap="getCourseEvent">
               <text class="user-num">{{userInfo.enroll_count}}</text>
               <text class="user-font">资源库</text>
-            </navigator>
-            <navigator class="dataone" url="/pages/apply/mine/my-collect/my-collect">
+            </view>
+            <view class="dataone" bindtap="getCollectEvent">
               <text class="user-num">{{userInfo.favor_count}}</text>
               <text class="user-font">收藏</text>
-            </navigator>
-            <navigator class="dataone" bindtap="getTicketEvent">
+            </view>
+            <view class="dataone" bindtap="getTicketEvent">
               <text class="user-num">{{userInfo.coupon}}</text>
               <text class="user-font">课程券</text>
-            </navigator>
-            <navigator class="dataone" url="/pages/apply/mine/my-message/my-message">
+            </view>
+            <view class="dataone" bindtap="getMessageEvent">
               <text class="user-num {{userInfo.msg_count>0?'red':''}}">{{userInfo.msg_count}}</text>
               <text class="user-font">未读消息</text>
-            </navigator>
+            </view>
           </view>
 
-          <view class="mine-learn-con flex around">
+          <view class="mine-learn-con">
             <view class="item" hover-class="basic-hover" bindtap="interestEvent">
               <text class='iconfont icon-xuexi'></text>
-              <view class="item-text">学习小组</view>
-            </view>
-            <button class="shareBtn item" hover-class="basic-hover" open-type="share" plain id="appShare">
-              <text class='iconfont icon-chakantiezifenxiang'></text>
-              <view class="item-text">分享应用</view>
-            </button>
-          </view>
-
-        </view>
-
-        <view class="mine-link-box">
-          <view class="mine-link" hover-class="basic-hover" bindtap="goToGuidesEvent">
-            <text class='iconfont icon-setting'></text> 个人设置
-          </view>
-        </view>
-
-        <view>
-          <view class="mine-bottom-t" bindtap="scrollRecordEvent">
-            <text class="_title">我的作品</text>
-            <view class="_txt">上滑打开个人作品集</view>
-            <text class="iconfont icon-you"></text>
-          </view>
-        </view>
-
-        <view class="mine-userRecord">
-
-            <view class="flex between mine-userRecord-t">
-              <view class="_l">我公开的作品</view>
-              <view class="_r" hover-class="basic-hover" bindtap="goMineAllRecordEvent">作品管理 <text class="iconfont icon-zuo"></text></view>
+              <view class="item-text">我的作品</view>
             </view>
 
-            <view class="mine-userRecord-b" wx:if="{{content.list.length>0}}">
-                  <view wx:for="{{content.list}}" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}" wx:key="record_id">
-                        <view class="_linkTo" catchtap="goRecordPlay" data-id="{{item.record_id}}">
-                          <view class="_name">{{item.name}}</view>
-                          <view class="_desc">{{item.desc}}</view>
-                        </view>
-                        <view class="bs-single" bindtap="tryListenEvent" data-id="{{item.record_id}}" data-url="{{item.file_url}}">
-                          <view class="_insert">
-                            <view class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}">
-                              <view><image src="{{item.cover_url}}" mode="aspectFill" lazy-load/></view>
-                              <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.record_id}}"></text>
-                              <text class="iconfont icon-weibiaoti519" wx:else></text>
-                            </view>
-                          </view>
-                        </view>
-                        <text class="_time">{{moduleMine.resolveTime(item.add_time)}}</text>
-                        <view class="_oper">
-                            <view class="_eye">
-                              <view wx:if="{{item.mode === 1}}"><text class="iconfont icon-biyan"></text> 背诵</view>
-                              <view wx:else><text class="iconfont icon-yanjing"></text> 朗诵</view>
-                            </view>
-                            <view class="_d">
-                              <view class="_s"><text class="_font">{{item.view_count}}次浏览</text></view>
-                              <view class="_s"><text class="iconfont icon-zan"></text><text class="_font">{{item.like_count}}</text></view>
-                              <view class="_s" hover-class="basic-hover" bindtap="singleShareEvent" data-index="{{index}}">
-                                <text class="iconfont icon-chakantiezifenxiang"></text>
-                              </view>
-                            </view>
-                        </view>
-                  </view>
-
-                  <view wx:if="{{content.lastPage}}" class="norecord">额，数据到底了</view>
+            <view class="transverse flex">
+              <button class="shareBtn item" hover-class="basic-hover" open-type="share" plain id="appShare">
+                <text class='iconfont icon-chakantiezifenxiang'></text>
+                <view class="item-text">分享应用</view>
+              </button>
+              <view class="item" hover-class="basic-hover" bindtap="goToGuidesEvent">
+                <text class='iconfont icon-setting'></text>
+                <view class="item-text">个人设置</view>
+              </view>
             </view>
-
-            <view wx:else class="norecord pt-15">还没有发布作品哟，快去 <text>作品管理</text> 点击发布</view>
+          </view>
 
         </view>
     </view>
@@ -139,13 +91,12 @@
 </view>
 
 
-<view wx:else>
+<!-- <view wx:else>
   <view class="mine-background-copy">
     <image src="https://sagacity-course-000019.tcb.qcloud.la/system/logon.jpg?sign=8bbcc44e0ff086916de822f8997fe22d&t=1568174607" mode="widthFix"></image>
     <view class="_shadow"></view>
   </view>
 
-  <!-- 基础信息 -->
   <view class="relative mine-top-box-copy">
     <view class="_insert">
       <view class="uerinfo">
@@ -158,11 +109,7 @@
       <view class="mine-l-btn" catchtap="goLogin">点击登录</view>
     </view>
   </view>
-</view>
-
-
-<!--分享组件-->
-<share id="share"></share>
+</view> -->
 
 <!--登录插件-->
 <wu-login id="wu-login" />

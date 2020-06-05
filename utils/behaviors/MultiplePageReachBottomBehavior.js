@@ -67,6 +67,7 @@ module.exports = Behavior({
         __deleteTurnPageMultiple(index) {
             const { contentMultipleCurrent, contentMultiple } = this.data
             contentMultiple.list.splice(index, 1)
+
             this.setData({
                 'contentMultiple.list': contentMultiple.list
             })
@@ -93,7 +94,7 @@ module.exports = Behavior({
                 pageNumber = 1
             }
             if (contentMultipleLoad) {
-                return false
+                return new Promise((resolve, reject) => { reject(false) })
             }
             this.data.contentMultipleLoad = true
 
@@ -166,6 +167,7 @@ module.exports = Behavior({
          */
         __addTurnPageCacheData(key, data) {
             const index = this.__hasTurnPageCacheData(key)
+
             if (index !== -1) {
                 this.data.contentMultipleCacheData[index].data = {...data}
             }else {
@@ -173,11 +175,15 @@ module.exports = Behavior({
                 Object.defineProperties(objTemp, {
                     key: {
                         value: key,
-                        writable: true
+                        writable: true,
+                        configurable: true,
+                        enumerable: true
                     },
                     data: {
                         value: {...data},
-                        writable: true
+                        writable: true,
+                        configurable: true,
+                        enumerable: true
                     }
                 })
                 this.data.contentMultipleCacheData.push(objTemp)
@@ -196,8 +202,15 @@ module.exports = Behavior({
             return false
         },
 
-        __clearTurnPageCacheData() {
-            this.data.contentMultipleCacheData = []
+        __clearTurnPageCacheData(key) {
+            if(key === undefined || key === null) {
+                this.data.contentMultipleCacheData = []
+                return false
+            }
+            const index = this.__hasTurnPageCacheData(key)
+            if (index !== -1) {
+                this.data.contentMultipleCacheData.splice(index, 1)
+            }
         }
     }
 })

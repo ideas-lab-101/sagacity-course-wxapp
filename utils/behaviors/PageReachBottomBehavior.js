@@ -48,7 +48,7 @@ module.exports = Behavior({
                 pageNumber = 1
             }
             if (contentLoad) {
-                return false
+                return new Promise((resolve, reject) => { reject(false) })
             }
             this.data.contentLoad = true
 

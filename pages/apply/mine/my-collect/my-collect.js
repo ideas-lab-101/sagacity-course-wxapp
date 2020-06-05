@@ -64,7 +64,7 @@ Page({
         const { id, type, index } = e.currentTarget.dataset
 
         userFavor({
-            data_id: id,
+            dataId: id,
             type: type
         })
             .then((res) => {

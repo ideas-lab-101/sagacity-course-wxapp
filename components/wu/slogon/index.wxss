@@ -41,11 +41,11 @@
   right: 0;
   bottom: 0;
 }
-.wu-slogon-box ._del ._l>view{
+.wu-slogon-box ._del ._l>._o{
   font-size: 24rpx;
   margin-top: 8rpx;
 }
-.wu-slogon-box ._del ._l>view:first-child{
+.wu-slogon-box ._del ._l>._o:first-child{
   margin-top: 0;
 }
 .wu-slogon-box ._del ._r{

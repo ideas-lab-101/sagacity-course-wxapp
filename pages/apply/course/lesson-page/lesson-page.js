@@ -15,11 +15,7 @@ Page({
         nav: {
             title: "",
             model: 'fold',
-            transparent: true,
-            animation: {
-                duration: 1000,
-                timingFunction: "linear"
-            }
+            transparent: true
         },
         info: null,
 
@@ -114,7 +110,7 @@ Page({
             isPageShow: true,
             interfaceFn: getLessonList,
             params: {
-                course_id: this.optionsId
+                courseId: this.optionsId
                }
             })
     },
@@ -124,7 +120,7 @@ Page({
     initLessonData() {
 
       getCourseInfo({
-          course_id: this.optionsId
+          courseId: this.optionsId
       })
           .then((res) => {
             this.setData({
@@ -153,7 +149,9 @@ Page({
       $share().show({
           coverUrl: this.data.info.course_info.cover_url,
           type: 'c',
-          id: this.data.info.course_info.course_id
+          id: this.data.info.course_info.course_id,
+          name: this.data.info.course_info.course_name,
+          desc: this.data.info.course_info.course_desc
       })
     },
 
@@ -164,7 +162,7 @@ Page({
     getCourseDetailEvent(e) {
 
       getCourseContent({
-          course_id: this.data.info.course_info.course_id
+          courseId: this.data.info.course_info.course_id
       })
           .then((res) => {
             this.openParseEvent()
@@ -200,7 +198,7 @@ Page({
     collectEvent: function () {
 
         userFavor({
-            data_id: Number(this.optionsId),
+            dataId: Number(this.optionsId),
             type: 'course'
         })
             .then((res) => {
@@ -263,7 +261,7 @@ Page({
         this.setData({ payBtnTxt: '加入...' })
 
         userEnroll({
-                course_id: this.optionsId
+                courseId: this.optionsId
             })
             .then((res) => {
 

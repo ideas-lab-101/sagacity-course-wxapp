@@ -117,7 +117,7 @@ Page({
    **/
   _getUserInfo() {
     getUserInfo({
-      user_id: App.user.userInfo.user_id
+      userId: App.user.userInfo.user_id
     })
         .then((res) => {
           this.setData({

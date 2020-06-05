@@ -118,7 +118,7 @@ Page({
 
     collectEvent: function (e) {
       userFavor({
-          data_id: Number(this.data.info.lesson_data.data_id),
+          dataId: Number(this.data.info.lesson_data.data_id),
           type: 'ld'
       })
           .then((res) => {
@@ -156,7 +156,7 @@ Page({
     **/
     __init: function ({data_id, isNext}) {
           lessonDataInfo({
-              data_id: data_id
+              dataId: data_id
           })
               .then((res) => {
                     this.setData({
@@ -181,12 +181,12 @@ Page({
     },
 
     getLessonList() {
-        const course_id = this.data.info.lesson_data.course_id
+        const courseId = this.data.info.lesson_data.course_id
 
         return this.__getTurnPageDataList({
             isPageShow: true,
             interfaceFn: getLessonList,
-            params: { course_id }
+            params: { courseId }
         })
     },
 

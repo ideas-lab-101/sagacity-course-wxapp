@@ -55,7 +55,7 @@ Page({
           isPageShow: true,
           interfaceFn: getTeamMember,
           params: {
-              team_id: this.optionsId
+              teamId: this.optionsId
           }
       })
     }

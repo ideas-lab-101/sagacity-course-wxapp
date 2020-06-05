@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "backgroundTextStyle": "dark",
+  "disableSwipeBack": false,
+  "enablePullDownRefresh": false,
+  "disableScroll": false,
+  "usingComponents": {
+    "poster": "wxa-plugin-canvas/poster/index"
+  }
+}

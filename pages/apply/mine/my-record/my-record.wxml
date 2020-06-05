@@ -1,10 +1,6 @@
-<wxs src="./my-record.wxs" module="moduleMyRecord" />
-<wu-marked-words id="wu-marked-words"
-                 words="{{markedWords.data}}"
-                 version="{{markedWords.version}}"
-                 exhibition="{{content.list.length>0?true:false}}" bindmarkDownFree="markDownFreeEvent"/>
+<import src="./record-list.wxml" />
 
-<wu-navigation id="wu-navigation" title="{{nav.title}}({{content.totalRow}})"
+<wu-navigation id="wu-navigation" title="{{nav.title}}({{contentMultiple.totalRow}})"
                backURLType="{{nav.backURLType}}"
                backURL="{{nav.backURL}}"
                transparent="{{nav.transparent}}"
@@ -12,83 +8,41 @@
 </wu-navigation>
 
 <view class="container">
-    <view class="mine-userRecord-tip" catchtap="goKeepWXAccounts" wx:if="{{!gOpenID}}">
-        <text>点击此处关注【善听读】公众号</text>
-        <text class="iconfont icon-dianji"></text>
+
+    <view class="mine-userRecord-filter flex between" style="top: {{statusBarHeight+45}}px">
+        <view class="flex bottom">
+            <view class="option {{contentMultipleCurrent === index?'active color-primary':''}}" 
+            catchtap="__turnPageTabChangeMultiple"
+            data-index="{{index}}"
+            wx:for="{{tabs}}" 
+            wx:key="blnPublic">{{item.name}}</view>
+        </view>
+        <view class="search" catchtap="openSearch"><text class="iconfont icon-chaxun"></text></view>
+        <view class="search-det" wx:if="{{isSearch}}" id="search">
+            <form catchsubmit="doSearch" class="form">
+                <view class="insert flex">
+                        <view class="del" catchtap="freeSearch"><text class="iconfont icon-close"></text></view>
+                        <input class="input" maxlength="50" placeholder="查找我的作品" focus="searchFocus" name="key" bindconfirm="doSearch"/>
+                        <button class="s" formType="submit"><text class="iconfont icon-chaxun"></text></button>
+                </view>
+            </form>
+        </view>
     </view>
 
-    <view wx:if="{{content.list.length>0}}" class="mine-userRecord-box">
-
-        <view wx:for="{{content.list}}" wx:key="record_id" class="mine-userRecord-single {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}" >
-            <view class="_insert" bindtap="tryListenEvent" data-id="{{item.record_id}}" data-url="{{item.file_url}}">
-
-                <view class="_linkto">
-                  <view class="_name">{{item.name}}</view>
-                  <view class="_desc">{{item.desc}}</view>
-                </view>
-
-                <!--未公开-->
-                <view class="mine-userRecord-single-crile" wx:if="{{item.bln_public === 0 }}">
-                  <image src="{{item.cover_url}}" mode="aspectFill" lazy-load class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}"></image>
-                  <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.record_id}}"></text>
-                  <text class="iconfont icon-weibiaoti519" wx:else></text>
-                </view>
-                <view class="bs-single" wx:else>
-                  <view class="_insert">
-                    <view class="_image {{tryParams.isPlay && tryParams.id === item.record_id?'active':''}}">
-                      <view><image src="{{item.cover_url}}" mode="aspectFill" lazy-load/></view>
-                      <text class="iconfont icon-bofang" wx:if="{{!tryParams.isPlay || tryParams.id !== item.record_id}}"></text>
-                      <text class="iconfont icon-weibiaoti519" wx:else></text>
-                    </view>
-                  </view>
-                </view>
-
-                <view class="_time"><text>{{moduleMyRecord.resolveTime(item.add_time)}}</text></view>
-            </view>
-            <view class="_panel">
-
-            <view class="flex between">
-                <view class="mr-evaluating">
-                    <view class="flex _l {{index===0 && markedWords.data[0].show?'MarkDown':''}}" id="{{index===0?'MarkDown01':''}}">
-                        <wux-switch name="positive" slot="footer" size="small" color="balanced" value="{{item.bln_public===0?false:true}}" bind:change="setPublicSwitchEvent"  data-index="{{index}}"/>
-                        <text class="_k ml-10" wx:if="{{item.bln_public===0}}">TA人不可见</text>
-                        <text class="_k _c ml-10" wx:else>TA人可见</text>
-                    </view>
-                </view>
-                <view class="mine-userRecord-count flex">
-                    <view class="_s _eye">
-                        <view>{{moduleMyRecord.filterTime(item.duration)}}</view>
-                    </view>
-                    <view class="_s _eye">
-                        <view wx:if="{{item.mode === 1}}" class="flex"><text class="iconfont icon-biyan mr-5"></text><text>背诵</text></view>
-                        <view wx:else class="flex"><text class="iconfont icon-yanjing mr-5"></text><text>朗诵</text></view>
-                    </view>
-                    <!--<view class="_s"><text class="iconfont icon-zan"></text><text class="ml-5">{{item.like_count}}</text></view>-->
-                    <!--<view class="_s"><text class="_font">{{item.view_count}}次浏览</text></view>-->
-                </view>
-            </view>
-
-            <view class="_oper">
-              <view class="_d {{index===0 && markedWords.data[1].show?'MarkDown':''}}" id="{{index===0?'MarkDown02':''}}">
-                <view catchtap="deleteRecordEvent" data-index="{{index}}" data-id="{{item.record_id}}" class="_s" hover-class="basic-hover">
-                    <text class="iconfont icon-del"></text><text>删除</text>
-                </view>
-                <view catchtap="addStudyGroupEvent" data-index="{{index}}" data-id="{{item.record_id}}" class="_s" hover-class="basic-hover">
-                    <text class="iconfont icon-xuexi"></text><text>小组</text>
-                </view>
-                <!--<view wx:if="{{item.bln_public===1}}" class="shareBtn event-hover-class _s" bindtap="singleShareEvent" data-index="{{index}}"><text class="iconfont icon-chakantiezifenxiang"></text></view>-->
-                <view catchtap="goLessonPlay" data-id="{{item.data_id}}" class="_s " hover-class="basic-hover">
-                    <text class="iconfont icon-Group-"></text><text>范读</text>
-                </view>
-              </view>
-            </view>
-
+    <view wx:if="{{!isSearchData}}">
+        <view wx:if="{{contentMultiple.list.length}}" class="mine-userRecord-box">    
+            <template is="recordList" data="{{contentMultiple, tryParams, contentMultipleCurrent}}"></template>
+            <view class="nomore" wx:if="{{contentMultiple.lastPage}}">额，数据到底了</view>
         </view>
-        </view>
-
-        <view class="nomore" wx:if="{{content.lastPage}}">额，数据到底了</view>
+        <view wx:else class="nodate">额，此目录没有数据哟</view>
     </view>
-    <view wx:else class="nodate">额，此目录没有数据哟</view>
+    <view wx:else>
+        <view wx:if="{{content.list.length}}" class="mine-userRecord-box">    
+            <template is="recordList" data="{{contentMultiple: content, tryParams, contentMultipleCurrent}}"></template>
+            <view class="nomore" wx:if="{{content.lastPage}}">额，数据到底了</view>
+        </view>
+        <view wx:else class="nodate">额，没有查询相关数据哟</view>
+    </view>
 </view>
 
 
@@ -97,17 +51,3 @@
 
 <!--添加到学习小组-->
 <teams-task id="teamsTask"/>
-
-<!--关注公众号-->
-<wu-backdrop id="account-backdrop" wux-class="account-backdrop" opacity="0.2" bind:click="closeAccountLayer" />
-<wu-animation-group wux-class="account-layer" in="{{ AccountsIn }}" class-names="wux-animate--fadeInDown">
-    <view class="_insert">
-        <view class="_title">关注<text>【善听读】</text>公众号</view>
-        <view class="_d">
-            <view class="_s"><text>接收推送消息</text></view>
-            <view class="_s"><text>关注作业动态</text></view>
-            <view class="_s"><text>获取最新听读资源</text></view>
-        </view>
-        <view class="_link"><text catchtap="goKeepWXAccounts">去看看怎么关注</text></view>
-    </view>
-</wu-animation-group>

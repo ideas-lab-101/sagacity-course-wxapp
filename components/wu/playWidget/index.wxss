@@ -37,7 +37,7 @@
 .global-play-widget-insert>._img{
   padding-right: 15rpx;
 }
-.global-play-widget-insert>._img image{
+.global-play-widget-insert>._img ._i{
   width: 90rpx;
   height: 90rpx;
   box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.15);
@@ -50,7 +50,7 @@
   text-overflow:ellipsis;
   white-space:nowrap;
 }
-.global-play-widget-insert>._info view{
+.global-play-widget-insert>._info ._t{
   margin-top: 10rpx;
   font-size: 22rpx;
 }

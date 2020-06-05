@@ -60,7 +60,7 @@ Page({
    */
     _getInfoList: function () {
       getInfoList({
-        channelID: 2
+        channelId: 2
       }).then((res) => {
         this.setData({documents: res.list})
       })

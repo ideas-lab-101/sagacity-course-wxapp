@@ -3,7 +3,6 @@
     "enablePullDownRefresh": false,
     "disableScroll": true,
     "usingComponents": {
-        "wu-pendant": "/components/wu/pendant/index",
-        "share": "/components/pages/share/index"
+        "wu-pendant": "/components/wu/pendant/index"
     }
 }

@@ -1,18 +1,21 @@
 const App = getApp()
-import { $share, $wuLogin } from '../../../components/pages/index'
+import { $wuLogin } from '../../../components/pages/index'
 import { ScanLogin } from '../../../request/systemPort'
-import { userAccountInfo, getRecordList, addUserPoint, updateZoneBg } from '../../../request/userPort'
-
-const PageReachBottomBehavior = require('../../../utils/behaviors/PageReachBottomBehavior')
-const InnerAudioPlayBehavior = require('../../../utils/behaviors/InnerAudioPlayBehavior')
+import { userAccountInfo, addUserPoint, updateZoneBg } from '../../../request/userPort'
 const Dialog = require('../../../viewMethod/dialog')
 const Toast = require('../../../viewMethod/toast')
+const AppLoginBehavior = require('../../../utils/behaviors/AppLoginBehavior')
 
 Page({
-    behaviors: [PageReachBottomBehavior, InnerAudioPlayBehavior],
+    behaviors: [AppLoginBehavior],
     data: {
         statusBarHeight: App.globalData.equipment.statusBarHeight,
-        userInfo: null,
+        userInfo: {
+            enroll_count: 0,
+            favor_count: 0,
+            coupon: 0,
+            msg_count: 0
+        },
         msgCount: 10,
         scroll: {
             scrollTop: 0,
@@ -26,9 +29,10 @@ Page({
     onLoad: function (options) {
         if (App.user.ckLogin()) {
             this.__init()
-        } else {
-          this.setData({ isLogin: false })
+        }else {
+            this.setData({ isLogin: false})
         }
+
         /**
          * * 停止背景音播放
          **/
@@ -36,8 +40,6 @@ Page({
           App.backgroundAudioManager.pause()
         }
         this.PageOnLoad = true
-
-        this.__initInnerAudioManager()
     },
 
     onShow: function () {
@@ -113,15 +115,6 @@ Page({
      **/
     __init: function () {
         this.__accountInfo()
-
-        this.__getTurnPageDataList({
-            isPageShow: true,
-            interfaceFn: getRecordList,
-            params: {
-                user_id: App.user.userInfo.user_id,
-                bln_public: 1
-            }
-        })
     },
 
     __accountInfo() {
@@ -129,10 +122,6 @@ Page({
             .then((res) => {
                 this.setData({ userInfo: res.data.account})
             })
-    },
-
-    goLogin() {
-        $wuLogin().show()
     },
     /**
     * 链接事件
@@ -144,11 +133,47 @@ Page({
             showCancel: false
         })
     },
+    getUserPageEvent() {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
+        const { userInfo } = this.data
+        wx.navigateTo({
+            url: `/pages/apply/mine/user-page/user-page?id=${userInfo.user_id}`
+        })
+    },
+    getCourseEvent() {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
+        wx.navigateTo({
+            url: '/pages/apply/mine/my-course/my-course'
+        })
+    },
+    getCollectEvent() {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
+        wx.navigateTo({
+            url: '/pages/apply/mine/my-collect/my-collect'
+        })
+    },
+    getMessageEvent() {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
+        wx.navigateTo({
+            url: '/pages/apply/mine/my-message/my-message'
+        })
+    },
 
     interestEvent: function (e) {
-      wx.navigateTo({
-        url: '/pages/apply/mine/my-teams/my-teams'
-      })
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
+        wx.navigateTo({
+            url: '/pages/apply/mine/my-record/my-record'
+        })
     },
 
     evaluatingEvent: function (e) {
@@ -159,28 +184,10 @@ Page({
         })
     },
 
-    goMineAllRecordEvent: function (e) {
-        wx.navigateTo({
-            url: `/pages/apply/mine/my-record/my-record`,
-            events: {
-                acceptDataMyRecordPublic: (data) => {
-                    if (!data.recordID) {
-                        return false
-                    }
-                    this.__getTurnPageDataList({
-                        isPageShow: true,
-                        interfaceFn: getRecordList,
-                        params: {
-                            user_id: App.user.userInfo.user_id,
-                            bln_public: 1
-                        }
-                    })
-                }
-            }
-        })
-    },
-
     getCodeEvent: function () {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
         wx.scanCode({
             onlyFromCamera: false,
             success: res => {
@@ -200,12 +207,18 @@ Page({
     },
 
     goToGuidesEvent: function () {
-      wx.navigateTo({
-        url: '/pages/apply/mine/my-set/my-set'
-      })
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
+        wx.navigateTo({
+            url: '/pages/apply/mine/my-set/my-set'
+        })
     },
 
     profileEvent: function () {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
         wx.navigateTo({
             url: '/pages/apply/mine/create-profile/create-profile',
             events: {
@@ -215,18 +228,14 @@ Page({
             }
         })
     },
-
-    goRecordPlay(e) {
-        const  { id } = e.currentTarget.dataset
-        wx.navigateTo({
-            url: `/pages/apply/mine/record-play/record-play?id=${id}`
-        })
-    },
   /**
    * 修改封面
    * @param e
    */
     editCoverEvent: function (e) {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
         wx.chooseImage({
             count: 1,
             sizeType: ['original', 'compressed'],
@@ -252,39 +261,13 @@ Page({
             }
         })
     },
-  /**
-   * 滚动向上滑动效果
-   * @param e
-   * @returns {boolean}
-   */
-    pointFixScrollEvent: function (e) {
-        if ( e.detail.scrollTop > 0 && e.detail.scrollTop < this.data.scroll.fixed && e.detail.scrollTop > this.data.scroll.start && !this.scrollMove && !this.moveToBottom && !this.FrameTouching) {
-            this.moveToBottom = true
-            this.scrollMove = true
-            this.setData({
-                'scroll.scrollTop': this.data.scroll.fixed
-            })
-            clearTimeout(this.timeFn)
-            this.timeFn = setTimeout(() => {
-                this.scrollMove = false
-            }, 1200)
-            return false
-        }
-        if ( e.detail.scrollTop > 0 && e.detail.scrollTop < this.data.scroll.fixed-100 && e.detail.scrollTop < this.data.scroll.start && !this.scrollMove && this.moveToBottom && !this.FrameTouching) {
-            this.moveToBottom = false
-            this.scrollMove = true
-            this.setData({
-                'scroll.scrollTop': 0
-            })
-            clearTimeout(this.timeFn)
-            this.timeFn = setTimeout(() => {
-                this.scrollMove = false
-            }, 1200)
-            return false
-        }
-        this.data.scroll.start = e.detail.scrollTop
 
+    goLoginEvent() {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
     },
+    
     frameTouchStart(e) {
       this.FrameTouching = true
     },
@@ -292,33 +275,20 @@ Page({
       this.FrameTouching = false
     },
   /**
-   * 滚动加载更多数据
-   * @param e
-   * @returns {boolean}
-   */
-    scrollToLowerEvent: function (e) {
-        this.__ReachBottom()
-    },
-    scrollRecordEvent: function (e) {
-        this.setData({
-            'scroll.scrollTop': this.data.scroll.fixed
-        })
-    },
-  /**
    * 打开分享界面
    * @param e
    */
-    singleShareEvent: function (e) {
-        const index = e.currentTarget.dataset.index
-        const id = this.data.record.list[index].RecordID
-        const url = this.data.record.list[index].CoverURL
-        this.shareIndex = index // 保存记录  方便分享获取ID
-        $share().show({
-            coverUrl: url,
-            type: 'r',
-            id: id
-        })
-    },
+    // singleShareEvent: function (e) {
+    //     const index = e.currentTarget.dataset.index
+    //     const id = this.data.record.list[index].RecordID
+    //     const url = this.data.record.list[index].CoverURL
+    //     this.shareIndex = index // 保存记录  方便分享获取ID
+    //     $share().show({
+    //         coverUrl: url,
+    //         type: 'r',
+    //         id: id
+    //     })
+    // },
 
     /**
      * 扫码
@@ -336,7 +306,5 @@ Page({
                     })
             }
         })
-    },
-
-
+    }
 })

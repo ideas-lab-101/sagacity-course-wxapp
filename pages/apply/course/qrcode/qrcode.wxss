@@ -1,0 +1,33 @@
+.qc-container{
+  position: relative;
+}
+.qc-padding{
+  position: relative;
+  padding: 0 0 30rpx;
+}
+
+
+.qc-fix-top{
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+.qc-img{
+  width: 100%;
+  height: auto;
+}
+
+.notice-button {
+  width: 100%;
+  border-radius: 500rpx !important;
+}
+
+.qc-tip{
+  text-align: center;
+  padding-top: 40rpx;
+  font-size: 30rpx;
+  color: #999999;
+  font-weight: bold;
+}

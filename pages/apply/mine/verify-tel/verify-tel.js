@@ -134,7 +134,7 @@ Page({
 
       getIdentityCode({
         account: this.data.form.tel,
-        account_type: 1         // （1-电话|2-邮件）
+        accountType: 1         // （1-电话|2-邮件）
       })
           .then((res) => {
             this.setData({ 'countDown.visible': false })
@@ -150,7 +150,7 @@ Page({
       }
       checkIdentityCode({
         account: this.data.form.tel,
-        identity_code: this.data.form.identityCode
+        identityCode: this.data.form.identityCode
       })
           .then((res) => {
             this.eventChannel.emit('acceptDataVerifyTel', { mobile: this.data.form.tel });

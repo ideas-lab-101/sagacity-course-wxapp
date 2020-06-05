@@ -49,7 +49,7 @@ export function uploadRecordFile(options, progress, complete) {
       filePath: options.path,
       name: 'recordFile',
       formData:  {
-        music_id: options.musicID,
+        musicId: options.musicID,
         duration: options.duration,
       },
       success: function (res) {
@@ -152,6 +152,19 @@ export function delRecord(data) {
 export function getAlbumInfo(data) {
   return fetch({
     url: '/wxapp/record/v3/getAlbumInfo',
+    data: data || {},
+    method: 'GET'
+  })
+}
+
+
+/**
+ * 获得推荐的录制模板
+ * page token dataId type(1,2 ,3) key(可选)
+ */
+export function getRecommendTemplateList(data) {
+  return fetch({
+    url: '/wxapp/record/v3/getRecommendTemplateList',
     data: data || {},
     method: 'GET'
   })

@@ -120,8 +120,6 @@ page {
   -webkit-animation-play-state:paused;
   animation-play-state:paused;
 }
-.rep-del-img ._image.active.running{
-}
 
 @-webkit-keyframes tryRotate{
   0%{-webkit-transform: rotate(0deg);}
@@ -182,16 +180,20 @@ page {
   justify-content: space-around;
   align-items: center;
   height: 150rpx;
+  font-weight: bold;
 }
 .rep-link button{
-  border: 0 !important; margin: 0; font-size: 32rpx;
-  padding-left: 30rpx; padding-right: 30rpx; color: #733429 !important;
+  width: auto !important;
+  border: 0 !important; 
+  margin: 0 !important; 
+  font-size: 32rpx;
+  padding-left: 30rpx; 
+  padding-right: 30rpx;
 }
-.rep-link button::after, .rep-link button::before{ border: 0 !important;}
-.rep-goNav{ padding: 15rpx 40rpx; text-align: center;
+.rep-goNav{ 
+  padding: 15rpx 40rpx; 
+  text-align: center;
   border-radius: 400rpx;
-  /*background-image: -webkit-linear-gradient(0deg, #009b4c, #acce22);*/
-  /*box-shadow: 0 6rpx 30rpx rgba(0, 155, 76, 0.5);*/
 }
 /******************/
 .rep-in{ align-items: center; padding-bottom: 40rpx; font-size: 30rpx; background-color: white; }

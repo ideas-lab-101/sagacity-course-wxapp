@@ -4,13 +4,13 @@
     <view class="global-play-widget-insert">
 
       <view class="_img">
-        <image mode="aspectFill" src="{{playerData.coverImgUrl}}"></image>
+        <image class="_i" mode="aspectFill" src="{{playerData.coverImgUrl}}"></image>
       </view>
 
       <view class="_info">
         <navigator url="/pages/apply/course/lesson-play/lesson-play?id={{playerData.id}}" hover-class="none">
           <text>{{playerData.epname}}</text>
-          <view>{{playerData.title}}</view>
+          <view class="_t">{{playerData.title}}</view>
         </navigator>
       </view>
 

@@ -85,7 +85,6 @@ class user {
 
             this.__getWxLogin()
                 .then( code => {
-                    console.log('code', code)
                     WXLogin({code, userData: FormatUserInfo})
                         .then( (res) => {
 
@@ -115,20 +114,16 @@ class user {
      */
     getPhoneNumber(data) {
       return new Promise((resolve, reject) => {
-          this.__getWxLogin()
-              .then( code => {
-
-                getWxaPhone({...data, code})
-                  .then(res => {
-                      /**
-                       * 执行绑定
-                       */
-                      this.__bindUser(res.data.phone)
-                      resolve(this.authToken)
-                  }, ret => {
-                      reject(ret)
-                  })
-          })
+        getWxaPhone({...data, token: this.authToken })
+            .then(res => {
+                /**
+                 * 执行绑定
+                 */
+                this.__bindUser(res.data.phone)
+                resolve(this.authToken)
+            }, ret => {
+                reject(ret)
+            })
       })
     }
 
@@ -162,11 +157,6 @@ class user {
                     reject(ret)
                 })
         })
-    }
-
-
-    __getUnReadMessage() {
-
     }
 
     /**

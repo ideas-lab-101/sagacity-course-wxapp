@@ -36,7 +36,7 @@ Page({
      * 内部数据获取事件
      * ***/
     _initData: function (id) {
-        getInfoContent({infoID: id}).then((res) => {
+        getInfoContent({infoId: id}).then((res) => {
           if(res.data.ContentType === 'url') {
             this.setData({
               webViewUrl: res.data.Content

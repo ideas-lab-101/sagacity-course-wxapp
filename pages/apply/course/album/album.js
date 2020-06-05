@@ -117,7 +117,7 @@ Page({
     * */
     __init() {
       getAlbumInfo({
-          album_id: this.optionsId
+          albumId: this.optionsId
       })
           .then((res) => {
             this.setData({ info: res.data })
@@ -149,7 +149,7 @@ Page({
      */
     collectEvent: function () {
         userFavor({
-            data_id: this.optionsId,
+            dataId: this.optionsId,
             type: 'album'
         })
             .then((res) => {
@@ -164,7 +164,7 @@ Page({
       const id = item.record_id
 
       userLike({
-          data_id: id,
+          dataId: id,
           type: 'record'
       })
           .then((res) => {

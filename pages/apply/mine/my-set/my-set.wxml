@@ -6,7 +6,7 @@
     <view class="set-single flex between">
       <text>显示历史记录</text>
       <view class="_r">
-        <wux-switch name="positive" slot="footer" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
+        <wu-switch name="positive" slot="footer" color="balanced" value="{{ controlFix }}" bind:change="controlFixEvent" />
       </view>
     </view>
 

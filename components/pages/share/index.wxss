@@ -13,7 +13,7 @@
   content: ""; position: absolute; z-index: -1; right: -20px; bottom: 90px; width: 0; height: 0;
   border-top: 30px solid transparent; border-left: 50px solid #c7c7c7;
 }
-.share-layer image{ width: 92%; height: 55vh; position: relative; z-index: 5;
+.share-layer .img{ width: 92%; height: 55vh; position: relative; z-index: 5;
   box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.2);
 }
 .share-layer ._triangle{ position: absolute; left: 0; bottom: 0; z-index: 10; width: 100%; }
@@ -24,8 +24,8 @@
   border-top: 100px solid transparent; border-right: 350px solid #ffffff;
 }
 .share-layer ._link{display: flex; align-items: center; justify-content: space-around; position: relative; z-index: 100;}
-.share-layer ._link button{ border: 0 !important; font-size: 26rpx; line-height: 1.7; padding: 20rpx 0; flex: 1}
-.share-layer ._link button::after,.share-layer ._link button::before{ border: 0 !important; }
-.share-layer ._link button .iconfont{ font-size: 40rpx;}
+.share-layer ._link .btn{ border: 0 !important; font-size: 26rpx; line-height: 1.7; padding: 20rpx 0; flex: 1}
+.share-layer ._link .btn::after,.share-layer ._link .btn::before{ border: 0 !important; }
+.share-layer ._link .btn .iconfont{ font-size: 40rpx;}
 
 @import "/assets/styles/cloud-icon.wxss";

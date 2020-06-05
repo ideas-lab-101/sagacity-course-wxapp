@@ -1,0 +1,82 @@
+.wux-switch__input {
+  position: relative;
+  width: 104rpx;
+  height: 64rpx;
+  border: 1rpx solid #dfdfdf;
+  outline: 0;
+  border-radius: 32rpx;
+  box-sizing: border-box;
+  background-color: #dfdfdf;
+  transition: background-color .1s,border .1s
+}
+.wux-switch__input::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: transform .35s cubic-bezier(.45,1,.4,1)
+}
+.wux-switch__input::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background-color: #fff;
+  box-shadow: 0 2rpx 2rpx rgba(0,0,0, 0.25);
+  transition: transform .35s cubic-bezier(.4,.4,.25,1.35)
+}
+.wux-switch__input.small{
+  width: 82rpx;
+  height: 54rpx;
+}
+.wux-switch__input.small::before{
+  width: 80rpx;
+  height: 54rpx;
+}
+.wux-switch__input.small::after{
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.wux-switch__input.mini{
+  width: 62rpx;
+  height: 44rpx;
+}
+.wux-switch__input.mini::before{
+  width: 60rpx;
+  height: 44rpx;
+}
+.wux-switch__input.mini::after{
+  width: 40rpx;
+  height: 40rpx;
+}
+
+
+.wux-switch__input--checked {
+  border-color: #33cd5f;
+  background-color: #33cd5f
+}
+.wux-switch__input--checked::before {
+  transform: scale(0)
+}
+.wux-switch__input--checked::after {
+  box-shadow: none;
+  transform: translateX(40rpx)
+}
+.wux-switch__input--disabled {
+  opacity: .3
+}
+
+.wux-switch__input--checked.small::after {
+  transform: translateX(30rpx)
+}
+.wux-switch__input--checked.mini::after {
+  transform: translateX(20rpx)
+}

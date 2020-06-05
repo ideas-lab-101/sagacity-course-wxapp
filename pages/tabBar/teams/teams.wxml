@@ -1,9 +1,12 @@
 <wxs src="./teams.wxs" module="moduleTeams" />
 
-<view style="padding-top: {{statusBarHeight}}px;" class="teams-nav">学习小组({{nav.title}})</view>
+<view style="padding-top: {{statusBarHeight}}px;" class="teams-nav">
+  <text>学习小组</text>
+  <text wx:if="{{isLogin}}">({{nav.title}})</text>
+</view>
 
 <view style="height: calc(100vh - {{statusBarHeight + 45}}px);">
-  <view class="flex top content-container" wx:if="{{isLogin}}">
+  <view class="flex top content-container" wx:if="{{!isLogin}}">
 
     <block wx:if="{{teamList.length>0}}">
       <swiper class="my-swiper"
@@ -85,10 +88,26 @@
         </block>
       </swiper>
     </block>
-    <view wx:else class="nodate">您还没加入任何学习小组!</view>
+    <view wx:else class="nodate">
+      <text>您还没加入任何学习小组!</text>
+      <text>赶紧让老师邀请您</text>
+    </view>
 
   </view>
-  <view wx:else catchtap="goLoginEvent" class="teams-login">未登录</view>
+  <view wx:else class="teams-login">
+
+        <view class="logo">
+            <image mode="widthFix" class="img" 
+            src="https://sagacity-course-000019.tcb.qcloud.la/system/logo.png?sign=8f9ea5223ce95eff22e03820a447832a&t=1591252151" />
+        </view>
+        
+        <view class="tip">
+            <text>去听，听见内心</text>
+            <text>去读，读懂自己</text>
+        </view>
+        <view catchtap="goLoginEvent">去登录</view>
+
+  </view>
 </view>
 
 

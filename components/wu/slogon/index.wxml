@@ -3,8 +3,8 @@
     <view class="_time" style="top:{{apply.statusBarHeight+8}}px;">{{time}} 秒跳过</view>
     <view class="_del">
         <view class="_l">
-            <view>微信版本：{{apply.version}}</view>
-            <view>应用版本：{{version}}</view>
+            <view class="_o">微信版本：{{apply.version}}</view>
+            <view class="_o">应用版本：{{version}}</view>
         </view>
         <view class="_r" bindtap="leaveEvent">开启旅程</view>
     </view>

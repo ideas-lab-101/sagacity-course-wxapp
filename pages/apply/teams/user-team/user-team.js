@@ -155,7 +155,7 @@ Page({
      * */
     __init: function ({ id }) {
       getTeamInfo({
-        team_id: id
+        teamId: id
       })
           .then((res) => {
             this.setData({
@@ -183,7 +183,7 @@ Page({
         isPageShow: true,
         interfaceFn: getTeamProfile,
         params: {
-          team_id: teamID
+          teamId: teamID
         }
       })
     },
@@ -195,9 +195,9 @@ Page({
    */
     _joinTeam: function (label, profileID) {
       joinTeam({
-        team_id: this.data.teamInfo.team_id,
+        teamId: this.data.teamInfo.team_id,
         label: label,
-        profile_id: profileID
+        profileId: profileID
       })
           .then((res) => {
             /**

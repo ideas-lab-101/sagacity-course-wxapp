@@ -33,7 +33,7 @@ Page({
     _initData: function() {
         GetCourseList({
               page: this.data.pager.pageNumber,
-              typeID: 0
+              typeId: 0
         }).then((res) => {
             this.setData({
               'pager.lastPage': res.lastPage,

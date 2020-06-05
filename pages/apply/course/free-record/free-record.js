@@ -1,5 +1,6 @@
 import { $wuBackdrop } from '../../../../components/wu/index'
 import {  submitRecordFile, recordCancel, uploadRecordFile } from '../../../../request/recordPort'
+import {  getLessonData } from '../../../../request/coursePort'
 const App = getApp()
 const AuthSettingBehavior = require('../../../../utils/behaviors/AuthSettingBehavior')
 const AuthRecordBehavior = require('../../../../utils/behaviors/AuthRecordBehavior')
@@ -11,16 +12,15 @@ Page({
     behaviors: [AuthSettingBehavior, AuthRecordBehavior, InnerAudioPlayBehavior],
     data: {
         nav: {
-          title: "自由录制",
-          model: 'fold',
-          transparent: true,
-          animation: {
-            duration: 500,
-            timingFunction: "linear"
-          }
+          title: "",
+          backgroundColor: "white",
+          model: 'extrude',
+          transparent: true
         },
         systemSeries: App.globalData.systemSeries,
         statusBarHeight: App.globalData.equipment.statusBarHeight,
+        windowHeight: App.globalData.equipment.windowHeight,
+        windowWidth: App.globalData.equipment.windowWidth,
 
         backgroundSoundItem: null, // 背景音元素对象
       /**
@@ -28,11 +28,11 @@ Page({
        */
         courseData: null,  // 课程基本信息
         form: {
-            data_id: '', // 课程ID
-            file_url: '', // 混音地址
-            record_url: '', // 原音地址
-            music_id: 0, // 背景音ID
-            task_id: 0   // 上传后拿到的判断线程的参数
+            dataId: '', // 课程ID
+            fileUrl: '', // 混音地址
+            recordUrl: '', // 原音地址
+            musicId: 0, // 背景音ID
+            taskId: 0   // 上传后拿到的判断线程的参数
         },
         reciprocal: { // 倒数计时
             visible: false,
@@ -41,10 +41,17 @@ Page({
         mode: 0, //  朗诵 0 背诵 1 模式
         progressParams: { // 合成混音进度层
             visible: false,
-            value: 5
-        }
+            value: 0
+        },
+        timeHand: 0
     },
     onLoad: function (options) {
+        this.optionsId = options.id
+        this.data.form.dataId = options.id
+        this.setData({
+            mode: options.mode || '0'
+        })
+
         this.__init()
 
         this.__initInnerAudioManager()
@@ -52,9 +59,20 @@ Page({
     onShow: function () {},
 
     onReady: function () {
-      /**
-       * 保持屏幕常亮
-       */
+        const { statusBarHeight, windowHeight } = this.data
+        const query = wx.createSelectorQuery()
+        query.selectAll('.countHtml').boundingClientRect((res) => {
+            let total = 45
+            res.map(item => {
+                total += item.height
+                return item
+            })
+            this.setData({
+                contentHeight: windowHeight - total - statusBarHeight
+            })
+        })
+        query.exec()
+      //保持屏幕常亮
       wx.setKeepScreenOn({ keepScreenOn: true })
     },
 
@@ -70,11 +88,6 @@ Page({
         this.__innerAudioDestroy()
     },
 
-    /**
-     * 初始化获取course数据事件
-     * @param id
-     * @private
-     */
     __init: function () {
         /**
          * 初始化授权
@@ -84,8 +97,64 @@ Page({
          * 初始化录音管理器
          */
         this.__initRecorder()
+
+        if (this.data.form.dataId) {
+            this.getLessonDataById(this.data.form.dataId)
+        }
     },
 
+    getLessonDataById(id) {
+        getLessonData({
+            dataId: Number(this.data.form.dataId)
+        })
+            .then((res) => {
+                this.setData({ courseData: res.data})
+            })
+    },
+
+    removeCourse() {
+        // const query = wx.createSelectorQuery()
+        // query.select('#courseDetail').boundingClientRect((res) => {
+        //     console.log(this)
+        //     const clientWidth = res.width
+
+        //     this.animate('#courseDetail', [
+        //         { width: clientWidth},
+        //         { width: 0},
+        //         ], 3000, function () {
+                
+        //       }.bind(this))
+
+        // })
+        // query.exec()
+        this.data.form.dataId = ""
+        this.setData({ courseData: null })
+    },
+    addCourse() {
+        wx.navigateTo({
+            url: `/pages/apply/course/course-template/course-template?id=${this.optionsId}`,
+            events: {
+                acceptDataSetCourseTemplate: (data) => {
+                    if (!data.id) {
+                        this.setData({courseData: null})
+                        this.data.form.dataId = ''
+                        return false
+                    }
+                    this.data.form.dataId = data.id
+                    this.getLessonDataById(data.id)
+                }
+            }
+        })
+    },
+    modeSwitch() {
+        let mode = this.data.mode
+        if (mode === '0') {
+            mode = '1'
+        }else {
+            mode = '0'
+        }
+        this.setData({ mode})
+    },
     startRecord: function (e) {
         this.__setAuthRecordSetting()
             .then(() => {
@@ -97,7 +166,7 @@ Page({
    * @returns {boolean}
    */
     startRecordCheckMusic: function () {
-        if (!this.data.form.music_id && !this.startRecordAction) {
+        if (!this.data.form.musicId && !this.startRecordAction) {
             Dialog.confirm({
                 title: '尚无背景音',
                 content: '选择背景音将有更好的作品表现',
@@ -154,12 +223,12 @@ Page({
         /**
         * 清理垃圾录音
         **/
-        const {file_url, record_url, task_id} = this.data.form
+        const {fileUrl, recordUrl, taskId} = this.data.form
 
         recordCancel({
-            file_url,
-            record_url,
-            task_id
+            fileUrl,
+            recordUrl,
+            taskId
         })
     },
   /**
@@ -173,11 +242,11 @@ Page({
                     console.log('backgroundSoundItem', data)
                     if (!data.item) {
                         this.setData({backgroundSoundItem: null})
-                        this.data.form.music_id = 0
+                        this.data.form.musicId = 0
                         return false
                     }
                     this.setData({backgroundSoundItem: {...data.item}})
-                    this.data.form.music_id = data.music_id
+                    this.data.form.musicId = data.item.music_id
                 }
             },
             success: (res) => {
@@ -185,25 +254,6 @@ Page({
             }
         })
     },
-      /**
-       * 引导返回控制事件
-       * @param e
-       */
-    markDownFreeEvent: function (e) {
-        const i = e.detail.index
-        const release = e.detail.release
-        this.data.markedWords.data.forEach( (item, index) => {
-            let temp = false
-            if (i === index && !release) {
-                temp = true
-            }
-            const obj = `markedWords.data[${index}].show`
-            this.setData({
-                [obj]: temp
-            })
-        })
-    },
-
     /**
      * 倒数计时回调
      **/
@@ -249,46 +299,47 @@ Page({
                 Toast.text({ text: ret.msg})
             })
       },
-        /**
-         * 上传到服务器  获取音频合成的接口
-         * @param path
-         * @param musicID
-         * @param duration
-         * @private
-         */
-        getMixtureRecord: function (path, duration) {
-            this.setData({
-                'progressParams.visible': true
+    /**
+     * 上传到服务器  获取音频合成的接口
+     * @param path
+     * @param musicID
+     * @param duration
+     * @private
+     */
+    getMixtureRecord: function (path, duration) {
+        this.setData({
+            'progressParams.visible': true
+        })
+        console.log(this.data.form)
+        uploadRecordFile({
+                path: path,
+                musicId: this.data.form.musicId,
+                duration: duration
+            },
+            (progress) => {
+                this.setData({
+                    'progressParams.value': progress.progress
+                })
+            },
+            () => {
+                this.setData({
+                    recordIn: false,
+                    'progressParams.visible': false
+                })
             })
-            uploadRecordFile({
-                    path: path,
-                    musicID: this.data.form.music_id,
-                    duration: duration
-                },
-                (progress) => {
-                    this.setData({
-                        'progressParams.value': progress.progress
-                    })
-                },
-                () => {
-                    this.setData({
-                        recordIn: false,
-                        'progressParams.visible': false
-                    })
-                })
-                .then((res) => {
-                    const result = JSON.parse(res.data)
-                    console.log(result)
+            .then((res) => {
+                const result = JSON.parse(res.data)
+                console.log(result)
 
-                    this.data.form.file_url = result.data.file_url
-                    this.data.form.record_url = result.data.record_url
-                    this.data.form.task_id = result.data.task_id
+                this.data.form.fileUrl = result.data.file_url
+                this.data.form.recordUrl = result.data.record_url
+                this.data.form.taskId = result.data.task_id
 
-                    $wuBackdrop().retain() // 打开已经录制的音频层
-                    this.setData({ recordIn: true, 'form.file_url': result.data.file_url})
-                })
-                .catch((ret) => {
-                    Toast.text({ text: '录音合成失败,请重新录制'})
-                })
-        }
+                $wuBackdrop().retain() // 打开已经录制的音频层
+                this.setData({ recordIn: true, 'form.fileUrl': result.data.file_url})
+            })
+            .catch((ret) => {
+                Toast.text({ text: '录音合成失败,请重新录制'})
+            })
+    }
 })

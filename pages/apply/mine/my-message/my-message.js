@@ -31,7 +31,7 @@ Page({
         const dataID = list[index].data_id
 
         setMessage({
-            message_id: id
+            messageId: id
         })
             .then((res) => {
 
