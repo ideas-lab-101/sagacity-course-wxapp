@@ -29,7 +29,7 @@ Page({
         const { current } = this.data
 
         getEnumDetail({
-                master_id: 1
+                masterId: 1
             })
             .then((res) => {
 

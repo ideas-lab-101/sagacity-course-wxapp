@@ -6,9 +6,9 @@
 </view>
 
 <view style="height: calc(100vh - {{statusBarHeight + 45}}px);">
-  <view class="flex top content-container" wx:if="{{!isLogin}}">
+  <view class="flex top content-container" wx:if="{{isLogin}}">
 
-    <block wx:if="{{teamList.length>0}}">
+    <block wx:if="{{teamList.length}}">
       <swiper class="my-swiper"
               next-margin="20px"
               bindchange="teamSwiperChangeEvent"

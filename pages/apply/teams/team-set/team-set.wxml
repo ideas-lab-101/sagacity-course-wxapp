@@ -5,8 +5,7 @@
 
   <wu-navigation id="wu-navigation" title="{{nav.title}}"
                  transparent="{{nav.transparent}}"
-                 model="{{nav.model}}"
-                 animation="{{nav.animation}}">
+                 model="{{nav.model}}">
   </wu-navigation>
 
   <view>

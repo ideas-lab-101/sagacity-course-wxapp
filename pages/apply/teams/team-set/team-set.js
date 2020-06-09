@@ -9,11 +9,7 @@ Page({
       nav: {
         title: '',
         model: 'extrude',
-        transparent: false,
-        animation: {
-          duration: 1000,
-          timingFunction: "linear"
-        }
+        transparent: false
       },
       isCreator: false,
       attestation: {

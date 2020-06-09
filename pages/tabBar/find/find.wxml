@@ -39,7 +39,12 @@
           <text>作品动态</text>
         </view>
         <view class="tab-single free">
-          <view class="link color-assistant-back" bindtap="goFreeRecording"><text class="iconfont icon-luyin"></text><text>自由录制</text></view>
+          <view class="link color-assistant-border color-primary" bindtap="goFreeRecording">
+            <view class="line">
+              <image class="img" mode="widthFix" src="/assets/images/microphone.png"></image>
+              <text>自由录制</text>
+            </view>
+          </view>
         </view>
   </view>
 

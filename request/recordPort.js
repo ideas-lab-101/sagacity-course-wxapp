@@ -1,6 +1,6 @@
 import { fetch } from '../axios/fetch'
 const { host } = require('../sever.config')
-
+const Constants = require('../utils/constants');
 /**
  * 录制方法调用
  * */
@@ -49,11 +49,16 @@ export function uploadRecordFile(options, progress, complete) {
       filePath: options.path,
       name: 'recordFile',
       formData:  {
-        musicId: options.musicID,
-        duration: options.duration,
+        musicId: options.musicId,
+        duration: options.duration
       },
       success: function (res) {
-        resolve(res)
+        const result = JSON.parse(res.data)
+        if (result.code === Constants.REQUEST_SUCCESS) {
+          resolve(result)
+        }else {
+          reject(res.msg)
+        }
       },
       fail: function (error) {
         reject(error)

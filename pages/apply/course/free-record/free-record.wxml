@@ -79,7 +79,9 @@
 
                 </view>
                 <view class="_i record-btn">
-                    <view bindtap="startRecord" class="_transcribe"><text class="iconfont icon-luyin"></text></view>
+                    <view bindtap="startRecord" class="_transcribe color-assistant-border">
+                        <image class="img" mode="widthFix" src="/assets/images/microphone.png"></image>
+                    </view>
                 </view>
                 <view class="_i" catchtap="modeSwitch">
                     <view class="record-mode">

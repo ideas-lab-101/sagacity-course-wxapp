@@ -310,7 +310,6 @@ Page({
         this.setData({
             'progressParams.visible': true
         })
-        console.log(this.data.form)
         uploadRecordFile({
                 path: path,
                 musicId: this.data.form.musicId,
@@ -328,18 +327,15 @@ Page({
                 })
             })
             .then((res) => {
-                const result = JSON.parse(res.data)
-                console.log(result)
-
-                this.data.form.fileUrl = result.data.file_url
-                this.data.form.recordUrl = result.data.record_url
-                this.data.form.taskId = result.data.task_id
+                this.data.form.fileUrl = res.data.file_url
+                this.data.form.recordUrl = res.data.record_url
+                this.data.form.taskId = res.data.task_id
 
                 $wuBackdrop().retain() // 打开已经录制的音频层
-                this.setData({ recordIn: true, 'form.fileUrl': result.data.file_url})
+                this.setData({ recordIn: true, 'form.fileUrl': res.data.file_url})
             })
             .catch((ret) => {
-                Toast.text({ text: '录音合成失败,请重新录制'})
+                Toast.text({ text: ret || '录音合成失败,请重新录制'})
             })
     }
 })

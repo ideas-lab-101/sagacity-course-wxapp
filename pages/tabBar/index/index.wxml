@@ -70,9 +70,14 @@
     <view class="section-box">
         <view class="section-title flex between">
             <text class="_title">精选课程</text>
-            <navigator class="p-15 pt-5 pb-5 more"
+            <navigator class="p-15 pt-5 pb-5 more color-assistant-border color-primary"
                        url="/pages/apply/course/catalog/catalog"
-                       hover-class="event-hover-class"><text class="iconfont icon-shu"></text> 资源库</navigator>
+                       hover-class="event-hover-class">
+                       <view class="line">
+                           <image class="img" mode="widthFix" src="/assets/images/category.png"></image>
+                            <text>资源库</text>
+                       </view>
+            </navigator>
         </view>
         <view class="section-content flex top wrap">
 

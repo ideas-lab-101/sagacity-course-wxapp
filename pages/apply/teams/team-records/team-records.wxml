@@ -3,8 +3,7 @@
 
 <wu-navigation id="wu-navigation" title="{{nav.title}}({{content.totalRow}})"
                transparent="{{nav.transparent}}"
-               model="{{nav.model}}"
-               animation="{{nav.animation}}">
+               model="{{nav.model}}">
 </wu-navigation>
 
 <view class="container">

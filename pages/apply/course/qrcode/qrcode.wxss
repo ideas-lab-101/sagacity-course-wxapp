@@ -1,12 +1,6 @@
 .qc-container{
   position: relative;
 }
-.qc-padding{
-  position: relative;
-  padding: 0 0 30rpx;
-}
-
-
 .qc-fix-top{
   position: relative;
   left: 0;
@@ -18,12 +12,10 @@
   width: 100%;
   height: auto;
 }
-
 .notice-button {
   width: 100%;
   border-radius: 500rpx !important;
 }
-
 .qc-tip{
   text-align: center;
   padding-top: 40rpx;

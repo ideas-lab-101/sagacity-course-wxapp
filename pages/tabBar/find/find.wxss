@@ -148,13 +148,24 @@
 }
 .tab-single.free .link{
   display: inline-flex;
-  align-items: center;
-  padding: 13rpx 34rpx;
-  color: white;
   border-radius: 1000rpx;
+  border-width: 1rpx;
+  border-style: solid;
+  font-weight: bold;
+  position: relative;
+  padding: 4rpx;
 }
-.tab-single.free .link .iconfont{
-  font-size: 38rpx;
+.tab-single.free .link .line{
+  border: 1rpx solid rgba(0, 0, 0, 0.15);
+  border-radius: 1000rpx;
+  align-items: center;
+  display: flex;
+  padding: 13rpx 28rpx;
+}
+.tab-single.free .link .img{
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
 }
   /*
   * 关注

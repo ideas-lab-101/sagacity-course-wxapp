@@ -68,10 +68,11 @@
   height: 180rpx;
   line-height: 180rpx;
   display: flex;
-  flex-direction: column;
-  background-color: #7ebc2d;
-  font-size: 32rpx;
-  color: white;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-width: 1rpx;
+  border-style: solid;
   border-radius: 400rpx;
   position: relative;
   z-index: 10;
@@ -86,14 +87,15 @@
   border-radius: 200rpx;
   width: 165rpx;
   height: 165rpx;
-  border: 1px solid rgba(0, 155, 76, 0.6);
+  border: 1rpx solid rgba(0, 0, 0, 0.15);
   box-shadow: 0rpx 0rpx 2rpx rgba(255, 255, 255, 0.6) inset;
 }
 .record-btn>._transcribe:active{
   transform: scale(0.8, 0.8);
 }
-.record-btn>._transcribe .iconfont{
-  font-size: 110rpx;
+.record-btn>._transcribe .img{
+  width: 100rpx;
+  height: 100rpx;
 }
 /*************/
 .lesson-dm{
@@ -361,7 +363,8 @@
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
 }
 .record-swiper-single-b{
-  padding: 0；
+  padding: 0;
+  flex: 1;
 }
 .record-swiper-single-n{
   flex: 1;

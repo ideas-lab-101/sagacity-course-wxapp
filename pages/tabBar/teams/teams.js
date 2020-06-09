@@ -27,7 +27,7 @@ Page({
         /**
          * 初始化数据
          */
-        //this.__init()
+        this.__init()
       }else {
         this.setData({ isLogin: false})
       }

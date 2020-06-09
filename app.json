@@ -21,25 +21,25 @@
     "list": [
       {
         "pagePath": "pages/tabBar/index/index",
-        "text": "发现",
+        "text": "",
         "iconPath": "/assets/images/home_blank.png",
         "selectedIconPath": "/assets/images/home_fill.png"
       },
       {
         "pagePath": "pages/tabBar/find/find",
-        "text": "动态",
+        "text": "",
         "iconPath": "/assets/images/list_blank.png",
         "selectedIconPath": "/assets/images/list_fill.png"
       },
       {
         "pagePath": "pages/tabBar/teams/teams",
-        "text": "小组",
-        "iconPath": "/assets/images/list_blank.png",
-        "selectedIconPath": "/assets/images/list_fill.png"
+        "text": "",
+        "iconPath": "/assets/images/team_blank.png",
+        "selectedIconPath": "/assets/images/team_fill.png"
       },
       {
         "pagePath": "pages/tabBar/mine/mine",
-        "text": "我的",
+        "text": "",
         "iconPath": "/assets/images/account_blank.png",
         "selectedIconPath": "/assets/images/account_fill.png"
       }

@@ -11,13 +11,11 @@
 </poster>
 
 <view class="qc-container" wx:if="{{posterUrl}}">
-
     <view class="qc-fix-top">
         <image src="{{posterUrl}}"
                show-menu-by-longpress
                mode="widthFix"
                class="qc-img" />
     </view>
-
     <view class="qc-tip">长按二维码，发送给朋友</view>
 </view>

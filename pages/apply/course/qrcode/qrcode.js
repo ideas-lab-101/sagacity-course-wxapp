@@ -33,23 +33,31 @@ Page({
 
   initPoster() {
     const equipment = App.globalData.equipment
-    const { url } = this.data
-    
+    const { url, qrcode } = this.data
+    console.warn(qrcode)
     const images = [
       {
-        width: 100,
-        height: 100,
-        x: 150,
-        y: 120,
+        width: equipment.windowWidth*2,
+        height: equipment.windowHeight*2,
+        x: 0,
+        y: 0,
         zIndex: 100,
         url: url,
+      },
+      {
+        width: 400,
+        height: 400,
+        x: 20,
+        y: 20,
+        zIndex: 100,
+        url: qrcode,
       }
     ]
   
     const { name, desc } = this.data
     const posterConfig = {
-      width: equipment.screenWidth*2,
-      height: Math.ceil(equipment.screenWidth*2*700/640) + 320,
+      width: equipment.windowWidth*2,
+      height: equipment.windowHeight*2,
       backgroundColor: '#fff',
       hideLoading: false,
       debug: false,
@@ -64,7 +72,7 @@ Page({
           fontSize: 24,
           color: '#ffffff',
           zIndex: 200,
-          width: equipment.screenWidth*2,
+          width: equipment.windowWidth*2,
           textAlign: 'center'
         },
         {
@@ -75,14 +83,13 @@ Page({
           fontSize: 30,
           color: '#57b3ff',
           zIndex: 200,
-          width: equipment.screenWidth*2
+          width: equipment.windowWidth*2
         }
       ],
       images: images
     }
 
     this.setData({ posterConfig })
-
     this.onCreatePoster()
   },
 
@@ -91,6 +98,7 @@ Page({
    * @param e
    */
   onPosterSuccess(e) {
+    console.warn(e)
     const { detail } = e;
     this.setData({
       posterUrl: detail

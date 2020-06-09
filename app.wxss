@@ -3,7 +3,7 @@
 @import '/assets/styles/color.wxss';
 
 page {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background: #FFFFFF;
   position: relative;
   font-size: 32rpx;
