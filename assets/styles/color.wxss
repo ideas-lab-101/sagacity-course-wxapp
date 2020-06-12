@@ -36,10 +36,10 @@ after before 颜色
 .color-neutral-gray{color: #88898d !important;}
 .color-light-gray{color: #ebebeb !important;}
 
-.color-green{color: #ffbb12 !important;}
+.color-green{color: #51a938 !important;}
 .color-red{color: #ff3e02 !important;}
 
-.color-green-back{background-color: #ffbb12 !important;}
+.color-green-back{background-color: #51a938 !important;}
 .color-red-back{background-color: #ff3e02 !important;}
 .color-gray-back{background-color: #f0f0f0 !important;}
 .color-light-gray-back{background-color: #f7f7f7 !important;}

@@ -102,10 +102,10 @@
         </view>
         
         <view class="tip">
-            <text>去听，听见内心</text>
-            <text>去读，读懂自己</text>
+            <view>去听，听见内心</view>
+            <view>去读，读懂自己</view>
         </view>
-        <view catchtap="goLoginEvent">去登录</view>
+        <button class="link color-green-back" hover-class="none"  catchtap="goLoginEvent">微信登录</button>
 
   </view>
 </view>

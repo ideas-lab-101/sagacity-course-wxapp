@@ -4,10 +4,11 @@ import { userFavor, userLike, addUserPoint } from '../../../../request/userPort'
 const App = getApp()
 import { $audioPlay } from '../../../../components/pages/index'
 const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
+const AppLoginBehavior = require('../../../../utils/behaviors/AppLoginBehavior')
 const Toast = require('../../../../viewMethod/toast')
 
 Page({
-    behaviors: [AppLaunchBehavior],
+    behaviors: [AppLaunchBehavior, AppLoginBehavior],
     data: {
         systemSeries: App.globalData.systemSeries,
         nav: {
@@ -152,15 +153,12 @@ Page({
     },
 
     goLessonPlayEvent() {
-      if(!App.user.ckLogin()) {
+        if (!this.__validateLoginEvent( this.__init)) {
+            return false
+        }
         wx.navigateTo({
-          url: '/pages/common/accredit/accredit'
-        })
-      }else {
-        wx.navigateTo({
-          url: `/pages/apply/course/lesson-play/lesson-play?id=${this.data.recordData.data_id}`
-        })
-      }
+            url: `/pages/apply/course/lesson-play/lesson-play?id=${this.data.recordData.data_id}`
+          })
     },
 
     /**
@@ -169,7 +167,6 @@ Page({
      * @private
      */
     __init: function ({id}) {
-        console.warn(id)
         getRecordInfo({
             recordId: Number(id)
         })

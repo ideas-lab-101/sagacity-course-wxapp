@@ -184,6 +184,19 @@ page{
 }
 .teams-login{
     text-align: center;
-    padding: 120rpx 30rpx;
+    padding: 200rpx 30rpx 30rpx;
+}
+.teams-login .logo .img{
+    width: 350rpx;
+    height: auto;
+}
+.teams-login .tip{
+    line-height: 1.8;
+    margin-top: 60rpx;
+}
+.teams-login .link{
+    margin-top: 60rpx;
+    font-weight: normal;
+    color: white;
 }
 

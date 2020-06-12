@@ -5,9 +5,11 @@ const { checkIOS } = require('../../../utils/equipment')
 const { isTabPage } = require('../../../utils/util')
 
 const defaults = {
+  statusBarHeight: App.globalData.equipment.statusBarHeight,
   title: '数据加载中',
   mask: false,
-  transitionName: 'wux-animate--fadeInRight'
+  transitionName: 'wux-animate--fadeInRight',
+  step: 'one'
 }
 
 Component({
@@ -39,7 +41,7 @@ Component({
 
     __enter(opts) {
       const options = this.$$mergeOptionsAndBindMethods(Object.assign({}, this.data, opts))
-      this.setData({ ...options, in: true })
+      this.setData({ ...options, in: true, step: 'one' })
       this.$wuBackdrop.retain()
     },
 
@@ -103,6 +105,7 @@ Component({
                       if (userInfoInheritFn && typeof userInfoInheritFn === 'function') {
                         userInfoInheritFn()
                       }
+                      this.setData({ step: 'two'})
                   })
       }
     },
@@ -124,10 +127,7 @@ Component({
           },
           fail: () => {
             // 重新执行登录
-            App.user.goLogin({
-              encryptedData: e.detail.encryptedData,
-              iv: e.detail.iv
-            })
+            App.user.goLogin()
                 .then(token => {
                   
                   this.fetchPhone({
@@ -136,9 +136,7 @@ Component({
                   })
                 })
           }
-        })
-
-        
+        })        
       }
     },
 

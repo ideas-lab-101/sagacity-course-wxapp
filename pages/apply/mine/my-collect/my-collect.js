@@ -11,7 +11,7 @@ Page({
     },
 
     onLoad: function () {
-
+        this.eventChannel = this.getOpenerEventChannel()
         this.__init()
     },
 
@@ -68,7 +68,7 @@ Page({
             type: type
         })
             .then((res) => {
-
+                this.eventChannel.emit('acceptDataFromMyCollect', {data: null});
                 this.__deleteTurnPageMultiple(index)
             })
     }

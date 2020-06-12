@@ -1,5 +1,5 @@
 const App = getApp()
-import { $wuLogin } from '../../../components/pages/index'
+//import { $wuLogin } from '../../../components/pages/index'
 import { ScanLogin } from '../../../request/systemPort'
 import { userAccountInfo, addUserPoint, updateZoneBg } from '../../../request/userPort'
 const Dialog = require('../../../viewMethod/dialog')
@@ -85,21 +85,6 @@ Page({
     },
 
     onShareAppMessage: function (res) {
-        if (res.from === 'button' && res.target.id === 'groupShare') {
-            if (this.shareIndex === undefined) {
-                return false
-            }
-            const { list } = this.data.content
-            const title = `${this.data.userInfo.caption} の ${list[this.shareIndex].name}`
-            return {
-                title: title,
-                imageUrl: `${list[this.shareIndex].cover_url}?imageView2/5/h/300`,
-                path: `/pages/apply/mine/record-play/record-play?id=${list[this.shareIndex].record_id}`,
-                success: (ret) => {
-                    addUserPoint({ pointCode: '002'})
-                }
-            }
-        }
         return {
             title: '晓得Le - 分享知识、分享快乐',
             imageUrl: 'https://sagacity-course-000019.tcb.qcloud.la/system/logon.jpg?sign=f042416f92c2f5c581b3594290af0ce2&t=1540657473',
@@ -155,7 +140,12 @@ Page({
             return false
         }
         wx.navigateTo({
-            url: '/pages/apply/mine/my-collect/my-collect'
+            url: '/pages/apply/mine/my-collect/my-collect',
+            events: {
+                acceptDataFromMyCollect: (data) => {
+                    this.__init()
+                }
+              }
         })
     },
     getMessageEvent() {
@@ -163,7 +153,12 @@ Page({
             return false
         }
         wx.navigateTo({
-            url: '/pages/apply/mine/my-message/my-message'
+            url: '/pages/apply/mine/my-message/my-message',
+            events: {
+                acceptDataFromMyMessage: (data) => {
+                    this.__init()
+                }
+              }
         })
     },
 

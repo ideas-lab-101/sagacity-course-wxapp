@@ -8,7 +8,7 @@
                     classNames="{{ transitionName }}"
                     bind:exited="onExited"
                     wrapStyle="{{ { zIndex } }}">
-    <text class="close iconfont icon-guanbi" bindtap="hide"></text>
+    <text class="close iconfont icon-guanbi" bindtap="hide" style="top:{{statusBarHeight}}px;"></text>
     <view class="login-del">
         <view class="login-logo">
             <image mode="widthFix" class="img" src="https://sagacity-course-000019.tcb.qcloud.la/system/logo.png?sign=8f9ea5223ce95eff22e03820a447832a&t=1591252151"></image>
@@ -18,10 +18,16 @@
             <text>去听，听见内心</text>
             <text>去读，读懂自己</text>
         </view>
-        <view class="login-link">
-            <button class="_btn _sub" hover-class="button-hover" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="getUserInfo">登录</button>
+        <view class="login-link" wx:if="{{step === 'one'}}">
+            <view class="_t">我们需要获取你有限的公开资料：</view>
+            <view class="_f">记录你录制的作品</view>
+            <view class="_f">收藏你喜欢的资料</view>
+            <button class="_btn _sub" hover-class="button-hover" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="getUserInfo">微信登录</button>
         </view>
-        <view class="login-link">
+        <view class="login-link" wx:elif="{{step === 'two'}}">
+            <view class="_t">我们需要获取你的电话信息：</view>
+            <view class="_f">及时收到小组内的通知</view>
+            <view class="_f">保持与公众号、app的账号同步</view>
             <button class="_btn _sub" hover-class="button-hover" open-type="getPhoneNumber" lang="zh_CN" bindgetphonenumber="getUserPhone">登录手机号码</button>
         </view>
     </view>

@@ -9,52 +9,68 @@
   top: 0;
   bottom: 0;
   right: 0;
-  padding: 70rpx 50rpx;
+  padding: 300rpx 50rpx 50rpx 50rpx;
   background-color: white;
 }
 .login-container .close{
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
   z-index: 10;
   display: inline-block;
-  padding: 30rpx;
+  padding: 24rpx 30rpx;
   font-size: 38rpx;
   color: #999999;
 }
-.login-del{
-  
+.login-logo{
+  text-align: center;
 }
-.login-link{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+.login-link ._t{
+  font-size: 30rpx;
+  color: #999999;
+  padding-bottom: 20rpx;
+}
+.login-link ._f{
   margin-top: 20rpx;
+  position: relative;
+  padding-left: 40rpx;
+  color: #333333;
+}
+.login-link ._f::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 2rpx solid #51a938;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 1000rpx;
 }
 .login-link ._btn{
+  margin-top: 60rpx;
   font-weight: normal;
-  margin: 0;
-  border-radius: 0;
+  border-radius: 4rpx;
   font-size: 32rpx;
   line-height: 1.5;
   width: 100% !important;
 }
 .login-link ._btn._sub{
   color: white;
-  background-color: #0d8349;
+  background-color: #51a938;
 }
 .button-hover{
-  background-color: #01723c;
+  background-color: #418f2b;
 }
-
 .login-logo .img{
-  width: 320rpx;
+  width: 350rpx;
   height: auto;
 }
-
 .login-tip{
-  padding: 80rpx 0;
-  line-height: 2;
+  padding: 60rpx 0 100rpx 0;
+  line-height: 1.8;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }

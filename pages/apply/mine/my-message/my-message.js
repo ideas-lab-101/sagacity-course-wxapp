@@ -9,6 +9,7 @@ Page({
     },
 
     onLoad: function () {
+        this.eventChannel = this.getOpenerEventChannel()
         this.__init()
     },
 
@@ -37,6 +38,8 @@ Page({
 
                 list.splice(index, 1)
                 this.setData({ 'content.list': list })
+
+                this.eventChannel.emit('acceptDataFromMyMessage', {data: null});
 
                 const linkFn = setTimeout(() => {
                     clearTimeout(linkFn)
