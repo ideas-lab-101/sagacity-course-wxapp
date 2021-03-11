@@ -140,7 +140,7 @@ export function getRecordList(data) {
   return fetch({
     url: '/wxapp/user/v3/getRecordList',
     data: data || {},
-    method: 'GET'
+    method: 'POST'
   })
 }
 

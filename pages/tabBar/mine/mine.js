@@ -1,6 +1,6 @@
 const App = getApp()
 //import { $wuLogin } from '../../../components/pages/index'
-import { ScanLogin } from '../../../request/systemPort'
+import { scanLogin } from '../../../request/systemPort'
 import { userAccountInfo, addUserPoint, updateZoneBg } from '../../../request/userPort'
 const Dialog = require('../../../viewMethod/dialog')
 const Toast = require('../../../viewMethod/toast')
@@ -295,7 +295,7 @@ Page({
             content: '是否登录网页版？',
             onConfirm: () => {
 
-                ScanLogin({key: key})
+                scanLogin({key: key})
                     .then((res) => {
                         Toast.text({ text: res.msg })
                     })

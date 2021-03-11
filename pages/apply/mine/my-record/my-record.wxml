@@ -19,10 +19,10 @@
         </view>
         <view class="search" catchtap="openSearch"><text class="iconfont icon-chaxun"></text></view>
         <view class="search-det" wx:if="{{isSearch}}" id="search">
-            <form catchsubmit="doSearch" class="form">
+            <form catchsubmit="doSearch">
                 <view class="insert flex">
                         <view class="del" catchtap="freeSearch"><text class="iconfont icon-close"></text></view>
-                        <input class="input" maxlength="50" placeholder="查找我的作品" focus="searchFocus" name="key" bindconfirm="doSearch"/>
+                        <input bindinput="bindInputKey" value="{{sk}}" class="input" maxlength="50" placeholder="查找我的作品" focus="searchFocus" name="key" bindconfirm="doSearch"/>
                         <button class="s" formType="submit"><text class="iconfont icon-chaxun"></text></button>
                 </view>
             </form>

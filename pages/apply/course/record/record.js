@@ -326,7 +326,7 @@ Page({
                     this.setData({ recordIn: true, 'form.file_url': result.data.file_url})
                 })
                 .catch((ret) => {
-                    Toast.text({ text: '录音合成失败,请重新录制'})
+                    Toast.text({ text: ret || '录音合成失败,请重新录制'})
                 })
         }
 })

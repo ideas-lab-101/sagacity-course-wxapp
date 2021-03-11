@@ -57,7 +57,7 @@ export function uploadRecordFile(options, progress, complete) {
         if (result.code === Constants.REQUEST_SUCCESS) {
           resolve(result)
         }else {
-          reject(res.msg)
+          reject(result.msg)
         }
       },
       fail: function (error) {
@@ -171,7 +171,7 @@ export function getRecommendTemplateList(data) {
   return fetch({
     url: '/wxapp/record/v3/getRecommendTemplateList',
     data: data || {},
-    method: 'GET'
+    method: 'POST'
   })
 }
 

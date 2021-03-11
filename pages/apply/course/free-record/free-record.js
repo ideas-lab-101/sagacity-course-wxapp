@@ -46,8 +46,8 @@ Page({
         timeHand: 0
     },
     onLoad: function (options) {
-        this.optionsId = options.id
-        this.data.form.dataId = options.id
+        this.optionsId = options.id || ""
+        this.data.form.dataId = options.id || ""
         this.setData({
             mode: options.mode || '0'
         })
@@ -104,8 +104,9 @@ Page({
     },
 
     getLessonDataById(id) {
+        const { dataId } = this.data.form;
         getLessonData({
-            dataId: Number(this.data.form.dataId)
+            dataId: dataId ? Number(dataId) : "0"
         })
             .then((res) => {
                 this.setData({ courseData: res.data})
@@ -280,9 +281,19 @@ Page({
      * 上传完成后合成混音
      */
     submitEvent: function () {
-        submitRecordFile({
-                ...this.data.form,
-                mode: this.data.mode
+     
+            const { form: { dataId,
+                fileUrl,
+                recordUrl,
+                musicId,
+                taskId }, mode } = this.data;
+            submitRecordFile({
+                dataId: dataId || "0",
+                fileUrl,
+                recordUrl,
+                musicId,
+                taskId,
+                mode
             })
             .then((res) => {
                 Toast.text({ text: '提交成功'})

@@ -19,6 +19,7 @@ Page({
         model: 'extrude',
         transparent: false
       },
+      sk:'',
       gOpenID: true,
       tabs: [
         { name: '全部作品', blnPublic: 0}, { name: '公开作品', blnPublic: 1}
@@ -258,9 +259,13 @@ Page({
       })
     },
 
+    bindInputKey(e) {
+      this.setData({ sk: e.detail.value})
+    },
+
     doSearch(e) {
       const { contentMultipleCurrent, tabs } = this.data;
-      const { key } = e.detail.value
+      const key = this.data.sk
       if (String(key).trim() === '') {
         return false
       }

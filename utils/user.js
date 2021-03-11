@@ -88,7 +88,7 @@ class user {
                     WXLogin({code, userData: FormatUserInfo})
                         .then( (res) => {
 
-                            this.authInfo = res.data.user
+                            this.authInfo = res.data.user_info
                             this.authToken = res.data.token
 
                             if(!FormatUserInfo) {
@@ -145,7 +145,7 @@ class user {
             })
                 .then( res => {
 
-                    this.authInfo = res.data.user
+                    this.authInfo = res.data.user_info
                     Session.set(this.authToken)
                     Session.setUserInfo(this.authInfo)
 

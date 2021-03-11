@@ -7,7 +7,7 @@ Page({
     behaviors: [MultiplePageReachBottomBehavior, PageReachBottomBehavior],
     data: {
         nav: {
-            title: "选择课程",
+            title: "选择资源",
             backgroundColor: '#e3d6d4',
             navTitle: ''
           },

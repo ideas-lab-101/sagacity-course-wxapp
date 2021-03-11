@@ -139,9 +139,9 @@ export function getPhoneNumber(data) { // key
  * 扫码登录
  * key
  */
-export function ScanLogin(data) {
+export function scanLogin(data) {
   return fetch({
-    url: '/wxapp/system/v3/ScanLogin',
+    url: '/wxapp/system/v3/scanLogin',
     data: data || {},
     method: 'POST'
   })
