@@ -7,7 +7,7 @@ class user {
     constructor() {
         try {
             this.accountInfo = wx.getAccountInfoSync()
-        } catch(e) {
+        } catch (e) {
             this.accountInfo = null
         }
 
@@ -46,28 +46,28 @@ class user {
      * @returns {boolean|*}
      */
     ckLogin() {
-      try {
-        let AuthToken = Session.get()
-        let AuthInfo = Session.getUserInfo()
-        if (AuthToken && AuthInfo) {
-          return AuthToken
-        } else {
-          throw false
+        try {
+            let AuthToken = Session.get()
+            let AuthInfo = Session.getUserInfo()
+            if (AuthToken && AuthInfo) {
+                return AuthToken
+            } else {
+                throw false
+            }
+        } catch (e) {
+            return false
         }
-      } catch (e) {
-        return false
-      }
     }
 
     /**
      * 清除所有的storage
      */
     clear() {
-      try {
-          this.authToken = null
-          this.authInfo = null
-          Session.clear()
-      } catch (e) {}
+        try {
+            this.authToken = null
+            this.authInfo = null
+            Session.clear()
+        } catch (e) { }
     }
 
     /**
@@ -84,14 +84,14 @@ class user {
         return new Promise((resolve, reject) => {
 
             this.__getWxLogin()
-                .then( code => {
-                    WXLogin({code, userData: FormatUserInfo})
-                        .then( (res) => {
+                .then(code => {
+                    WXLogin({ code, userData: FormatUserInfo })
+                        .then((res) => {
 
-                            this.authInfo = res.data.user
+                            this.authInfo = res.data.user_info
                             this.authToken = res.data.token
 
-                            if(!FormatUserInfo) {
+                            if (!FormatUserInfo) {
                                 Session.set(this.authToken)
                                 Session.setUserInfo(this.authInfo)
 
@@ -113,18 +113,18 @@ class user {
      * @returns {Promise<unknown>}
      */
     getPhoneNumber(data) {
-      return new Promise((resolve, reject) => {
-        getWxaPhone({...data, token: this.authToken })
-            .then(res => {
-                /**
-                 * 执行绑定
-                 */
-                this.__bindUser(res.data.phone)
-                resolve(this.authToken)
-            }, ret => {
-                reject(ret)
-            })
-      })
+        return new Promise((resolve, reject) => {
+            getWxaPhone({ ...data, token: this.authToken })
+                .then(res => {
+                    /**
+                     * 执行绑定
+                     */
+                    this.__bindUser(res.data.phone)
+                    resolve(this.authToken)
+                }, ret => {
+                    reject(ret)
+                })
+        })
     }
 
 
@@ -143,9 +143,9 @@ class user {
                 formData: JSON.stringify(form),
                 token: this.authToken
             })
-                .then( res => {
+                .then(res => {
 
-                    this.authInfo = res.data.user
+                    this.authInfo = res.data.user_info
                     Session.set(this.authToken)
                     Session.setUserInfo(this.authInfo)
 

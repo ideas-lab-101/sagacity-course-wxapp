@@ -42,13 +42,13 @@ export function getRecordInfo(data) {
  * music_id(0则未选择背景音) recordFile(文件)
  */
 export function uploadRecordFile(options, progress, complete) {
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
     const uploadTask = wx.uploadFile({
       url: host + '/wxapp/record/v3/uploadRecordFile',
       filePath: options.path,
       name: 'recordFile',
-      formData:  {
+      formData: {
         musicId: options.musicId,
         duration: options.duration
       },
@@ -56,8 +56,8 @@ export function uploadRecordFile(options, progress, complete) {
         const result = JSON.parse(res.data)
         if (result.code === Constants.REQUEST_SUCCESS) {
           resolve(result)
-        }else {
-          reject(res.msg)
+        } else {
+          reject(result.msg)
         }
       },
       fail: function (error) {
@@ -123,7 +123,7 @@ export function submitRecordFile(data) {
     url: '/wxapp/record/v3/submitRecordFile',
     data: data || {},
     method: 'POST'
-  }, { title: '正在提交，请等候...'})
+  }, { title: '正在提交，请等候...' })
 }
 
 /**

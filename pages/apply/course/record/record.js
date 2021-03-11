@@ -1,6 +1,6 @@
 import { $wuBackdrop } from '../../../../components/wu/index'
-import {  getLessonData } from '../../../../request/coursePort'
-import {  submitRecordFile, recordCancel, uploadRecordFile } from '../../../../request/recordPort'
+import { getLessonData } from '../../../../request/coursePort'
+import { submitRecordFile, recordCancel, uploadRecordFile } from '../../../../request/recordPort'
 const App = getApp()
 const AuthSettingBehavior = require('../../../../utils/behaviors/AuthSettingBehavior')
 const AuthRecordBehavior = require('../../../../utils/behaviors/AuthRecordBehavior')
@@ -12,47 +12,47 @@ Page({
     behaviors: [AuthSettingBehavior, AuthRecordBehavior, InnerAudioPlayBehavior],
     data: {
         nav: {
-          title: "",
-          model: 'fold',
-          transparent: true,
-          animation: {
-            duration: 500,
-            timingFunction: "linear"
-          }
+            title: "",
+            model: 'fold',
+            transparent: true,
+            animation: {
+                duration: 500,
+                timingFunction: "linear"
+            }
         },
         systemSeries: App.globalData.systemSeries,
         statusBarHeight: App.globalData.equipment.statusBarHeight,
         markedWords: {
             data: [
-              {
-                show: false,
-                urls: [
-                      {
-                          url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/record/marker-01.png?sign=3aea4d7a3ea7a468709f77aff0d453ac&t=1542898587',
-                          width: '360rpx',
-                          top: '120rpx',
-                          left: '60rpx'
-                      },
+                {
+                    show: false,
+                    urls: [
                         {
-                          query: '#MarkDown01'
+                            url: 'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/record/marker-01.png?sign=3aea4d7a3ea7a468709f77aff0d453ac&t=1542898587',
+                            width: '360rpx',
+                            top: '120rpx',
+                            left: '60rpx'
                         },
                         {
-                          url:'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/record/marker-03.png?sign=714e3eec09d0298c5c0b27884c2f00b6&t=1540883317',
-                          width: '220rpx',
-                          top: '300rpx',
-                          left: '460rpx',
-                          release: true
-                      }
-                  ]
-              }
-          ],
+                            query: '#MarkDown01'
+                        },
+                        {
+                            url: 'https://sagacity-course-000019.tcb.qcloud.la/markedWords/2.1.6/record/marker-03.png?sign=714e3eec09d0298c5c0b27884c2f00b6&t=1540883317',
+                            width: '220rpx',
+                            top: '300rpx',
+                            left: '460rpx',
+                            release: true
+                        }
+                    ]
+                }
+            ],
             version: App.version
         },
 
         backgroundSoundItem: null, // 背景音元素对象
-      /**
-       * 课程数据
-       */
+        /**
+         * 课程数据
+         */
         courseData: null,  // 课程基本信息
         form: {
             data_id: '', // 课程ID
@@ -80,13 +80,13 @@ Page({
 
         this.__initInnerAudioManager()
     },
-    onShow: function () {},
+    onShow: function () { },
 
     onReady: function () {
-      /**
-       * 保持屏幕常亮
-       */
-      wx.setKeepScreenOn({ keepScreenOn: true })
+        /**
+         * 保持屏幕常亮
+         */
+        wx.setKeepScreenOn({ keepScreenOn: true })
     },
 
     onHide: function () {
@@ -130,10 +130,10 @@ Page({
                 this.startRecordCheckMusic()
             })
     },
-  /**
-   * 授权后 开始录音  判断是否选择背景音
-   * @returns {boolean}
-   */
+    /**
+     * 授权后 开始录音  判断是否选择背景音
+     * @returns {boolean}
+     */
     startRecordCheckMusic: function () {
         if (!this.data.form.music_id && !this.startRecordAction) {
             Dialog.confirm({
@@ -148,23 +148,23 @@ Page({
                     this.startRecordSettingBack()
                 }
             })
-        }else {
+        } else {
             this.startRecordSettingBack()
         }
     },
-  /**
-   * 授权后 开始录音
-   * @returns {boolean}
-   */
+    /**
+     * 授权后 开始录音
+     * @returns {boolean}
+     */
     startRecordSettingBack: function () {
         this.startRecordAction = true
         if (this.data.reciprocal.visible) {
             return false
         }
-      /**
-       * 音频停止播放
-       */
-      this.__innerAudioStop()
+        /**
+         * 音频停止播放
+         */
+        this.__innerAudioStop()
 
         this.setData({
             'reciprocal.visible': true
@@ -182,7 +182,7 @@ Page({
         this.__innerAudioStop()
 
         $wuBackdrop().release()
-        this.setData({recordIn: false})
+        this.setData({ recordIn: false })
     },
     /**
      * 重新录制
@@ -193,7 +193,7 @@ Page({
         /**
         * 清理垃圾录音
         **/
-        const {file_url, record_url, task_id} = this.data.form
+        const { file_url, record_url, task_id } = this.data.form
 
         recordCancel({
             file_url,
@@ -201,9 +201,9 @@ Page({
             task_id
         })
     },
-  /**
-   * 链接到背景音列表
-   */
+    /**
+     * 链接到背景音列表
+     */
     getBackSoundListEvent: function () {
         wx.navigateTo({
             url: `/pages/apply/course/background-sound-list/background-sound-list`,
@@ -211,11 +211,11 @@ Page({
                 acceptDataSetBackgroundSound: (data) => {
                     console.log('backgroundSoundItem', data)
                     if (!data.item) {
-                        this.setData({backgroundSoundItem: null})
+                        this.setData({ backgroundSoundItem: null })
                         this.data.form.music_id = 0
                         return false
                     }
-                    this.setData({backgroundSoundItem: {...data.item}})
+                    this.setData({ backgroundSoundItem: { ...data.item } })
                     this.data.form.music_id = data.item.music_id
                 }
             },
@@ -224,14 +224,14 @@ Page({
             }
         })
     },
-      /**
-       * 引导返回控制事件
-       * @param e
-       */
+    /**
+     * 引导返回控制事件
+     * @param e
+     */
     markDownFreeEvent: function (e) {
         const i = e.detail.index
         const release = e.detail.release
-        this.data.markedWords.data.forEach( (item, index) => {
+        this.data.markedWords.data.forEach((item, index) => {
             let temp = false
             if (i === index && !release) {
                 temp = true
@@ -270,11 +270,11 @@ Page({
      */
     submitEvent: function () {
         submitRecordFile({
-                ...this.data.form,
-                mode: this.data.mode
-            })
+            ...this.data.form,
+            mode: this.data.mode
+        })
             .then((res) => {
-                Toast.text({ text: '提交成功'})
+                Toast.text({ text: '提交成功' })
                 this.closeRecordOverEvent() // 关闭弹出层
 
                 setTimeout(() => {
@@ -284,49 +284,49 @@ Page({
                 }, 100)
             })
             .catch((ret) => {
-                Toast.text({ text: ret.msg})
+                Toast.text({ text: ret.msg })
             })
-      },
-        /**
-         * 上传到服务器  获取音频合成的接口
-         * @param path
-         * @param musicID
-         * @param duration
-         * @private
-         */
-        getMixtureRecord: function (path, duration) {
-            this.setData({
-                'progressParams.visible': true
+    },
+    /**
+     * 上传到服务器  获取音频合成的接口
+     * @param path
+     * @param musicID
+     * @param duration
+     * @private
+     */
+    getMixtureRecord: function (path, duration) {
+        this.setData({
+            'progressParams.visible': true
+        })
+        uploadRecordFile({
+            path: path,
+            musicID: this.data.form.music_id,
+            duration: duration
+        },
+            (progress) => {
+                this.setData({
+                    'progressParams.value': progress.progress
+                })
+            },
+            () => {
+                this.setData({
+                    recordIn: false,
+                    'progressParams.visible': false
+                })
             })
-            uploadRecordFile({
-                    path: path,
-                    musicID: this.data.form.music_id,
-                    duration: duration
-                },
-                (progress) => {
-                    this.setData({
-                        'progressParams.value': progress.progress
-                    })
-                },
-                () => {
-                    this.setData({
-                        recordIn: false,
-                        'progressParams.visible': false
-                    })
-                })
-                .then((res) => {
-                    const result = JSON.parse(res.data)
-                    console.log(result)
+            .then((res) => {
+                const result = JSON.parse(res.data)
+                console.log(result)
 
-                    this.data.form.file_url = result.data.file_url
-                    this.data.form.record_url = result.data.record_url
-                    this.data.form.task_id = result.data.task_id
+                this.data.form.file_url = result.data.file_url
+                this.data.form.record_url = result.data.record_url
+                this.data.form.task_id = result.data.task_id
 
-                    $wuBackdrop().retain() // 打开已经录制的音频层
-                    this.setData({ recordIn: true, 'form.file_url': result.data.file_url})
-                })
-                .catch((ret) => {
-                    Toast.text({ text: '录音合成失败,请重新录制'})
-                })
-        }
+                $wuBackdrop().retain() // 打开已经录制的音频层
+                this.setData({ recordIn: true, 'form.file_url': result.data.file_url })
+            })
+            .catch((ret) => {
+                Toast.text({ text: ret || '录音合成失败,请重新录制' })
+            })
+    }
 })
