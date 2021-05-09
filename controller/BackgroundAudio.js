@@ -1,6 +1,5 @@
 'use strict';
-
-class audio {
+class BackgroundAudio {
     constructor() {
         this.backgroundAudioManager = null
 
@@ -22,8 +21,6 @@ class audio {
             coverImgUrl: null,
             frame: 0
         }
-
-        // 初始化
         this.__init()
     }
 
@@ -40,7 +37,7 @@ class audio {
     }
 
     setPlayer(options = {}) {
-        this.player = Object.assign({}, {...this.player}, {...options})
+        this.player = Object.assign({}, { ...this.player }, { ...options })
     }
 
     setLoopState(state) {
@@ -53,12 +50,12 @@ class audio {
         }
     }
 
-    create( options={}, backFn ) {
+    create(options = {}, backFn) {
         if (this.backgroundAudioManager === null) {
             console.error(' The BackgroundAudioManager is undefined')
             return false
         }
-        const { stop, end, pause, play, id} = this.player
+        const { stop, end, pause, play, id } = this.player
         /**
          * 判断是否从挂件进入   id相同在播放状态就不重新加载  如果是暂停进入也不加载
          */
@@ -66,7 +63,7 @@ class audio {
         if (id !== null && id === options.id) {
             isSameID = true
         }
-        if ((isSameID && !stop && !end  && !pause && play) || (isSameID && !stop && !end  && pause && !play)) {
+        if ((isSameID && !stop && !end && !pause && play) || (isSameID && !stop && !end && pause && !play)) {
             return false
         }
 
@@ -74,13 +71,13 @@ class audio {
          * 创建新的播放信息  初始化播放信息参数
          * @type {({} & {play: boolean, coverImgUrl: null, epname: string, stop: boolean, src: null, loopState: string, end: boolean, id: null, title: string, pause: boolean, frame: number}) | any}
          */
-        this.player = Object.assign({}, this.player, {...options})
+        this.player = Object.assign({}, this.player, { ...options })
 
         console.log('背景音开始播放')
         this.backgroundAudioManager.src = this.player.src
         this.backgroundAudioManager.title = this.player.title
         this.backgroundAudioManager.epname = this.player.epname
-        this.backgroundAudioManager.coverImgUrl  = this.player.coverImgUrl
+        this.backgroundAudioManager.coverImgUrl = this.player.coverImgUrl
         if (Number(this.player.frame) > 0) {
             setTimeout(() => {
                 this.backgroundAudioManager.seek(Number(this.player.frame))
@@ -105,7 +102,7 @@ class audio {
         this.backgroundAudioManager.pause()
     }
 
-    stop(){
+    stop() {
         if (this.backgroundAudioManager) {
             this.backgroundAudioManager.stop()
         }
@@ -121,7 +118,7 @@ class audio {
         if (buffered < position) {
             offset = buffered
         }
-        this.start = this._prefixTime(parseInt(offset/60)) + ':' + this._prefixTime(parseInt(offset%60))
+        this.start = this._prefixTime(parseInt(offset / 60)) + ':' + this._prefixTime(parseInt(offset % 60))
         this.backgroundAudioManager.seek(offset)
     }
     /**
@@ -133,7 +130,7 @@ class audio {
     }
 
     _prefixTime(num) {
-        return num < 10 ? '0'+num : num;
+        return num < 10 ? '0' + num : num;
     }
 
     /**
@@ -144,7 +141,7 @@ class audio {
      */
     _listenEvent(manager, fns) {
 
-        manager.onPlay( () => {
+        manager.onPlay(() => {
             this.setPlayer({
                 play: true,
                 pause: false,
@@ -158,7 +155,7 @@ class audio {
             fns && fns.playFn && fns.playFn(this.player)
         })
 
-        manager.onPause( () => {
+        manager.onPause(() => {
             this.setPlayer({
                 play: false,
                 pause: true,
@@ -169,7 +166,7 @@ class audio {
             fns && fns.pauseFn && fns.pauseFn(this.currentTime)
         })
 
-        manager.onStop( () => {
+        manager.onStop(() => {
             this.setPlayer({
                 play: false,
                 pause: false,
@@ -180,7 +177,7 @@ class audio {
             fns && fns.stopFn && fns.stopFn()
         })
 
-        manager.onTimeUpdate( () => {
+        manager.onTimeUpdate(() => {
             this.duration = this.backgroundAudioManager.duration
             this.currentTime = this.backgroundAudioManager.currentTime
             if (!this.currentTime || this.currentTime > this.duration) {
@@ -192,7 +189,7 @@ class audio {
             fns && fns.timeUpdateFn && fns.timeUpdateFn(this.currentTime, this.duration, this.start, this.end)
         })
 
-        manager.onEnded( () => {
+        manager.onEnded(() => {
             this.setPlayer({
                 play: false,
                 pause: false,
@@ -206,42 +203,41 @@ class audio {
             fns && fns.endFn && fns.endFn(this.start)
         })
 
-        manager.onPrev( () => { // ios only
+        manager.onPrev(() => { // ios only
             fns && fns.prevPlayFn && fns.prevPlayFn(this.start)
         })
 
-        manager.onNext( () => { // ios only
+        manager.onNext(() => { // ios only
             fns && fns.nextPlayFn && fns.nextPlayFn(this.start)
         })
 
-        manager.onSeeking( () => {
+        manager.onSeeking(() => {
             fns && fns.seekingFn && fns.seekingFn()
         })
 
-        manager.onSeeked( () => {
+        manager.onSeeked(() => {
             fns && fns.seekedFn && fns.seekedFn()
         })
 
-        manager.onError( (err) => {
+        manager.onError((err) => {
             console.error('BackgroundAudio：', err)
             fns && fns.errorFn && fns.errorFn(err)
         })
 
-        manager.onCanplay( () => {
+        manager.onCanplay(() => {
             if (manager.duration) {
                 this.duration = manager.duration
             }
             fns && fns.canplayFn && fns.canplayFn(this.duration)
         })
 
-        manager.onWaiting( () => {
+        manager.onWaiting(() => {
             if (manager.duration) {
                 this.duration = manager.duration
             }
             fns && fns.waitingFn && fns.waitingFn(this.duration)
         })
     }
-
 }
 
-module.exports = audio
+module.exports = BackgroundAudio;

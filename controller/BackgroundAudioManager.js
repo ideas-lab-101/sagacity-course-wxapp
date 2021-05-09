@@ -58,7 +58,7 @@ class BackgroundAudioManager {
         const page = this._isResetPage()
         if (page) {
             this.pageAudioBack = page.data.audioBack
-        }else {
+        } else {
             this.pageAudioBack = null
         }
         /**
@@ -68,13 +68,13 @@ class BackgroundAudioManager {
             return false
         }*/
         this.info = Object.assign({}, this.info, info)
-        this.options = {...options}
+        this.options = { ...options }
         this.loopState = options.loopState
 
         if (!info.isEnroll && info.openState === 0) {
             return false
         }
-        this.AudioPlayer.create({...options}, this.audioBack)
+        this.AudioPlayer.create({ ...options }, this.audioBack)
     }
 
     play() {
@@ -109,12 +109,12 @@ class BackgroundAudioManager {
          */
         const page = this._isResetPage()
         if (page) {
-            page.__init({id, frame: 0})
+            page.__init({ id, frame: 0 })
             return false
         }
         this.loadNewDataEvent(id)
             .then(res => {
-                const {openState, isEnroll} = this.info
+                const { openState, isEnroll } = this.info
                 if (!isEnroll && openState === 0) {
                     return false
                 }
@@ -133,12 +133,12 @@ class BackgroundAudioManager {
          */
         const page = this._isResetPage()
         if (page) {
-            page.__init({id, frame: 0})
+            page.__init({ id, frame: 0 })
             return false
         }
         this.loadNewDataEvent(id)
             .then(res => {
-                const {openState, isEnroll} = this.info
+                const { openState, isEnroll } = this.info
                 if (!isEnroll && openState === 0) {
                     return false
                 }
@@ -148,7 +148,7 @@ class BackgroundAudioManager {
 
     singleLoop() {
         if (this.options) {
-            const options = Object.assign({}, {...this.options}, { frame: 0})
+            const options = Object.assign({}, { ...this.options }, { frame: 0 })
             this.AudioPlayer.create(options, this.audioBack)
         }
     }
@@ -158,7 +158,7 @@ class BackgroundAudioManager {
      * @param dataID
      * @returns {Promise<T>}
      */
-    loadNewDataEvent (dataID) {
+    loadNewDataEvent(dataID) {
         return lessonDataInfo({
             dataId: Number(dataID)
         })
@@ -176,7 +176,7 @@ class BackgroundAudioManager {
                     loopState: this.options.loopState,
                     src: data.lesson_data.data_url,
                     title: data.lesson_data.data_name,
-                    epname:  data.lesson_data.lesson_name,
+                    epname: data.lesson_data.lesson_name,
                     coverImgUrl: data.lesson_data.cover_url,
                     frame: 0
                 }
@@ -192,7 +192,6 @@ class BackgroundAudioManager {
      * @private
      */
     _canplayBack(duration) {
-
         this.pageAudioBack && this.pageAudioBack.canplayFn && this.pageAudioBack.canplayFn(this.options.id)
     }
     _playBack(player) {
@@ -208,13 +207,13 @@ class BackgroundAudioManager {
     }
     _pauseBack(currentTime) {
         console.log('BackgroundAudioManager pause', currentTime)
-        postHistoryEvent(this.options.id, Math.ceil(currentTime*1000)) // 存储历史记录
+        postHistoryEvent(this.options.id, Math.ceil(currentTime * 1000)) // 存储历史记录
         this.pageAudioBack && this.pageAudioBack.pauseFn && this.pageAudioBack.pauseFn()
     }
     _endBack(start) {
         if (this.loopState === 'order') {
             this.nextPlay() // 自动播放下一首
-        }else {
+        } else {
             this.singleLoop() // 单曲循环播放
         }
 
@@ -262,7 +261,7 @@ class BackgroundAudioManager {
      */
     _isResetPage() {
         const lastPage = getCurrentPages()[getCurrentPages().length - 1]
-        if ( lastPage.route === 'pages/apply/course/lesson-play/lesson-play') {
+        if (lastPage.route === 'pages/apply/course/lesson-play/lesson-play') {
             return lastPage
         }
         return false
@@ -296,5 +295,5 @@ const postHistoryEvent = function (dataID, frame) {
 const backgroundAudioUpdatePlayWidget = function (player) {
     try {
         $wuPlayWidget().upData(player)
-    }catch (e) {}
+    } catch (e) { }
 }

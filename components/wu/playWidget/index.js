@@ -23,46 +23,32 @@ Component({
             coverImgUrl: ''
         }
     },
-    lifetimes: {
-        attached: function() {
-        },
-        detached: function() {
-        },
-    },
     pageLifetimes: {
-        show: function() {
+        show: function () {
             this.show(getApp().backgroundAudioManager.playerOptions)
         },
-        hide: function() {
+        hide: function () {
             this.detached()
         }
     },
     methods: {
-        /**
-         * 显示
-         */
         show(player) {
             if (player.play || player.pause) {
                 this.setData({
                     show: true,
                     playerData: player
                 })
-            }else {
+            } else {
                 this.setData({
                     playerData: player
                 })
             }
         },
-
-        /**
-         * 销毁
-         */
         detached() {
             this.setData({
                 show: false
             })
         },
-
         /**
          * 更新
          * @param player
@@ -75,11 +61,10 @@ Component({
 
             if (lastPage.selectComponent('#wu-play-widget')) {
                 this.setData({ playerData: player })
-            }else {
+            } else {
                 this.data.playerData = player
             }
         },
-
         /**
          * 内置事件
          * @param e
@@ -92,7 +77,7 @@ Component({
                     'playerData.play': false,
                     'playerData.pause': true
                 })
-            }else {
+            } else {
                 getApp().backgroundAudioManager.play()
                 this.setData({
                     'playerData.play': true,

@@ -23,10 +23,10 @@ Page({
     onLoad: function (options) {
         try {
             App.backgroundAudioManager.stop()
-        }catch (err) {}
+        } catch (err) { }
 
         this.optionsId = options.id
-        this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
+        this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame / 1000 // 按照之前的帧数进入
 
         this.__initAppLaunch({
             data_id: this.optionsId
@@ -37,7 +37,7 @@ Page({
 
     onShow: function () {
         if (!this.PageOnLoad && !this.data.info.is_enroll && App.enrollController.has(this.data.info.lesson_data.course_id) && App.user.ckLogin()) {
-            this.__init({data_id: this.optionsId})
+            this.__init({ data_id: this.optionsId })
         }
     },
 
@@ -45,7 +45,7 @@ Page({
         this.__initVideoContext()
 
         try {
-            const screenHeight = App.globalData.equipment.windowHeight
+            const screenHeight = App.globalData.equipment.screenHeight
             const query = wx.createSelectorQuery()
             query.select('#wu-navigation').boundingClientRect()
             query.select('#play-video').boundingClientRect()
@@ -58,7 +58,7 @@ Page({
                     scrollHeight: `${screenHeight - h}px`
                 })
             })
-        } catch (e) {}
+        } catch (e) { }
     },
 
     onHide: function () {
@@ -97,8 +97,8 @@ Page({
                 }
                 return false
             }
-            this.__init({data_id: id}) // 重新请求新的视频链接
-        }else {
+            this.__init({ data_id: id }) // 重新请求新的视频链接
+        } else {
 
             Dialog.confirm({
                 content: '尚未加入，不能查看。',
@@ -117,16 +117,16 @@ Page({
     },
 
     collectEvent: function (e) {
-      userFavor({
-          dataId: Number(this.data.info.lesson_data.data_id),
-          type: 'ld'
-      })
-          .then((res) => {
-            this.setData({
-                'info.is_favor': res.data.is_favor
-            })
-            Toast.text({ text: res.msg})
+        userFavor({
+            dataId: Number(this.data.info.lesson_data.data_id),
+            type: 'ld'
         })
+            .then((res) => {
+                this.setData({
+                    'info.is_favor': res.data.is_favor
+                })
+                Toast.text({ text: res.msg })
+            })
     },
 
     openDraftEvent: function (e) {
@@ -136,7 +136,7 @@ Page({
 
     closeDraftEvent: function (e) {
         $wuBackdrop().release()
-        this.setData({ in: false})
+        this.setData({ in: false })
     },
 
     tipEvent: function (e) {
@@ -154,26 +154,26 @@ Page({
     /**
     **  media video init event
     **/
-    __init: function ({data_id, isNext}) {
-          lessonDataInfo({
-              dataId: data_id
-          })
-              .then((res) => {
-                    this.setData({
-                        info: res.data
-                    })
-                    WxParse.wxParse('detail', 'html', res.data.lesson_data.content || '<p style="font-size: 14px;">暂无介绍</p>', this, 5) // 添加文稿
-
-                    if(this.data.content.list.length <= 0) {
-                      this.getLessonList()
-                    }
-
-                    if (res.data.lesson_data.format === 'video') {
-                      this.initVideo(res.data.lesson_data.data_id, isNext)
-                    } else {
-                      console.error('文件和文件类型不匹配')
-                    }
+    __init: function ({ data_id, isNext }) {
+        lessonDataInfo({
+            dataId: data_id
+        })
+            .then((res) => {
+                this.setData({
+                    info: res.data
                 })
+                WxParse.wxParse('detail', 'html', res.data.lesson_data.content || '<p style="font-size: 14px;">暂无介绍</p>', this, 5) // 添加文稿
+
+                if (this.data.content.list.length <= 0) {
+                    this.getLessonList()
+                }
+
+                if (res.data.lesson_data.format === 'video') {
+                    this.initVideo(res.data.lesson_data.data_id, isNext)
+                } else {
+                    console.error('文件和文件类型不匹配')
+                }
+            })
     },
 
     lessonScrollToLowerEvent() {
@@ -204,20 +204,18 @@ Page({
             })
             if (this.optionsFrame && !isNext) {
                 this.videoContextTask.seek(this.optionsFrame)
-            }else {
+            } else {
                 this.videoContextTask.play()
             }
-        }else {
-          console.log(this.videoContextTask)
-          this.setData({
-              videoControls: false,
-              videoAutoplay: false
-          })
+        } else {
+            this.setData({
+                videoControls: false,
+                videoAutoplay: false
+            })
             setTimeout(() => {
                 this.videoContextTask.stop()
             }, 200)
 
         }
     }
-
 })

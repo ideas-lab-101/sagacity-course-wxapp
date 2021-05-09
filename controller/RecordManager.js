@@ -1,10 +1,8 @@
 'use strict';
-
 class RecordManager {
-
     constructor(options = {}, listenFn) {
         if (!listenFn) {
-            listenFn = {...options}
+            listenFn = { ...options }
         }
         this.options = Object.assign({}, {
             duration: 600000,
@@ -17,19 +15,13 @@ class RecordManager {
         this.RecorderManager = null
         this.time = 0
         this.countManager = false
-        /**
-         * 初始化
-         */
-        this.init(listenFn)
+        this.__init(listenFn)
     }
 
-    /**
-     * 初始化
-     **/
-    init(BackFn) {
+    __init(listenFn) {
         console.log('The record init')
         this.RecorderManager = wx.getRecorderManager()
-        this._listenEvent(this.RecorderManager, BackFn)
+        this.__listenEvent(this.RecorderManager, listenFn)
     }
 
     free() {
@@ -39,6 +31,7 @@ class RecordManager {
     }
 
     start() {
+        console.log(this.RecorderManager, this.options)
         this.RecorderManager.start(this.options)
         this.countManager = true
     }
@@ -65,68 +58,65 @@ class RecordManager {
         return this._countTime(this.time)
     }
 
-    /**
-     * 内部事件
-     **/
+    __listenEvent(manager, options) {
+        Object.keys(manager).map(item => {
+            const str = "on";
+            if (typeof manager[item] === "function" && item.includes(str)) {
+                manager[item]((response) => {
+                    console.log(`innerAudio ${item}`, response);
+                    let params = {}
 
-    _listenEvent(manager, options) {
+                    switch (item) {
+                        case "onStart":
+                            this.counter = true;
+                            this.__addTime(); // 开始录制的时候 计算时间
+                            break;
+                        case "onPause":
+                            this.counter = false;
+                            break;
+                        case "onStop":
+                            this.time = 0;
+                            this.counter = false;
+                            break;
+                        case "onResume":
+                            this.counter = true;
+                            this.__addTime(); // 开始录制的时候 计算时间
+                            break;
+                        case "onInterruptionBegin":
+                            this.RecorderManager.pause();
+                            break;
+                        case "onInterruptionEnd":
+                            this.RecorderManager.resume();
+                            break;
+                    }
 
-        manager.onStart( () => {
-            console.log('start record')
-            this._addTime() // 开始录制的时候 计算时间
-            options.startBack && options.startBack()
+                    if (response && typeof response === "object") {
+                        params = Object.assign({}, response, params);
+                    }
+                    options && options[item] && options[item](params);
+                });
+            }
         })
-
-        manager.onPause( () => {
-            console.log('pause record')
-            options.pauseBack && options.pauseBack(res)
-        })
-
-        manager.onStop( (res) => {
-            console.log('stop record', res)
-            options.stopBack && options.stopBack(res)
-        })
-
-        manager.onResume( () => {
-            this._addTime() // 开始录制的时候 计算时间
-            options.resumeBack && options.resumeBack()
-        })
-
-        manager.onError( (res) => {
-            console.error(res)
-            options.errorBack && options.errorBack(res)
-        })
-
-        manager.onInterruptionBegin( () => {
-            this.pause()
-            options.interruptionBeginBack && options.interruptionBeginBack()
-        })
-
-        manager.onInterruptionEnd( () => {
-            this.resume()
-            options.interruptionEndBack && options.interruptionEndBack()
-        })
-
     }
 
-    _addTime() {
+    __addTime() {
         if (this.countManager) {
             this.time++
             clearTimeout(this.countFn)
             this.countFn = setTimeout(() => {
-                this._addTime()
+                this.__addTime()
             }, 1000)
         }
     }
 
-    _countTime(time) {
-        let minute = parseInt(time/60)
-        let second = time - minute*60
-        return this._prefixTime(minute) + ':' + this._prefixTime(second)
+    __countTime(time) {
+        let minute = parseInt(time / 60)
+        let second = time - minute * 60
+        return this.__prefixTime(minute) + ':' + this.__prefixTime(second)
     }
 
-    _prefixTime(num) {
-        return num < 10 ? '0'+num : num
+    __prefixTime(num) {
+        return Number(num) < 10 ? '0' + num : num
     }
 
 }

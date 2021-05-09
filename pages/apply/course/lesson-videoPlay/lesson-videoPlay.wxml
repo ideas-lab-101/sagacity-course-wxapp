@@ -1,61 +1,56 @@
 <import src="/components/wxParse/wxParse.wxml" />
-<wu-navigation id="wu-navigation"
-               title="{{info.lesson_data.data_name}}"
-               backgroundColor="#000"
-               color="white"></wu-navigation>
-
-<view class="container" wx:if="{{info}}">
-
+<wu-navigation id="wu-navigation" title="{{info.lesson_data.data_name}}" backgroundColor="#000" color="white"></wu-navigation>
+<view class="container">
   <view class="play-video" id="play-video">
-      <video src="{{info.lesson_data.data_url}}"
-             controls="{{videoControls}}"
-             show-center-play-btn="{{videoShowCenterPlayBtn}}"
-             autoplay="{{videoAutoplay}}"
-             class="play-video-style"
-             id="video-player"
-             bindplay="__videoPlayEvent"
-             bindended="__videoEndEvent"
-             bindpause="__videoPauseEvent"
-             bindtimeupdate="__videoTimeUpdateEvent"
-             bindwaiting="__videoWaitingEvent"
-             binderror="__videoErrEvent">
-            <cover-view class="play-video-control" wx:if="{{!videoControls}}">
-              <cover-image class="_img" src="/assets/images/play.png" catchtap="tipEvent"/>
-            </cover-view>
-      </video>
+    <video src="{{info.lesson_data.data_url}}" controls="{{videoControls}}" show-center-play-btn="{{videoShowCenterPlayBtn}}" autoplay="{{videoAutoplay}}" class="play-video-style" id="video-player" bindplay="__videoPlayEvent" bindended="__videoEndEvent" bindpause="__videoPauseEvent" bindtimeupdate="__videoTimeUpdateEvent" bindwaiting="__videoWaitingEvent" binderror="__videoErrEvent">
+      <cover-view class="play-video-control" wx:if="{{!videoControls}}">
+        <cover-image class="_img" src="/assets/images/play.png" catchtap="tipEvent" />
+      </cover-view>
+    </video>
   </view>
-
-  <!--list-->
-  <scroll-view scroll-y style="height: {{scrollHeight}}"  bindscrolltolower="lessonScrollToLowerEvent">
-
+  <!-- list -->
+  <scroll-view scroll-y style="height: {{scrollHeight}}" bindscrolltolower="lessonScrollToLowerEvent">
     <view class="relative">
       <view class="play-operration">
-        <view class="_opera" hover-class="basic-hover"  bindtap="openDraftEvent"><text class="iconfont icon-info"></text> 介绍</view>
+        <view class="_opera" hover-class="basic-hover" bindtap="openDraftEvent">
+          <text class="iconfont icon-info"></text>
+          介绍
+        </view>
         <view>
-          <view class="collect _opera" hover-class="basic-hover" wx:if="{{!info.is_favor}}" bindtap="collectEvent"><text class="iconfont icon-guanzhu"></text> 收藏</view>
-          <view class="collect collected _opera" bindtap="collectEvent" wx:else><text class="iconfont icon-guanzhu1"></text> 已收藏</view>
-          <button plain class="event-hover-class share _opera" open-type="share"><text class="iconfont icon-chakantiezifenxiang"></text> 分享</button>
+          <view class="collect _opera" hover-class="basic-hover" wx:if="{{!info.is_favor}}" bindtap="collectEvent">
+            <text class="iconfont icon-guanzhu"></text>
+            收藏
+          </view>
+          <view class="collect collected _opera" bindtap="collectEvent" wx:else>
+            <text class="iconfont icon-guanzhu1"></text>
+            已收藏
+          </view>
+          <button plain class="event-hover-class share _opera" open-type="share">
+            <text class="iconfont icon-chakantiezifenxiang"></text>
+            分享
+          </button>
         </view>
       </view>
-
-      <view class="play-video-lessonName">{{info.lesson_data.lesson_name}} <image src="{{info.lesson_data.cover_url}}" mode="aspectFill"  bindtap="turnBackPageEvent"></image></view>
+      <view class="play-video-lessonName">
+        {{info.lesson_data.lesson_name}}
+        <image src="{{info.lesson_data.cover_url}}" mode="aspectFill" bindtap="turnBackPageEvent"></image>
+      </view>
       <view class="play-video-dataName">{{info.lesson_data.data_name}}</view>
-
       <view class="play-section">
-        <view class="play-section-title"><text>目录</text></view>
-        <!--目录-->
+        <view class="play-section-title">
+          <text>目录</text>
+        </view>
+        <!-- 目录 -->
         <view class="catalog-single {{!info.is_enroll && lesson.open_state === 0?'desabled':''}}" wx:for="{{content.list}}" wx:key="lesson_id" wx:for-index="i" wx:for-item="lesson">
-          <text class="_title">{{lesson.lesson_name}} <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.open_state===0) || (!info.is_enroll && lesson.open_state === 0))}}"></text></text>
-
-          <view class="_list {{(item.data_id===info.lesson_data.data_id) && ((!info.is_enroll && lesson.open_state===1) || info.is_enroll)?'active':''}}"
-                wx:for="{{lesson.lesson_data}}"
-                wx:key="data_id"
-                bindtap="changeVideoEvent"
-                data-openState="{{lesson.open_state}}"
-                data-id="{{item.data_id}}">
+          <text class="_title">
+            {{lesson.lesson_name}}
+            <text class="iconfont icon-xianshihoumai" wx:if="{{!((info.is_enroll && lesson.open_state===0) || (!info.is_enroll && lesson.open_state === 0))}}"></text>
+          </text>
+          <view class="_list {{(item.data_id===info.lesson_data.data_id) && ((!info.is_enroll && lesson.open_state===1) || info.is_enroll)?'active':''}}" wx:for="{{lesson.lesson_data}}" wx:key="data_id" bindtap="changeVideoEvent" data-openState="{{lesson.open_state}}" data-id="{{item.data_id}}">
             <view class="__dataName">
               <text class="iconfont icon-htmal5icon46" hidden="{{!(!info.is_enroll && lesson.open_state === 0)}}"></text>
-              <text class="iconfont icon-bofang font-12" hidden="{{item.data_id===info.lesson_data.data_id? false:true}}"></text> {{item.data_name}}
+              <text class="iconfont icon-bofang font-12" hidden="{{item.data_id===info.lesson_data.data_id? false:true}}"></text>
+              {{item.data_name}}
             </view>
             <view class="__dataType">
               <text class="iconfont icon-yinpin" wx:if="{{item.format === 'audio'}}"></text>
@@ -66,20 +61,19 @@
         </view>
       </view>
     </view>
-
   </scroll-view>
 </view>
-
-
 <wu-backdrop id="wu-backdrop" bind:click="closeDraftEvent" />
 <wu-animation-group wux-class="draft-frame" in="{{ in }}" class-names="wux-animate--slideInUp">
   <view class="_insert" catchtap="true">
     <view class="draft-frame-fixTitle flex between">
       <text class="_l">介绍</text>
-      <text catchtap="closeDraftEvent" class="_r event-hover-class"><text class="iconfont icon-guanbi font-18"></text></text>
+      <text catchtap="closeDraftEvent" class="_r event-hover-class">
+        <text class="iconfont icon-guanbi font-18"></text>
+      </text>
     </view>
     <scroll-view scroll-y style="height:  600rpx;">
-      <!--详情-->
+      <!-- 详情 -->
       <view class="draft-frame-s">
         <template is="wxParse" data="{{wxParseData:detail.nodes}}" />
       </view>

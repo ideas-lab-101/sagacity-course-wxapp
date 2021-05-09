@@ -7,7 +7,7 @@ compatible()
 const User = require('./utils/user')
 const Axios = require('./axios/axios')
 const RequestManager = require('./utils/requestManager')
-const DataStorageManager  = require( './utils/DataStorageManager')
+const DataStorageManager = require('./utils/DataStorageManager')
 const { equipmentStatus, checkVersion } = require('./utils/equipment')
 const { checkVersionUpdate } = require('./utils/updateVersion')
 const { networkChange } = require('./utils/network')
@@ -33,10 +33,10 @@ App({
 
     try {
       this.user.goLogin()
-    }catch (e) {}
+    } catch (e) { }
   },
 
-  onShow: function(options) {
+  onShow: function (options) {
     console.log('App show:', options)
   },
 
@@ -57,16 +57,9 @@ App({
      * 移动设备基本信息
      */
     equipment: equipmentStatus(),
-
-
-
-
-
     qiNiuToken: '',
     systemSeries: null
   },
-
-
   version: '3.0.0',
   user: new User(), // 登录验证
   request: Axios.axios, // 数据请求封装

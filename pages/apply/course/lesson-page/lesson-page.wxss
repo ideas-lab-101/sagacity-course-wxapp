@@ -234,18 +234,44 @@ display: inline-block; border-radius: 100rpx; padding: 2rpx 10rpx; font-size: 20
 
 
 .parse-layer{
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1100; background-color: white;
+    position: fixed;
+    left: 0;
+    right: 0; 
+    bottom: 0; 
+    z-index: 1100;
+    background-color: white;
+    border-radius: 10rpx 10rpx 0 0;
 }
 .parse-layer ._insert{
     padding: 10rpx 0 20rpx;
 }
-.parse-layer-scroll{
+.parse-layer .parse-layer-scroll{
     min-height: 30vh;
     max-height: 75vh;
 }
-.parse-layer-fixTitle{ padding-left: 70rpx; text-align: left; font-size: 30rpx;}
-.parse-layer-fixTitle text._l{position: relative; }
-.parse-layer-fixTitle text._l::after{position: absolute; content: ""; left: -30rpx; top: 10%; height: 80%; width: 8rpx; background-color: #733429;}
-.parse-layer-fixTitle text._r{ display: inline-block; padding: 20rpx;}
+.parse-layer .parse-layer-fixTitle{ 
+    padding-left: 70rpx; 
+    text-align: left; 
+    font-size: 30rpx;
+}
+.parse-layer .parse-layer-fixTitle text._l{
+    position: relative; 
+}
+.parse-layer .parse-layer-fixTitle text._l::after{
+    position: absolute; 
+    content: ""; 
+    left: -30rpx; 
+    top: 15%; 
+    height: 70%; 
+    width: 8rpx; 
+    background-color: #733429;
+}
+.parse-layer .parse-layer-fixTitle text._r{ 
+    display: inline-block; 
+    padding: 20rpx;
+}
+.parse-layer .parse-layer-fixTitle .iconfont{ 
+    color: rgba(0, 0, 0, 0.5);
+}
 
 .manuscript-box{ line-height: 1.8; padding: 0 40rpx;}

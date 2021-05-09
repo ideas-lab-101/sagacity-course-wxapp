@@ -93,30 +93,20 @@ swiper-item{ overflow: initial;}
 }
 
 .section-title .more{ 
-    font-size: 30rpx;
+    font-size: 34rpx;
     font-weight: bold;
     position: relative;
-    border-radius: 100rpx;
-    border-width: 1rpx;
-    border-style: solid;
-    padding: 4rpx;
-    display: inline-block;
-}
-.section-title .more .line{
-    border: 1rpx solid rgba(0, 0, 0, 0.15);
-    border-radius: 1000rpx;
+    display: inline-flex;
     align-items: center;
-    display: flex;
-    padding: 10rpx 26rpx;
-  }
+}
 .section-title .more .img{
-    width: 40rpx;
-    height: 40rpx;
+    width: 38rpx;
+    height: 38rpx;
     margin-right: 10rpx;
   }
 
 .section-content{
-    padding: 30rpx 0;
+    padding: 30rpx 0 0;
 }
 .book-page-scroll{
     white-space: nowrap;
@@ -125,8 +115,7 @@ swiper-item{ overflow: initial;}
     text-align: center;
     display: inline-block;
     vertical-align: top;
-    width: 40vw;
-    height: 214rpx;
+    width: 38vw;
 }
 .book-page-single ._shadow{
     overflow: hidden;
@@ -169,14 +158,16 @@ swiper-item{ overflow: initial;}
 }
 .book-page-single ._type text.iconfont{font-size: 40rpx;}
 .book-page-single ._txt{
-    margin-top: 20rpx;
     display: block;
     overflow:hidden;
     display:-webkit-box;
     -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
+    -webkit-line-clamp:1;
     text-align: left;
     white-space: normal;
+    margin-top: 10rpx;
+    font-size: 22rpx;
+    color: #666666;
 }
 .book-page-single ._time{
     position: absolute;
@@ -205,13 +196,16 @@ swiper-item{ overflow: initial;}
     font-size: 28rpx;
     padding: 10rpx;}
 .floatSwiper-item ._info{ 
-    position: absolute; width: 100%; 
-    bottom: 0; left: 0; z-index: 33; 
+    position: absolute; 
+    width: 100%; 
+    bottom: 0; left: 0;
+    z-index: 33; 
     display: flex; 
     justify-content: space-between; 
     color: white; 
     font-size: 22rpx;
-    background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)); 
+    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)); 
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)); 
     padding: 15rpx 0 6rpx;
 }
 .floatSwiper-item ._info text:first-child{margin-left: 10rpx;}

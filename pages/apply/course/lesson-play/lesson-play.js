@@ -1,7 +1,7 @@
 const App = getApp()
 const WxParse = require('../../../../components/wxParse/wxParse')
 import { $wuBackdrop } from '../../../../components/wu/index'
-import { $wuxActionSheet  } from 'wux-weapp'
+import { $wuxActionSheet } from 'wux-weapp'
 const AppLaunchBehavior = require('../../../../utils/behaviors/AppLaunchBehavior')
 const BackgroundAudioPlayBehavior = require('./BackgroundAudioPlayBehavior')
 const LoadingCanvasBehavior = require('./LoadingCanvasBehavior')
@@ -40,7 +40,7 @@ Page({
 
     onLoad: function (options) {
         this.optionsId = Number(options.id)
-        this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame/1000 // 按照之前的帧数进入
+        this.optionsFrame = options.frame === null || options.frame === undefined ? 0 : options.frame / 1000 // 按照之前的帧数进入
         this.PageOnload = true
 
         this.__initAppLaunch({
@@ -71,17 +71,18 @@ Page({
     },
 
     onUnload: function () {
-        this.PageOnload = false
+        this.PageOnload = false;
+
     },
 
     onShareAppMessage: function () {
-        const {cover_url, data_name, data_id} = this.data.info.lesson_data
+        const { cover_url, data_name, data_id } = this.data.info.lesson_data
         return {
             imageUrl: `${cover_url}?imageView2/5/h/300`,
             title: data_name,
             path: `/pages/apply/course/lesson-play/lesson-play?id=${data_id}`,
             success: (ret) => {
-                addUserPoint({ pointCode: '001'})
+                addUserPoint({ pointCode: '001' })
             }
         }
     },
@@ -89,7 +90,7 @@ Page({
     /**
     **  media audio 初始化事件
     **/
-    __init: function ({id, frame}) {
+    __init: function ({ id, frame }) {
 
         return lessonDataInfo({
             dataId: Number(id)
@@ -165,7 +166,7 @@ Page({
         }
         this.optionsId = pre_data_id
         this.optionsFrame = 0
-        this.__init({id: pre_data_id, frame: 0})
+        this.__init({ id: pre_data_id, frame: 0 })
     },
     /**
      * 下一首
@@ -180,7 +181,7 @@ Page({
         }
         this.optionsId = next_data_id
         this.optionsFrame = 0
-        this.__init({ id: next_data_id, frame: 0})
+        this.__init({ id: next_data_id, frame: 0 })
     },
 
 
@@ -237,8 +238,8 @@ Page({
         const id = e.currentTarget.dataset.id
 
         if (isEnroll || (!isEnroll && openState === 1)) {
-            this.__init({ id, frame: 0})
-        }else {
+            this.__init({ id, frame: 0 })
+        } else {
             this.dialogTip()
         }
     },
@@ -248,26 +249,26 @@ Page({
      * @param e
      */
     captionChangeEvent: function (e) {
-      let temp = false
-      if(e.detail.current === 1) {
-        temp = true
-      }
-      this.setData({ captionCurrent: e.detail.current, controlFix: temp })
+        let temp = false
+        if (e.detail.current === 1) {
+            temp = true
+        }
+        this.setData({ captionCurrent: e.detail.current, controlFix: temp })
     },
 
-  /**
-   * 加载课程目录
-   * @param e
-   */
+    /**
+     * 加载课程目录
+     * @param e
+     */
     openCatalogEvent: function (e) {
-        if(this.data.content.list.length <= 0) {
+        if (this.data.content.list.length <= 0) {
 
-          this._getLessonList()
-              .then(res => {
-                $wuBackdrop('#wu-backdrop-catalog', this).retain()
-                this.setData({ catalogIn: true })
-              })
-          return false
+            this._getLessonList()
+                .then(res => {
+                    $wuBackdrop('#wu-backdrop-catalog', this).retain()
+                    this.setData({ catalogIn: true })
+                })
+            return false
         }
 
         $wuBackdrop('#wu-backdrop-catalog', this).retain()
@@ -276,7 +277,7 @@ Page({
 
     closeCatalogEvent: function (e) {
         $wuBackdrop('#wu-backdrop-catalog', this).release()
-        this.setData({ catalogIn: false})
+        this.setData({ catalogIn: false })
     },
 
     _getLessonList() {
@@ -295,10 +296,10 @@ Page({
         this.__ReachBottom()
     },
 
-  /**
-   * 课程收藏
-   * @param e
-   */
+    /**
+     * 课程收藏
+     * @param e
+     */
     collectEvent: function () {
         userFavor({
             dataId: Number(this.data.info.lesson_data.data_id),
@@ -306,14 +307,14 @@ Page({
         })
             .then((res) => {
                 this.setData({
-                    'info.is_favor': res.is_favor
+                    'info.is_favor': res.data.is_favor
                 })
                 Toast.text({ text: res.msg })
             })
     },
 
     recordEvent: function (e) {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         // if (!App.user.ckLogin()) {
@@ -347,17 +348,17 @@ Page({
             console.error('获取总长度出错')
             return false
         }
-        const position = this.duration*e.detail.value / 100
+        const position = this.duration * e.detail.value / 100
         App.backgroundAudioManager.seek(position)
         App.backgroundAudioManager.play()
     },
 
     controlFixEvent: function (e) {
         let temp = 0
-        if(e.detail.value) {
-          temp = 1
+        if (e.detail.value) {
+            temp = 1
         }
-        this.setData({controlFix: e.detail.value, captionCurrent: temp})
+        this.setData({ controlFix: e.detail.value, captionCurrent: temp })
     },
 
     /**

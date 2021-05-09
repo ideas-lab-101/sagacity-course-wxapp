@@ -118,16 +118,13 @@ const axios = function (options = {}) {
     }
   })
 
-  /**
-   * 监听 HTTP Response Header 事件
-   */
+  // 监听 HTTP Response Header 事件
   requestTask[requestSeq].onHeadersReceived(function (res) { })
 }
 /**
  * 方法执行前拦截
  */
 //const Proxy = InterceptorManager(axios)
-
 module.exports = {
   axios: axios,
   requestTask,

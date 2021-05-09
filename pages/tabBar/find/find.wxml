@@ -1,26 +1,25 @@
 <wxs src="./find.wxs" module="moduleFind" />
-
-<view class="findBack" style="padding-top: {{statusBarHeight + 10}}px;">
-  
+<view class="findBack" style="padding-top: {{statusBarHeight + 45}}px;">
   <!-- 新课程 -->
   <view class="newCourse-box" wx:if="{{courseList.length>0}}">
-      <swiper autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" indicator-dots>
-        <block wx:for="{{courseList}}" wx:key="course_id">
-          <swiper-item>
-            <view class="newCourse-title">{{item.type_name}}/{{item.course_name}}</view>
-            <view class="newCourse-con flex between" bindtap="goPageEvent" data-id="{{item.course_id}}">
-              <view class="newCourse-font">
-                <view>{{item.course_desc}}</view>
-              </view>
-              <view class="index-book-box">
-                <view class="_book"><image src="{{item.cover_url}}" lazy-load mode="aspectFill"></image></view>
+    <swiper autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" indicator-dots>
+      <block wx:for="{{courseList}}" wx:key="course_id">
+        <swiper-item>
+          <view class="newCourse-title">{{item.type_name}}/{{item.course_name}}</view>
+          <view class="newCourse-con flex between" bindtap="goPageEvent" data-id="{{item.course_id}}">
+            <view class="newCourse-font">
+              <view>{{item.course_desc}}</view>
+            </view>
+            <view class="index-book-box">
+              <view class="_book">
+                <image src="{{item.cover_url}}" lazy-load mode="aspectFill"></image>
               </view>
             </view>
-          </swiper-item>
-        </block>
-      </swiper>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
-
   <!-- search -->
   <view class="search-box">
     <view class="_insert flex">
@@ -29,79 +28,82 @@
       <text class="_k color-999" catchtap="goStoreEvent">资源库</text>
     </view>
   </view>
-
   <!-- tab -->
   <view class="tab-box">
-        <view class="tab-single {{contentMultipleCurrent === 0? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="0">
-          <text>热门素材</text>
+    <view class="tab-single {{contentMultipleCurrent === 0? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="0">
+      <text>热门素材</text>
+    </view>
+    <view class="tab-single {{contentMultipleCurrent === 1? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="1">
+      <text>作品动态</text>
+    </view>
+    <view class="tab-single free">
+      <view class="link color-assistant-border color-primary" bindtap="goFreeRecording">
+        <view class="line">
+          <image class="img" mode="widthFix" src="/assets/images/microphone.png"></image>
+          <text>自由录制</text>
         </view>
-        <view class="tab-single {{contentMultipleCurrent === 1? 'active':''}}" bindtap="__turnPageTabChangeMultiple" data-index="1">
-          <text>作品动态</text>
-        </view>
-        <view class="tab-single free">
-          <view class="link color-assistant-border color-primary" bindtap="goFreeRecording">
-            <view class="line">
-              <image class="img" mode="widthFix" src="/assets/images/microphone.png"></image>
-              <text>自由录制</text>
-            </view>
-          </view>
-        </view>
+      </view>
+    </view>
   </view>
-
   <!-- 关注 -->
   <view wx:if="{{contentMultipleCurrent===1}}">
-    <!--<view class="watch-time"><text>今天</text><text>Today</text></view>-->
+    <!-- <view class="watch-time"><text>今天</text><text>Today</text></view> -->
     <view class="watch-box">
       <view class="watch-single" wx:for="{{contentMultiple.list}}" wx:key="*this">
         <view class="data-single">
-
           <view class="watch-info-a" catchtap="goUserEvent" data-id="{{item.user_id}}">
-            <image lazy-load src="{{item.avatar_url}}" mode="aspectFill"/>
+            <image lazy-load src="{{item.avatar_url}}" mode="aspectFill" />
             <text class="_cap ml-10 mr-10">{{item.caption}}</text>
             <text>录制了</text>
           </view>
           <view class="watch-info-b" catchtap="goRecordEvent" data-id="{{item.record_id}}">
-            <!--pic-->
+            <!-- pic -->
             <view class="bs-single">
               <view class="_insert">
-                <view class="_image"><image src="{{item.cover_url}}" lazy-load mode="aspectFill"/></view>
+                <view class="_image">
+                  <image src="{{item.cover_url}}" lazy-load mode="aspectFill" />
+                </view>
               </view>
             </view>
-            <!--info-->
+            <!-- info -->
             <view class="watch-info-f">
               <view class="_n color-Primary">{{item.name}}</view>
               <view class="_d color-999">{{item.desc}}</view>
               <view class="_k flex">
-                <view><text class="_count">{{moduleFind.filterText(item.view_count)}}</text><text>次观看</text></view>
-                <view><text class="_count">{{moduleFind.filterText(item.like_count)}}</text><text>个赞</text></view>
+                <view>
+                  <text class="_count">{{moduleFind.filterText(item.view_count)}}</text>
+                  <text>次观看</text>
+                </view>
+                <view>
+                  <text class="_count">{{moduleFind.filterText(item.like_count)}}</text>
+                  <text>个赞</text>
+                </view>
               </view>
             </view>
           </view>
-
           <view class="watch-info-k flex">
-            <view><text class="_count">{{moduleFind.resolveTime(item.add_time)}}</text></view>
+            <view>
+              <text class="_count">{{moduleFind.resolveTime(item.add_time)}}</text>
+            </view>
             <view catchtap="goCommentEvent" data-id="{{item.record_id}}" class="_comment" hover-class="basic-hover">
               <text class="iconfont icon-liuyan"></text>
               <text class="_count ml-5">{{moduleFind.filterText(item.comment_count)}}</text>
               <text class="ml-20">我说说</text>
             </view>
           </view>
-
         </view>
       </view>
-      <view wx:if="{{contentMultiple.list.length<=0}}" class="watch-single-nodata">太懒了，都没人把作品分享出来</view>
-      <view wx:if="{{contentMultiple.lastPage && contentMultiple.list.length>0}}" class="watch-single-nodata">额，数据到底了</view>
+      <view wx:if="{{contentMultiple.list.length<=0}}" class="watch-single-nodata">
+        太懒了，都没人把作品分享出来
+      </view>
+      <view wx:if="{{contentMultiple.lastPage && contentMultiple.list.length>0}}" class="watch-single-nodata">
+        额，数据到底了
+      </view>
     </view>
   </view>
-
   <!-- hot -->
   <view wx:else class="hot-box">
-    <view class="hot-listSingle"
-          wx:for="{{contentMultiple.list}}"
-          wx:key="data_id"
-          bindtap="goDetailEvent"
-          data-id="{{item.data_id}}"
-          data-format="{{item.format}}">
+    <view class="hot-listSingle" wx:for="{{contentMultiple.list}}" wx:key="data_id" bindtap="goDetailEvent" data-id="{{item.data_id}}" data-format="{{item.format}}">
       <view class="clear hot-listSingle-h">
         <view class="_img">
           <image src="{{item.cover_url}}" mode="aspectFill" lazy-load></image>
@@ -115,13 +117,12 @@
         </view>
       </view>
     </view>
-    <view wx:if="{{contentMultiple.lastPage && contentMultiple.list.length > 0}}" class="watch-single-nodata">额，数据到底了</view>
+    <view wx:if="{{contentMultiple.lastPage && contentMultiple.list.length > 0}}" class="watch-single-nodata">
+      额，数据到底了
+    </view>
   </view>
-
 </view>
-
-<!--播放挂件-->
+<!-- 播放挂件 -->
 <wu-play-widget id="wu-play-widget" />
-
-<!--登录插件-->
+<!-- 登录插件 -->
 <wu-login id="wu-login" />

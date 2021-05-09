@@ -15,9 +15,9 @@ module.exports = Behavior({
     methods: {
         __ReachBottom() {
             let { lastPage, pageNumber } = this.data.content
-            const {contentInterfaceFn, contentParams} = this.data
+            const { contentInterfaceFn, contentParams } = this.data
 
-            if(lastPage || contentInterfaceFn === null) {
+            if (lastPage || contentInterfaceFn === null) {
                 return false
             }
             this.data.content.pageNumber++
@@ -31,8 +31,8 @@ module.exports = Behavior({
                     this.data.content.pageNumber--
                 })
         },
-        
-        __getTurnPageDataList ({isPageShow, interfaceFn, params}) {
+
+        __getTurnPageDataList({ isPageShow, interfaceFn, params }) {
             if (!interfaceFn) {
                 throw 'The interface is null!'
             }
@@ -71,6 +71,7 @@ module.exports = Behavior({
                         'content.lastPage': res.data.lastPage,
                         'content.totalRow': res.data.totalRow,
                     })
+                    return res
                 })
                 .finally(() => {
                     this.data.contentLoad = false

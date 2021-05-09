@@ -8,13 +8,13 @@ Page({
 
     data: {
         nav: {
-          title: "",
-          model: 'fold',
-          transparent: true,
-          animation: {
-            duration: 1000,
-            timingFunction: "linear"
-          }
+            title: "",
+            model: 'fold',
+            transparent: true,
+            animation: {
+                duration: 1000,
+                timingFunction: "linear"
+            }
         },
         systemSeries: App.globalData.systemSeries,
         tryParams: {
@@ -26,9 +26,9 @@ Page({
             disabled: true,
             value: 0
         },
-      /**
-       * 数据
-       */
+        /**
+         * 数据
+         */
         mineInfo: false,
         userData: {},
         recordData: {},
@@ -43,7 +43,7 @@ Page({
         /**
          * * 停止背景音播放
          **/
-        if ( App.backgroundAudioManager) {
+        if (App.backgroundAudioManager) {
             App.backgroundAudioManager.pause()
         }
         /**
@@ -53,59 +53,59 @@ Page({
     },
 
     onShow: function () {
-      if(App.accreditLogin) { // 重新加载数据
-        App.accreditLogin = false
-        this.__init(this.optionsTeamId, this.optionsRecordId)
-      }
+        if (App.accreditLogin) { // 重新加载数据
+            App.accreditLogin = false
+            this.__init(this.optionsTeamId, this.optionsRecordId)
+        }
     },
 
     /**
      * 内部事件
      **/
     recordPlayEvent: function () {
-      $audioPlay().resetPlayEvent()
+        $audioPlay().resetPlayEvent()
     },
 
     /**
      * 点赞
      */
-    likeEvent: function() {
+    likeEvent: function () {
         userLike({
-              dataId: this.data.recordData.record_id,
-              type: 'record'
-          }).then((res) => {
-              this.setData({is_like: true})
-              Toast.text({ text: res.msg })
-          })
-      },
+            dataId: this.data.recordData.record_id,
+            type: 'record'
+        }).then((res) => {
+            this.setData({ is_like: true })
+            Toast.text({ text: res.msg })
+        })
+    },
     /**
      * 标记
      * @returns {boolean}
      */
     markEvent: function () {
-        if(!App.teamActive || this.data.mineUserID !== App.teamActive.userInfo.UserID) {
-          return false
+        if (!App.teamActive || this.data.mineUserID !== App.teamActive.userInfo.UserID) {
+            return false
         }
         let state = 0
-        if(this.data.recordData.bln_mark === 0) {
-          state = 1
+        if (this.data.recordData.bln_mark === 0) {
+            state = 1
         }
         markRecord({
             submitId: this.data.recordData.submit_id,
             state: state
         })
             .then((res) => {
-                this.setData({'recordData.bln_mark': state})
+                this.setData({ 'recordData.bln_mark': state })
                 Toast.text({ text: res.msg })
             })
-      },
+    },
 
     goUserPageEvent: function () {
         if (App.user.ckLogin() && this.data.mineInfo) {
             wx.switchTab({
                 url: `/pages/tabBar/mine/mine`
             })
-        }else {
+        } else {
             wx.navigateTo({
                 url: `/pages/apply/mine/user-page/user-page?id=${this.data.userData.user_id}`
             })
@@ -119,19 +119,19 @@ Page({
         this.setData({ 'tryParams.isPlay': true, 'slider.disabled': false })
     },
     audioEventPause: function () {
-      this.setData({'tryParams.isPlay': false})
+        this.setData({ 'tryParams.isPlay': false })
     },
     audioEventStop: function () {
-        this.setData({'tryParams.isPlay': false})
+        this.setData({ 'tryParams.isPlay': false })
     },
     audioEventEnd: function () {
-        this.setData({'tryParams.isPlay': false})
+        this.setData({ 'tryParams.isPlay': false })
     },
     audioEventDestroy: function () {
-        this.setData({'tryParams.isPlay': false})
+        this.setData({ 'tryParams.isPlay': false })
     },
     audioEventError: function () {
-      this.setData({'tryParams.isPlay': false})
+        this.setData({ 'tryParams.isPlay': false })
     },
 
     /**
@@ -143,27 +143,27 @@ Page({
             recordId: recordId
         })
             .then((res) => {
-                    let temp = false
-                    if (App.user.ckLogin() && App.user.userInfo.user_id === res.data.user.user_id) {
-                        temp = true
-                    }
-                    this.setData({
-                        loadData: true,
-                        mineInfo: temp,
-                        result: true,
-                        userData: res.data.user,
-                        recordData: res.data.record_info,
-                        likes: res.data.likes,
-                        is_like: res.data.is_like
-                    })
-                    /**
-                     * 播放初始化
-                     **/
-                    $audioPlay().playInit(res.data.record_info.file_url, res.data.record_info.record_id)
+                let temp = false
+                if (App.user.ckLogin() && App.user.userInfo.user_id === res.data.user.user_id) {
+                    temp = true
+                }
+                this.setData({
+                    loadData: true,
+                    mineInfo: temp,
+                    result: true,
+                    userData: res.data.user,
+                    recordData: res.data.record_info,
+                    likes: res.data.likes,
+                    is_like: res.data.is_like
+                })
+                /**
+                 * 播放初始化
+                 **/
+                $audioPlay().playInit(res.data.record_info.file_url, res.data.record_info.record_id)
             })
             .catch((ret) => {
                 console.error('请求背景音出错', ret)
-                this.setData({loadData: true})
+                this.setData({ loadData: true })
             })
     }
 })

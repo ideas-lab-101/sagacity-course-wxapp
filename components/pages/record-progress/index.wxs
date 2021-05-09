@@ -1,0 +1,16 @@
+var countTime = function (time) {
+    if (time > 0 && time <= 600) {
+        var minute = parseInt(time / 60)
+        var second = time - minute * 60
+        return prefixTime(minute) + ':' + prefixTime(second)
+    }
+    return ''
+}
+
+var prefixTime = function (num) {
+    return num < 10 ? '0' + num : num
+}
+
+module.exports = {
+    countTime: countTime
+}

@@ -27,7 +27,7 @@
 .play-operration ._opera{ padding: 25rpx 30rpx; font-size: 28rpx; color: black;}
 .play-operration .collect{ display: inline-block; vertical-align: middle;}
 .play-operration .collect.collected{ color: #ff3e02;}
-.play-operration .share{ display: inline-block; vertical-align: middle; border: 0!important; line-height: 1.2; width: auto !important;}
+.play-operration .share{ display: inline-block; vertical-align: middle; border: 0!important; line-height: 1.2; width: auto !important; font-weight: normal;}
 
 .draft-frame{ position: fixed; left: 0; right: 0;  bottom: 0; z-index: 2000; width: 100%;}
 .draft-frame>._insert{ background-color: white; border-radius: 10px 10px 0 0; box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.15);}

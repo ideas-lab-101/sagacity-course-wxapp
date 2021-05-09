@@ -9,21 +9,21 @@ module.exports = Behavior({
         }
     },
     methods: {
-        __initInnerAudioManager: function() {
+        __initInnerAudioManager: function () {
             /**
              * 初始换播放插件
              * @type {InnerAudioManager}
              */
             this.innerAudioContext = new InnerAudioManager({
-                play: this.__audioManagerPlay,
-                pause: this.__audioManagerPause,
-                stop: this.__audioManagerStop,
-                waiting: this.__audioManagerWaiting,
-                end: this.__audioManagerEnd,
-                error: this.__audioManagerError,
+                onplay: this.__audioManagerPlay,
+                onPause: this.__audioManagerPause,
+                onStop: this.__audioManagerStop,
+                onWaiting: this.__audioManagerWaiting,
+                onEnd: this.__audioManagerEnd,
+                onError: this.__audioManagerError,
                 destroy: this.__audioManagerDestroy,
-                timeUpdate: this.__audioManagerTimeUpdate,
-                canPlay: this.__audioManagerCanPlay
+                onTimeUpdate: this.__audioManagerTimeUpdate,
+                onCanplay: this.__audioManagerCanPlay
             })
         },
 
@@ -69,7 +69,7 @@ module.exports = Behavior({
             this.__audioManagerRelease()
         },
 
-        __audioManagerWaiting: function() {
+        __audioManagerWaiting: function () {
 
         },
 
@@ -83,11 +83,11 @@ module.exports = Behavior({
             this.innerAudioContext = null
         },
 
-        __audioManagerTimeUpdate: function(params) {
+        __audioManagerTimeUpdate: function (params) {
 
         },
 
-        __audioManagerCanPlay: function() {
+        __audioManagerCanPlay: function () {
 
         },
 
@@ -129,7 +129,7 @@ module.exports = Behavior({
         /**
          * audio播放回调方法
          **/
-          __audioEnd() {
+        __audioEnd() {
             const { list, id } = this.data.tryParams
             /**
              * 判断单个播放的情况
@@ -140,11 +140,11 @@ module.exports = Behavior({
             }
 
             let index = list.findIndex(item => id === item.RecordID)
-            if(index === -1 || index === list.length - 1) {
+            if (index === -1 || index === list.length - 1) {
                 this.__audioManagerRelease()
                 return false
             }
-            index ++
+            index++
             const currentID = list[index].RecordID
             const url = list[index].FileURL
 

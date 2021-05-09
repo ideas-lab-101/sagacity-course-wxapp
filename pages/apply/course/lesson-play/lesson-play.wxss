@@ -97,9 +97,8 @@
 .play-operration{ display: flex; justify-content: space-between; align-items: center; padding: 0 10rpx; height: 10vh; position: relative; background-color: white;}
 .play-operration ._opera{ padding: 14rpx 22rpx; font-size: 28rpx; color: black; text-align: center;}
 .play-operration ._opera .iconfont{ font-size: 42rpx;}
-.play-operration .collect{}
 .play-operration .collect.collected{ color: #ff3e02;}
-.play-operration .share{ border: 0!important; line-height: 1.2; margin: 0; width: auto; }
+.play-operration .share{ border: 0!important; line-height: 1.2; margin: 0; width: auto; font-weight: normal; }
 .play-operration .time{  border: 0!important; line-height: 1.2; font-family: -apple-system-font, "Helvetica Neue", sans-serif; width: 180rpx; white-space:nowrap}
 .play-operration .time .iconfont,.play-operration ._panel .iconfont{
     font-size: 32rpx;

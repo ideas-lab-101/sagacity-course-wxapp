@@ -16,12 +16,12 @@ module.exports = Behavior({
              * @type {RecordManager}
              */
             this.Recorder = new RecordManager({
-                startBack: this._startBack.bind(this),
-                stopBack: this._stopBack.bind(this),
-                resumeBack: this._resumeBack.bind(this),
-                errorBack: this._errorBack.bind(this),
-                interruptionBeginBack: this._interruptionBeginBack.bind(this),
-                interruptionEndBack: this._interruptionEndBack.bind(this)
+                onStart: this._startBack,
+                onStop: this._stopBack,
+                onResume: this._resumeBack,
+                onError: this._errorBack,
+                onInterruptionBegin: this._interruptionBeginBack,
+                onInterruptionEnd: this._interruptionEndBack
             })
         },
 
@@ -43,18 +43,18 @@ module.exports = Behavior({
             this.Recorder.stop()
         },
 
-        freeRecord: function() {
+        freeRecord: function () {
             this.Recorder.free()
         },
 
         pauseRecord: function () {
             this.Recorder.pause()
-            this.setData({isPause: true})
+            this.setData({ isPause: true })
         },
 
         resumeRecord: function () {
             this.Recorder.resume()
-            this.setData({isPause: false})
+            this.setData({ isPause: false })
         },
 
         cancelRecord: function (e) {
@@ -72,7 +72,7 @@ module.exports = Behavior({
          * 监听回调事件
          **/
         _startBack: function () {
-            this.setData({recordStart: true})
+            this.setData({ recordStart: true })
             this.resetTime() // 获取录制时间
         },
 
@@ -84,7 +84,7 @@ module.exports = Behavior({
                 return false
             }
             if (this.data.recordTime < 15 && !this.cancelRecordParams) {
-                Toast.text({ text: '录制时间不得低于15秒'})
+                Toast.text({ text: '录制时间不得低于15秒' })
                 this.setData({ recordTime: 0 })
                 return false
             }
@@ -106,11 +106,11 @@ module.exports = Behavior({
         },
 
         _interruptionBeginBack: function () {
-            this.setData({isPause: true})
+            this.setData({ isPause: true })
         },
 
         _interruptionEndBack: function () {
-            this.setData({isPause: false})
+            this.setData({ isPause: false })
             this.resetTime() // 获取录制时间
         },
 
@@ -127,12 +127,12 @@ module.exports = Behavior({
                 /**
                  * 如果时间长于590 就停止录制
                  */
-                if(recordTime >= 598) {
+                if (recordTime >= 598) {
                     this.endRecord()
                     return false
                 }
                 recordTime++
-                this.setData({ 
+                this.setData({
                     recordTime: recordTime,
                     timeHand: this.countTimePosition(recordTime)
                 })
@@ -142,8 +142,8 @@ module.exports = Behavior({
 
         countTimePosition(time) {
             const { windowWidth } = this.data
-            let result = windowWidth*time / 600
-            if ( windowWidth <= result + 35) {
+            let result = windowWidth * time / 600
+            if (windowWidth <= result + 35) {
                 result = windowWidth - 35
             }
             return result

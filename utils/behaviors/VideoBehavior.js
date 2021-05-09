@@ -2,7 +2,7 @@ import { addUserHistory } from "../../request/userPort";
 const Video = require('../../controller/Video')
 module.exports = Behavior({
     methods: {
-        __initVideoContext: function(params) {
+        __initVideoContext: function (params) {
             this.videoContextTask = new Video('video-player')
         },
 
@@ -15,19 +15,17 @@ module.exports = Behavior({
         },
 
         __videoEndEvent: function (e) {
-            console.log(e)
             this.addHistory()
 
             const id = this.data.info.next_data_id
             if (id !== 0) {
-                this.__init({data_id: id, isNext: true})  // 重新请求数据  顺序播放
-            }else {
+                this.__init({ data_id: id, isNext: true })  // 重新请求数据  顺序播放
+            } else {
                 this.videoEnd = true
             }
         },
 
         __videoPauseEvent: function (e) {
-            console.log(e)
             this.addHistory(this.videoCurrentTime)
         },
 
@@ -35,7 +33,7 @@ module.exports = Behavior({
             this.videoCurrentTime = parseInt(e.detail.currentTime * 1000)
         },
 
-        __videoWaitingEvent: function(e) {
+        __videoWaitingEvent: function (e) {
 
         },
 
@@ -50,9 +48,8 @@ module.exports = Behavior({
          */
         addHistory: function (frame) {
             const { data_id } = this.data.info.lesson_data
-
             addUserHistory({
-                data_id: Number(data_id),
+                dataId: Number(data_id),
                 frame: frame || 0
             })
                 .then((res) => {

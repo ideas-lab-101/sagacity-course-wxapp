@@ -1,0 +1,23 @@
+{
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/apply/mine/record-play/record-play",
+          "pathName": "pages/apply/mine/record-play/record-play",
+          "query": "id=228",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

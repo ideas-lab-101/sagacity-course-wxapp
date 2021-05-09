@@ -98,9 +98,8 @@ Page({
          */
         this.__initRecorder()
 
-        if (this.data.form.dataId) {
-            this.getLessonDataById(this.data.form.dataId)
-        }
+        const { form: { dataId } } = this.data;
+        dataId && this.getLessonDataById(dataId)
     },
 
     getLessonDataById(id) {
@@ -202,6 +201,7 @@ Page({
         this.setData({
             'reciprocal.visible': true
         })
+
         this._reciprocalCount(this.data.reciprocal.count, this.startRecordExecute)  // 倒计时调用 加返回方法
     },
 
@@ -268,7 +268,7 @@ Page({
                     'reciprocal.visible': false,
                     'reciprocal.count': 5
                 })
-                backFn()
+                typeof backFn == "function" && backFn()
                 return false
             }
             this.setData({

@@ -1,0 +1,6 @@
+<wxs src="./index.wxs" module="moduleIndex" />
+<view class="record-progress">
+		<view class="hand" style="width: {{timeHand}}px;" wx:if="{{recordStart && recordTime > 0}}">
+				<text class="time">{{moduleIndex.countTime(recordTime)}}</text>
+		</view>
+</view>

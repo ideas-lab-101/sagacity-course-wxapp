@@ -1,33 +1,28 @@
 'use strict';
-
 class InnerAudioManager {
     constructor(backFn) {
         this.innerAudioContext = null
         this.backFn = backFn
-        // 初始化
-        this.init(backFn)
+        this.__init(backFn)
     }
 
-    /**
-     * 初始化
-     **/
-    init(backFn) {
-        console.log('this audio manager init')
+    __init(backFn) {
+        console.log('this innerAudio manager init')
         this.innerAudioContext = wx.createInnerAudioContext()
-        if(wx.setInnerAudioOption) {
+        if (wx.setInnerAudioOption) {
             wx.setInnerAudioOption({
                 mixWithOther: false,
                 obeyMuteSwitch: false
             })
-        }else {
+        } else {
             this.innerAudioContext.obeyMuteSwitch = false
         }
         this.innerAudioContext.autoplay = true
-        this._listenEvent(backFn)
+        this.__listenEvent(this.innerAudioContext, backFn)
     }
 
     play(url) {
-        if(url) {
+        if (url) {
             this.innerAudioContext.src = url
         }
         this.innerAudioContext.play()
@@ -38,7 +33,7 @@ class InnerAudioManager {
     }
 
     seek(percent) {
-        if(this.seekFn) {
+        if (this.seekFn) {
             clearTimeout(this.seekFn)
         }
         this.pause()
@@ -48,8 +43,8 @@ class InnerAudioManager {
         }, 10)
     }
 
-    stop(){
-        if(this.innerAudioContext) {
+    stop() {
+        if (this.innerAudioContext) {
             this.innerAudioContext.stop()
             this.innerAudioContext.src = ''
         }
@@ -65,67 +60,49 @@ class InnerAudioManager {
     /**
      * 内部事件
      **/
-    _filterTime(time) {
+    __filterTime(time) {
         const max = parseInt(time / 60)
-        return this._prefixTime(max) + ':' + this._prefixTime(parseInt(time % 60))
+        return this.__prefixTime(max) + ':' + this.__prefixTime(parseInt(time % 60))
     }
 
-    _prefixTime(num) {
-        return num < 10 ? '0'+num : num;
+    __prefixTime(num) {
+        return Number(num) < 10 ? '0' + num : num;
     }
 
-    _listenEvent(options) {
+    __listenEvent(manager, options) {
 
-        this.innerAudioContext.onPlay( () => {
-            console.log('play')
-            this.isEnded = false
-            options && options.play && options.play()
-        })
+        Object.keys(manager).map(item => {
+            const str = "on";
+            if (typeof manager[item] === "function" && item.includes(str)) {
+                manager[item]((response) => {
+                    let params = {}
 
-        this.innerAudioContext.onPause( () => {
-            console.log('onPause')
-            options && options.pause && options.pause()
-        })
+                    switch (item) {
+                        case "onPlay":
+                            this.isEnded = false
+                            break;
+                        case "onSeeked":
+                            this.play()
+                            break;
+                        case "onTimeUpdate":
+                            this.duration = this.innerAudioContext.duration
+                            params = {
+                                duration: this.innerAudioContext.duration,
+                                currentTime: this.innerAudioContext.currentTime,
+                                durationFormat: this.__filterTime(this.innerAudioContext.duration),
+                                currentTimeFormat: this.__filterTime(this.innerAudioContext.currentTime)
+                            }
+                            break;
+                    }
 
-        this.innerAudioContext.onStop( () => {
-            options && options.stop && options.stop()
-        })
-
-        this.innerAudioContext.onWaiting( () => {
-            console.log('onWaiting')
-            options && options.waiting && options.waiting()
-        })
-
-        this.innerAudioContext.onSeeked( () => {
-            console.log('onSeeked')
-            this.play()
-        })
-
-        this.innerAudioContext.onEnded( () => {
-            console.log('ended')
-            options && options.end && options.end()
-        })
-
-        this.innerAudioContext.onError( (res) => {
-            options && options.error && options.error(res)
-        })
-
-        this.innerAudioContext.onCanplay( () => {
-            console.log('can play')
-            options && options.canPlay && options.canPlay()
-        })
-
-        this.innerAudioContext.onTimeUpdate( () => {
-            this.duration = this.innerAudioContext.duration
-            const proto = {
-                duration: this.innerAudioContext.duration,
-                currentTime: this.innerAudioContext.currentTime,
-                durationFormat: this._filterTime(this.innerAudioContext.duration),
-                currentTimeFormat: this._filterTime(this.innerAudioContext.currentTime)
+                    if (response && typeof response === "object") {
+                        params = Object.assign({}, response, params);
+                    }
+                    options && options[item] && options[item](params);
+                })
             }
-            options && options.timeUpdate && options.timeUpdate(proto)
         })
     }
 }
 
-module.exports = InnerAudioManager
+module.exports = InnerAudioManager;
