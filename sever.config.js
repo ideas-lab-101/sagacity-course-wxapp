@@ -1,5 +1,5 @@
 
-const Environment = 'development'
+const Environment = 'production'
 
 const version = '3.0.0'
 
