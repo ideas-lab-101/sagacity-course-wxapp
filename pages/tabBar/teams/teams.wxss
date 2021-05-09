@@ -166,7 +166,7 @@ page{
     margin-top: 30rpx;
     display: block;
     font-size: 22rpx;
-    height: 56rpx;
+    height: 58rpx;
     white-space:normal;
     overflow:hidden;
     display:-webkit-box;

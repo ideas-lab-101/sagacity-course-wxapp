@@ -1,8 +1,8 @@
 Component({
     properties: {
         model: {
-          type: String,
-          value: 'extrude' // fold or extrude
+            type: String,
+            value: 'extrude' // fold or extrude
         },
         title: {
             type: String,
@@ -15,7 +15,7 @@ Component({
         color: {
             type: String,
             value: 'black',
-            observer: function(newVal, oldVal, changedPath) {
+            observer: function (newVal, oldVal, changedPath) {
                 return this._colorChange(newVal, oldVal)
             }
         },
@@ -23,11 +23,10 @@ Component({
             type: Boolean,
             value: false
         },
-
         navTitle: {
             type: String,
             value: 'HOME',
-            observer: function(newVal, oldVal, changedPath) {
+            observer: function (newVal, oldVal, changedPath) {
                 this.navTitleSet = true
             }
         },
@@ -35,9 +34,9 @@ Component({
             type: Boolean,
             value: false
         },
-        backURL: {
-            type: String,
-            value: ''
+        backFn: {
+            type: [Function, null],
+            value: null
         },
     },
     data: {
@@ -61,7 +60,7 @@ Component({
                 this.statusBarHeight = system.statusBarHeight
                 this.screenWidth = system.screenWidth
                 this.screenHeight = system.screenHeight
-            } catch (e) {}
+            } catch (e) { }
 
             this.animation = wx.createAnimation({
                 duration: 500,
@@ -72,7 +71,7 @@ Component({
 
         attached: function () {
             this.setData({
-                titleWidth: this.screenWidth - (this.screenWidth - this.clientRect.right + this.clientRect.width)*2
+                titleWidth: this.screenWidth - (this.screenWidth - this.clientRect.right + this.clientRect.width) * 2
             })
             /**
              * 初始化相关参数
@@ -80,14 +79,14 @@ Component({
             this._initBasicParams()
         },
 
-        detached: function(){
+        detached: function () {
         }
     },
 
     pageLifetimes: {
-        show: function () {},
-        hide: function () {},
-        resize: function () {},
+        show: function () { },
+        hide: function () { },
+        resize: function () { },
     },
     oldVal: 0,
 
@@ -100,27 +99,27 @@ Component({
          */
         scrollTop: function (newVal) {
             const interval = 300
-            if(this.data.model !== 'fold') {
+            if (this.data.model !== 'fold') {
                 return false
             }
 
-            if(newVal > interval) {
+            if (newVal > interval) {
                 this.setData({
-                  transparent: false,
-                  opacity: 1,
-                  titleOpacity: 1
+                    transparent: false,
+                    opacity: 1,
+                    titleOpacity: 1
                 })
-            }else if(newVal <= 1) {
-                  this.setData({
+            } else if (newVal <= 1) {
+                this.setData({
                     transparent: true,
                     opacity: 1,
                     titleOpacity: 0
-                  })
+                })
             } else {
                 this.setData({
-                  transparent: false,
-                  opacity: newVal/interval,
-                  titleOpacity: 1
+                    transparent: false,
+                    opacity: newVal / interval,
+                    titleOpacity: 1
                 })
             }
         },
@@ -130,7 +129,7 @@ Component({
          * @param newVal
          */
         scrollTopTranslateY: function (newVal) {
-            if (newVal >= this.screenHeight*0.5 && !this.hide && newVal > this.oldVal && !this.transition) {
+            if (newVal >= this.screenHeight * 0.5 && !this.hide && newVal > this.oldVal && !this.transition) {
                 this.animation.translateY('-100%').step()
                 this.transition = true
 
@@ -168,27 +167,15 @@ Component({
          * @param e
          */
         navBackEvent: function (e) {
-            const { backURL } = this.data
+            const { backFn } = this.data
 
             if (getCurrentPages().length === 1) {
                 wx.reLaunch({
                     url: '/pages/tabBar/index/index'
                 })
-            }else if(backURL && getCurrentPages().length > 1){
-                const index = getCurrentPages().findIndex(item => {
-                    return item.route === backURL
-                })
-
-                if(index !== -1) {
-                    wx.navigateBack({
-                        delta: getCurrentPages().length - index - 1
-                    })
-                }else {
-                    wx.navigateTo({
-                        url: `/${backURL}`
-                    })
-                }
-            }else {
+            } else if (backFn) {
+                backFn()
+            } else {
                 wx.navigateBack({
                     delta: 1
                 })
@@ -217,7 +204,7 @@ Component({
             if (model === 'extrude') {
                 temp = (parseInt(height) + this.statusBarHeight) + 'px'
                 titleOpacityTemp = 1
-            }else {
+            } else {
                 temp = `0px`
                 titleOpacityTemp = 0
             }
@@ -248,7 +235,7 @@ Component({
             if (newVal !== 'white' && newVal !== 'black') {
                 console.error('Color-参数错误,只能是white or black')
                 return false
-            }else {
+            } else {
                 return true
             }
         }

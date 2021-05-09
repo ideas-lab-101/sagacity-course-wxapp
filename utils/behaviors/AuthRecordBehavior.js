@@ -36,10 +36,6 @@ module.exports = Behavior({
 
         endRecord: function (e) {
             this.startRecordAction = false
-            this.setData({
-                recordStart: false,
-                isPause: false
-            })
             this.Recorder.stop()
         },
 
@@ -83,13 +79,20 @@ module.exports = Behavior({
             if (this.cancelRecordParams) {
                 return false
             }
+            clearTimeout(this.recordTimeFn)
             if (this.data.recordTime < 15 && !this.cancelRecordParams) {
                 Toast.text({ text: '录制时间不得低于15秒' })
-                this.setData({ recordTime: 0 })
+                this.setData({
+                    recordTime: 0,
+                    recordStart: false,
+                    isPause: false
+                })
                 return false
             }
             this.setData({
-                recordTime: 0
+                recordTime: 0,
+                recordStart: false,
+                isPause: false
             })
             /**
              * 上传到服务器  获取音频合成的接口

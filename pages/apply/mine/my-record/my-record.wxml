@@ -1,53 +1,45 @@
 <import src="./record-list.wxml" />
-
-<wu-navigation id="wu-navigation" title="{{nav.title}}({{contentMultiple.totalRow}})"
-               backURLType="{{nav.backURLType}}"
-               backURL="{{nav.backURL}}"
-               transparent="{{nav.transparent}}"
-               model="{{nav.model}}">
-</wu-navigation>
-
+<wu-navigation id="wu-navigation" title="{{nav.title}}({{contentMultiple.totalRow}})" backFn="{{nav.backFn}}" transparent="{{nav.transparent}}" model="{{nav.model}}"></wu-navigation>
 <view class="container">
-
     <view class="mine-userRecord-filter flex between" style="top: {{statusBarHeight+45}}px">
         <view class="flex bottom">
-            <view class="option {{contentMultipleCurrent === index?'active color-primary':''}}" 
-            catchtap="__turnPageTabChangeMultiple"
-            data-index="{{index}}"
-            wx:for="{{tabs}}" 
-            wx:key="blnPublic">{{item.name}}</view>
+            <view class="option {{contentMultipleCurrent === index?'active color-primary':''}}" catchtap="__turnPageTabChangeMultiple" data-index="{{index}}" wx:for="{{tabs}}" wx:key="blnPublic">
+                {{item.name}}
+            </view>
         </view>
-        <view class="search" catchtap="openSearch"><text class="iconfont icon-chaxun"></text></view>
+        <view class="search" catchtap="openSearch">
+            <text class="iconfont icon-chaxun"></text>
+        </view>
         <view class="search-det" wx:if="{{isSearch}}" id="search">
             <form catchsubmit="doSearch" class="form">
                 <view class="insert flex">
-                        <view class="del" catchtap="freeSearch"><text class="iconfont icon-close"></text></view>
-                        <input class="input" maxlength="50" placeholder="查找我的作品" focus="searchFocus" name="key" bindconfirm="doSearch"/>
-                        <button class="s" formType="submit"><text class="iconfont icon-chaxun"></text></button>
+                    <view class="del" catchtap="freeSearch">
+                        <text class="iconfont icon-close"></text>
+                    </view>
+                    <input class="input" maxlength="50" placeholder="查找我的作品" focus="searchFocus" name="key" bindconfirm="doSearch" />
+                    <button class="s" formType="submit">
+                        <text class="iconfont icon-chaxun"></text>
+                    </button>
                 </view>
             </form>
         </view>
     </view>
-
     <view wx:if="{{!isSearchData}}">
-        <view wx:if="{{contentMultiple.list.length}}" class="mine-userRecord-box">    
+        <view wx:if="{{contentMultiple.list.length}}" class="mine-userRecord-box">
             <template is="recordList" data="{{contentMultiple, tryParams, contentMultipleCurrent}}"></template>
             <view class="nomore" wx:if="{{contentMultiple.lastPage}}">额，数据到底了</view>
         </view>
         <view wx:else class="nodate">额，此目录没有数据哟</view>
     </view>
     <view wx:else>
-        <view wx:if="{{content.list.length}}" class="mine-userRecord-box">    
+        <view wx:if="{{content.list.length}}" class="mine-userRecord-box">
             <template is="recordList" data="{{contentMultiple: content, tryParams, contentMultipleCurrent}}"></template>
             <view class="nomore" wx:if="{{content.lastPage}}">额，数据到底了</view>
         </view>
         <view wx:else class="nodate">额，没有查询相关数据哟</view>
     </view>
 </view>
-
-
-<!--分享组件-->
-<share id="share"/>
-
-<!--添加到学习小组-->
-<teams-task id="teamsTask"/>
+<!-- 分享组件 -->
+<share id="share" />
+<!-- 添加到学习小组 -->
+<teams-task id="teamsTask" />
