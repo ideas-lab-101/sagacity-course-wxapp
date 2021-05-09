@@ -62,7 +62,7 @@
               <view wx:if="{{contentMultipleCurrent===1}}" class="shareBtn event-hover-class _s" bindtap="singleShareEvent" data-index="{{index}}">
                 <text class="iconfont icon-chakantiezifenxiang"></text><text>分享</text>
               </view>
-              <view catchtap="goLessonPlay" data-id="{{item.data_id}}" class="_s " hover-class="basic-hover">
+              <view wx:if="{{item.data_id !== 0}}" catchtap="goLessonPlay" data-id="{{item.data_id}}" class="_s " hover-class="basic-hover">
                   <text class="iconfont icon-Group-"></text><text>范读</text>
               </view>
           </view>

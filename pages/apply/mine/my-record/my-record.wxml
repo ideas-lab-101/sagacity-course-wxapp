@@ -11,7 +11,7 @@
             <text class="iconfont icon-chaxun"></text>
         </view>
         <view class="search-det" wx:if="{{isSearch}}" id="search">
-            <form catchsubmit="doSearch" class="form">
+            <form catchsubmit="doSearch">
                 <view class="insert flex">
                     <view class="del" catchtap="freeSearch">
                         <text class="iconfont icon-close"></text>

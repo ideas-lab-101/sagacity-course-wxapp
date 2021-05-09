@@ -104,7 +104,6 @@ Page({
 
     getLessonDataById(id) {
         const { dataId } = this.data.form;
-
         getLessonData({
             dataId: dataId ? Number(dataId) : "0"
         })

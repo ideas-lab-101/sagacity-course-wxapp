@@ -171,7 +171,7 @@ export function getRecommendTemplateList(data) {
   return fetch({
     url: '/wxapp/record/v3/getRecommendTemplateList',
     data: data || {},
-    method: 'GET'
+    method: 'POST'
   })
 }
 

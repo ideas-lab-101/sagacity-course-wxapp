@@ -40,7 +40,7 @@ Page({
     goLesson(e) {
       const index = e.currentTarget.dataset.index
       const id = this.data.data_list[index].id
-      const type = this.data.data_list[index].type
+      const type = this.data.data_list[index].format
 
       if(type.includes('audio')) {
         wx.navigateTo({
