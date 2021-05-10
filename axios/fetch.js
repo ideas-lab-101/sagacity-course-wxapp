@@ -42,7 +42,7 @@ export const fetch = function (options, loading) {
    * @type {any}
    */
   options.data = Object.assign({}, {
-    'token': getApp().user.token
+    'token': getApp().user.authToken
   }, options.data)
 
   return new Promise((resolve, reject) => {
@@ -74,7 +74,7 @@ export const fetch = function (options, loading) {
       if (ret.code === Constants.ERR_INVALID_SESSION && requestTokenNum < 6) {
         requestTokenNum++
 
-        return getApp().user.goLogin()
+        return getApp().user.goLogin('', true)
           .then((token) => {
 
             options.data['token'] = token;

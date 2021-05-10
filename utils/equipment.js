@@ -6,7 +6,7 @@ const getSystemInfo = (isForce) => {
   if (!systemInfo || isForce) {
     try {
       systemInfo = wx.getSystemInfoSync()
-    } catch(e) { /* Ignore */ }
+    } catch (e) { /* Ignore */ }
   }
   return systemInfo
 }
@@ -62,8 +62,7 @@ const compareVersion = (v1, v2) => {
 }
 
 export const checkVersion = (isForce) => {
-  console.log(getSystemInfo(isForce))
-  const version  = getSystemInfo(isForce).SDKVersion
+  const version = getSystemInfo(isForce).SDKVersion
 
   if (compareVersion(version, '2.9.2') < 0) {
     Dialog.alert({

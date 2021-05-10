@@ -1,6 +1,6 @@
 module.exports = Behavior({
     methods: {
-        __initAppLaunch: function(params) {
+        __initAppLaunch: function (params) {
             if (!getApp().identityLoaded) {
                 getApp().identityCallback = () => {
                     this.__init(params)

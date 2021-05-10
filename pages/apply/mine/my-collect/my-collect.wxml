@@ -1,27 +1,16 @@
 <wxs src="./my-collect.wxs" module="moduleMyCollect" />
-
 <wu-navigation id="wu-navigation" title="我的收藏"></wu-navigation>
-
 <view class="container">
-
   <view class="collect-type">
     <view class="_insert">
       <block wx:for="{{favorType}}" wx:key="detail_id">
-        <text catchtap="__turnPageTabChangeMultiple"
-              class="{{contentMultipleCurrent===index?'active':''}}"
-              data-index="{{index}}">{{item.caption}}</text>
+        <text catchtap="__turnPageTabChangeMultiple" class="item {{contentMultipleCurrent===index?'active':''}}" data-index="{{index}}">{{item.caption}}</text>
       </block>
     </view>
   </view>
-
   <view class="collect-con">
-
     <view wx:if="{{contentMultiple.list.length>0}}">
-
-      <navigator url="{{moduleMyCollect.changeURL(item.data_id, item.data_type, item.format)}}"
-                 class="collect-listSingle"
-                 wx:for="{{contentMultiple.list}}"
-                 wx:key="favor_id">
+      <navigator url="{{moduleMyCollect.changeURL(item.data_id, item.data_type, item.format)}}" class="collect-listSingle" wx:for="{{contentMultiple.list}}" wx:key="favor_id">
         <view class="clear collect-listSingle-h">
           <view class="_img">
             <image src="{{item.cover_url}}" mode="aspectFill" lazy-load></image>
@@ -31,24 +20,15 @@
             <view class="_desc">{{item.desc}}</view>
           </view>
         </view>
-
         <view class="flex between mt-10" catchtap="true">
           <text class="_time">{{moduleMyCollect.resolveTime(item.add_time)}}</text>
-          <view class="pl-15 pt-10 pr-15 pb-10 color-999"
-                hover-class="basic-hover"
-                bindtap="cancelCollectEvent"
-                data-id="{{item.data_id}}"
-                data-index="{{index}}"
-                data-type="{{item.data_type}}">
+          <view class="pl-15 pt-10 pr-15 pb-10 color-999" hover-class="basic-hover" bindtap="cancelCollectEvent" data-id="{{item.data_id}}" data-index="{{index}}" data-type="{{item.data_type}}">
             <text class="iconfont icon-del"></text>
           </view>
         </view>
-
       </navigator>
       <view class="nomore" wx:if="{{contentMultiple.lastPage}}">额，数据到底了</view>
-
     </view>
     <view wx:else class="nodate">额，此目录没有数据哟</view>
-
   </view>
 </view>

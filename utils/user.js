@@ -72,14 +72,13 @@ class user {
 
     /**
      * 用户登录
-     *
      * @param {any} code
      * @param {any} authInfo
      * @param {any} cb (authToken)
      * @memberof User
      */
-    goLogin(authInfo) {
-        const FormatUserInfo = JSON.stringify(authInfo) || '';
+    goLogin(authInfo, isFetch) {
+        const FormatUserInfo = authInfo ? JSON.stringify(authInfo) : '';
 
         return new Promise((resolve, reject) => {
 
@@ -94,13 +93,17 @@ class user {
                             if (!FormatUserInfo) {
                                 Session.set(this.authToken)
                                 Session.setUserInfo(this.authInfo)
+                            }
 
+                            if (!isFetch) {
                                 // 判断onLaunch是否先加载成功 在执行后面的方法
                                 this.__getLaunchIsLoad(res.data)
                             }
-
                             resolve(this.authToken)
                         }, ret => {
+
+                            // 判断onLaunch是否先加载成功 在执行后面的方法
+                            this.__getLaunchIsLoad(ret)
                             reject(ret)
                         })
                 })
@@ -116,9 +119,7 @@ class user {
         return new Promise((resolve, reject) => {
             getWxaPhone({ ...data, token: this.authToken })
                 .then(res => {
-                    /**
-                     * 执行绑定
-                     */
+                    // 执行绑定
                     this.__bindUser(res.data.phone)
                     resolve(this.authToken)
                 }, ret => {
@@ -126,7 +127,6 @@ class user {
                 })
         })
     }
-
 
     /**
      * 提交给后台 获取完整的user信息
@@ -151,7 +151,6 @@ class user {
 
                     // 判断onLaunch是否先加载成功 在执行后面的方法
                     this.__getLaunchIsLoad(res.data)
-
                     resolve(this.authToken)
                 }, ret => {
                     reject(ret)
@@ -194,14 +193,11 @@ class user {
      */
     gatherUserParams(data) {
         return new Promise((resolve, reject) => {
-
             return this.__getWxLogin().then(code => {
-
                 data = Object.assign({}, {
                     code,
                     appId: this.accountInfo.miniProgram.appId
                 }, data)
-
                 resolve(data)
             }, ret => {
                 reject(ret)

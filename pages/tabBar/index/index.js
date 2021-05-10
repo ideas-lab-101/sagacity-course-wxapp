@@ -5,124 +5,124 @@ const AppLaunchBehavior = require('../../../utils/behaviors/AppLaunchBehavior')
 const Session = require('../../../utils/session')
 
 Page({
-    behaviors: [AppLaunchBehavior],
-    data: {
-      statusBarHeight: App.globalData.equipment.statusBarHeight,
-      swiper: [],
-      slideCurrent: 0,
-      selectionData: [],
-      courseList: [],
-      /**
-       * 参数
-       */
-      globalSlogon: {
-        urls: {
-            x1: 'https://sagacity-course-000019.tcb.qcloud.la/system/cover_bg@1x.jpg?sign=af9bdefc99e3e11567c45354915848fd&t=1540790334',
-            x2: 'https://sagacity-course-000019.tcb.qcloud.la/system/cover_bg@2x.jpg?sign=c29e6d8bcb76635b9f9e4ca1fdd70972&t=1540790534'
-        },
-        version: App.version
+  behaviors: [AppLaunchBehavior],
+  data: {
+    statusBarHeight: App.globalData.equipment.statusBarHeight,
+    swiper: [],
+    slideCurrent: 0,
+    selectionData: [],
+    courseList: [],
+    /**
+     * 参数
+     */
+    globalSlogon: {
+      urls: {
+        x1: 'https://sagacity-course-000019.tcb.qcloud.la/system/cover_bg@1x.jpg?sign=af9bdefc99e3e11567c45354915848fd&t=1540790334',
+        x2: 'https://sagacity-course-000019.tcb.qcloud.la/system/cover_bg@2x.jpg?sign=c29e6d8bcb76635b9f9e4ca1fdd70972&t=1540790534'
       },
-      historyVisible: true
+      version: App.version
     },
+    historyVisible: true
+  },
 
-    onLoad: function (options) {
-        /**
-         * 请求数据
-         **/
-        this.__initAppLaunch()
-        this.PageOnload = true
-    },
+  onLoad: function (options) {
+    /**
+     * 请求数据
+     **/
+    this.__initAppLaunch()
+    this.PageOnload = true
+  },
 
-    onShow: function () {
-        if(App.user.ckLogin() && !this.PageOnload) {
-          this.getHistoryData()
-        }
-    },
+  onShow: function () {
+    if (App.user.ckLogin() && !this.PageOnload) {
+      this.getHistoryData()
+    }
+  },
 
-    onHide: function() {
-        this.PageOnload = false
-    },
+  onHide: function () {
+    this.PageOnload = false
+  },
 
-    onUnload: function() {
-        this.PageOnload = false
-    },
+  onUnload: function () {
+    this.PageOnload = false
+  },
 
-    onPullDownRefresh: function() {
-      this.__init()
+  onPullDownRefresh: function () {
+    this.__init()
 
-      let fn = setTimeout( () => {
-        clearTimeout(fn)
-        wx.stopPullDownRefresh()
-      }, 800)
-    },
+    let fn = setTimeout(() => {
+      clearTimeout(fn)
+      wx.stopPullDownRefresh()
+    }, 800)
+  },
 
-    onShareAppMessage: function () {
-        return {
-            title: '晓得Le',
-            path: "pages/tabBar/index/index"
-        }
-    },
+  onShareAppMessage: function () {
+    return {
+      title: '晓得Le',
+      path: "pages/tabBar/index/index"
+    }
+  },
 
-    __init() {
-        this.getHistoryData()
+  __init() {
+    this.getHistoryData()
 
-        index()
-            .then((res) => {
-                this.setData({
-                    swiper: res.data.swiper_list,
-                    courseList: res.data.course_list
-                })
-            })
-    },
+    index()
+      .then((res) => {
+        this.setData({
+          swiper: res.data.swiper_list,
+          courseList: res.data.course_list
+        })
+      })
+  },
 
   /**
    * 链接
    * @param e
    */
-    goLinksEvent: function (e) {
-      const type = e.currentTarget.dataset.type
-      const id = e.currentTarget.dataset.id
-      if(type === 'course') {
-        wx.navigateTo({
-          url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
-        })
-      }else if(type === 'topic') {
-        wx.navigateTo({
-          url: `/pages/apply/course/topic/topic?id=${id}`
-        })
-      }else if(type === 'album') {
-        wx.navigateTo({
-          url: `/pages/apply/course/album/album?id=${id}`
-        })
-      }
-    },
-    slideChangeEvent: function (e) {
-        this.setData({
-            slideCurrent: e.detail.current
-        })
-    },
-    /**
-    * 请求历史数据
-    **/
-    getHistoryData: function () {
-        const value = Session.getUserHistory()
+  goLinksEvent: function (e) {
+    const type = e.currentTarget.dataset.type
+    const id = e.currentTarget.dataset.id
+    if (type === 'course') {
+      wx.navigateTo({
+        url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
+      })
+    } else if (type === 'topic') {
+      wx.navigateTo({
+        url: `/pages/apply/course/topic/topic?id=${id}`
+      })
+    } else if (type === 'album') {
+      wx.navigateTo({
+        url: `/pages/apply/course/album/album?id=${id}`
+      })
+    }
+  },
+  slideChangeEvent: function (e) {
+    this.setData({
+      slideCurrent: e.detail.current
+    })
+  },
+  /**
+  * 请求历史数据
+  **/
+  getHistoryData: function () {
+    const value = Session.getUserHistory()
 
-        if (value === 1) {
-            this.setData({historyVisible: false})
-        }else {
-            this.setData({ historyVisible: true})
+    if (value === 1) {
+      this.setData({ historyVisible: false })
+    } else {
+      this.setData({ historyVisible: true })
 
-            getUserHistory()
-                .then((res) => {
-                    this.setData({ selectionData: res.data.list})
-                })
-        }
-    },
-
-    goLessonPage(e) {
-        const { id } = e.currentTarget.dataset
-        wx.navigateTo({
-            url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
+      getUserHistory()
+        .then((res) => {
+          this.setData({ selectionData: res.data.list })
         })
-    },
+    }
+  },
+
+  goLessonPage(e) {
+    const { id } = e.currentTarget.dataset
+    wx.navigateTo({
+      url: `/pages/apply/course/lesson-page/lesson-page?id=${id}`
+    })
+  },
 })

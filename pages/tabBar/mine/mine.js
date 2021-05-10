@@ -23,32 +23,26 @@ Page({
             start: 0,
             time: 0
         },
-
         isLogin: true
     },
     onLoad: function (options) {
         if (App.user.ckLogin()) {
             this.__init()
-        }else {
-            this.setData({ isLogin: false})
+        } else {
+            this.setData({ isLogin: false })
         }
 
-        /**
-         * * 停止背景音播放
-         **/
-        if ( App.backgroundAudioManager) {
-          App.backgroundAudioManager.pause()
+        // 停止背景音播放
+        if (App.backgroundAudioManager) {
+            App.backgroundAudioManager.pause()
         }
         this.PageOnLoad = true
     },
 
     onShow: function () {
-      /**
-      * * 更新 消息数 比如加入 收藏 删除等等
-      **/
+        // 更新 消息数 比如加入 收藏 删除等等
         if (!this.PageOnLoad && (App.requestManager.update('userEnroll', this.route)
             || App.requestManager.update('userFavor', this.route))) {
-
             this.__accountInfo()
         }
 
@@ -56,32 +50,28 @@ Page({
             this.__init()
         }
 
-      /*if (App.requestLoadManager.consume('userEnroll') || App.requestLoadManager.consume('userFavor') ||
-          App.requestLoadManager.consume('addUserPoint') || App.requestLoadManager.consume('setMessage') ||
-          App.requestLoadManager.consume('bindUser')) {
-          this.__init() // 请求基础数据
-      }*/
+        /*if (App.requestLoadManager.consume('userEnroll') || App.requestLoadManager.consume('userFavor') ||
+            App.requestLoadManager.consume('addUserPoint') || App.requestLoadManager.consume('setMessage') ||
+            App.requestLoadManager.consume('bindUser')) {
+            this.__init() // 请求基础数据
+        }*/
     },
 
     onHide: function () {
-      this.PageOnLoad = false
-      /**
-       * * 销毁音频播放组件
-       **/
-      if (this.innerAudioContext) {
-        this.innerAudioContext.stop()
-      }
+        this.PageOnLoad = false
+        // 销毁音频播放组件
+        if (this.innerAudioContext) {
+            this.innerAudioContext.stop()
+        }
     },
 
     onUnload: function () {
-      this.PageOnLoad = false
-      /**
-       * * 销毁音频播放组件
-       **/
-      if (this.innerAudioContext) {
-        this.innerAudioContext.destroy()
-        this.innerAudioContext = null
-      }
+        this.PageOnLoad = false
+        // 销毁音频播放组件
+        if (this.innerAudioContext) {
+            this.innerAudioContext.destroy()
+            this.innerAudioContext = null
+        }
     },
 
     onShareAppMessage: function (res) {
@@ -90,7 +80,7 @@ Page({
             imageUrl: 'https://sagacity-course-000019.tcb.qcloud.la/system/logon.jpg?sign=f042416f92c2f5c581b3594290af0ce2&t=1540657473',
             path: "/pages/tabBar/index/index",
             success: (ret) => {
-                addUserPoint({ pointCode: '003'})
+                addUserPoint({ pointCode: '003' })
             }
         }
     },
@@ -105,7 +95,7 @@ Page({
     __accountInfo() {
         userAccountInfo()
             .then((res) => {
-                this.setData({ userInfo: res.data.account})
+                this.setData({ userInfo: res.data.account })
             })
     },
     /**
@@ -119,7 +109,7 @@ Page({
         })
     },
     getUserPageEvent() {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         const { userInfo } = this.data
@@ -128,7 +118,7 @@ Page({
         })
     },
     getCourseEvent() {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.navigateTo({
@@ -136,7 +126,7 @@ Page({
         })
     },
     getCollectEvent() {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.navigateTo({
@@ -145,11 +135,11 @@ Page({
                 acceptDataFromMyCollect: (data) => {
                     this.__init()
                 }
-              }
+            }
         })
     },
     getMessageEvent() {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.navigateTo({
@@ -158,12 +148,12 @@ Page({
                 acceptDataFromMyMessage: (data) => {
                     this.__init()
                 }
-              }
+            }
         })
     },
 
     interestEvent: function (e) {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.navigateTo({
@@ -180,7 +170,7 @@ Page({
     },
 
     getCodeEvent: function () {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.scanCode({
@@ -192,7 +182,7 @@ Page({
                     if (obj.type === 'login') {
                         this._scanLogin(obj.key)
                     } else {
-                       throw { msg: '错误的二维码！' }
+                        throw { msg: '错误的二维码！' }
                     }
                 } catch (err) {
                     Toast.text({ text: err.msg })
@@ -202,7 +192,7 @@ Page({
     },
 
     goToGuidesEvent: function () {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.navigateTo({
@@ -211,7 +201,7 @@ Page({
     },
 
     profileEvent: function () {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.navigateTo({
@@ -223,12 +213,12 @@ Page({
             }
         })
     },
-  /**
-   * 修改封面
-   * @param e
-   */
+    /**
+     * 修改封面
+     * @param e
+     */
     editCoverEvent: function (e) {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
         wx.chooseImage({
@@ -248,7 +238,7 @@ Page({
                 updateZoneBg({
                     bgFile: tempFilePaths[0],
                 })
-                    .then( (res) => {
+                    .then((res) => {
                         this.setData({
                             'userInfo.background_url': res.data.background_url
                         })
@@ -258,21 +248,21 @@ Page({
     },
 
     goLoginEvent() {
-        if (!this.__validateLoginEvent( this.__init)) {
+        if (!this.__validateLoginEvent(this.__init)) {
             return false
         }
     },
-    
+
     frameTouchStart(e) {
-      this.FrameTouching = true
+        this.FrameTouching = true
     },
     frameTouchEnd(e) {
-      this.FrameTouching = false
+        this.FrameTouching = false
     },
-  /**
-   * 打开分享界面
-   * @param e
-   */
+    /**
+     * 打开分享界面
+     * @param e
+     */
     // singleShareEvent: function (e) {
     //     const index = e.currentTarget.dataset.index
     //     const id = this.data.record.list[index].RecordID
@@ -295,7 +285,7 @@ Page({
             content: '是否登录网页版？',
             onConfirm: () => {
 
-                scanLogin({key: key})
+                scanLogin({ key: key })
                     .then((res) => {
                         Toast.text({ text: res.msg })
                     })
