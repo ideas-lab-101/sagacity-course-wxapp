@@ -22,11 +22,13 @@
     color: #999999;
 }
 .cr-btn{
-    border-radius: 6rpx;
+    border-radius: 2rpx;
+    font-weight: normal !important;
     margin: 0 !important;
     border: 0 !important;
     line-height: normal;
-    padding: 16rpx 50rpx;
+    padding: 15rpx 0;
+    width: 200rpx !important;
     font-size: 30rpx;
     background-color: rgba(0, 0, 0, 0.06) !important;
     color: #999999 !important;

@@ -49,7 +49,7 @@
   <view wx:if="{{contentMultipleCurrent===1}}">
     <!-- <view class="watch-time"><text>今天</text><text>Today</text></view> -->
     <view class="watch-box">
-      <view class="watch-single" wx:for="{{contentMultiple.list}}" wx:key="*this">
+      <view class="watch-single {{index === contentMultiple.list.length - 1? 'last':  ''}}" wx:for="{{contentMultiple.list}}" wx:key="*this">
         <view class="data-single">
           <view class="watch-info-a" catchtap="goUserEvent" data-id="{{item.user_id}}">
             <image lazy-load src="{{item.avatar_url}}" mode="aspectFill" />
@@ -87,7 +87,7 @@
             </view>
             <view catchtap="goCommentEvent" data-id="{{item.record_id}}" class="_comment" hover-class="basic-hover">
               <text class="iconfont icon-liuyan"></text>
-              <text class="_count ml-5">{{moduleFind.filterText(item.comment_count)}}</text>
+              <text class="_count ml-5">{{moduleFind.filterText(item.record_count)}}</text>
               <text class="ml-20">我说说</text>
             </view>
           </view>

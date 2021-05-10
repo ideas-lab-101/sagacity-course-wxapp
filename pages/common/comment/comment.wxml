@@ -1,88 +1,45 @@
 <wux-actionsheet id="wux-actionsheet"></wux-actionsheet>
 <wxs src="./comment.wxs" module="moduleComment" />
-
-<wu-navigation id="wu-navigation" title="{{nav.title}}"
-               transparent="{{nav.transparent}}"
-               model="{{nav.model}}"
-               animation="{{nav.animation}}">
-</wu-navigation>
-
+<wu-navigation id="wu-navigation" title="{{nav.title}}" transparent="{{nav.transparent}}" model="{{nav.model}}"></wu-navigation>
 <view class="container">
     <block wx:if="{{content.list.length > 0}}">
-      <view class="comment-sub" wx:for="{{content.list}}" wx:key="comment_id">
-          <view class="flex _first">
-              <image src="{{item.avatar_url}}" mode="aspectFill"></image>
-              <text class="_name color-999">{{item.caption}}</text>
-              <text class="_delete event-hover-class"
-                    wx:if="{{item.user_id === userInfo.user_id}}"
-                    data-commentid="{{item.comment_id}}"
-                    data-myself="{{item.user_id === userInfo.user_id}}"
-                    bindtap="operationEvent">
-                  <text class="iconfont icon-diandian color-999 font-15"></text>
-              </text>
-          </view>
-          <view class="_content font-16 mt-10">{{item.content}}</view>
-          <view class="_minor font-14 mt-10" wx:if="{{item.child.length>0}}">
-              <!--回复-->
-              <view class="{{i===0?'':'mt-10'}}"
-                    wx:for="{{item.child}}"
-                    wx:for-index="i"
-                    wx:for-item="j"
-                    wx:key="comment_id"
-                    data-commentid="{{j.comment_id}}"
-                    data-myself="{{j.user_id === userInfo.user_id}}"
-                    bindlongpress="operationEvent">
-                  <text class="_name font-12">{{j.user_id === userInfo.user_id?'我' : j.caption}}：</text>
-                  <text class="_del">{{j.content}}</text>
-              </view>
-              <!--回复-->
-
-          </view>
-          <view class="_opera mt-10">
-              <text class="font-10 color-999">{{moduleComment.resolveTime(item.add_time)}}</text>
-              <text class="event-hover-class _reply"
-                    bindtap="commentSingleFocusEvent"
-                    data-commentid="{{item.comment_id}}"
-                    data-name="{{item.caption}}">回复TA</text>
-          </view>
-      </view>
+        <view class="comment-sub" wx:for="{{content.list}}" wx:key="comment_id">
+            <view class="flex _first">
+                <image src="{{item.avatar_url}}" mode="aspectFill"></image>
+                <text class="_name color-999">{{item.caption}}</text>
+                <text class="_delete event-hover-class" wx:if="{{item.user_id === userInfo.user_id}}" data-commentid="{{item.comment_id}}" data-myself="{{item.user_id === userInfo.user_id}}" bindtap="operationEvent">
+                    <text class="iconfont icon-diandian color-999 font-15"></text>
+                </text>
+            </view>
+            <view class="_content font-16 mt-10">{{item.content}}</view>
+            <view class="_minor font-14 mt-10" wx:if="{{item.child.length>0}}">
+                <!-- 回复 -->
+                <view class="{{i===0?'':'mt-10'}}" wx:for="{{item.child}}" wx:for-index="i" wx:for-item="j" wx:key="comment_id" data-commentid="{{j.comment_id}}" data-myself="{{j.user_id === userInfo.user_id}}" bindlongpress="operationEvent">
+                    <text class="_name font-12">
+                        {{j.user_id === userInfo.user_id?'我' : j.caption}}：
+                    </text>
+                    <text class="_del">{{j.content}}</text>
+                </view>
+                <!-- 回复 -->
+            </view>
+            <view class="_opera mt-10">
+                <text class="font-10 color-999">{{moduleComment.resolveTime(item.add_time)}}</text>
+                <view class="event-hover-class _reply" bindtap="commentSingleFocusEvent" data-commentid="{{item.comment_id}}" data-name="{{item.caption}}">
+                    回复TA
+                </view>
+            </view>
+        </view>
     </block>
-    <view class="comment-nodata" wx:else >暂无留言</view>
-
+    <view class="comment-nodata" wx:else>暂无留言</view>
     <view class="comment-sub-bottom" hidden="{{isCommentFocus}}" bindtap="commentFocusEvent">
         <view class="_fix flex between">
-            <view><text class="iconfont icon-bianji"></text> 我要留言</view>
-            <view class="_r color-999"><text class="iconfont icon-smile"></text></view>
+            <view>
+                <text class="iconfont icon-bianji"></text>
+                我要留言
+            </view>
+            <view class="_r color-999">
+                <text class="iconfont icon-smile"></text>
+            </view>
         </view>
     </view>
 </view>
-
-
-<!--提交留言数据-->
-<!--<wu-backdrop id="wu-backdrop" bind:click="closeFocusEvent" />-->
-<!--<wu-animation-group wux-class="commenter_wrapper_box" in="{{ commentin }}" class-names="wux-animate&#45;&#45;slideInUp">-->
-    <!--<view class="commenter_wrapper" catchtap="true" style="bottom: {{keyboard}}">-->
-        <!--<form bindsubmit="postComment" report-submit="ture">-->
-                <!--<textarea name="comment"-->
-                          <!--placeholder=' {{ taPlaceholder }} '-->
-                          <!--focus="{{isTaFocused}}"-->
-                          <!--value="{{taContent}}"-->
-                          <!--fixed="true"-->
-                          <!--auto-height="{{true}}"-->
-                          <!--adjust-position="{{false}}"-->
-                          <!--maxlength="100"-->
-                          <!--bindfocus="commenterWrapperFocusEvent"-->
-                          <!--bindconfirm="commenterWrapperConfirmEvent"-->
-                          <!--bindblur="commenterWrapperBlurEvent"-->
-                          <!--cursor-spacing="50"></textarea>-->
-                <!--<view class="commenter_wrapper_s flex between">-->
-                    <!--<view class="_link">-->
-                        <!--<text class="color-999 _f">限定最多100字</text>-->
-                    <!--</view>-->
-                    <!--<view>-->
-                        <!--<button class="post_btn" formType="submit">留言</button>-->
-                    <!--</view>-->
-                <!--</view>-->
-        <!--</form>-->
-    <!--</view>-->
-<!--</wu-animation-group>-->

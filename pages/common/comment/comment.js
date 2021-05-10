@@ -10,11 +10,7 @@ Page({
         nav: {
             title: "留言",
             model: 'extrude',
-            transparent: false,
-            animation: {
-              duration: 500,
-              timingFunction: "linear"
-            }
+            transparent: false
         },
         isTaFocused: false,
         isCommentFocus: false,
@@ -27,31 +23,31 @@ Page({
     onLoad: function (options) {
         this.optionsId = options.id
         this.optionsType = options.type
-        this.setData({userInfo: App.user.userInfo })
+        this.setData({ userInfo: App.user.userInfo })
 
         this.__init()
     },
 
     onPageScroll: function (e) {
-      $wuNavigation().scrollTop(e.scrollTop)
+        $wuNavigation().scrollTop(e.scrollTop)
     },
 
     onReachBottom: function (e) {
         this.__ReachBottom()
     },
-      /**
-       * 链接
-       */
-     goReplay(referID, caption) {
+    /**
+     * 链接
+     */
+    goReplay(referID, caption) {
         const self = this
         wx.navigateTo({
             url: `/pages/common/comment-replay/comment-replay?id=${this.optionsId}&referid=${referID}&type=${this.optionsType}&caption=${caption}`,
             events: {
-                acceptDataCommentReplay: function(data) {
+                acceptDataCommentReplay: function (data) {
                     let { list } = self.data.content
                     if (data.referID === 'root') {
                         list.unshift(data.data)
-                    }else {
+                    } else {
                         const index = list.findIndex(item => item.comment_id === Number(data.referID))
                         list[index].child.unshift(data.data)
                     }
@@ -90,20 +86,20 @@ Page({
                 }
                 return true
             },
-            cancel() {}
+            cancel() { }
         })
     },
-  /**
-   * 总评论
-   */
+    /**
+     * 总评论
+     */
     commentFocusEvent: function () {
         this.referID = 'root'
         this.goReplay(this.referID)
     },
-  /**
-   * 点击回复TA
-   * @param e
-   */
+    /**
+     * 点击回复TA
+     * @param e
+     */
     commentSingleFocusEvent: function (e) {
         this.referID = e.currentTarget.dataset.commentid
         const caption = e.currentTarget.dataset.name
@@ -115,7 +111,7 @@ Page({
      * 内部 处理事件
      * ***/
     _delComment(commentID) {
-      return delComment({commentId: commentID})
+        return delComment({ commentId: commentID })
     },
 
     _deleteData: function (CommentID) {
@@ -130,7 +126,7 @@ Page({
                 exactIndex.listIndex = index
                 return false
             }
-            const  childIndex = item.child.findIndex((c) => {
+            const childIndex = item.child.findIndex((c) => {
                 return Number(c.comment_id) === Number(CommentID)
             })
             if (childIndex !== -1) {
@@ -147,7 +143,7 @@ Page({
         let h = [...list]
         if (!exactIndex.childIndex) {
             h.splice(exactIndex.listIndex, 1)
-        }else {
+        } else {
             h[exactIndex.listIndex].child.splice(exactIndex.childIndex, 1)
         }
         this.setData({ 'content.list': h })

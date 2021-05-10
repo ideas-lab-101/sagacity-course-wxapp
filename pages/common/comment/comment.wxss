@@ -6,64 +6,28 @@
 .comment-sub>._minor{ margin-left: 80rpx; background-color: #f6f6f6; padding: 20rpx;}
 .comment-sub>._minor ._del{ line-height: 1.6; font-size: 28rpx;}
 .comment-sub>._minor ._name{ line-height: 1.6; color: #c3c3c3; font-size: 28rpx;}
-.comment-sub>._opera{ text-align: left; margin-left: 80rpx; padding-bottom: 20rpx; border-bottom: 1rpx solid #eee;}
-.comment-sub>._opera ._reply{ display: inline-block; font-size: 22rpx; color: #999; vertical-align: middle; line-height: 1.8;
-    border-radius: 100rpx; padding: 0 20rpx; border: 1rpx solid #eee; margin-left: 20rpx;}
-
+.comment-sub>._opera{ 
+    display: flex;
+    align-items: center;
+    text-align: left; 
+    margin-left: 80rpx; 
+    padding-bottom: 20rpx; 
+    border-bottom: 1rpx solid #eee;
+}
+.comment-sub>._opera ._reply{ 
+    display: inline-block; 
+    font-size: 22rpx; 
+    color: #999; 
+    vertical-align: middle; 
+    height: 40rpx;
+    line-height:  40rpx;
+    border-radius: 100rpx; 
+    padding: 0 15rpx; 
+    border: 1rpx solid #eee;
+    margin-left: 20rpx;
+}
 .comment-nodata{ text-align: center; font-size: 24rpx; color: #999999; padding-top: 60rpx;}
 .comment-sub-bottom{ position: relative; height: 110rpx;}
 .comment-sub-bottom>._fix{ position: fixed; z-index: 99; left: 0; right: 0; bottom: 0; background-color: #f7f7f7; border-top:1rpx solid #eee; padding: 20rpx 40rpx;
   height: 60rpx; font-size: 30rpx; line-height: 60rpx;}
 .comment-sub-bottom>._fix ._r .iconfont{ font-size: 44rpx;}
-
-.commenter_wrapper_box{
-    position: fixed;
-    z-index: 3999;
-    left: 0; bottom: 0;
-    width: 100%;
-}
-.commenter_wrapper {
-    position: relative;
-    z-index: 990;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 30rpx;
-    background-color: white;
-    transition: all 0.1s ease-out;
-}
-
-.commenter_wrapper textarea {
-    box-sizing: border-box;
-    flex: 1 1 auto;
-    min-height: 50px;
-    width: 100%;
-    color: #000;
-    font-size: 32rpx;
-    line-height: 1.6;
-    border-radius: 5rpx;
-    background-color: #f7f7f7;
-}
-
-.commenter_wrapper_s{
-    margin-top: 20rpx;
-}
-.commenter_wrapper_s ._link .iconfont{ font-size: 44rpx;}
-.commenter_wrapper_s ._link ._f{ font-size: 24rpx;}
-
-.post_btn {
-    flex: 0 0 60px;
-    padding: 0 40rpx;
-    line-height: 2.6;
-    text-align: center;
-    font-size: 28rpx;
-    border-radius: 5rpx;
-    border: 0;
-    background-color: #f0f0f0;
-}
-.post_btn:active{background-color: #d3d2d2;}
-.post_btn::after {border: 0;border-radius: 4rpx;}
-
-.cancel-action .action-sheet-option {
-    color: #000;
-}
